@@ -1,12 +1,21 @@
 import type { Question } from '../types';
 
-const CHAPTER_I = 'Chương I. Quy định chung và quy tắc giao thông đường bộ';
-const CHAPTER_II =
+export const CHAPTER_I = 'Chương I. Quy định chung và quy tắc giao thông đường bộ';
+export const CHAPTER_II =
   'Chương II. Văn hóa giao thông, đạo đức người lái xe, kỹ năng phòng cháy, chữa cháy và cứu hộ, cứu nạn';
-const CHAPTER_III = 'Chương III. Kỹ thuật lái xe';
-const CHAPTER_IV = 'Chương IV. Cấu tạo và sửa chữa';
-const CHAPTER_V = 'Chương V. Báo hiệu đường bộ';
-const CHAPTER_VI = 'Chương VI. Giải thế sa hình và kỹ năng xử lý tình huống giao thông';
+export const CHAPTER_III = 'Chương III. Kỹ thuật lái xe';
+export const CHAPTER_IV = 'Chương IV. Cấu tạo và sửa chữa';
+export const CHAPTER_V = 'Chương V. Báo hiệu đường bộ';
+export const CHAPTER_VI = 'Chương VI. Giải thế sa hình và kỹ năng xử lý tình huống giao thông';
+
+export const EXAM_CHAPTERS_ORDERED: readonly { chapterNumber: number; title: string }[] = [
+  { chapterNumber: 1, title: CHAPTER_I },
+  { chapterNumber: 2, title: CHAPTER_II },
+  { chapterNumber: 3, title: CHAPTER_III },
+  { chapterNumber: 4, title: CHAPTER_IV },
+  { chapterNumber: 5, title: CHAPTER_V },
+  { chapterNumber: 6, title: CHAPTER_VI },
+];
 
 const B1_TOTAL_QUESTIONS = 30;
 

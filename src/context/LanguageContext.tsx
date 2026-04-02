@@ -28,8 +28,15 @@ export const translations: Translations = {
   category: { vi: 'Hạng', en: 'Category' },
   theoryExam: { vi: 'Thi lý thuyết', en: 'Theory Exam' },
   practicalExam: { vi: 'Thi thực hành', en: 'Practical Exam' },
-  lastExercises: { vi: '5 bài tập gần nhất', en: 'Last 5 Exercises' },
-  masteryByArea: { vi: 'Mức độ thông thạo theo lĩnh vực', en: 'Mastery by Area' },
+  recentChaptersShare: {
+    vi: 'Câu hỏi 6 chương gần nhất',
+    en: 'Last exam: share by chapter',
+  },
+  chapterShareSuffix: {
+    vi: 'câu · tỷ lệ % theo chương (cao → thấp)',
+    en: 'questions · chapter share % (high → low)',
+  },
+  masteryByChapter: { vi: 'Mức độ thông thạo theo chương', en: 'Mastery by chapter' },
   aiAssistant: { vi: 'Trợ lý Giao thông AI', en: 'AI Traffic Assistant' },
   aiDescription: { vi: 'Tải lên tình huống giao thông để AI phân tích ngay lập tức', en: 'Upload a traffic situation for instant AI analysis' },
   changeImage: { vi: 'Thay đổi ảnh', en: 'Change Image' },

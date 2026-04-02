@@ -162,7 +162,7 @@ function AppContent() {
                 />
             </div>
             <div className={`${activeSidebar === 'right' ? 'flex' : 'hidden'} lg:flex shrink-0 w-full lg:w-auto h-full`}>
-              <RightSidebar chapterStats={chapterStats ?? undefined} />
+              <RightSidebar chapterStats={chapterStats ?? undefined} examQuestions={examQuestions} />
             </div>
           </div>
         </div>

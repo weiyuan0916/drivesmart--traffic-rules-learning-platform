@@ -14,6 +14,16 @@ function indexToOptionId(idx: number): string {
   return String.fromCharCode(base + idx);
 }
 
+export function chapterNumberFromQuestionId(id: number): number | null {
+  if (id >= 1 && id <= 180) return 1;
+  if (id >= 181 && id <= 205) return 2;
+  if (id >= 206 && id <= 263) return 3;
+  if (id >= 264 && id <= 300) return 4;
+  if (id >= 301 && id <= 485) return 5;
+  if (id >= 486 && id <= 600) return 6;
+  return null;
+}
+
 function questionIdToLocalImageUrl(id: number): string | null {
   const three = String(id).padStart(3, '0');
   const candidates = [
@@ -38,6 +48,13 @@ function mapRawToQuestion(raw: RawQuestion): Question | null {
   if (typeof raw.answer !== 'number') return null;
   if (raw.answer < 0 || raw.answer >= raw.options.length) return null;
   if (typeof raw.chapter !== 'string' || !raw.chapter.trim()) return null;
+  const expectedChapter = chapterNumberFromQuestionId(raw.id);
+  const chapterNumber =
+    typeof raw.chapterNumber === 'number' && Number.isInteger(raw.chapterNumber)
+      ? raw.chapterNumber
+      : expectedChapter;
+  if (chapterNumber === null || chapterNumber < 1 || chapterNumber > 6) return null;
+  if (expectedChapter !== null && chapterNumber !== expectedChapter) return null;
   if (typeof raw.explanation !== 'string') return null;
 
   const options: QuestionOption[] = raw.options.map((text, idx) => ({
@@ -53,6 +70,7 @@ function mapRawToQuestion(raw: RawQuestion): Question | null {
 
   return {
     id: raw.id,
+    chapterNumber,
     chapter: raw.chapter,
     isCritical: Boolean(raw.isCritical),
     text: raw.question,

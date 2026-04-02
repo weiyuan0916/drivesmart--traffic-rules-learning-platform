@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronLeft, ChevronUp, Clock, Bookmark, LayoutGrid } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import type { ChapterStat, Question } from '../types';
+import { EXAM_CHAPTERS_ORDERED } from '../services/examGenerator';
 import LanguageSwitcher from './LanguageSwitcher';
 import { SmoothScroll } from './SmoothScroll';
 
@@ -134,14 +135,14 @@ const MainContent: React.FC<MainContentProps> = ({
     let correct = 0;
     let incorrect = 0;
     let criticalWrong = 0;
-    const chapterMap = new Map<string, { correct: number; total: number }>();
+    const chapterMap = new Map<number, { correct: number; total: number }>();
 
     for (let i = 0; i < questions.length; i += 1) {
       const q = questions[i];
       const selected = answersForScore[i];
       const ok = selected === q.correctAnswer;
 
-      const entry = chapterMap.get(q.chapter) ?? { correct: 0, total: 0 };
+      const entry = chapterMap.get(q.chapterNumber) ?? { correct: 0, total: 0 };
       entry.total += 1;
       if (ok) {
         entry.correct += 1;
@@ -149,7 +150,7 @@ const MainContent: React.FC<MainContentProps> = ({
       } else {
         incorrect += 1;
       }
-      chapterMap.set(q.chapter, entry);
+      chapterMap.set(q.chapterNumber, entry);
 
       if (q.isCritical && !ok) criticalWrong += 1;
     }
@@ -159,13 +160,15 @@ const MainContent: React.FC<MainContentProps> = ({
     setExamFinished(true);
 
     if (onExamStatsComputed) {
-      const chapterStats: ChapterStat[] = Array.from(chapterMap.entries()).map(
-        ([chapter, value]) => ({
-          chapter,
-          correct: value.correct,
-          total: value.total,
-        }),
-      );
+      const chapterStats: ChapterStat[] = EXAM_CHAPTERS_ORDERED.map(({ chapterNumber, title }) => {
+        const value = chapterMap.get(chapterNumber);
+        return {
+          chapterNumber,
+          chapter: title,
+          correct: value?.correct ?? 0,
+          total: value?.total ?? 0,
+        };
+      });
       onExamStatsComputed(chapterStats);
     }
   };

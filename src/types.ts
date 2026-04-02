@@ -4,6 +4,7 @@ export interface RawQuestion {
   image: string | null;
   options: string[];
   answer: number | null;
+  chapterNumber: number;
   chapter: string;
   isCritical: boolean;
   explanation: string;
@@ -16,6 +17,7 @@ export interface QuestionOption {
 
 export interface Question {
   id: number;
+  chapterNumber: number;
   chapter: string;
   isCritical: boolean;
   text: string;
@@ -26,24 +28,8 @@ export interface Question {
 }
 
 export interface ChapterStat {
+  chapterNumber: number;
   chapter: string;
   correct: number;
   total: number;
-}
-
-export interface UserStats {
-  correct: number;
-  incorrect: number;
-  current: number;
-  unanswered: number;
-  lastExercises: {
-    name: string;
-    score: number;
-    category: string;
-  }[];
-  masteryByArea: {
-    area: string;
-    percentage: number;
-    color: string;
-  }[];
 }
