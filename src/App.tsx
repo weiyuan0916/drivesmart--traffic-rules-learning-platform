@@ -99,33 +99,25 @@ function AppContent() {
         </div>
       )}
 
-      {/* View Toggle (Floating - Desktop Only) */}
-      {examStarted ? (
-      <div className="hidden lg:flex fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[var(--bg-tertiary)]/80 backdrop-blur-xl p-2 rounded-2xl border border-[var(--border)] shadow-2xl gap-2">
-        <button
-          onClick={() => setView('dashboard')}
-          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
-            view === 'dashboard' 
-              ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
-              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
-          }`}
-        >
-          <LayoutDashboard className="w-5 h-5" />
-          {t('dashboard')}
-        </button>
-        <button
-          onClick={() => setView('analyzer')}
-          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
-            view === 'analyzer' 
-              ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
-              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
-          }`}
-        >
-          <Brain className="w-5 h-5" />
-          {t('aiAnalyzer')}
-        </button>
-      </div>
-      ) : null}
+      {/* View Toggle (Floating - Desktop Only, only shown on analyzer) */}
+      {!examStarted && view !== 'dashboard' && (
+        <div className="hidden lg:flex fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[var(--bg-tertiary)]/80 backdrop-blur-xl p-2 rounded-2xl border border-[var(--border)] shadow-2xl gap-2">
+          <button
+            onClick={() => setView('dashboard')}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]"
+          >
+            <LayoutDashboard className="w-5 h-5" />
+            {t('dashboard')}
+          </button>
+          <button
+            onClick={() => setView('analyzer')}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold bg-blue-600 text-white shadow-lg shadow-blue-600/20 transition-all"
+          >
+            <Brain className="w-5 h-5" />
+            {t('aiAnalyzer')}
+          </button>
+        </div>
+      )}
 
       {!examStarted ? (
         <ExamSetupScreen onStartExam={startExam} isStarting={examLoading} />
@@ -143,9 +135,10 @@ function AppContent() {
 
           <div className="flex flex-1 overflow-hidden min-h-0">
             <div
-              className={`${activeSidebar === 'left' ? 'flex' : 'hidden'} min-w-0 lg:flex h-full w-full shrink-0 transition-all duration-200 lg:w-80 xl:w-96 ${
-                collapsedSidebar ? 'lg:w-0 lg:overflow-hidden lg:border-r-0' : ''
+              className={`${activeSidebar === 'left' ? 'flex' : 'hidden'} min-w-0 lg:flex h-full w-full shrink-0 transition-all duration-200 ${
+                collapsedSidebar ? 'lg:w-0 xl:w-0' : 'lg:w-80 xl:w-96'
               }`}
+              style={collapsedSidebar ? { width: 0, overflow: 'hidden' } : undefined}
             >
                 <Sidebar
                   totalQuestions={examQuestions.length}
@@ -153,6 +146,7 @@ function AppContent() {
                   questions={examQuestions}
                   confirmedAnswers={confirmedAnswers}
                   onCurrentQuestionNumberChange={setCurrentQuestionNumber}
+                  collapsedSidebar={collapsedSidebar}
                 />
             </div>
             <div className={`${activeSidebar === 'main' ? 'flex' : 'hidden'} lg:flex flex-1 h-full overflow-hidden min-h-0`}>
@@ -169,11 +163,12 @@ function AppContent() {
                 />
             </div>
             <div
-              className={`${activeSidebar === 'right' ? 'flex' : 'hidden'} min-w-0 lg:flex h-full w-full shrink-0 transition-all duration-200 lg:w-96 xl:w-[28rem] ${
-                collapsedSidebar ? 'lg:w-0 lg:overflow-hidden lg:border-l-0' : ''
+              className={`${activeSidebar === 'right' ? 'flex' : 'hidden'} min-w-0 lg:flex h-full w-full shrink-0 transition-all duration-200 ${
+                collapsedSidebar ? 'lg:w-0 xl:w-0' : 'lg:w-96 xl:w-[28rem]'
               }`}
+              style={collapsedSidebar ? { width: 0, overflow: 'hidden' } : undefined}
             >
-              <RightSidebar chapterStats={chapterStats ?? undefined} examQuestions={examQuestions} />
+              <RightSidebar chapterStats={chapterStats ?? undefined} examQuestions={examQuestions} collapsedSidebar={collapsedSidebar} />
             </div>
           </div>
         </div>

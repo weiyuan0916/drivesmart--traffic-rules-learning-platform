@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Bell, GraduationCap, Car, Mail, Calendar, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { BarChart, Bar, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { useLanguage } from '../context/LanguageContext';
 import { SmoothScroll } from './SmoothScroll';
@@ -9,6 +9,7 @@ import { EXAM_CHAPTERS_ORDERED } from '../services/examGenerator';
 interface RightSidebarProps {
   chapterStats?: ChapterStat[] | null;
   examQuestions: Question[];
+  collapsedSidebar: boolean;
 }
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'] as const;
@@ -40,7 +41,7 @@ type ChapterShareRow = {
 
 const SHARE_BAR_COLORS = ['#22C55E', '#3B82F6', '#F97316', '#A855F7', '#EAB308', '#EC4899'];
 
-const RightSidebar: React.FC<RightSidebarProps> = ({ chapterStats, examQuestions }) => {
+const RightSidebar: React.FC<RightSidebarProps> = ({ chapterStats, examQuestions, collapsedSidebar }) => {
   const { t } = useLanguage();
 
   const masteryData: MasteryRow[] = useMemo(() => {
@@ -113,51 +114,16 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ chapterStats, examQuestions
 
   return (
     <SmoothScroll className="w-full lg:w-96 bg-[var(--bg-secondary)] p-5 lg:p-7 pb-32 lg:pb-10 flex flex-col gap-6 lg:gap-8 border-l border-[var(--border)]">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-4">
-          <img
-            src="https://picsum.photos/seed/user1/100/100"
-            alt="User"
-            className="w-12 h-12 lg:w-14 lg:h-14 rounded-full border-2 border-blue-500 p-0.5"
-            referrerPolicy="no-referrer"
-          />
-          <div>
-            <h3 className="text-[var(--text-primary)] font-bold text-sm lg:text-base">Jelena Lukić</h3>
-            <p className="text-[9px] lg:text-[10px] text-[var(--text-secondary)] font-mono">ID - 160021172210 0104</p>
+      {!collapsedSidebar && (
+        <>
+          {/* Exam Info Header */}
+          <div className="rounded-2xl bg-[var(--bg-tertiary)] px-4 py-3">
+            <h4 className="text-[var(--text-primary)] font-bold text-xs uppercase tracking-wider">Bài thi B1</h4>
+            <p className="text-[var(--text-secondary)] text-[10px] mt-1">{examQuestions.length} câu hỏi · 6 chương</p>
           </div>
-        </div>
-        <button className="p-2 bg-[var(--bg-tertiary)] rounded-full text-blue-500 hover:bg-[var(--bg-hover)] transition-colors">
-          <Bell className="w-4 h-4 lg:w-5 lg:h-5" />
-        </button>
-      </div>
 
-      <div className="grid grid-cols-3 gap-3 lg:gap-4 text-center bg-[var(--bg-tertiary)] rounded-2xl px-3 py-3 lg:px-4 lg:py-4">
-        <div>
-          <p className="text-[8px] lg:text-[10px] text-[var(--text-secondary)] font-bold uppercase mb-1">{t('category')}</p>
-          <p className="text-[var(--text-primary)] font-bold text-lg lg:text-xl">B</p>
-        </div>
-        <div>
-          <p className="text-[8px] lg:text-[10px] text-[var(--text-secondary)] font-bold uppercase mb-1">{t('theoryExam')}</p>
-          <p className="text-[var(--text-primary)] font-bold text-[10px] lg:text-sm">27.02.2020.</p>
-        </div>
-        <div>
-          <p className="text-[8px] lg:text-[10px] text-[var(--text-secondary)] font-bold uppercase mb-1">{t('practicalExam')}</p>
-          <p className="text-[var(--text-primary)] font-bold text-lg lg:text-xl">/</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-4 gap-3 lg:gap-4 bg-[var(--bg-tertiary)] rounded-2xl px-3 py-3 lg:px-4 lg:py-4">
-        {[GraduationCap, Car, Mail, Calendar].map((Icon, i) => (
-          <button
-            key={i}
-            className="aspect-square bg-[var(--bg-tertiary)] rounded-2xl flex items-center justify-center text-[var(--text-secondary)] hover:text-blue-500 hover:bg-[var(--bg-hover)] transition-all"
-          >
-            <Icon className="w-6 h-6" />
-          </button>
-        ))}
-      </div>
-
-      <div className="bg-[var(--bg-tertiary)] p-5 lg:p-6 rounded-3xl mt-1">
+          {/* Chapter Share */}
+          <div className="bg-[var(--bg-tertiary)] p-5 lg:p-6 rounded-3xl mt-1">
         <div className="flex items-center justify-between mb-6">
           <h4 className="text-[var(--text-primary)] font-bold text-sm">{t('recentChaptersShare')}</h4>
           <ChevronRight className="w-4 h-4 text-[var(--text-secondary)]" />
@@ -238,6 +204,8 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ chapterStats, examQuestions
           ))}
         </div>
       </div>
+        </>
+      )}
     </SmoothScroll>
   );
 };
