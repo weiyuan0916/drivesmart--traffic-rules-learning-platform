@@ -1,20 +1,4 @@
-import { Question, UserStats } from "./types";
-
-export const MOCK_QUESTIONS: Question[] = [
-  {
-    id: 1,
-    text: "Bạn nên làm gì khi thấy người đi bộ đang đợi tại vạch kẻ đường dành cho người đi bộ?",
-    image: "https://picsum.photos/seed/traffic1/800/600",
-    options: [
-      { id: "A", text: "Tăng tốc để vượt qua nhanh chóng" },
-      { id: "B", text: "Giảm tốc độ và dừng lại nhường đường" },
-      { id: "C", text: "Bấm còi để cảnh báo người đi bộ" },
-      { id: "D", text: "Bỏ qua và tiếp tục lái xe" }
-    ],
-    correctAnswer: "B",
-    explanation: "Bạn phải giảm tốc độ và nhường đường cho người đi bộ tại vạch kẻ đường."
-  }
-];
+import { UserStats } from './types';
 
 export const MOCK_USER_STATS: UserStats = {
   correct: 21,

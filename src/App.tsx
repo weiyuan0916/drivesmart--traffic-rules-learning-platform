@@ -12,17 +12,43 @@ import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { useIsDesktop } from './hooks/useMediaQuery';
 import { Brain, LayoutDashboard, Menu, X, Car } from 'lucide-react';
+import type { ChapterStat, Question } from './types';
+import { loadExamQuestions } from './services/questionsService';
+import { generateB1ExamQuestions } from './services/examGenerator';
 
 function AppContent() {
   const [examStarted, setExamStarted] = useState(false);
+  const [examLoading, setExamLoading] = useState(false);
+  const [examQuestions, setExamQuestions] = useState<Question[]>([]);
+  const [confirmedAnswers, setConfirmedAnswers] = useState<(string | null)[]>([]);
   const [view, setView] = useState<'dashboard' | 'analyzer'>('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSidebar, setActiveSidebar] = useState<'left' | 'main' | 'right'>('main');
+  const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
+  const [chapterStats, setChapterStats] = useState<ChapterStat[] | null>(null);
   const { t } = useLanguage();
   const isDesktop = useIsDesktop();
   const hideFloatingLanguageSwitcher =
     !examStarted ||
     (view === 'dashboard' && (isDesktop || activeSidebar === 'main'));
+
+  const startExam = async () => {
+    if (examLoading) return;
+    setExamLoading(true);
+    try {
+      const allQuestions = await loadExamQuestions();
+      const seed = String(Date.now());
+      const selected = generateB1ExamQuestions(allQuestions, seed);
+      setExamQuestions(selected);
+      setConfirmedAnswers(selected.map(() => null));
+      setCurrentQuestionNumber(1);
+      setChapterStats(null);
+      setExamStarted(true);
+      setView('dashboard');
+    } finally {
+      setExamLoading(false);
+    }
+  };
 
   return (
     <div className="flex h-screen font-sans overflow-hidden relative transition-colors duration-300 bg-[var(--bg-primary)] text-[var(--text-primary)]">
@@ -101,7 +127,7 @@ function AppContent() {
       ) : null}
 
       {!examStarted ? (
-        <ExamSetupScreen onStartExam={() => setExamStarted(true)} />
+        <ExamSetupScreen onStartExam={startExam} isStarting={examLoading} />
       ) : view === 'dashboard' ? (
         <div
           className={`relative flex flex-1 overflow-hidden ${
@@ -116,13 +142,27 @@ function AppContent() {
 
           <div className="flex flex-1 overflow-hidden">
             <div className={`${activeSidebar === 'left' ? 'flex' : 'hidden'} lg:flex shrink-0 w-full lg:w-auto h-full`}>
-              <Sidebar />
+                <Sidebar
+                  totalQuestions={examQuestions.length}
+                  currentQuestionNumber={currentQuestionNumber}
+                  questions={examQuestions}
+                  confirmedAnswers={confirmedAnswers}
+                  onCurrentQuestionNumberChange={setCurrentQuestionNumber}
+                />
             </div>
             <div className={`${activeSidebar === 'main' ? 'flex' : 'hidden'} lg:flex flex-1 h-full`}>
-              <MainContent onBack={() => setActiveSidebar('left')} />
+                <MainContent
+                  questions={examQuestions}
+                  confirmedAnswers={confirmedAnswers}
+                  onConfirmedAnswersChange={setConfirmedAnswers}
+                  onExamStatsComputed={setChapterStats}
+                  onBack={() => setActiveSidebar('left')}
+                  onCurrentQuestionNumberChange={setCurrentQuestionNumber}
+                  onRestartExam={startExam}
+                />
             </div>
             <div className={`${activeSidebar === 'right' ? 'flex' : 'hidden'} lg:flex shrink-0 w-full lg:w-auto h-full`}>
-              <RightSidebar />
+              <RightSidebar chapterStats={chapterStats ?? undefined} />
             </div>
           </div>
         </div>

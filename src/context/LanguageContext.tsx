@@ -18,7 +18,7 @@ export const translations: Translations = {
   incorrect: { vi: 'Sai', en: 'Incorrect' },
   current: { vi: 'Hiện tại', en: 'Current' },
   unanswered: { vi: 'Chưa trả lời', en: 'Unanswered' },
-  republicOfSerbia: { vi: 'Cộng hòa Serbia', en: 'Republic of Serbia' },
+  republicOfSerbia: { vi: 'Cộng hòa Việt Nam', en: 'Republic of Vietnam' },
   laws: { vi: 'Luật', en: 'Laws' },
   regulations: { vi: 'Quy định', en: 'Regulations' },
   studyLiterature: { vi: 'Tài liệu học tập', en: 'Study Literature' },
