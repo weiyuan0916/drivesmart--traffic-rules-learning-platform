@@ -80,6 +80,8 @@ export const translations: Translations = {
   },
   guide: { vi: 'Hướng dẫn', en: 'Guide' },
   support: { vi: 'Hỗ trợ', en: 'Support' },
+  collapseSidebars: { vi: 'Thu gọn thanh bên', en: 'Collapse sidebars' },
+  expandSidebars: { vi: 'Mở rộng thanh bên', en: 'Expand sidebars' },
 };
 
 interface LanguageContextType {

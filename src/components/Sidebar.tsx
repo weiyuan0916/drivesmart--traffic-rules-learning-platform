@@ -28,10 +28,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   const isSelectedAnswered = selectedAnswer !== null && selectedAnswer !== undefined;
 
   return (
-    <SmoothScroll className="w-full lg:w-80 bg-[var(--bg-secondary)] p-4 lg:p-6 pb-28 lg:pb-6 flex flex-col gap-10 border-r border-[var(--border)]">
+    <SmoothScroll className="flex h-full min-h-0 min-w-0 w-full flex-col gap-10 border-r border-[var(--border)] bg-[var(--bg-secondary)] p-4 pb-28 lg:w-80 lg:pb-6 lg:p-6">
       {/* Question Grid */}
-      <div className="bg-[var(--bg-tertiary)] p-3 sm:p-4 rounded-2xl min-w-0">
-        <div className="grid grid-cols-5 sm:grid-cols-8 lg:grid-cols-10 gap-1 sm:gap-2">
+      <div className="min-w-0 rounded-2xl bg-[var(--bg-tertiary)] p-3 sm:p-4">
+        {/* lg 侧栏约 320px：10 列 + 24px 圆 + gap 会挤爆；xl 才用 10 列 */}
+        <div className="grid min-w-0 grid-cols-5 gap-x-2 gap-y-2.5 sm:grid-cols-6 sm:gap-2.5 lg:grid-cols-6 xl:grid-cols-10">
           {Array.from({ length: totalQuestions }).map((_, i) => {
             const num = i + 1;
             const isCurrent = num === currentQuestionNumber;
@@ -49,7 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               key={num}
               type="button"
               onClick={() => onCurrentQuestionNumberChange(num)}
-              className={`size-6 sm:size-[26px] justify-self-center rounded-full flex items-center justify-center text-xs sm:text-sm font-bold leading-none transition-colors ${
+              className={`mx-auto flex size-[26px] shrink-0 items-center justify-center rounded-full text-[11px] font-bold leading-none transition-colors sm:text-xs md:text-sm ${
                 bgClass
               } ${isCurrent ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-[var(--bg-tertiary)]' : ''}`}
               aria-label={`Question ${num}`}

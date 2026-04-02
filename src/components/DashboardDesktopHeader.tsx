@@ -1,6 +1,6 @@
 import React from 'react';
 import { LayoutGroup, motion } from 'motion/react';
-import { Car } from 'lucide-react';
+import { Car, PanelLeftOpen, PanelLeftClose, PanelRightOpen, PanelRightClose } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import { dashboardNavItems, type DashboardTabId } from './dashboardNavItems';
@@ -15,9 +15,11 @@ const spring = {
 interface DashboardDesktopHeaderProps {
   active: DashboardTabId;
   onChange: (id: DashboardTabId) => void;
+  collapsedSidebar: boolean;
+  onToggleCollapse: () => void;
 }
 
-const DashboardDesktopHeader: React.FC<DashboardDesktopHeaderProps> = ({ active, onChange }) => {
+const DashboardDesktopHeader: React.FC<DashboardDesktopHeaderProps> = ({ active, onChange, collapsedSidebar, onToggleCollapse }) => {
   const { t } = useLanguage();
 
   return (
@@ -65,7 +67,29 @@ const DashboardDesktopHeader: React.FC<DashboardDesktopHeaderProps> = ({ active,
         </nav>
       </LayoutGroup>
 
-      <div className="flex shrink-0 items-center justify-end">
+      <div className="flex shrink-0 items-center justify-end gap-1">
+        {active === 'main' && (
+          <button
+            type="button"
+            onClick={onToggleCollapse}
+            className="inline-flex shrink-0 items-center justify-center gap-0.5 rounded-lg p-2 text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
+            title={collapsedSidebar ? t('expandSidebars') : t('collapseSidebars')}
+            aria-expanded={!collapsedSidebar}
+            aria-label={collapsedSidebar ? t('expandSidebars') : t('collapseSidebars')}
+          >
+            {collapsedSidebar ? (
+              <>
+                <PanelLeftOpen className="h-4 w-4" />
+                <PanelRightOpen className="h-4 w-4 ml-0.5" />
+              </>
+            ) : (
+              <>
+                <PanelLeftClose className="h-4 w-4" />
+                <PanelRightClose className="h-4 w-4 ml-0.5" />
+              </>
+            )}
+          </button>
+        )}
         <LanguageSwitcher className="relative right-auto top-auto z-auto flex items-center gap-2" />
       </div>
     </header>

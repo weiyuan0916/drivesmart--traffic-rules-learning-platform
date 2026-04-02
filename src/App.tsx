@@ -24,6 +24,7 @@ function AppContent() {
   const [view, setView] = useState<'dashboard' | 'analyzer'>('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSidebar, setActiveSidebar] = useState<'left' | 'main' | 'right'>('main');
+  const [collapsedSidebar, setCollapsedSidebar] = useState<boolean>(false);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
   const [chapterStats, setChapterStats] = useState<ChapterStat[] | null>(null);
   const { t } = useLanguage();
@@ -135,13 +136,17 @@ function AppContent() {
           }`}
         >
           {isDesktop ? (
-            <DashboardDesktopHeader active={activeSidebar} onChange={setActiveSidebar} />
+            <DashboardDesktopHeader active={activeSidebar} onChange={setActiveSidebar} onToggleCollapse={() => setCollapsedSidebar((v) => !v)} collapsedSidebar={collapsedSidebar} />
           ) : (
             <MobileDashboardTabBar active={activeSidebar} onChange={setActiveSidebar} />
           )}
 
-          <div className="flex flex-1 overflow-hidden">
-            <div className={`${activeSidebar === 'left' ? 'flex' : 'hidden'} lg:flex shrink-0 w-full lg:w-auto h-full`}>
+          <div className="flex flex-1 overflow-hidden min-h-0">
+            <div
+              className={`${activeSidebar === 'left' ? 'flex' : 'hidden'} min-w-0 lg:flex h-full w-full shrink-0 transition-all duration-200 lg:w-80 xl:w-96 ${
+                collapsedSidebar ? 'lg:w-0 lg:overflow-hidden lg:border-r-0' : ''
+              }`}
+            >
                 <Sidebar
                   totalQuestions={examQuestions.length}
                   currentQuestionNumber={currentQuestionNumber}
@@ -150,7 +155,7 @@ function AppContent() {
                   onCurrentQuestionNumberChange={setCurrentQuestionNumber}
                 />
             </div>
-            <div className={`${activeSidebar === 'main' ? 'flex' : 'hidden'} lg:flex flex-1 h-full`}>
+            <div className={`${activeSidebar === 'main' ? 'flex' : 'hidden'} lg:flex flex-1 h-full overflow-hidden min-h-0`}>
                 <MainContent
                   questions={examQuestions}
                   confirmedAnswers={confirmedAnswers}
@@ -159,9 +164,15 @@ function AppContent() {
                   onBack={() => setActiveSidebar('left')}
                   onCurrentQuestionNumberChange={setCurrentQuestionNumber}
                   onRestartExam={startExam}
+                  onToggleCollapse={() => setCollapsedSidebar((v) => !v)}
+                  collapsedSidebar={collapsedSidebar}
                 />
             </div>
-            <div className={`${activeSidebar === 'right' ? 'flex' : 'hidden'} lg:flex shrink-0 w-full lg:w-auto h-full`}>
+            <div
+              className={`${activeSidebar === 'right' ? 'flex' : 'hidden'} min-w-0 lg:flex h-full w-full shrink-0 transition-all duration-200 lg:w-96 xl:w-[28rem] ${
+                collapsedSidebar ? 'lg:w-0 lg:overflow-hidden lg:border-l-0' : ''
+              }`}
+            >
               <RightSidebar chapterStats={chapterStats ?? undefined} examQuestions={examQuestions} />
             </div>
           </div>

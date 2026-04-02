@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronLeft, ChevronUp, Clock, Bookmark, LayoutGrid } from 'lucide-react';
+import { ChevronLeft, ChevronUp, Clock, Bookmark, LayoutGrid, PanelsLeftRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import type { ChapterStat, Question } from '../types';
 import { EXAM_CHAPTERS_ORDERED } from '../services/examGenerator';
 import LanguageSwitcher from './LanguageSwitcher';
-import { SmoothScroll } from './SmoothScroll';
 
 interface MainContentProps {
   onBack?: () => void;
@@ -14,6 +13,8 @@ interface MainContentProps {
   onCurrentQuestionNumberChange?: (n: number) => void;
   onRestartExam?: () => void;
   onExamStatsComputed?: (stats: ChapterStat[]) => void;
+  collapsedSidebar: boolean;
+  onToggleCollapse: () => void;
 }
 
 type ExamScore = {
@@ -41,6 +42,8 @@ const MainContent: React.FC<MainContentProps> = ({
   onCurrentQuestionNumberChange,
   onRestartExam,
   onExamStatsComputed,
+  collapsedSidebar,
+  onToggleCollapse,
 }) => {
   const { t } = useLanguage();
   const totalQuestions = questions.length;
@@ -161,12 +164,12 @@ const MainContent: React.FC<MainContentProps> = ({
 
     if (onExamStatsComputed) {
       const chapterStats: ChapterStat[] = EXAM_CHAPTERS_ORDERED.map(({ chapterNumber, title }) => {
-        const value = chapterMap.get(chapterNumber);
+        const value = chapterMap.get(chapterNumber) ?? { correct: 0, total: 0 };
         return {
           chapterNumber,
           chapter: title,
-          correct: value?.correct ?? 0,
-          total: value?.total ?? 0,
+          correct: value.correct,
+          total: value.total,
         };
       });
       onExamStatsComputed(chapterStats);
@@ -211,15 +214,15 @@ const MainContent: React.FC<MainContentProps> = ({
 
   if (!questions.length) {
     return (
-      <SmoothScroll className="flex-1 bg-[var(--bg-primary)] flex items-center justify-center">
+      <div className="flex-1 bg-[var(--bg-primary)] flex items-center justify-center">
         <div className="text-[var(--text-secondary)]">Loading...</div>
-      </SmoothScroll>
+      </div>
     );
   }
 
   if (examFinished && examScore) {
     return (
-      <SmoothScroll className="flex-1 bg-[var(--bg-primary)] flex items-center justify-center">
+      <div className="flex-1 bg-[var(--bg-primary)] flex items-center justify-center">
         <div className="w-full max-w-xl bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl p-6 sm:p-8 shadow-lg">
           <div className="text-center space-y-4">
             <div
@@ -249,13 +252,50 @@ const MainContent: React.FC<MainContentProps> = ({
             </button>
           </div>
         </div>
-      </SmoothScroll>
+      </div>
     );
   }
 
   return (
-    <SmoothScroll className="flex-1 bg-[var(--bg-primary)] flex flex-col transition-colors duration-300">
-      <div className="lg:hidden sticky top-0 z-30 w-full bg-[var(--bg-secondary)] border-b border-[var(--border)] shadow-sm">
+    <div className="flex-1 flex flex-col bg-[var(--bg-primary)] overflow-hidden">
+      {/* Desktop top bar — question number + time badge + collapse toggle */}
+      <div className="hidden lg:flex items-center justify-between px-4 py-2 shrink-0 border-b border-[var(--border)] bg-[var(--bg-secondary)]/80 backdrop-blur-sm z-10">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onBack}
+            className="p-1.5 -ml-1 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <h1 className="text-[var(--text-primary)] font-bold text-sm">
+            {t('question')} {currentQuestionNumber} / {totalQuestions}
+          </h1>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <div className={`flex items-center gap-2 px-3 py-1 rounded-full ${timeBadgeClass}`}>
+              <Clock className={`w-3.5 h-3.5 ${isLastMinutes ? 'text-rose-500' : 'text-blue-500'}`} />
+              <span className="font-mono font-bold text-xs">{timeLabel}</span>
+            </div>
+            <button className="text-[var(--text-secondary)] hover:text-blue-500 transition-colors">
+              <Bookmark className="w-4 h-4" />
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={onToggleCollapse}
+            className="p-1.5 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
+            title={collapsedSidebar ? (t('expandSidebars') || 'Expand sidebars') : (t('collapseSidebars') || 'Collapse sidebars')}
+          >
+            <PanelsLeftRight className="w-4 h-4" />
+          </button>
+          <LanguageSwitcher variant="menu" className="relative flex items-center" />
+        </div>
+      </div>
+
+      {/* Mobile Header — sticky top bar (lg:hidden) */}
+      <div className="lg:hidden sticky top-0 z-30 w-full bg-[var(--bg-secondary)] border-b border-[var(--border)] shadow-sm shrink-0">
         <div className="grid grid-cols-[minmax(0,auto)_1fr_minmax(0,auto)] items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-2.5 min-h-0">
           <button
             type="button"
@@ -271,7 +311,6 @@ const MainContent: React.FC<MainContentProps> = ({
             <LanguageSwitcher variant="menu" className="relative flex items-center justify-end" />
           </div>
         </div>
-
         <div className="px-4 sm:px-6 pb-3 pt-2 border-t border-[var(--border)]">
           <div className="flex gap-2 items-start sm:hidden">
             <button
@@ -288,30 +327,17 @@ const MainContent: React.FC<MainContentProps> = ({
                 <LayoutGrid className="h-3 w-3" />
               )}
             </button>
-            <div
-              data-lenis-prevent
-              className={
-                questionNavExpanded
-                  ? 'min-w-0 flex-1 grid grid-cols-5 gap-2 max-h-[min(14rem,48vh)] overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch]'
-                  : 'min-w-0 flex-1 grid grid-cols-5 gap-2 grid-rows-2'
-              }
-            >
+            <div className="min-w-0 flex-1 grid grid-cols-5 gap-2 max-h-[min(14rem,48vh)] overflow-y-auto overscroll-contain pr-1">
               {(questionNavExpanded
                 ? Array.from({ length: totalQuestions }, (_, i) => i + 1)
                 : currentQuestionNumber <= 10
                   ? Array.from({ length: Math.min(10, totalQuestions) }, (_, i) => i + 1)
-                  : Array.from(
-                      { length: Math.min(10, totalQuestions) },
-                      (_, i) => Math.min(totalQuestions, i + 11),
-                    )
+                  : Array.from({ length: Math.min(10, totalQuestions) }, (_, i) => Math.min(totalQuestions, i + 11))
               ).map((num) => (
                 <button
                   type="button"
                   key={num}
-                  onClick={() => {
-                    setCurrentQuestionNumber(num);
-                    setQuestionNavExpanded(false);
-                  }}
+                  onClick={() => { setCurrentQuestionNumber(num); setQuestionNavExpanded(false); }}
                   className={`size-[26px] justify-self-center rounded-md flex items-center justify-center text-sm font-bold leading-none transition-all active:bg-[var(--bg-hover)] ${numberBadgeClass(num)}`}
                 >
                   {num}
@@ -319,10 +345,7 @@ const MainContent: React.FC<MainContentProps> = ({
               ))}
             </div>
           </div>
-          <div
-            data-lenis-prevent
-            className="hidden sm:flex items-center gap-2 overflow-x-auto pb-1 w-full scrollbar-visible"
-          >
+          <div className="hidden sm:flex items-center gap-2 overflow-x-auto pb-1 w-full scrollbar-visible">
             {Array.from({ length: totalQuestions }, (_, i) => i + 1).map((num) => (
               <button
                 type="button"
@@ -337,134 +360,245 @@ const MainContent: React.FC<MainContentProps> = ({
         </div>
       </div>
 
-      <div className="p-2.5 sm:p-4 lg:p-8 flex flex-col gap-3 lg:gap-6 w-full max-w-full overflow-x-hidden">
-        <div className="lg:hidden flex items-center justify-between">
-          <div className="flex items-baseline gap-1">
-            <span className="text-[var(--text-primary)] font-bold text-sm sm:text-lg">
-              {t('question')} {currentQuestionNumber}
-            </span>
-            <span className="text-[var(--text-secondary)] text-[10px] sm:text-sm font-medium">/ {totalQuestions}</span>
+      {/* ── DESKTOP LAYOUT: single-viewport grid ────────────────────────────── */}
+      {/* lg: 2-col grid | xl+: tighter sizing                                    */}
+      <div className="hidden lg:flex flex-1 min-h-0 overflow-hidden">
+
+        {/* Row 1 — Image + Question side by side */}
+        <div className="grid grid-cols-[42%_1fr] min-h-0 w-full gap-3 p-3 xl:p-4">
+
+          {/* Image — left column, fills full height */}
+          <div className="relative rounded-2xl overflow-hidden bg-[var(--bg-tertiary)] shadow-md border border-[var(--border)] flex items-center justify-center min-h-0">
+            {question.image ? (
+              <img
+                src={question.image}
+                alt="Traffic Situation"
+                className="max-h-full max-w-full w-auto h-auto object-contain"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="w-full h-full min-h-32 bg-[var(--bg-hover)]" />
+            )}
           </div>
-          <div className="flex items-center gap-2 sm:gap-4">
-            <div className={`flex items-center gap-1 sm:gap-2 px-2 py-0.5 rounded-full ${timeBadgeClass}`}>
-              <Clock className={`w-3 h-3 ${isLastMinutes ? 'text-rose-500' : 'text-blue-500'}`} />
-              <span className="font-mono font-bold text-[10px] sm:text-sm">{timeLabel}</span>
-            </div>
-            <button className="text-[var(--text-secondary)] hover:text-blue-500 transition-colors">
-              <Bookmark className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
+
+          {/* Question text — right column */}
+          <div className="bg-[var(--bg-tertiary)] rounded-2xl border border-[var(--border)] px-4 py-3 overflow-y-auto min-h-0">
+            <p className="text-[var(--text-primary)] text-sm xl:text-base font-bold leading-relaxed">
+              {question.text}
+            </p>
           </div>
         </div>
+      </div>
 
-        <div className="relative w-full rounded-3xl overflow-hidden bg-[var(--bg-tertiary)] shadow-xl shrink-0 border border-[var(--border)] h-[28vh] sm:h-[32vh] lg:h-[36vh] flex items-center justify-center">
-          {question.image ? (
-            <img
-              src={question.image}
-              alt="Traffic Situation"
-              className="max-h-full max-w-full w-auto h-auto object-contain"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <div className="w-full h-full bg-[var(--bg-tertiary)]" />
-          )}
-        </div>
-
-        <div className="bg-[var(--bg-tertiary)] p-3 sm:p-6 rounded-xl sm:rounded-2xl border border-[var(--border)]">
-          <p className="text-[var(--text-primary)] text-xs sm:text-base lg:text-lg font-bold leading-relaxed">
-            {question.text}
-          </p>
-        </div>
-
-        <div className="space-y-4">
+      {/* ── OPTIONS — full width, flex to fill remaining height ─────────────── */}
+      <div className="hidden lg:flex flex-1 min-h-0 overflow-hidden px-3 xl:px-4 pb-3 xl:pb-4 gap-3 flex-col">
+        <div className="flex-1 min-h-0 grid grid-cols-2 gap-3">
           {question.options.map((option) => {
             const isSelected = currentConfirmedAnswer === option.id;
             const isCorrect = option.id === correctOptionId;
-
-            let buttonClass =
-              'bg-[var(--bg-tertiary)] border-[var(--border)] hover:bg-[var(--bg-hover)]';
+            let buttonClass = 'bg-[var(--bg-tertiary)] border-[var(--border)] hover:border-blue-400 hover:bg-[var(--bg-hover)]';
             let iconClass = 'bg-[var(--bg-hover)] text-[var(--text-secondary)]';
             let textClass = 'text-[var(--text-secondary)]';
-
             if (showResult) {
               if (isCorrect) {
-                buttonClass =
-                  'bg-emerald-500 border-emerald-400 shadow-lg shadow-emerald-500/20';
+                buttonClass = 'bg-emerald-500 border-emerald-400 shadow-lg shadow-emerald-500/20';
                 iconClass = 'bg-white text-emerald-600';
                 textClass = 'text-white';
               } else if (isSelected && !isCorrect) {
-                buttonClass =
-                  'bg-rose-500 border-rose-400 shadow-lg shadow-rose-500/20';
+                buttonClass = 'bg-rose-500 border-rose-400 shadow-lg shadow-rose-500/20';
                 iconClass = 'bg-white text-rose-600';
                 textClass = 'text-white';
               }
             } else if (selectedOption === option.id) {
-              buttonClass = 'bg-[var(--bg-hover)] border-blue-500/50';
-              iconClass = 'bg-blue-500/20 text-blue-500';
+              buttonClass = 'bg-blue-500/10 border-blue-500/60';
+              iconClass = 'bg-blue-500/20 text-blue-400';
             }
-
             return (
               <button
                 key={option.id}
                 onClick={() => handleOptionClick(option.id)}
                 disabled={showResult}
-                className={`w-full p-3 sm:p-5 rounded-2xl sm:rounded-3xl flex items-start gap-4 sm:gap-6 text-left transition-all duration-200 group border ${buttonClass}`}
+                className={`w-full rounded-2xl flex items-start gap-3 text-left transition-all duration-200 border ${buttonClass} min-h-0 overflow-hidden`}
               >
-                <div
-                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-base sm:text-lg shrink-0 transition-colors ${iconClass}`}
-                >
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-base shrink-0 mt-3 ml-3 transition-colors ${iconClass}`}>
                   {option.id}
                 </div>
-                <p className={`text-sm sm:text-base font-bold pt-1 ${textClass}`}>{option.text}</p>
+                <div className="min-h-0 py-3 pr-3 overflow-y-auto flex-1">
+                  <p className={`text-sm font-bold leading-snug ${textClass}`}>{option.text}</p>
+                </div>
               </button>
             );
           })}
         </div>
 
-        {showResult ? (
-          <div className="bg-[var(--bg-tertiary)] p-3 sm:p-5 rounded-xl border border-[var(--border)]">
-            <div className="text-[var(--text-primary)] font-bold text-sm">{t('explanation')}</div>
-            <div className="text-[var(--text-secondary)] text-xs sm:text-sm mt-2 leading-relaxed">
-              {question.explanation}
-            </div>
-            {question.isCritical ? (
-              <div className="text-rose-500 font-bold text-xs sm:text-sm mt-3">
-                Nhóm câu nghiêm trọng
+        {/* Explanation (if result shown) + Action buttons */}
+        <div className="shrink-0 space-y-2 mt-1">
+          {showResult ? (
+            <div className="bg-[var(--bg-tertiary)] p-3 rounded-xl border border-[var(--border)] max-h-28 overflow-y-auto">
+              <div className="flex items-start gap-2">
+                <div className="text-[var(--text-primary)] font-bold text-xs shrink-0">{t('explanation')}</div>
+                <div className="min-w-0">
+                  <div className="text-[var(--text-secondary)] text-xs leading-relaxed">
+                    {question.explanation}
+                  </div>
+                  {question.isCritical ? (
+                    <div className="text-rose-500 font-bold text-xs mt-1.5">Câu hỏi nghiêm trọng</div>
+                  ) : null}
+                </div>
               </div>
-            ) : null}
+            </div>
+          ) : null}
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={confirmCurrentAnswer}
+              disabled={showResult || !selectedOption || timeLeftSeconds <= 0}
+              className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2.5 rounded-xl transition-colors text-sm shadow-lg shadow-blue-600/20 disabled:opacity-40 disabled:pointer-events-none"
+            >
+              {t('confirmAnswer')}
+            </button>
+            {currentQuestionNumber < totalQuestions ? (
+              <button
+                type="button"
+                onClick={gotoNextQuestion}
+                className="flex-1 bg-[var(--bg-tertiary)] hover:bg-[var(--bg-hover)] text-[var(--text-primary)] font-bold px-4 py-2.5 rounded-xl transition-colors text-sm border border-[var(--border)]"
+              >
+                {t('nextQuestion')}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={submitExam}
+                className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl transition-colors text-sm shadow-lg shadow-emerald-600/20"
+              >
+                {t('finishTest')}
+              </button>
+            )}
           </div>
-        ) : null}
-
-        <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-1 pb-52 lg:pb-0">
-          <button
-            type="button"
-            onClick={confirmCurrentAnswer}
-            disabled={showResult || !selectedOption || timeLeftSeconds <= 0}
-            className="flex-1 lg:flex-none bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl transition-colors text-xs sm:text-base shadow-lg shadow-blue-600/20 disabled:opacity-40 disabled:pointer-events-none"
-          >
-            {t('confirmAnswer')}
-          </button>
-
-          {currentQuestionNumber < totalQuestions ? (
-            <button
-              type="button"
-              onClick={gotoNextQuestion}
-              disabled={currentQuestionNumber >= totalQuestions}
-              className="flex-1 lg:flex-none bg-[var(--bg-tertiary)] hover:bg-[var(--bg-hover)] disabled:opacity-40 disabled:pointer-events-none text-[var(--text-primary)] font-bold px-4 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl transition-colors text-xs sm:text-base border border-[var(--border)]"
-            >
-              {t('nextQuestion')}
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={submitExam}
-              className="flex-1 lg:flex-none bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl transition-colors text-xs sm:text-base shadow-lg shadow-emerald-600/20"
-            >
-              {t('finishTest')}
-            </button>
-          )}
         </div>
       </div>
-    </SmoothScroll>
+
+      {/* ── MOBILE LAYOUT: vertical stack ────────────────────────────────────── */}
+      <div className="flex-1 flex flex-col lg:hidden overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-y-auto">
+          <div className="flex items-center justify-between px-4 py-2 shrink-0">
+            <div className="flex items-baseline gap-1">
+              <span className="text-[var(--text-primary)] font-bold text-sm">
+                {t('question')} {currentQuestionNumber}
+              </span>
+              <span className="text-[var(--text-secondary)] text-[10px] font-medium">/ {totalQuestions}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className={`flex items-center gap-2 px-3 py-1 rounded-full ${timeBadgeClass}`}>
+                <Clock className={`w-3.5 h-3.5 ${isLastMinutes ? 'text-rose-500' : 'text-blue-500'}`} />
+                <span className="font-mono font-bold text-xs">{timeLabel}</span>
+              </div>
+              <button className="text-[var(--text-secondary)] hover:text-blue-500 transition-colors">
+                <Bookmark className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="relative w-full rounded-2xl overflow-hidden bg-[var(--bg-tertiary)] shadow-md border border-[var(--border)] flex items-center justify-center shrink-0 h-[28vw] max-h-48">
+            {question.image ? (
+              <img
+                src={question.image}
+                alt="Traffic Situation"
+                className="max-h-full max-w-full w-auto h-auto object-contain"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="w-full h-full min-h-20 bg-[var(--bg-hover)]" />
+            )}
+          </div>
+
+          <div className="px-4 py-3 shrink-0">
+            <p className="text-[var(--text-primary)] text-sm font-bold leading-relaxed">
+              {question.text}
+            </p>
+          </div>
+
+          <div className="flex-1 grid grid-cols-1 gap-2 px-4 overflow-y-auto">
+            {question.options.map((option) => {
+              const isSelected = currentConfirmedAnswer === option.id;
+              const isCorrect = option.id === correctOptionId;
+              let buttonClass = 'bg-[var(--bg-tertiary)] border-[var(--border)] hover:bg-[var(--bg-hover)]';
+              let iconClass = 'bg-[var(--bg-hover)] text-[var(--text-secondary)]';
+              let textClass = 'text-[var(--text-secondary)]';
+              if (showResult) {
+                if (isCorrect) {
+                  buttonClass = 'bg-emerald-500 border-emerald-400 shadow-lg shadow-emerald-500/20';
+                  iconClass = 'bg-white text-emerald-600';
+                  textClass = 'text-white';
+                } else if (isSelected && !isCorrect) {
+                  buttonClass = 'bg-rose-500 border-rose-400 shadow-lg shadow-rose-500/20';
+                  iconClass = 'bg-white text-rose-600';
+                  textClass = 'text-white';
+                }
+              } else if (selectedOption === option.id) {
+                buttonClass = 'bg-[var(--bg-hover)] border-blue-500/50';
+                iconClass = 'bg-blue-500/20 text-blue-500';
+              }
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => handleOptionClick(option.id)}
+                  disabled={showResult}
+                  className={`w-full p-3 rounded-xl flex items-start gap-3 text-left transition-all duration-200 border ${buttonClass}`}
+                >
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-base shrink-0 transition-colors ${iconClass}`}>
+                    {option.id}
+                  </div>
+                  <p className={`text-sm font-bold leading-snug pt-0.5 ${textClass}`}>{option.text}</p>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="px-4 pb-4 shrink-0 space-y-2">
+            {showResult ? (
+              <div className="bg-[var(--bg-tertiary)] p-3 rounded-xl border border-[var(--border)]">
+                <div className="text-[var(--text-primary)] font-bold text-xs mb-1">{t('explanation')}</div>
+                <div className="text-[var(--text-secondary)] text-xs leading-relaxed">
+                  {question.explanation}
+                </div>
+                {question.isCritical ? (
+                  <div className="text-rose-500 font-bold text-xs mt-1.5">Câu hỏi nghiêm trọng</div>
+                ) : null}
+              </div>
+            ) : null}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={confirmCurrentAnswer}
+                disabled={showResult || !selectedOption || timeLeftSeconds <= 0}
+                className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2.5 rounded-xl transition-colors text-sm shadow-lg shadow-blue-600/20 disabled:opacity-40 disabled:pointer-events-none"
+              >
+                {t('confirmAnswer')}
+              </button>
+              {currentQuestionNumber < totalQuestions ? (
+                <button
+                  type="button"
+                  onClick={gotoNextQuestion}
+                  className="flex-1 bg-[var(--bg-tertiary)] hover:bg-[var(--bg-hover)] text-[var(--text-primary)] font-bold px-4 py-2.5 rounded-xl transition-colors text-sm border border-[var(--border)]"
+                >
+                  {t('nextQuestion')}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={submitExam}
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl transition-colors text-sm shadow-lg shadow-emerald-600/20"
+                >
+                  {t('finishTest')}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
