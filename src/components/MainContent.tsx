@@ -561,7 +561,7 @@ const MainContent: React.FC<MainContentProps> = ({
             >
               {questionNavExpanded ? <ChevronUp className="h-2.5 w-2.5" /> : <LayoutGrid className="h-2.5 w-2.5" />}
             </button>
-            <div className="min-w-0 flex-1 grid grid-cols-5 gap-1 max-h-[min(14rem,48vh)] overflow-y-auto overscroll-contain pr-0.5">
+            <div className="min-w-0 flex-1 grid grid-cols-10 gap-x-px gap-y-1 max-h-[min(14rem,48vh)] overflow-y-auto overscroll-contain pr-0.5">
               {(questionNavExpanded
                 ? Array.from({ length: totalQuestions }, (_, i) => i + 1)
                 : mobileCollapsedNavNumbers
@@ -570,7 +570,7 @@ const MainContent: React.FC<MainContentProps> = ({
                   type="button"
                   key={num}
                   onClick={() => { setCurrentQuestionNumber(num); setQuestionNavExpanded(false); }}
-                  className={`size-5 justify-self-center rounded-md flex items-center justify-center text-[11px] font-bold leading-none transition-all active:bg-[var(--bg-hover)] ${numberBadgeClass(num)}`}
+                  className={`w-full min-w-0 aspect-square min-h-0 rounded-md flex items-center justify-center text-[10px] font-bold leading-none transition-all active:bg-[var(--bg-hover)] ${numberBadgeClass(num)}`}
                 >
                   {num}
                 </button>
