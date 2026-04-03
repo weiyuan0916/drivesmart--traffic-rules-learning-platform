@@ -29,6 +29,7 @@ const EXAM_DURATION_SECONDS = 20 * 60;
 const LAST_MINUTES_WARNING_SECONDS = 3 * 60;
 const STUCK_THRESHOLD_MS = 120 * 1000; // 2 minutes
 const AUTO_ADVANCE_DELAY_MS = 600;
+const MOBILE_NAV_COLLAPSED_WINDOW = 20;
 
 function formatMmSs(totalSeconds: number): string {
   const s = Math.max(0, Math.floor(totalSeconds));
@@ -395,6 +396,13 @@ const MainContent: React.FC<MainContentProps> = ({
       : 'bg-rose-500 text-white';
   };
 
+  const mobileCollapsedNavNumbers = useMemo(() => {
+    const start =
+      Math.floor((currentQuestionNumber - 1) / MOBILE_NAV_COLLAPSED_WINDOW) * MOBILE_NAV_COLLAPSED_WINDOW + 1;
+    const len = Math.min(MOBILE_NAV_COLLAPSED_WINDOW, Math.max(0, totalQuestions - start + 1));
+    return Array.from({ length: len }, (_, i) => start + i);
+  }, [currentQuestionNumber, totalQuestions]);
+
   // ── Loading ──
   if (!questions.length) {
     return (
@@ -543,28 +551,26 @@ const MainContent: React.FC<MainContentProps> = ({
           ))}
         </div>
 
-        <div className="px-4 sm:px-6 pb-2 pt-1">
-          <div className="flex gap-2 items-start sm:hidden">
+        <div className="px-3 sm:px-6 pb-1.5 sm:pb-2 pt-0.5 sm:pt-1">
+          <div className="flex gap-1.5 items-start sm:hidden">
             <button
               type="button"
               onClick={() => setQuestionNavExpanded((e) => !e)}
               aria-expanded={questionNavExpanded}
-              className="shrink-0 mt-0.5 flex h-7 w-7 items-center justify-center rounded-md border border-[var(--border)] bg-[var(--bg-tertiary)] text-[var(--text-primary)] shadow-sm transition-colors active:bg-[var(--bg-hover)]"
+              className="shrink-0 mt-0.5 flex h-6 w-6 items-center justify-center rounded border border-[var(--border)] bg-[var(--bg-tertiary)] text-[var(--text-primary)] shadow-sm transition-colors active:bg-[var(--bg-hover)]"
             >
-              {questionNavExpanded ? <ChevronUp className="h-3 w-3" /> : <LayoutGrid className="h-3 w-3" />}
+              {questionNavExpanded ? <ChevronUp className="h-2.5 w-2.5" /> : <LayoutGrid className="h-2.5 w-2.5" />}
             </button>
-            <div className="min-w-0 flex-1 grid grid-cols-5 gap-2 max-h-[min(14rem,48vh)] overflow-y-auto overscroll-contain pr-1">
+            <div className="min-w-0 flex-1 grid grid-cols-5 gap-1 max-h-[min(14rem,48vh)] overflow-y-auto overscroll-contain pr-0.5">
               {(questionNavExpanded
                 ? Array.from({ length: totalQuestions }, (_, i) => i + 1)
-                : currentQuestionNumber <= 10
-                  ? Array.from({ length: Math.min(10, totalQuestions) }, (_, i) => i + 1)
-                  : Array.from({ length: Math.min(10, totalQuestions) }, (_, i) => Math.min(totalQuestions, i + 11))
+                : mobileCollapsedNavNumbers
               ).map((num) => (
                 <button
                   type="button"
                   key={num}
                   onClick={() => { setCurrentQuestionNumber(num); setQuestionNavExpanded(false); }}
-                  className={`size-[26px] justify-self-center rounded-md flex items-center justify-center text-sm font-bold leading-none transition-all active:bg-[var(--bg-hover)] ${numberBadgeClass(num)}`}
+                  className={`size-5 justify-self-center rounded-md flex items-center justify-center text-[11px] font-bold leading-none transition-all active:bg-[var(--bg-hover)] ${numberBadgeClass(num)}`}
                 >
                   {num}
                 </button>
