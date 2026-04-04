@@ -635,7 +635,7 @@ const MainContent: React.FC<MainContentProps> = ({
       <AnimatePresence>
         {imageEnlarged && question.image && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 sm:p-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -644,7 +644,7 @@ const MainContent: React.FC<MainContentProps> = ({
           >
             {/* Backdrop */}
             <motion.div
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/90"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -653,22 +653,36 @@ const MainContent: React.FC<MainContentProps> = ({
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); setImageEnlarged(false); }}
-              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors"
+              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
             >
               <XIcon className="w-5 h-5" />
             </button>
-            {/* Image */}
-            <motion.img
-              src={question.image}
-              alt="Traffic Situation"
-              className="relative z-10 max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain rounded-xl shadow-2xl"
+            {/* Content */}
+            <motion.div
+              className="relative z-10 flex flex-col items-center gap-4 max-w-[90vw]"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               onClick={(e) => e.stopPropagation()}
-              referrerPolicy="no-referrer"
-            />
+            >
+              {/* Question text above image */}
+              <div className="w-full max-w-3xl text-center space-y-2">
+                <p className="text-white/50 text-sm font-semibold">
+                  Câu {currentQuestionNumber}
+                </p>
+                <p className="text-white text-sm sm:text-base font-medium leading-relaxed">
+                  {question.text}
+                </p>
+              </div>
+              {/* Image */}
+              <img
+                src={question.image}
+                alt="Traffic Situation"
+                className="max-w-full max-h-[70vh] w-auto h-auto object-contain rounded-xl shadow-2xl"
+                referrerPolicy="no-referrer"
+              />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
