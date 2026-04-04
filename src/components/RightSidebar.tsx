@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
-import { ChevronRight } from 'lucide-react';
-import { BarChart, Bar, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { SmoothScroll } from './SmoothScroll';
 import type { ChapterStat, Question } from '../types';
@@ -112,98 +111,118 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ chapterStats, examQuestions
     return rows;
   }, [examQuestions]);
 
+  const hasStarted = chapterStats && chapterStats.some(s => s.total > 0);
+
+  const overallScore = useMemo(() => {
+    if (!chapterStats || chapterStats.length === 0) return null;
+    const totalCorrect = chapterStats.reduce((sum, s) => sum + s.correct, 0);
+    const totalAnswered = chapterStats.reduce((sum, s) => sum + s.total, 0);
+    if (totalAnswered === 0) return null;
+    return { correct: totalCorrect, total: totalAnswered, percentage: Math.round((totalCorrect / totalAnswered) * 100) };
+  }, [chapterStats]);
+
   return (
-    <SmoothScroll className="w-full lg:w-96 bg-[var(--bg-secondary)] p-5 lg:p-7 pb-32 lg:pb-10 flex flex-col gap-6 lg:gap-8 border-l border-[var(--border)]">
+    <SmoothScroll className="w-full lg:w-96 bg-[var(--bg-secondary)] p-5 lg:p-5 pb-32 lg:pb-10 flex flex-col gap-5 lg:gap-6 border-l border-[var(--border)]">
       {!collapsedSidebar && (
         <>
           {/* Exam Info Header */}
           <div className="rounded-2xl bg-[var(--bg-tertiary)] px-4 py-3">
-            <h4 className="text-[var(--text-primary)] font-bold text-xs uppercase tracking-wider">Bài thi B1</h4>
-            <p className="text-[var(--text-secondary)] text-[10px] mt-1">{examQuestions.length} câu hỏi · 6 chương</p>
+            <h4 className="text-[var(--text-primary)] font-semibold text-xs uppercase tracking-wider">Bài thi B1</h4>
+            <p className="text-[var(--text-secondary)] text-xs mt-1">{examQuestions.length} câu hỏi · 6 chương</p>
           </div>
 
-          {/* Chapter Share */}
-          <div className="bg-[var(--bg-tertiary)] p-5 lg:p-6 rounded-3xl mt-1">
-        <div className="flex items-center justify-between mb-6">
-          <h4 className="text-[var(--text-primary)] font-bold text-sm">{t('recentChaptersShare')}</h4>
-          <ChevronRight className="w-4 h-4 text-[var(--text-secondary)]" />
-        </div>
-        <p className="text-[10px] text-[var(--text-secondary)] mb-4 leading-relaxed">
-          {examQuestions.length > 0
-            ? `${examQuestions.length} ${t('chapterShareSuffix')}`
-            : '—'}
-        </p>
-        <div className="space-y-5">
-          {chapterShareRows.map((row) => (
-            <div key={row.chapterNumber} className="space-y-2">
-              <div className="flex justify-between gap-2 text-[11px]">
-                <div className="min-w-0">
-                  <p className="text-[var(--text-primary)] font-bold truncate" title={row.fullTitle}>
-                    {row.label}
-                  </p>
-                  <p className="text-[var(--text-secondary)] text-[10px] line-clamp-2">{row.fullTitle}</p>
-                </div>
-                <p className="text-[var(--text-primary)] font-bold shrink-0">{row.percentage}%</p>
-              </div>
-              <div className="h-1.5 bg-[var(--bg-hover)] rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all"
-                  style={{ width: `${row.percentage}%`, backgroundColor: row.barColor }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="bg-[var(--bg-tertiary)] p-5 lg:p-6 rounded-3xl flex-1 min-h-[300px] flex flex-col mt-1">
-        <div className="flex items-center justify-between mb-6">
-          <h4 className="text-[var(--text-primary)] font-bold text-sm">{t('masteryByChapter')}</h4>
-          <span className="text-[var(--text-secondary)] text-[10px] font-bold">%</span>
-        </div>
-
-        <div className="h-[220px] w-full min-w-0 shrink-0">
-          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-            <BarChart data={masteryData}>
-              <Bar dataKey="percentage" radius={[4, 4, 0, 0]}>
-                {masteryData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Bar>
-              <XAxis hide />
-              <YAxis hide domain={[0, 100]} />
-              <Tooltip
-                content={({ active, payload }) => {
-                  if (!active || !payload?.length) return null;
-                  const row = payload[0].payload as MasteryRow;
-                  return (
-                    <div className="max-w-[280px] rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] px-3 py-2 text-xs shadow-lg">
-                      <p className="mb-1 font-semibold leading-snug text-[var(--text-primary)]">{row.fullTitle}</p>
-                      <p className="font-bold text-[var(--text-primary)]">{row.percentage}%</p>
-                    </div>
-                  );
-                }}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="grid grid-cols-2 gap-x-4 gap-y-3 mt-6">
-          {masteryData.map((area, i) => (
-            <div key={i} className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: area.color }} />
-                <span className="text-[9px] text-[var(--text-secondary)] font-medium truncate" title={area.fullTitle}>
-                  {area.label}
+          {/* Unified Stats Card */}
+          <div className="bg-[var(--bg-tertiary)] p-5 rounded-2xl border border-[var(--border)]">
+            {/* Overall score header */}
+            <div className="flex items-center justify-between mb-5">
+              <h4 className="text-[var(--text-primary)] font-bold text-sm">Điểm số theo chương</h4>
+              {overallScore && (
+                <span className={`text-sm font-black ${
+                  overallScore.percentage >= 80 ? 'text-emerald-500' :
+                  overallScore.percentage >= 50 ? 'text-amber-500' : 'text-rose-500'
+                }`}>
+                  {overallScore.percentage}%
                 </span>
-              </div>
-              <span className="text-[9px] text-[var(--text-secondary)]">
-                {area.correctPercentage}% đúng · {area.incorrectPercentage}% sai
-              </span>
+              )}
             </div>
-          ))}
-        </div>
-      </div>
+
+            {/* Chapter mastery as stacked bars */}
+            <div className="space-y-3">
+              {masteryData.map((row, idx) => {
+                const isEmpty = row.correctPercentage === 0 && row.incorrectPercentage === 0;
+                return (
+                  <div key={idx} className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.color }} />
+                        <span className="text-xs font-bold text-[var(--text-primary)] truncate">{row.label}</span>
+                      </div>
+                      {isEmpty ? (
+                        <span className="text-[10px] text-[var(--text-muted)] font-medium shrink-0">—</span>
+                      ) : (
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {row.correctPercentage > 0 && (
+                            <span className="text-[10px] font-bold text-emerald-500">{row.correctPercentage}%</span>
+                          )}
+                          {row.incorrectPercentage > 0 && (
+                            <span className="text-[10px] font-semibold text-rose-500">{row.incorrectPercentage}%</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <div className="h-2.5 rounded-full overflow-hidden bg-[var(--bg-hover)] flex">
+                      {isEmpty ? (
+                        <div className="h-full w-full rounded-full bg-[var(--bg-hover)]" />
+                      ) : (
+                        <>
+                          {row.correctPercentage > 0 && (
+                            <motion.div
+                              className="h-full rounded-l-full bg-emerald-500 shrink-0"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${row.correctPercentage}%` }}
+                              transition={{ duration: 0.5, delay: idx * 0.06 }}
+                            />
+                          )}
+                          {row.incorrectPercentage > 0 && (
+                            <motion.div
+                              className="h-full rounded-r-full bg-rose-500"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${row.incorrectPercentage}%` }}
+                              transition={{ duration: 0.5, delay: idx * 0.06 }}
+                            />
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Chapter share — compact list */}
+            <div className="mt-6 pt-5 border-t border-[var(--border)]">
+              <h5 className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-3">Phân bổ câu hỏi</h5>
+              <div className="space-y-2">
+                {chapterShareRows.map((row) => (
+                  <div key={row.chapterNumber} className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: row.barColor }} />
+                    <span className="text-[11px] font-semibold text-[var(--text-secondary)] min-w-0 truncate flex-1">
+                      {row.label}
+                    </span>
+                    <span className="text-[11px] font-bold text-[var(--text-primary)] shrink-0">
+                      {row.count > 0 ? `${row.count} câu` : '—'}
+                    </span>
+                    <div className="w-14 h-1.5 rounded-full overflow-hidden bg-[var(--bg-hover)] shrink-0">
+                      <div
+                        className="h-full rounded-full transition-all"
+                        style={{ width: `${row.percentage}%`, backgroundColor: row.barColor }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </>
       )}
     </SmoothScroll>

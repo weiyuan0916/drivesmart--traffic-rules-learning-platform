@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { AlertCircle, BookOpen, CheckCircle2, ChevronDown, Headphones } from 'lucide-react';
+import { AlertCircle, BookOpen, CheckCircle2, ChevronDown, Headphones, LayoutTemplate, Columns2 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import { SmoothScroll } from './SmoothScroll';
@@ -58,19 +58,33 @@ function rankOptionsForVehicle(v: VehicleType): { label: string; options: string
 }
 
 interface ExamSetupScreenProps {
-  onStartExam: () => void;
+  onStartExam: (data: { candidateName: string; licenseRank: string; examPaper: string }) => void;
   isStarting?: boolean;
+  onSelectExamLayout?: (layout: 'split' | 'sideBySide') => void;
+  defaultExamLayout?: 'split' | 'sideBySide';
 }
 
-const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarting }) => {
+const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarting, onSelectExamLayout, defaultExamLayout = 'split' }) => {
   const { t } = useLanguage();
   const [candidateName, setCandidateName] = useState('LÊ VĂN TÙNG');
+  const [selectedLayout, setSelectedLayout] = useState<'split' | 'sideBySide'>(defaultExamLayout);
   const [examPaper, setExamPaper] = useState('Ngẫu nhiên');
   const [trainingCenter, setTrainingCenter] = useState(DEFAULT_TRAINING_CENTER);
   const [course, setCourse] = useState(COURSE_OPTIONS[0]);
   const [vehicleType, setVehicleType] = useState<VehicleType>('Ô tô');
   const [licenseRank, setLicenseRank] = useState(OTO_RANK_OPTIONS[0]);
   const [verified, setVerified] = useState(false);
+
+  // Persist layout selection
+  const persistLayout = (layout: 'split' | 'sideBySide') => {
+    try { localStorage.setItem('examLayout', layout); } catch {}
+  };
+
+  const handleLayoutChange = (layout: 'split' | 'sideBySide') => {
+    setSelectedLayout(layout);
+    persistLayout(layout);
+    onSelectExamLayout?.(layout);
+  };
 
   const statusLabel = useMemo(
     () => (verified ? t('setupStatusVerified') : t('setupStatusPending')),
@@ -220,7 +234,7 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
           <button
             type="button"
             disabled={!canStart || isStarting}
-            onClick={onStartExam}
+            onClick={() => onStartExam({ candidateName, licenseRank, examPaper })}
             className="w-full rounded-2xl bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-4 text-sm font-black uppercase tracking-wide text-white shadow-[0_10px_40px_-6px_rgba(5,150,105,0.5),0_4px_14px_-4px_rgba(21,128,61,0.38)] ring-1 ring-white/20 transition-all hover:from-emerald-500 hover:to-green-600 hover:shadow-[0_14px_44px_-6px_rgba(5,150,105,0.55),0_6px_18px_-4px_rgba(21,128,61,0.42)] active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-none disabled:bg-[var(--bg-hover)] disabled:text-[var(--text-muted)] disabled:shadow-none disabled:ring-0 dark:bg-gradient-to-r dark:from-emerald-500 dark:to-green-600 dark:text-white dark:shadow-[0_10px_36px_-6px_rgba(16,185,129,0.45)] dark:ring-emerald-400/25 dark:hover:from-emerald-400 dark:hover:to-green-500 dark:disabled:bg-none dark:disabled:bg-[var(--bg-hover)] dark:disabled:text-[var(--text-secondary)] dark:disabled:shadow-none"
           >
             {t('startExamNow')}

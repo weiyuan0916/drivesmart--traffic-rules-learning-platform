@@ -7,6 +7,7 @@ import LanguageSwitcher from './components/LanguageSwitcher';
 import MobileDashboardTabBar from './components/MobileDashboardTabBar';
 import DashboardDesktopHeader from './components/DashboardDesktopHeader';
 import ExamSetupScreen from './components/ExamSetupScreen';
+import { ExamStartModal } from './components/ExamStartModal';
 import { SmoothScroll } from './components/SmoothScroll';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -26,7 +27,13 @@ function AppContent() {
   const [activeSidebar, setActiveSidebar] = useState<'left' | 'main' | 'right'>('main');
   const [collapsedSidebar, setCollapsedSidebar] = useState<boolean>(false);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
+  const [examLayout, setExamLayout] = useState<'split' | 'sideBySide'>(() => {
+    try { return (localStorage.getItem('examLayout') as 'split' | 'sideBySide') || 'split'; } catch { return 'split'; }
+  });
   const [chapterStats, setChapterStats] = useState<ChapterStat[] | null>(null);
+  // Start modal state
+  const [showStartModal, setShowStartModal] = useState(false);
+  const [startModalData, setStartModalData] = useState({ candidateName: '', licenseRank: '', examPaper: '' });
   const { t } = useLanguage();
   const isDesktop = useIsDesktop();
   const hideFloatingLanguageSwitcher =
@@ -49,6 +56,16 @@ function AppContent() {
     } finally {
       setExamLoading(false);
     }
+  };
+
+  const handleRequestStart = (data: { candidateName: string; licenseRank: string; examPaper: string }) => {
+    setStartModalData(data);
+    setShowStartModal(true);
+  };
+
+  const handleModalStart = () => {
+    setShowStartModal(false);
+    startExam();
   };
 
   return (
@@ -120,7 +137,25 @@ function AppContent() {
       )}
 
       {!examStarted ? (
-        <ExamSetupScreen onStartExam={startExam} isStarting={examLoading} />
+        <>
+          <ExamSetupScreen
+            onStartExam={handleRequestStart}
+            isStarting={examLoading}
+            onSelectExamLayout={setExamLayout}
+            defaultExamLayout={examLayout}
+          />
+          <ExamStartModal
+            isOpen={showStartModal}
+            onClose={() => setShowStartModal(false)}
+            onStart={handleModalStart}
+            selectedLayout={examLayout}
+            onLayoutChange={setExamLayout}
+            candidateName={startModalData.candidateName}
+            licenseRank={startModalData.licenseRank}
+            examPaper={startModalData.examPaper}
+            totalQuestions={30}
+          />
+        </>
       ) : view === 'dashboard' ? (
         <div
           className={`relative flex flex-1 overflow-hidden ${
@@ -160,6 +195,7 @@ function AppContent() {
                   onRestartExam={startExam}
                   onToggleCollapse={() => setCollapsedSidebar((v) => !v)}
                   collapsedSidebar={collapsedSidebar}
+                  examLayout={examLayout}
                 />
             </div>
             <div

@@ -16,6 +16,7 @@ interface MainContentProps {
   onExamStatsComputed?: (stats: ChapterStat[]) => void;
   collapsedSidebar: boolean;
   onToggleCollapse: () => void;
+  examLayout?: 'split' | 'sideBySide';
 }
 
 type ExamScore = {
@@ -48,6 +49,7 @@ const MainContent: React.FC<MainContentProps> = ({
   onExamStatsComputed,
   collapsedSidebar,
   onToggleCollapse,
+  examLayout: examLayoutProp,
 }) => {
   const { t } = useLanguage();
   const totalQuestions = questions.length;
@@ -62,6 +64,10 @@ const MainContent: React.FC<MainContentProps> = ({
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now());
   const [isStuck, setIsStuck] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const questionLayout = examLayoutProp || 'split';
+
+  // Force sideBySide when sidebars are fully collapsed
+  const forcedLayout = collapsedSidebar ? 'sideBySide' : questionLayout;
 
   const currentIndex = currentQuestionNumber - 1;
   const question = questions[currentIndex];
@@ -187,6 +193,7 @@ const MainContent: React.FC<MainContentProps> = ({
     onCurrentQuestionNumberChange?.(currentQuestionNumber);
   }, [currentQuestionNumber, onCurrentQuestionNumberChange]);
 
+
   const currentConfirmedAnswer = confirmedAnswers[currentIndex];
   const showResult = currentConfirmedAnswer !== null && currentConfirmedAnswer !== undefined;
   const correctOptionId = question?.correctAnswer;
@@ -239,11 +246,11 @@ const MainContent: React.FC<MainContentProps> = ({
     const isConfirmedSelected = currentConfirmedAnswer === optionId;
     const isCorrectOption = optionId === correctOptionId;
 
-    let bg = 'bg-[var(--bg-tertiary)]';
+    let bg = 'bg-[var(--bg-secondary)]';
     let border = 'border-[var(--border)]';
-    let iconBg = 'bg-[var(--bg-hover)]';
+    let iconBg = 'bg-[var(--bg-tertiary)]';
     let iconText = 'text-[var(--text-secondary)]';
-    let textCls = 'text-[var(--text-secondary)]';
+    let textCls = 'text-[var(--text-primary)]';
     let shadow = '';
     let scale = 1;
     const showIcon: 'check' | 'x' | null = null;
@@ -265,7 +272,7 @@ const MainContent: React.FC<MainContentProps> = ({
         shadow = 'shadow-lg shadow-rose-500/25';
       }
     } else if (isSelected) {
-      bg = 'bg-blue-500/10';
+      bg = 'bg-gradient-to-br from-blue-500/10 to-blue-500/5';
       border = 'border-blue-500/50';
       iconBg = 'bg-blue-500';
       iconText = 'text-white';
@@ -275,7 +282,7 @@ const MainContent: React.FC<MainContentProps> = ({
     }
 
     return {
-      className: `w-full rounded-2xl flex items-start gap-3 text-left transition-all duration-200 border ${bg} ${border} ${shadow} min-h-0 overflow-hidden cursor-pointer select-none`,
+      className: `w-full rounded-2xl flex items-center gap-3 px-3 py-3 text-left transition-all duration-200 border ${bg} ${border} ${shadow} min-h-[3.25rem] cursor-pointer select-none`,
       iconBg,
       iconText,
       textCls,
@@ -422,29 +429,35 @@ const MainContent: React.FC<MainContentProps> = ({
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           className="w-full max-w-xl bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl p-6 sm:p-8 shadow-xl"
         >
-          <div className="text-center space-y-4">
+          <div className="text-center space-y-5">
             <div
-              className={`inline-flex items-center justify-center rounded-full px-4 py-2 font-black tracking-wide ${
+              className={`inline-flex items-center gap-2 justify-center rounded-full px-5 py-2.5 text-lg font-bold ${
                 examScore.pass ? 'bg-emerald-500/15 text-emerald-600' : 'bg-rose-500/15 text-rose-600'
               }`}
             >
+              {examScore.pass ? <Check className="w-5 h-5" /> : <XIcon className="w-5 h-5" />}
               {examScore.pass ? 'ĐẠT' : 'KHÔNG ĐẠT'}
             </div>
-            <div className="space-y-1 text-[var(--text-primary)]">
-              <div className="text-sm sm:text-base">
-                Đúng: <span className="font-bold">{examScore.correct}</span> / {totalQuestions}
+            <div className="space-y-2 text-[var(--text-primary)]">
+              <div className="text-base flex items-center justify-center gap-2">
+                <span className="text-sm text-[var(--text-secondary)]">Đúng</span>
+                <span className="font-bold text-emerald-600">{examScore.correct}</span>
+                <span className="text-sm text-[var(--text-secondary)]">/ {totalQuestions}</span>
               </div>
-              <div className="text-sm sm:text-base">
-                Sai: <span className="font-bold">{examScore.incorrect}</span> / {totalQuestions}
+              <div className="text-base flex items-center justify-center gap-2">
+                <span className="text-sm text-[var(--text-secondary)]">Sai</span>
+                <span className="font-bold text-rose-500">{examScore.incorrect}</span>
               </div>
-              <div className="text-sm sm:text-base">
-                Câu nghiêm trọng sai: <span className="font-bold">{examScore.criticalWrong}</span>
-              </div>
+              {examScore.criticalWrong > 0 && (
+                <div className="text-sm text-rose-500 font-medium">
+                  Câu nghiêm trọng sai: <span className="font-bold">{examScore.criticalWrong}</span>
+                </div>
+              )}
             </div>
             <button
               type="button"
               onClick={onRestartExam}
-              className="mt-2 w-full rounded-2xl bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-4 text-sm font-black uppercase tracking-wide text-white shadow-lg shadow-orange-900/35 transition-colors hover:from-emerald-500 hover:to-green-600"
+              className="w-full rounded-2xl bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-emerald-600/30 transition-all hover:from-emerald-500 hover:to-green-600 active:scale-[0.99]"
             >
               Làm lại
             </button>
@@ -457,26 +470,26 @@ const MainContent: React.FC<MainContentProps> = ({
   return (
     <div className="flex-1 flex flex-col bg-[var(--bg-primary)] overflow-hidden" tabIndex={0}>
       {/* ══════════ DESKTOP TOP BAR ══════════ */}
-      <div className="hidden lg:flex items-center justify-between px-4 py-2 shrink-0 border-b border-[var(--border)] bg-[var(--bg-secondary)]/80 backdrop-blur-sm z-10">
+      <div className="hidden lg:flex items-center justify-between px-5 py-3 shrink-0 border-b border-[var(--border)] bg-[var(--bg-secondary)]/80 backdrop-blur-sm z-10">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={onBack}
-            className="p-1.5 -ml-1 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
+            className="p-2 -ml-1.5 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <div className="flex items-baseline gap-1">
-            <h1 className="text-[var(--text-primary)] font-bold text-sm">
+          <div className="flex items-baseline gap-1.5">
+            <h1 className="text-[var(--text-primary)] font-semibold text-base">
               {t('question')} {currentQuestionNumber}
             </h1>
-            <span className="text-[var(--text-secondary)] text-xs">/{totalQuestions}</span>
+            <span className="bg-[var(--bg-tertiary)] text-[var(--text-secondary)] px-2 py-0.5 rounded-full text-xs font-medium">{totalQuestions}</span>
           </div>
         </div>
         <div className="flex items-center gap-3">
           {/* Timer with pulse animation */}
           <motion.div
-            className={`flex items-center gap-2 px-3 py-1 rounded-full ${timeBadgeClass}`}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full ${timeBadgeClass}`}
             animate={
               isUnderOneMin
                 ? { scale: [1, 1.08, 1], transition: { repeat: Infinity, duration: 0.8 } }
@@ -487,10 +500,10 @@ const MainContent: React.FC<MainContentProps> = ({
                     : {}
             }
           >
-            <Clock className={`w-3.5 h-3.5 ${isUnderOneMin ? 'text-rose-500' : isLastMinutes ? 'text-amber-500' : 'text-blue-500'}`} />
-            <span className="font-mono font-bold text-xs tabular-nums">{timeLabel}</span>
+            <Clock className={`w-4 h-4 ${isUnderOneMin ? 'text-rose-500' : isLastMinutes ? 'text-amber-500' : 'text-blue-500'}`} />
+            <span className="font-mono font-semibold text-sm tabular-nums">{timeLabel}</span>
           </motion.div>
-          <button className="text-[var(--text-secondary)] hover:text-blue-500 transition-colors">
+          <button className="text-[var(--text-secondary)] hover:text-blue-500 transition-colors p-1.5 rounded-lg hover:bg-[var(--bg-hover)]">
             <Bookmark className="w-4 h-4" />
           </button>
           <button
@@ -507,20 +520,20 @@ const MainContent: React.FC<MainContentProps> = ({
 
       {/* ══════════ PROGRESS BAR ══════════ */}
       <div className="hidden lg:block shrink-0">
-        <div className="flex h-0.5 w-full bg-[var(--bg-hover)]">
+        <div className="flex h-1.5 w-full bg-[var(--bg-hover)] rounded-full gap-px px-4 pt-2">
           {progressSegments.map((seg, i) => (
             <div
               key={i}
-              className="transition-all duration-300"
+              className="transition-all duration-300 rounded-sm"
               style={{ width: seg.width, backgroundColor: seg.color }}
             />
           ))}
         </div>
-        <div className="px-4 py-0.5 flex items-center justify-between">
-          <span className="text-[10px] text-[var(--text-secondary)] font-medium">
+        <div className="px-4 py-1 flex items-center justify-between">
+          <span className="text-xs text-[var(--text-secondary)] font-medium">
             {answeredCount}/{totalQuestions} đã trả lời
           </span>
-          <span className="text-[10px] text-[var(--text-secondary)]">
+          <span className="text-xs text-[var(--text-secondary)] font-medium">
             {Math.round((answeredCount / totalQuestions) * 100)}%
           </span>
         </div>
@@ -592,214 +605,384 @@ const MainContent: React.FC<MainContentProps> = ({
         </div>
       </div>
 
-      {/* ══════════ DESKTOP: Image + Question ══════════ */}
-      <div className="hidden lg:flex flex-1 min-h-0 overflow-hidden">
-        <div className="grid grid-cols-[42%_1fr] min-h-0 w-full gap-3 p-3 xl:p-4">
-          {/* Image — hero */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`img-${currentQuestionNumber}`}
-              className="relative rounded-2xl overflow-hidden bg-[var(--bg-tertiary)] shadow-md border border-[var(--border)] flex items-center justify-center min-h-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              {/* Chapter badge */}
-              <div className="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
-                {question.chapter}
-              </div>
-
-              {question.image ? (
-                <motion.img
-                  src={question.image}
-                  alt="Traffic Situation"
-                  className="max-h-full max-w-full w-auto h-auto object-contain hover:scale-[1.02] transition-transform duration-300"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <div className="w-full h-full min-h-32 bg-[var(--bg-hover)] flex items-center justify-center">
-                  <span className="text-[var(--text-muted)] text-sm">Không có ảnh</span>
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Question text */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`q-${currentQuestionNumber}`}
-              className="bg-[var(--bg-tertiary)] rounded-2xl border border-[var(--border)] px-4 py-3 overflow-y-auto min-h-0"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.15, ease: 'easeOut' }}
-            >
-              <div className="flex items-start gap-2 mb-2">
-                <span className="bg-blue-500/15 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">
-                  Q{currentQuestionNumber}
-                </span>
-                {question.isCritical && (
-                  <span className="bg-rose-500/15 text-rose-500 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">
-                    Nghiêm trọng
-                  </span>
-                )}
-              </div>
-              <p className="text-[var(--text-primary)] text-sm xl:text-base font-bold leading-relaxed">
-                {question.text}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* ══════════ DESKTOP: Options + Actions ══════════ */}
-      <div className="hidden lg:flex flex-1 min-h-0 overflow-hidden px-3 xl:px-4 pb-3 xl:pb-4 gap-3 flex-col relative">
-        {/* ── Options grid (full remaining height) ── */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`options-${currentQuestionNumber}`}
-            className="flex-1 min-h-0 grid grid-cols-2 gap-3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.12 }}
-          >
-            {question.options.map((option, idx) => {
-              const style = getOptionStyle(option.id);
-
-              return (
-                <button
-                  key={option.id}
-                  onClick={() => handleOptionClick(option.id)}
-                  disabled={showResult}
-                  className={style.className}
-                >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-base shrink-0 mt-3 ml-3 transition-all duration-200 ${style.iconBg} ${style.iconText}`}>
-                    {style.showResultIcon === 'check' ? (
-                      <Check className="w-5 h-5" />
-                    ) : style.showResultIcon === 'x' ? (
-                      <XIcon className="w-5 h-5" />
-                    ) : (
-                      option.id
+      {/* ══════════ DESKTOP SPLIT LAYOUT ══════════ */}
+      {forcedLayout === 'split' ? (
+        <>
+          {/* Image + Question + Explanation — split: ảnh 50% trên, câu hỏi 50% dưới */}
+          <div className="hidden lg:flex flex-1 min-h-0 overflow-hidden px-4 xl:px-5 pt-3 xl:pt-4 pb-2">
+            <div className="w-full flex flex-col gap-3 h-full min-h-0">
+              <div className="flex flex-col flex-1 min-h-0 gap-3">
+                {/* Câu hỏi — một nửa chiều cao trên */}
+                <div className="flex-1 min-h-0 basis-0 flex flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-3 xl:p-4 shadow-sm">
+                  <div className="flex items-start gap-2 mb-2 shrink-0 flex-wrap">
+                    <span className="bg-blue-500/10 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full shrink-0">
+                      Q{currentQuestionNumber}
+                    </span>
+                    {question.isCritical && (
+                      <span className="bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-medium px-2.5 py-1 rounded-full shrink-0">
+                        Nghiêm trọng
+                      </span>
                     )}
                   </div>
-                  <div className="min-h-0 py-3 pr-3 overflow-y-auto flex-1">
-                    <p className={`text-sm font-bold leading-snug ${style.textCls}`}>{option.text}</p>
-                  </div>
-                  {!showResult && (
-                    <kbd className="hidden xl:flex shrink-0 self-start mt-3 mr-3 bg-[var(--bg-hover)] text-[var(--text-muted)] text-[10px] font-mono font-bold rounded-md w-5 h-5 items-center justify-center border border-[var(--border)]">
-                      {idx + 1}
-                    </kbd>
-                  )}
-                </button>
-              );
-            })}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* ── Stuck hint (absolute, above buttons) ── */}
-        {!showResult && isStuck && (
-          <div className="absolute bottom-16 left-0 right-0 px-2 z-20">
-            <div className="bg-amber-500/10 border border-amber-500/20 p-2.5 rounded-xl flex items-center justify-between gap-3">
-              <span className="text-amber-600 text-xs font-medium">Bạn cần hỗ trợ? Hãy chọn một đáp án hoặc bỏ qua câu này.</span>
-              <button
-                type="button"
-                onClick={() => { setIsStuck(false); setQuestionStartTime(Date.now()); }}
-                className="text-amber-600 text-xs font-bold hover:text-amber-700"
-              >
-                Đã hiểu
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ── Explanation drawer (slides up over options) ── */}
-        <AnimatePresence>
-          {showResult && (
-            <motion.div
-              className="absolute bottom-16 left-0 right-0 px-2 z-20"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 16 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="bg-[var(--bg-secondary)]/95 backdrop-blur-md p-3 rounded-xl border border-[var(--border)] shadow-lg max-h-[calc(26vh-5rem)] overflow-y-auto">
-                <div className="flex items-start gap-2">
-                  <div className="text-[var(--text-primary)] font-bold text-xs shrink-0">{t('explanation')}</div>
-                  <div className="min-w-0">
-                    <div className="text-[var(--text-secondary)] text-xs leading-relaxed">
-                      {question.explanation}
-                    </div>
-                    {question.isCritical ? (
-                      <div className="text-rose-500 font-bold text-xs mt-1.5">Câu hỏi nghiêm trọng</div>
-                    ) : null}
+                  <div className="flex-1 min-h-0 overflow-y-auto pr-1">
+                    <p className="text-[var(--text-primary)] text-base xl:text-lg font-semibold leading-relaxed">
+                      {question.text}
+                    </p>
                   </div>
                 </div>
+                {/* Ảnh — một nửa chiều cao dưới */}
+                <div className="flex-1 min-h-0 basis-0 rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--bg-tertiary)] shadow-md flex items-center justify-center relative">
+                  <div className="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                    {question.chapter}
+                  </div>
+                  <AnimatePresence mode="wait">
+                    {question.image ? (
+                      <motion.img
+                        key={`img-${currentQuestionNumber}`}
+                        src={question.image}
+                        alt="Traffic Situation"
+                        className="max-h-full max-w-full w-auto h-auto object-contain hover:scale-[1.02] transition-transform duration-300"
+                        initial={{ opacity: 0, scale: 0.97 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.15 }}
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="w-full h-full min-h-[4rem] flex items-center justify-center" key={`no-img-${currentQuestionNumber}`}>
+                        <span className="text-[var(--text-muted)] text-sm">Không có ảnh</span>
+                      </div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
-        {/* ── Action buttons (always at bottom) ── */}
-        <div className="flex items-center gap-2 shrink-0 relative z-30">
-          <motion.button
-            type="button"
-            onClick={confirmCurrentAnswer}
-            disabled={showResult || !selectedOption || timeLeftSeconds <= 0}
-            className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2.5 rounded-xl transition-colors text-sm shadow-lg shadow-blue-600/20 disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2 relative overflow-hidden"
-            whileTap={!showResult && selectedOption ? { scale: 0.97 } : {}}
-          >
-            {confirming && (
+              {/* Explanation card — shows after confirming */}
+              <AnimatePresence>
+                {showResult && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="shrink-0 bg-gradient-to-r from-blue-500/8 to-emerald-500/8 border border-blue-500/20 rounded-xl px-4 py-3 overflow-hidden"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                        currentConfirmedAnswer === correctOptionId
+                          ? 'bg-emerald-500 text-white'
+                          : 'bg-rose-500 text-white'
+                      }`}>
+                        {currentConfirmedAnswer === correctOptionId ? (
+                          <Check className="w-4 h-4" />
+                        ) : (
+                          <XIcon className="w-4 h-4" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold uppercase tracking-wider text-blue-500 mb-1">Giải thích</p>
+                        <p className="text-[var(--text-secondary)] text-sm leading-relaxed line-clamp-3">
+                          {question.explanation}
+                        </p>
+                        {question.isCritical && (
+                          <p className="text-rose-500 text-xs font-semibold mt-1.5">Câu hỏi nghiêm trọng — Sai = trượt</p>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+          {/* Options */}
+          <div className="hidden lg:flex flex-1 min-h-0 overflow-hidden px-4 xl:px-5 pb-3 xl:pb-4 gap-3 flex-col relative">
+            <AnimatePresence mode="wait">
               <motion.div
-                className="absolute inset-0 bg-emerald-500"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: AUTO_ADVANCE_DELAY_MS / 1000, ease: 'easeInOut' }}
-              />
-            )}
-            <span className="relative z-10 flex items-center gap-2">
-              {confirming ? <Check className="w-4 h-4" /> : null}
-              {t('confirmAnswer')}
-              <kbd className="hidden xl:inline bg-white/20 text-white text-[10px] font-mono font-bold rounded px-1.5 py-0.5">⏎</kbd>
-            </span>
-          </motion.button>
-          {currentQuestionNumber < totalQuestions ? (
-            <motion.button
-              type="button"
-              onClick={gotoNextQuestion}
-              className="flex-1 bg-[var(--bg-tertiary)] hover:bg-[var(--bg-hover)] text-[var(--text-primary)] font-bold px-4 py-2.5 rounded-xl transition-colors text-sm border border-[var(--border)] flex items-center justify-center gap-2"
-              whileTap={{ scale: 0.97 }}
-            >
-              {t('nextQuestion')}
-              <kbd className="hidden xl:inline bg-[var(--bg-hover)] text-[var(--text-muted)] text-[10px] font-mono font-bold rounded px-1.5 py-0.5">→</kbd>
-            </motion.button>
-          ) : (
-            <motion.button
-              type="button"
-              onClick={submitExam}
-              className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl transition-colors text-sm shadow-lg shadow-emerald-600/20"
-              whileTap={{ scale: 0.97 }}
-            >
-              {t('finishTest')}
-            </motion.button>
-          )}
-        </div>
-      </div>
+                key={`options-${currentQuestionNumber}`}
+                className="flex-1 min-h-0 grid grid-cols-2 gap-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.1 }}
+              >
+                {question.options.map((option, idx) => {
+                  const style = getOptionStyle(option.id);
+                  return (
+                    <motion.button
+                      key={option.id}
+                      onClick={() => handleOptionClick(option.id)}
+                      disabled={showResult}
+                      className={style.className}
+                      whileHover={!showResult && option.id !== selectedOption ? { scale: 1.01 } : {}}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.15, delay: 0.04 * idx }}
+                    >
+                      <div className={`w-11 h-11 rounded-full flex items-center justify-center font-semibold text-base shrink-0 transition-all duration-200 ${style.iconBg} ${style.iconText}`}>
+                        {style.showResultIcon === 'check' ? (
+                          <Check className="w-5 h-5" />
+                        ) : style.showResultIcon === 'x' ? (
+                          <XIcon className="w-5 h-5" />
+                        ) : (
+                          option.id
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1 overflow-y-auto max-h-28 self-center">
+                        <p className={`text-[0.9375rem] font-medium leading-relaxed ${style.textCls}`}>{option.text}</p>
+                      </div>
+                      {!showResult && (
+                        <kbd className="hidden xl:flex shrink-0 self-center bg-[var(--bg-tertiary)] text-[var(--text-muted)] text-[9px] font-mono font-semibold rounded-md w-5 h-5 items-center justify-center border border-[var(--border)]">
+                          {idx + 1}
+                        </kbd>
+                      )}
+                    </motion.button>
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </>
+      ) : (
+        <>
+          {/* ══════════ DESKTOP SIDE-BY-SIDE LAYOUT ══════════ */}
+          <div className="hidden lg:flex flex-1 min-h-0 overflow-hidden px-4 xl:px-5 pt-3 xl:pt-4 pb-2">
+            <div className="w-full flex gap-3 h-full">
+              {/* Left: ảnh 50% trên + câu hỏi 50% dưới */}
+              <div className="w-1/2 flex flex-col gap-3 min-h-0 overflow-hidden">
+                <div className="flex flex-col flex-1 min-h-0 gap-3">
+                  {/* Image — một nửa chiều cao trên */}
+                  <div className="flex-1 min-h-0 basis-0 rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--bg-tertiary)] shadow-md flex items-center justify-center relative">
+                    <AnimatePresence mode="wait">
+                      {question.image ? (
+                        <motion.img
+                          key={`img-${currentQuestionNumber}`}
+                          src={question.image}
+                          alt="Traffic Situation"
+                          className="max-h-full max-w-full w-auto h-auto object-contain hover:scale-[1.02] transition-transform duration-300"
+                          initial={{ opacity: 0, scale: 0.97 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.15 }}
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="w-full h-full min-h-[4rem] flex items-center justify-center" key={`no-img-${currentQuestionNumber}`}>
+                          <span className="text-[var(--text-muted)] text-sm">Không có ảnh</span>
+                        </div>
+                      )}
+                    </AnimatePresence>
+                    <div className="absolute top-3 left-3 z-10 bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                      {question.chapter}
+                    </div>
+                  </div>
+                  {/* Question — một nửa chiều cao dưới */}
+                  <div className="flex-1 min-h-0 basis-0 flex flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-3 xl:p-4 shadow-sm">
+                    <div className="flex items-start gap-2 mb-2 shrink-0 flex-wrap">
+                      <span className="bg-blue-500/10 text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-full shrink-0">
+                        Q{currentQuestionNumber}
+                      </span>
+                      {question.isCritical && (
+                        <span className="bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-medium px-2.5 py-1 rounded-full shrink-0">
+                          Nghiêm trọng
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex-1 min-h-0 overflow-y-auto">
+                      <p className="text-[var(--text-primary)] text-sm xl:text-base font-semibold leading-relaxed">
+                        {question.text}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {/* Explanation — inline below question */}
+                <AnimatePresence>
+                  {showResult && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="shrink-0 bg-gradient-to-r from-blue-500/8 to-emerald-500/8 border border-blue-500/20 rounded-xl px-4 py-3 overflow-hidden"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                          currentConfirmedAnswer === correctOptionId
+                            ? 'bg-emerald-500 text-white'
+                            : 'bg-rose-500 text-white'
+                        }`}>
+                          {currentConfirmedAnswer === correctOptionId ? (
+                            <Check className="w-3.5 h-3.5" />
+                          ) : (
+                            <XIcon className="w-3.5 h-3.5" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-blue-500 mb-0.5">Giải thích</p>
+                          <p className="text-[var(--text-secondary)] text-xs leading-relaxed line-clamp-2">
+                            {question.explanation}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Right: Options */}
+              <div className="w-1/2 flex flex-col h-full overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`options-${currentQuestionNumber}`}
+                    className="flex flex-col flex-1 min-h-0 gap-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.1 }}
+                  >
+                    {(() => {
+                      const n = question.options.length;
+                      const maxPerRow = n <= 2 ? n : 2;
+                      const rows = Math.ceil(n / maxPerRow);
+                      const basePct = Math.floor(100 / rows);
+
+                      // Build grid: distribute options into rows, each row takes equal height
+                      const grid: (typeof question.options)[0][][] = [];
+                      const sortedByLen = [...question.options].sort(
+                        (a, b) => b.text.length - a.text.length,
+                      );
+                      // Put longest options first in row distribution
+                      const orderedOptions = sortedByLen.length === n
+                        ? question.options // preserve original order if same length
+                        : sortedByLen;
+
+                      for (let r = 0; r < rows; r++) {
+                        grid.push(orderedOptions.slice(r * maxPerRow, r * maxPerRow + maxPerRow));
+                      }
+
+                      return (
+                        <>
+                          {grid.map((rowOptions, rowIdx) => (
+                            <div
+                              key={rowIdx}
+                              className="flex gap-2"
+                              style={{ flex: 1, minHeight: 0 }}
+                            >
+                              {rowOptions.map((option, colIdx) => {
+                                const style = getOptionStyle(option.id);
+                                const isLongest = option.id === sortedByLen[0]?.id;
+                                const globalIdx = question.options.findIndex(
+                                  (o) => o.id === option.id,
+                                );
+                                return (
+                                  <motion.button
+                                    key={option.id}
+                                    onClick={() => handleOptionClick(option.id)}
+                                    disabled={showResult}
+                                    className={`flex flex-col rounded-2xl text-left transition-all duration-200 border overflow-hidden ${
+                                      isLongest && rows === 1 && colIdx === 0
+                                        ? 'flex-1 min-h-0'
+                                        : maxPerRow === 1
+                                          ? 'flex-1 min-h-0'
+                                          : 'flex-1 min-h-0'
+                                    } ${style.className.replace(
+                                      'flex items-center gap-3',
+                                      'flex flex-col flex-1 min-h-0',
+                                    ).replace('min-h-[3.25rem]', '')}`}
+                                    whileHover={
+                                      !showResult && option.id !== selectedOption
+                                        ? { scale: 1.01 }
+                                        : {}
+                                    }
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.15, delay: 0.04 * globalIdx }}
+                                  >
+                                    <div className="flex items-center gap-2 px-3 pt-3 pb-1 shrink-0">
+                                      <div className={`w-9 h-9 rounded-full flex items-center justify-center font-semibold text-sm shrink-0 transition-all duration-200 ${style.iconBg} ${style.iconText}`}>
+                                        {style.showResultIcon === 'check' ? (
+                                          <Check className="w-4 h-4" />
+                                        ) : style.showResultIcon === 'x' ? (
+                                          <XIcon className="w-4 h-4" />
+                                        ) : (
+                                          option.id
+                                        )}
+                                      </div>
+                                      {!showResult && (
+                                        <kbd className="hidden xl:flex shrink-0 self-center bg-[var(--bg-tertiary)] text-[var(--text-muted)] text-[9px] font-mono font-semibold rounded-md w-5 h-5 items-center justify-center border border-[var(--border)]">
+                                          {globalIdx + 1}
+                                        </kbd>
+                                      )}
+                                    </div>
+                                    <div className="flex-1 min-h-0 px-3 pb-3 overflow-y-auto">
+                                      <p className={`text-[0.8125rem] font-medium leading-relaxed ${style.textCls}`}>
+                                        {option.text}
+                                      </p>
+                                    </div>
+                                  </motion.button>
+                                );
+                              })}
+                            </div>
+                          ))}
+                        </>
+                      );
+                    })()}
+                  </motion.div>
+                </AnimatePresence>
+                {/* Confirm + Next button */}
+                {!showResult && selectedOption && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="shrink-0 mt-3"
+                  >
+                    {currentQuestionNumber < totalQuestions ? (
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={confirmCurrentAnswer}
+                          className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold py-2.5 rounded-xl text-sm shadow-lg shadow-blue-600/20 transition-all hover:from-blue-500 hover:to-blue-400 active:scale-[0.99]"
+                        >
+                          Xác nhận
+                        </button>
+                        <button
+                          type="button"
+                          onClick={gotoNextQuestion}
+                          className="flex-1 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] text-[var(--text-primary)] font-semibold py-2.5 rounded-xl text-sm border border-[var(--border)] transition-all"
+                        >
+                          Câu tiếp
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={confirmCurrentAnswer}
+                        className="w-full bg-gradient-to-r from-emerald-600 to-green-500 text-white font-bold py-2.5 rounded-xl text-sm shadow-lg shadow-emerald-600/20 transition-all hover:from-emerald-500"
+                      >
+                        Xác nhận & Nộp bài
+                      </button>
+                    )}
+                  </motion.div>
+                )}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* ══════════ MOBILE LAYOUT ══════════ */}
       <div className="flex-1 flex flex-col lg:hidden overflow-hidden relative">
         <div className="flex-1 flex flex-col overflow-y-auto relative">
-          <div className="flex items-center justify-between px-4 py-2 shrink-0">
+          <div className="flex items-center justify-between px-4 py-3 shrink-0">
             <div className="flex items-baseline gap-1">
-              <span className="text-[var(--text-primary)] font-bold text-sm">
+              <span className="text-[var(--text-primary)] font-semibold text-base">
                 {t('question')} {currentQuestionNumber}
               </span>
-              <span className="text-[var(--text-secondary)] text-[10px] font-medium">/ {totalQuestions}</span>
+              <span className="bg-[var(--bg-tertiary)] text-[var(--text-secondary)] px-1.5 py-0.5 rounded-full text-[10px] font-medium">/{totalQuestions}</span>
             </div>
             <div className="flex items-center gap-2">
               <motion.div
-                className={`flex items-center gap-2 px-3 py-1 rounded-full ${timeBadgeClass}`}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full ${timeBadgeClass}`}
                 animate={
                   isUnderOneMin
                     ? { scale: [1, 1.08, 1], transition: { repeat: Infinity, duration: 0.8 } }
@@ -810,16 +993,13 @@ const MainContent: React.FC<MainContentProps> = ({
                         : {}
                 }
               >
-                <Clock className={`w-3.5 h-3.5 ${isUnderOneMin ? 'text-rose-500' : isLastMinutes ? 'text-amber-500' : 'text-blue-500'}`} />
-                <span className="font-mono font-bold text-xs">{timeLabel}</span>
+                <Clock className={`w-4 h-4 ${isUnderOneMin ? 'text-rose-500' : isLastMinutes ? 'text-amber-500' : 'text-blue-500'}`} />
+                <span className="font-mono font-semibold text-sm">{timeLabel}</span>
               </motion.div>
-              <button className="text-[var(--text-secondary)] hover:text-blue-500 transition-colors">
-                <Bookmark className="w-4 h-4" />
-              </button>
             </div>
           </div>
 
-          <div className="relative w-full rounded-2xl overflow-hidden bg-[var(--bg-tertiary)] shadow-md border border-[var(--border)] flex items-center justify-center shrink-0 h-[28vw] max-h-48">
+          <div className="relative w-full rounded-2xl overflow-hidden bg-[var(--bg-tertiary)] shadow-md border border-[var(--border)] flex items-center justify-center shrink-0 h-[28vw] max-h-56 mx-4">
             {question.image ? (
               <img
                 src={question.image}
@@ -833,12 +1013,12 @@ const MainContent: React.FC<MainContentProps> = ({
           </div>
 
           <div className="px-4 py-3 shrink-0">
-            <p className="text-[var(--text-primary)] text-sm font-bold leading-relaxed">
+            <p className="text-[var(--text-primary)] text-base font-semibold leading-relaxed">
               {question.text}
             </p>
           </div>
 
-          <div className="flex-1 grid grid-cols-1 gap-2 px-4 overflow-y-auto pb-4">
+          <div className="flex-1 grid grid-cols-1 gap-3 px-4 overflow-y-auto pb-4">
             {question.options.map((option) => {
               const style = getOptionStyle(option.id);
               return (
@@ -846,9 +1026,9 @@ const MainContent: React.FC<MainContentProps> = ({
                   key={option.id}
                   onClick={() => handleOptionClick(option.id)}
                   disabled={showResult}
-                  className={`w-full p-3 rounded-xl flex items-start gap-3 text-left transition-all duration-200 border ${style.className}`}
+                  className={`w-full rounded-xl flex items-center gap-3 text-left min-h-[56px] ${style.className}`}
                 >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-base shrink-0 transition-colors ${style.iconBg} ${style.iconText}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center font-semibold text-base shrink-0 transition-colors ${style.iconBg} ${style.iconText}`}>
                     {style.showResultIcon === 'check' ? (
                       <Check className="w-4 h-4" />
                     ) : style.showResultIcon === 'x' ? (
@@ -857,13 +1037,13 @@ const MainContent: React.FC<MainContentProps> = ({
                       option.id
                     )}
                   </div>
-                  <p className={`text-sm font-bold leading-snug pt-0.5 ${style.textCls}`}>{option.text}</p>
+                  <p className={`text-[0.9375rem] font-medium leading-relaxed min-w-0 flex-1 ${style.textCls}`}>{option.text}</p>
                 </button>
               );
             })}
           </div>
 
-          {/* ── Explanation drawer (slides up over options) ── */}
+          {/* ── Explanation drawer (mobile) ── */}
           <AnimatePresence>
             {showResult && (
               <motion.div
@@ -874,15 +1054,15 @@ const MainContent: React.FC<MainContentProps> = ({
                 transition={{ duration: 0.2 }}
                 key={`explanation-${currentQuestionNumber}`}
               >
-                <div className="bg-[var(--bg-secondary)]/95 backdrop-blur-md p-3 rounded-xl border border-[var(--border)] shadow-lg max-h-32 overflow-y-auto">
-                  <div className="flex items-start gap-2">
-                    <div className="text-[var(--text-primary)] font-bold text-xs shrink-0">{t('explanation')}</div>
+                <div className="bg-[var(--bg-secondary)]/95 backdrop-blur-md p-4 rounded-2xl border border-[var(--border)] shadow-lg max-h-[30vh] overflow-y-auto">
+                  <div className="flex items-start gap-2.5">
+                    <div className="text-[var(--text-primary)] font-semibold text-sm shrink-0">{t('explanation')}</div>
                     <div className="min-w-0">
-                      <div className="text-[var(--text-secondary)] text-xs leading-relaxed">
+                      <div className="text-[var(--text-secondary)] text-sm leading-relaxed">
                         {question.explanation}
                       </div>
                       {question.isCritical ? (
-                        <div className="text-rose-500 font-bold text-xs mt-1.5">Câu hỏi nghiêm trọng</div>
+                        <div className="text-rose-500 font-semibold text-sm mt-2">Câu hỏi nghiêm trọng</div>
                       ) : null}
                     </div>
                   </div>
@@ -892,31 +1072,34 @@ const MainContent: React.FC<MainContentProps> = ({
           </AnimatePresence>
 
           {/* ── Action buttons (always pinned to bottom) ── */}
-          <div className="px-4 pb-4 pt-2 shrink-0 flex items-center gap-2 relative z-30 bg-[var(--bg-primary)]/90 backdrop-blur-sm">
-            <button
+          <div className="px-4 pb-4 pt-2 shrink-0 flex items-center gap-3 relative z-30 bg-[var(--bg-primary)]/90 backdrop-blur-sm">
+            <motion.button
               type="button"
               onClick={confirmCurrentAnswer}
               disabled={showResult || !selectedOption || timeLeftSeconds <= 0}
-              className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2.5 rounded-xl transition-colors text-sm shadow-lg shadow-blue-600/20 disabled:opacity-40 disabled:pointer-events-none"
+              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold px-6 py-3 rounded-2xl transition-all text-sm shadow-lg shadow-blue-600/25 disabled:opacity-40 disabled:pointer-events-none"
+              whileTap={!showResult && selectedOption ? { scale: 0.97 } : {}}
             >
               {t('confirmAnswer')}
-            </button>
+            </motion.button>
             {currentQuestionNumber < totalQuestions ? (
-              <button
+              <motion.button
                 type="button"
                 onClick={gotoNextQuestion}
-                className="flex-1 bg-[var(--bg-tertiary)] hover:bg-[var(--bg-hover)] text-[var(--text-primary)] font-bold px-4 py-2.5 rounded-xl transition-colors text-sm border border-[var(--border)]"
+                className="flex-1 bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] text-[var(--text-primary)] font-semibold px-6 py-3 rounded-2xl transition-all text-sm border border-[var(--border)]"
+                whileTap={{ scale: 0.97 }}
               >
                 {t('nextQuestion')}
-              </button>
+              </motion.button>
             ) : (
-              <button
+              <motion.button
                 type="button"
                 onClick={submitExam}
-                className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl transition-colors text-sm shadow-lg shadow-emerald-600/20"
+                className="flex-1 bg-gradient-to-r from-emerald-600 to-green-500 text-white font-semibold px-6 py-3 rounded-2xl transition-all text-sm shadow-lg shadow-emerald-600/25"
+                whileTap={{ scale: 0.97 }}
               >
                 {t('finishTest')}
-              </button>
+              </motion.button>
             )}
           </div>
         </div>
