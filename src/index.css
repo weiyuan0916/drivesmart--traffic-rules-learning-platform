@@ -12,6 +12,8 @@
   --color-text-muted: #9CA3AF;
   --color-border: #E5E7EB;
   --color-border-strong: #D1D5DB;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
 }
 
 @layer base {
@@ -50,9 +52,12 @@
   }
 
   body {
-    @apply transition-colors duration-200;
+    @apply transition-colors duration-200 antialiased;
     background-color: var(--bg-primary);
     color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .scrollbar-visible {
