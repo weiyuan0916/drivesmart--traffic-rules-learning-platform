@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { AlertCircle, BookOpen, CheckCircle2, ChevronDown, Headphones, LayoutTemplate, Columns2 } from 'lucide-react';
+import { Car, CheckCircle2, ChevronDown, BookOpen, Clock, FileQuestion, Headphones, ShieldCheck } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import { SmoothScroll } from './SmoothScroll';
-import examSetupAvatar from '../assets/exam-setup-avatar.png';
 
 const TRAINING_OPTIONS = [
   'CƠ SỞ ĐÀO TẠO SÁT HẠCH LÁI XE',
@@ -58,33 +57,19 @@ function rankOptionsForVehicle(v: VehicleType): { label: string; options: string
 }
 
 interface ExamSetupScreenProps {
-  onStartExam: (data: { candidateName: string; licenseRank: string; examPaper: string }) => void;
+  onStartExam: () => void;
   isStarting?: boolean;
-  onSelectExamLayout?: (layout: 'split' | 'sideBySide') => void;
-  defaultExamLayout?: 'split' | 'sideBySide';
 }
 
-const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarting, onSelectExamLayout, defaultExamLayout = 'split' }) => {
+const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarting }) => {
   const { t } = useLanguage();
   const [candidateName, setCandidateName] = useState('LÊ VĂN TÙNG');
-  const [selectedLayout, setSelectedLayout] = useState<'split' | 'sideBySide'>(defaultExamLayout);
   const [examPaper, setExamPaper] = useState('Ngẫu nhiên');
   const [trainingCenter, setTrainingCenter] = useState(DEFAULT_TRAINING_CENTER);
   const [course, setCourse] = useState(COURSE_OPTIONS[0]);
   const [vehicleType, setVehicleType] = useState<VehicleType>('Ô tô');
   const [licenseRank, setLicenseRank] = useState(OTO_RANK_OPTIONS[0]);
   const [verified, setVerified] = useState(false);
-
-  // Persist layout selection
-  const persistLayout = (layout: 'split' | 'sideBySide') => {
-    try { localStorage.setItem('examLayout', layout); } catch {}
-  };
-
-  const handleLayoutChange = (layout: 'split' | 'sideBySide') => {
-    setSelectedLayout(layout);
-    persistLayout(layout);
-    onSelectExamLayout?.(layout);
-  };
 
   const statusLabel = useMemo(
     () => (verified ? t('setupStatusVerified') : t('setupStatusPending')),
@@ -102,177 +87,302 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
   };
 
   return (
-    <SmoothScroll className="relative flex min-h-0 w-full flex-1 flex-col bg-gradient-to-b from-[var(--bg-primary)] via-[var(--bg-secondary)] to-[var(--bg-tertiary)] text-[var(--text-primary)] dark:bg-gradient-to-b dark:from-[#12142a] dark:via-[#0f1020] dark:to-[var(--bg-primary)]">
-      <div className="fixed right-4 top-4 z-20 flex items-center gap-2 sm:right-6 sm:top-6">
+    <div className="flex h-screen overflow-hidden font-sans">
+      {/* Language switcher */}
+      <div className="fixed right-4 top-4 z-20">
         <LanguageSwitcher className="relative flex items-center gap-2" />
       </div>
 
-      <div className="mx-auto flex w-full max-w-lg flex-col gap-5 px-4 pb-28 pt-6 sm:px-6 sm:pt-10">
-        <header className="text-center">
-          <h1 className="text-xl font-black tracking-tight text-[var(--text-primary)] sm:text-2xl">
-            {t('theory600Title')}
-          </h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">{t('version2026')}</p>
-        </header>
+      {/* ═══ LEFT PANEL — Branding ═══ */}
+      <div className="relative hidden lg:flex lg:w-[42%] shrink-0 flex-col overflow-hidden bg-[#111318]">
 
-        <div className="flex flex-col items-center gap-3">
-          <div className="relative">
-            <div
-              className="absolute -inset-1 rounded-full bg-sky-400/25 blur-md dark:bg-cyan-400/25"
-              aria-hidden
-            />
-            <img
-              src={examSetupAvatar}
-              alt=""
-              className="relative h-24 w-24 rounded-full border-2 border-sky-500/55 object-cover shadow-lg shadow-sky-500/25 ring-2 ring-white dark:border-cyan-400/60 dark:shadow-cyan-500/20 dark:ring-0 sm:h-28 sm:w-28"
-            />
+        <div className="relative flex flex-col h-full p-10 xl:p-14">
+          {/* Logo + Brand */}
+          <motion.div
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex items-center gap-3"
+          >
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white">
+              <Car className="h-6 w-6 text-[#111318]" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-black tracking-tight text-white">DriveSmart</h1>
+              <p className="text-[10px] font-medium text-[#6B7280] tracking-widest uppercase">Driver License Platform</p>
+            </div>
+          </motion.div>
+
+          {/* Center content */}
+          <div className="flex-1 flex flex-col items-center justify-center text-center space-y-8">
+            {/* Simple icon */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="w-20 h-20 rounded-3xl bg-[#1a1d24] border border-[#2a2f3a] flex items-center justify-center"
+            >
+              <Car className="w-10 h-10 text-white" />
+            </motion.div>
+
+            {/* Title */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              className="space-y-3"
+            >
+              <h2 className="text-4xl xl:text-5xl font-black text-white leading-tight tracking-tight">
+                600 Câu hỏi
+              </h2>
+              <p className="text-xl xl:text-2xl font-bold text-[#9CA3AF]">
+                Lý thuyết GPLX
+              </p>
+              <p className="text-sm text-[#6B7280] max-w-xs mx-auto leading-relaxed">
+                Hệ thống ôn thi bằng lái xe chuẩn bộ công an 2026
+              </p>
+            </motion.div>
+
+            {/* Benefit pills */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.25 }}
+              className="flex flex-wrap items-center justify-center gap-3"
+            >
+              {[
+                { icon: FileQuestion, text: '30 câu' },
+                { icon: Clock, text: '20 phút' },
+                { icon: ShieldCheck, text: 'Chuẩn 2026' },
+              ].map(({ icon: Icon, text }) => (
+                <div
+                  key={text}
+                  className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold bg-[#1a1d24] border border-[#2a2f3a] text-[#9CA3AF]"
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  {text}
+                </div>
+              ))}
+            </motion.div>
           </div>
-          <label className="w-full max-w-xs">
-            <span className="sr-only">{t('candidateName')}</span>
-            <input
-              type="text"
-              value={candidateName}
-              onChange={(e) => {
-                setCandidateName(e.target.value);
-                setVerified(false);
-              }}
-              className="w-full border-b-2 border-[var(--border)] bg-transparent py-1.5 text-center text-base font-bold uppercase tracking-wide text-[var(--text-primary)] outline-none ring-0 placeholder:text-[var(--text-muted)] focus:border-blue-600 focus:bg-transparent dark:border-transparent dark:placeholder:text-[var(--text-secondary)] dark:focus:border-cyan-500/50"
-              placeholder={t('candidateName')}
-            />
-          </label>
-        </div>
 
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 shadow-sm shadow-slate-900/[0.06] ring-1 ring-black/[0.03] dark:shadow-none dark:ring-0">
-          <div className="space-y-3 text-sm">
-            <div className="flex flex-col gap-2">
-              <span className="block text-center text-[var(--text-secondary)]">
-                {t('chooseExamPaper')}
-              </span>
-              <div className="relative w-full min-w-0">
+          {/* Bottom badge */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="flex items-center justify-center"
+          >
+            <span className="text-[11px] font-medium text-[#4B5563] tracking-widest uppercase">Phiên bản 2026</span>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* ═══ RIGHT PANEL — Form ═══ */}
+      <div className="flex-1 flex flex-col overflow-y-auto bg-[var(--bg-primary)]">
+        <div className="flex-1 flex flex-col justify-center px-6 py-10 sm:px-8 lg:px-14 xl:px-20 max-w-xl lg:max-w-none mx-auto lg:mx-0 w-full lg:w-auto">
+          <motion.div
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+            className="space-y-6"
+          >
+            {/* Mobile logo */}
+            <div className="flex lg:hidden items-center gap-2.5 mb-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--text-primary)]">
+                <Car className="h-5 w-5 text-[var(--bg-primary)]" />
+              </div>
+              <div>
+                <h1 className="text-lg font-black text-[var(--text-primary)] tracking-tight leading-tight">DriveSmart</h1>
+                <p className="text-[10px] text-[var(--text-secondary)] font-medium tracking-wider">Driver License Platform</p>
+              </div>
+            </div>
+
+            {/* Header */}
+            <div className="space-y-1">
+              <h2 className="text-2xl sm:text-3xl font-black text-[var(--text-primary)] tracking-tight leading-tight">
+                Bắt đầu bài thi
+              </h2>
+              <p className="text-sm text-[var(--text-secondary)]">
+                Điền thông tin và chọn hạng GPLX của bạn
+              </p>
+            </div>
+
+            {/* Candidate name */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                Họ và tên thí sinh
+              </label>
+              <input
+                type="text"
+                value={candidateName}
+                onChange={(e) => {
+                  setCandidateName(e.target.value);
+                  setVerified(false);
+                }}
+                className="w-full rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3.5 pr-12 text-sm font-bold uppercase tracking-wide text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--text-primary)]"
+                placeholder="NHẬP HỌ TÊN"
+              />
+            </div>
+
+            {/* Exam paper */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                Đề thi
+              </label>
+              <SelectField
+                value={examPaper}
+                onChange={(v) => { setExamPaper(v); setVerified(false); }}
+                groups={EXAM_PAPER_GROUPS}
+              />
+            </div>
+
+            {/* Training center + Course */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                  Cơ sở
+                </label>
                 <SelectField
-                  variant="compact"
-                  textAlign="center"
-                  value={examPaper}
-                  onChange={(v) => {
-                    setExamPaper(v);
-                    setVerified(false);
-                  }}
-                  groups={EXAM_PAPER_GROUPS}
+                  value={trainingCenter}
+                  onChange={(v) => { setTrainingCenter(v); setVerified(false); }}
+                  options={TRAINING_OPTIONS}
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                  Khóa học
+                </label>
+                <SelectField
+                  value={course}
+                  onChange={(v) => { setCourse(v); setVerified(false); }}
+                  options={COURSE_OPTIONS}
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 border-t border-[var(--border)] pt-3 sm:flex-row sm:items-start sm:gap-4">
-              <span className="shrink-0 text-left text-[var(--text-secondary)]">{t('gplxRank')}</span>
-              <span className="min-w-0 flex-1 text-center font-semibold leading-snug text-[var(--text-primary)]">
-                {licenseRank}
-              </span>
+
+            {/* Vehicle type */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                Phương tiện
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {(Object.values(VEHICLE_OPTIONS) as VehicleType[]).map((v) => (
+                  <motion.button
+                    key={v}
+                    type="button"
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => onVehicleChange(v)}
+                    className={`rounded-2xl border py-3 px-4 text-sm font-bold transition-colors ${
+                      vehicleType === v
+                        ? 'bg-[var(--text-primary)] border-[var(--text-primary)] text-[var(--bg-primary)]'
+                        : 'border-[var(--border)] bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:border-[var(--border-strong)]'
+                    }`}
+                  >
+                    {v}
+                  </motion.button>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-col gap-2 border-t border-[var(--border)] pt-3 sm:flex-row sm:items-start sm:gap-4">
-              <span className="shrink-0 text-left text-[var(--text-secondary)]">{t('status')}</span>
-              <span className="flex min-w-0 flex-1 justify-center">
-                <span className="inline-flex items-center justify-center gap-1.5 text-center font-semibold text-[var(--text-primary)]">
+
+            {/* License rank */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                Hạng GPLX
+              </label>
+              <SelectField
+                value={licenseRank}
+                onChange={(v) => { setLicenseRank(v); setVerified(false); }}
+                groups={licenseGroups}
+              />
+            </div>
+
+            {/* Status pill */}
+            <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3">
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${verified ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                <span className="text-sm font-semibold text-[var(--text-secondary)]">
                   {statusLabel}
-                  {verified ? (
-                    <CheckCircle2
-                      className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400"
-                      aria-hidden
-                    />
-                  ) : (
-                    <AlertCircle
-                      className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-500"
-                      aria-hidden
-                    />
-                  )}
                 </span>
-              </span>
+              </div>
+              <span className="text-xs text-[var(--text-muted)]">{licenseRank.length > 28 ? licenseRank.slice(0, 26) + '…' : licenseRank}</span>
             </div>
-          </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col gap-3 pt-1">
+              <motion.button
+                type="button"
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setVerified(true)}
+                className="w-full rounded-2xl bg-[var(--text-primary)] px-4 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--bg-primary)] transition-opacity hover:opacity-80 flex items-center justify-center gap-2"
+              >
+                <CheckCircle2 className="h-5 w-5 shrink-0" />
+                Xác nhận thông tin
+              </motion.button>
+
+              <motion.button
+                type="button"
+                whileTap={{ scale: canStart ? 0.98 : 1 }}
+                onClick={onStartExam}
+                disabled={!canStart || isStarting}
+                className={`w-full rounded-2xl px-4 py-4 text-sm font-black uppercase tracking-wide transition-opacity flex items-center justify-center gap-2
+                  ${canStart && !isStarting
+                    ? 'bg-emerald-500 text-white hover:opacity-80'
+                    : 'bg-[var(--bg-hover)] text-[var(--text-muted)] cursor-not-allowed'
+                  }`}
+              >
+                {isStarting ? (
+                  <>
+                    <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                    </svg>
+                    Đang khởi tạo…
+                  </>
+                ) : (
+                  <>
+                    <Car className="h-5 w-5" />
+                    Bắt đầu làm bài thi
+                  </>
+                )}
+              </motion.button>
+            </div>
+
+            {/* Footer links */}
+            <div className="flex items-center justify-center gap-8 pt-2">
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
+              >
+                <BookOpen className="h-4 w-4" />
+                Hướng dẫn
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
+              >
+                <Headphones className="h-4 w-4" />
+                Hỗ trợ
+              </button>
+            </div>
+
+            <p className="text-center text-[10px] leading-relaxed text-[var(--text-muted)]">
+              Kết quả thi chỉ mang tính tham khảo. Vui lòng kiểm tra tại trang của cơ quan có thẩm quyền.
+            </p>
+          </motion.div>
         </div>
-
-        <div className="space-y-3">
-          <SelectField
-            value={trainingCenter}
-            onChange={(v) => {
-              setTrainingCenter(v);
-              setVerified(false);
-            }}
-            options={TRAINING_OPTIONS}
-          />
-          <SelectField
-            value={course}
-            onChange={(v) => {
-              setCourse(v);
-              setVerified(false);
-            }}
-            options={COURSE_OPTIONS}
-          />
-          <SelectField
-            value={vehicleType}
-            onChange={(v) => onVehicleChange(v as VehicleType)}
-            options={[...VEHICLE_OPTIONS]}
-          />
-          <SelectField
-            textAlign="center"
-            value={licenseRank}
-            onChange={(v) => {
-              setLicenseRank(v);
-              setVerified(false);
-            }}
-            groups={licenseGroups}
-          />
-        </div>
-
-        <div className="flex flex-col gap-3 pt-1">
-          <button
-            type="button"
-            onClick={() => setVerified(true)}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-orange-700 px-4 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-orange-900/35 transition-colors hover:bg-orange-600 active:scale-[0.99] dark:bg-orange-500 dark:shadow-orange-600/25 dark:hover:bg-orange-400"
-          >
-            <CheckCircle2 className="h-5 w-5 shrink-0" />
-            {t('verifyCandidate')}
-          </button>
-          <button
-            type="button"
-            disabled={!canStart || isStarting}
-            onClick={() => onStartExam({ candidateName, licenseRank, examPaper })}
-            className="w-full rounded-2xl bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-4 text-sm font-black uppercase tracking-wide text-white shadow-[0_10px_40px_-6px_rgba(5,150,105,0.5),0_4px_14px_-4px_rgba(21,128,61,0.38)] ring-1 ring-white/20 transition-all hover:from-emerald-500 hover:to-green-600 hover:shadow-[0_14px_44px_-6px_rgba(5,150,105,0.55),0_6px_18px_-4px_rgba(21,128,61,0.42)] active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-none disabled:bg-[var(--bg-hover)] disabled:text-[var(--text-muted)] disabled:shadow-none disabled:ring-0 dark:bg-gradient-to-r dark:from-emerald-500 dark:to-green-600 dark:text-white dark:shadow-[0_10px_36px_-6px_rgba(16,185,129,0.45)] dark:ring-emerald-400/25 dark:hover:from-emerald-400 dark:hover:to-green-500 dark:disabled:bg-none dark:disabled:bg-[var(--bg-hover)] dark:disabled:text-[var(--text-secondary)] dark:disabled:shadow-none"
-          >
-            {t('startExamNow')}
-          </button>
-        </div>
-
-        <p className="text-center text-[11px] font-medium leading-relaxed text-red-600 dark:text-red-400">
-          {t('setupDisclaimer')}
-        </p>
-
-        <footer className="flex items-center justify-center gap-10 pb-4 text-sm text-[var(--text-secondary)]">
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 transition-colors hover:text-blue-700 dark:hover:text-cyan-400"
-          >
-            <BookOpen className="h-5 w-5" />
-            {t('guide')}
-          </button>
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 transition-colors hover:text-blue-700 dark:hover:text-cyan-400"
-          >
-            <Headphones className="h-5 w-5" />
-            {t('support')}
-          </button>
-        </footer>
       </div>
-    </SmoothScroll>
+    </div>
   );
 };
 
+/* ── SelectField ── */
 function SelectField({
   value,
   onChange,
   options,
   groups,
   disabled,
-  variant = 'default',
   textAlign = 'left',
 }: {
   value: string;
@@ -280,39 +390,95 @@ function SelectField({
   options?: string[];
   groups?: { label: string; options: string[] }[];
   disabled?: boolean;
-  variant?: 'default' | 'compact';
   textAlign?: 'left' | 'center' | 'right';
 }) {
-  const padding = variant === 'compact' ? 'py-2 pl-3 pr-9' : 'py-3.5 pl-4 pr-10';
-  const textSize = variant === 'compact' ? 'text-sm' : 'text-sm';
+  const [open, setOpen] = useState(false);
+
+  const displayOptions = useMemo(() => {
+    if (groups) return groups.flatMap(g => g.options);
+    return options ?? [];
+  }, [groups, options]);
+
+  const isOptGroup = !!groups;
+  const optGroups = groups ?? [{ label: '', options: options ?? [] }];
+
   const alignClass =
     textAlign === 'center' ? 'text-center' : textAlign === 'right' ? 'text-right' : 'text-left';
 
   return (
     <div className="relative">
-      <select
-        value={value}
+      <button
+        type="button"
         disabled={disabled}
-        onChange={(e) => onChange(e.target.value)}
-        className={`w-full appearance-none rounded-xl border font-semibold outline-none transition-colors disabled:cursor-not-allowed disabled:opacity-70 ${padding} ${textSize} ${alignClass} border-[var(--border)] bg-[var(--bg-secondary)] text-[var(--text-primary)] shadow-sm ring-1 ring-black/[0.04] hover:border-[var(--text-muted)] focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 dark:border-[var(--border)] dark:bg-[var(--bg-tertiary)] dark:shadow-none dark:ring-0 dark:hover:border-[var(--border)] dark:focus:border-transparent dark:focus:ring-cyan-500/40`}
+        onClick={() => !disabled && setOpen(o => !o)}
+        className={`w-full flex items-center appearance-none rounded-xl border font-semibold outline-none transition-colors disabled:cursor-not-allowed disabled:opacity-70 py-3 pl-4 pr-10 text-sm bg-[var(--bg-secondary)] border-[var(--border)] text-[var(--text-primary)] hover:border-[var(--border-strong)] focus:border-[var(--text-primary)] ${alignClass}`}
       >
-        {groups
-          ? groups.map((g) => (
-              <optgroup key={g.label} label={g.label}>
-                {g.options.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </optgroup>
-            ))
-          : (options ?? []).map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-      </select>
-      <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)]" />
+        <span className="flex-1 text-left truncate">{value}</span>
+      </button>
+      <ChevronDown
+        className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)] transition-transform duration-200"
+        style={{ transform: open ? 'translateY(-50%) rotate(180deg)' : 'translateY(-50%)' }}
+      />
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.15 }}
+            className="absolute z-50 mt-1 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] overflow-hidden"
+            style={{ left: 0, right: 0 }}
+          >
+            <div className="max-h-56 overflow-y-auto py-1">
+              {isOptGroup
+                ? optGroups.map((group) => (
+                    <div key={group.label}>
+                      {group.label && (
+                        <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                          {group.label}
+                        </div>
+                      )}
+                      {group.options.map((opt) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => { onChange(opt); setOpen(false); }}
+                          className={`w-full px-3 py-2.5 text-sm text-left font-semibold transition-colors ${
+                            opt === value
+                              ? 'bg-[var(--bg-tertiary)] text-[var(--text-primary)]'
+                              : 'text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
+                          }`}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  ))
+                : displayOptions.map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => { onChange(opt); setOpen(false); }}
+                      className={`w-full px-3 py-2.5 text-sm text-left font-semibold transition-colors ${
+                        opt === value
+                          ? 'bg-[var(--bg-tertiary)] text-[var(--text-primary)]'
+                          : 'text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {open && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setOpen(false)}
+          aria-hidden
+        />
+      )}
     </div>
   );
 }

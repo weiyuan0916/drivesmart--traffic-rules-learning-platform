@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Eye } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import type { Question } from '../types';
-import { SmoothScroll } from './SmoothScroll';
 
 interface SidebarProps {
   totalQuestions: number;
@@ -14,17 +13,17 @@ interface SidebarProps {
   collapsedSidebar: boolean;
 }
 
-const CHAPTER_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  'Khái niệm': { bg: 'bg-blue-500', text: 'text-white', border: 'border-blue-400' },
-  'Quy tắc': { bg: 'bg-emerald-500', text: 'text-white', border: 'border-emerald-400' },
-  'Sa hình': { bg: 'bg-amber-500', text: 'text-white', border: 'border-amber-400' },
-  'Hệ thống': { bg: 'bg-purple-500', text: 'text-white', border: 'border-purple-400' },
-  'Văn hóa': { bg: 'bg-pink-500', text: 'text-white', border: 'border-pink-400' },
-  'Kỹ thuật': { bg: 'bg-cyan-500', text: 'text-white', border: 'border-cyan-400' },
+const CHAPTER_COLORS: Record<string, { bg: string; text: string; border: string; hex: string }> = {
+  'Khái niệm': { bg: 'bg-blue-500', text: 'text-white', border: 'border-blue-400', hex: '#3B82F6' },
+  'Quy tắc': { bg: 'bg-emerald-500', text: 'text-white', border: 'border-emerald-400', hex: '#22C55E' },
+  'Sa hình': { bg: 'bg-amber-500', text: 'text-white', border: 'border-amber-400', hex: '#F59E0B' },
+  'Hệ thống': { bg: 'bg-purple-500', text: 'text-white', border: 'border-purple-400', hex: '#A855F7' },
+  'Văn hóa': { bg: 'bg-pink-500', text: 'text-white', border: 'border-pink-400', hex: '#EC4899' },
+  'Kỹ thuật': { bg: 'bg-cyan-500', text: 'text-white', border: 'border-cyan-400', hex: '#06B6D4' },
 };
 
 const getChapterColor = (chapter: string) => {
-  return CHAPTER_COLORS[chapter] || { bg: 'bg-slate-500', text: 'text-white', border: 'border-slate-400' };
+  return CHAPTER_COLORS[chapter] || { bg: 'bg-slate-500', text: 'text-white', border: 'border-slate-400', hex: '#64748B' };
 };
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -43,7 +42,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   const selectedAnswer = confirmedAnswers[safeSelectedIndex];
   const isSelectedAnswered = selectedAnswer !== null && selectedAnswer !== undefined;
 
-  // Group questions by chapter
   const chapterGroups: Record<string, number[]> = {};
   questions.forEach((q, i) => {
     const ch = q.chapter || 'Khác';
@@ -53,70 +51,78 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const chapterList = Object.keys(chapterGroups);
 
+  const chapterStats = useMemo(() => {
+    return chapterList.map((chapter) => {
+      const nums = chapterGroups[chapter];
+      const total = nums.length;
+      const answered = nums.filter((n) => confirmedAnswers[n - 1] !== null).length;
+      const correct = nums.filter((n) => {
+        const q = questions[n - 1];
+        const a = confirmedAnswers[n - 1];
+        return a !== null && q && a === q.correctAnswer;
+      }).length;
+      const mastery = total > 0 ? Math.round((correct / total) * 100) : 0;
+      return { chapter, total, correct, answered, mastery };
+    });
+  }, [confirmedAnswers, chapterGroups, chapterList, questions]);
+
+  const answeredCount = confirmedAnswers.filter(Boolean).length;
+  const correctCount = confirmedAnswers.reduce((acc, a, i) => {
+    if (a !== null && questions[i] && a === questions[i].correctAnswer) return acc + 1;
+    return acc;
+  }, 0);
+  const incorrectCount = answeredCount - correctCount;
+  const remainingCount = totalQuestions - answeredCount;
+
   return (
-    <SmoothScroll className="flex h-full min-h-0 min-w-0 w-full flex-col gap-4 border-r border-[var(--border)] bg-[var(--bg-secondary)] p-4 pb-28 lg:w-80 lg:pb-6 lg:p-5">
-      {/* Content — hidden when sidebar is collapsed */}
+    <div className="flex h-full min-h-0 min-w-0 w-full flex-col gap-4 border-r border-[var(--border)] bg-[var(--bg-secondary)] p-4 pb-28 lg:w-80 lg:pb-6 lg:p-5">
       {!collapsedSidebar && (
         <>
-          {/* Progress summary card */}
+          {/* Progress summary */}
           <div className="rounded-2xl bg-[var(--bg-tertiary)] p-4 border border-[var(--border)]">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Tiến độ</span>
-              <span className="text-sm font-black text-[var(--text-primary)]">
-                {confirmedAnswers.filter(Boolean).length}/{totalQuestions}
+              <span className="text-base font-black text-[var(--text-primary)] tabular-nums">
+                {answeredCount}/{totalQuestions}
               </span>
             </div>
-            {/* Progress bar */}
-            <div className="w-full h-2 rounded-full bg-[var(--bg-hover)] overflow-hidden">
-              <motion.div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-green-400"
-                initial={{ width: 0 }}
-                animate={{ width: `${(confirmedAnswers.filter(Boolean).length / totalQuestions) * 100}%` }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-              />
-            </div>
-            <div className="mt-2.5 flex justify-between text-[10px] text-[var(--text-muted)] font-medium">
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" /> Đúng
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-rose-500" /> Sai
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-[var(--bg-hover)]" /> Chưa trả
-              </span>
+            <div className="w-full h-2 rounded-full bg-[var(--bg-hover)] overflow-hidden flex">
+              {totalQuestions > 0 && (
+                <>
+                  <motion.div
+                    className="h-full bg-emerald-500"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(correctCount / totalQuestions) * 100}%` }}
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                  />
+                  <motion.div
+                    className="h-full bg-rose-500"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(incorrectCount / totalQuestions) * 100}%` }}
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                  />
+                </>
+              )}
             </div>
           </div>
 
           {/* Question Grid by Chapter */}
           <div className="space-y-3">
             {chapterList.map((chapter) => {
+              const stats = chapterStats.find((s) => s.chapter === chapter);
               const nums = chapterGroups[chapter];
               const color = getChapterColor(chapter);
-              const answered = nums.filter((n) => confirmedAnswers[n - 1] !== null).length;
-              const correct = nums.filter((n) => {
-                const q = questions[n - 1];
-                const a = confirmedAnswers[n - 1];
-                return a !== null && q && a === q.correctAnswer;
-              }).length;
               return (
                 <div key={chapter} className="rounded-2xl bg-[var(--bg-tertiary)] p-3.5 border border-[var(--border)]">
-                  {/* Chapter header */}
                   <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${color.bg}`} />
-                      <span className="text-xs font-bold text-[var(--text-primary)] truncate max-w-[100px]">{chapter}</span>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className={`w-2 h-2 rounded-full shrink-0 ${color.bg}`} />
+                      <span className="text-xs font-bold text-[var(--text-primary)] truncate">{chapter}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      {correct > 0 && (
-                        <span className="text-[10px] font-bold text-emerald-500">{correct}</span>
-                      )}
-                      <span className="text-[10px] font-semibold text-[var(--text-muted)]">
-                        {answered}/{nums.length}
-                      </span>
-                    </div>
+                    <span className="text-[10px] font-semibold text-[var(--text-muted)] shrink-0">
+                      {stats?.answered ?? 0}/{nums.length}
+                    </span>
                   </div>
-                  {/* Grid of buttons */}
                   <div className="grid grid-cols-6 gap-1.5">
                     {nums.map((num) => {
                       const isCurrent = num === currentQuestionNumber;
@@ -126,19 +132,24 @@ const Sidebar: React.FC<SidebarProps> = ({
                       const isCorrect = isAnswered && q ? a === q.correctAnswer : false;
                       const qColor = getChapterColor(q?.chapter || 'Khác');
                       const btnBg = !isAnswered
-                        ? `${qColor.bg}/15 text-${qColor.bg.replace('bg-', '')}-500 border border-${qColor.bg.replace('bg-', '')}-500/20`
+                        ? { backgroundColor: `${qColor.hex}20`, color: qColor.hex, borderColor: `${qColor.hex}30` }
                         : isCorrect
-                        ? 'bg-emerald-500 text-white border border-emerald-500'
-                        : 'bg-rose-500 text-white border border-rose-500';
+                        ? { backgroundColor: '#22C55E', color: '#fff', borderColor: '#16A34A' }
+                        : { backgroundColor: '#EF4444', color: '#fff', borderColor: '#DC2626' };
                       return (
                         <motion.button
                           key={num}
                           type="button"
                           onClick={() => onCurrentQuestionNumberChange(num)}
-                          whileHover={{ scale: 1.1 }}
+                          whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.92 }}
-                          className={`w-full aspect-square rounded-xl text-[11px] font-bold leading-none transition-all flex items-center justify-center ${btnBg} ${
-                            isCurrent ? 'ring-2 ring-blue-400 ring-offset-1 ring-offset-[var(--bg-tertiary)] shadow-lg' : ''
+                          style={{
+                            ...btnBg,
+                            borderWidth: 1,
+                            borderStyle: 'solid',
+                          }}
+                          className={`w-full aspect-square rounded-xl text-[11px] font-bold leading-none transition-all flex items-center justify-center ${
+                            isCurrent ? 'ring-2 ring-blue-400 ring-offset-1 ring-offset-[var(--bg-tertiary)]' : ''
                           }`}
                           aria-label={`Question ${num}`}
                         >
@@ -153,27 +164,34 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
 
           {/* Explanation Section */}
-          {isSelectedAnswered && (
+          {isSelectedAnswered && selectedQuestion && (
             <motion.div
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-gradient-to-br from-[var(--bg-tertiary)] to-[var(--bg-secondary)] px-4 py-4 rounded-2xl border border-[var(--border)]"
+              className="rounded-2xl border border-[var(--border)] overflow-hidden"
             >
-              <div className="flex items-center justify-between mb-2.5">
-                <div className="flex items-center gap-1.5">
-                  <Eye className="w-3.5 h-3.5 text-blue-500" />
+              <div className="flex items-center justify-between px-4 pt-4 pb-2 bg-[var(--bg-tertiary)]">
+                <div className="flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-[var(--text-secondary)]" />
                   <h3 className="text-[var(--text-primary)] font-bold text-sm">{t('explanation')}</h3>
                 </div>
                 <span className="text-[10px] font-bold text-[var(--text-muted)]">Q{currentQuestionNumber}</span>
               </div>
-              <p className="text-[var(--text-secondary)] text-sm leading-relaxed line-clamp-4">
-                {selectedQuestion.explanation}
-              </p>
+              <div className="px-4 py-4 bg-[var(--bg-secondary)] space-y-3">
+                {selectedQuestion.isCritical && (
+                  <div className="flex items-center gap-2 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/30 rounded-lg px-3 py-2">
+                    <span className="text-xs font-semibold text-rose-600 dark:text-rose-400">Câu nghiêm trọng — Sai = trượt</span>
+                  </div>
+                )}
+                <p className="text-[var(--text-secondary)] text-[15px] leading-relaxed font-normal">
+                  {selectedQuestion.explanation}
+                </p>
+              </div>
             </motion.div>
           )}
         </>
       )}
-    </SmoothScroll>
+    </div>
   );
 };
 
