@@ -3,6 +3,9 @@ import { Car, CheckCircle2, ChevronDown, BookOpen, Clock, FileQuestion, Headphon
 import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import { LicenseType, EXAM_CONFIGS } from '../services/examGenerator';
+
+// Exam info based on Dự thảo Công văn 2333/C08-P5 (5/2026) - Tăng số câu hỏi tất cả các hạng
 
 const TRAINING_OPTIONS = [
   'CƠ SỞ ĐÀO TẠO SÁT HẠCH LÁI XE',
@@ -39,6 +42,24 @@ const MOTO_RANK_OPTIONS = ['Mô tô hạng A1 (dưới 125cc)', 'Mô tô hạng 
 const OTO_GROUP_LABEL = '+ Ô TÔ NĂM 2025 - bộ công an';
 const MOTO_GROUP_LABEL = '+ HẠNG MÔ TÔ - Bộ công an';
 
+// Mapping from rank display text to LicenseType
+const RANK_TO_LICENSE_TYPE: Record<string, LicenseType> = {
+  'Ô tô hạng B (tự động & sàn)': 'B',
+  'Ô tô hạng C1': 'C1',
+  'Ô tô hạng C': 'C',
+  'Ô tô hạng D1': 'D1',
+  'Ô tô hạng D2': 'D2',
+  'Ô tô hạng D': 'D',
+  'Ô tô hạng BE': 'BE',
+  'Ô tô hạng C1E': 'C1E',
+  'Ô tô hạng CE': 'CE',
+  'Ô tô hạng D1E': 'D1E',
+  'Ô tô hạng D2E': 'D2E',
+  'Ô tô hạng DE': 'DE',
+  'Mô tô hạng A1 (dưới 125cc)': 'A1',
+  'Mô tô hạng A (trên 125 cc)**': 'A',
+};
+
 const EXAM_PAPER_GROUPS: { label: string; options: string[] }[] = [
   { label: 'Đề thi ngẫu nhiên', options: ['Ngẫu nhiên'] },
   {
@@ -57,7 +78,7 @@ function rankOptionsForVehicle(v: VehicleType): { label: string; options: string
 }
 
 interface ExamSetupScreenProps {
-  onStartExam: () => void;
+  onStartExam: (licenseType: LicenseType) => void;
   isStarting?: boolean;
 }
 
@@ -97,12 +118,12 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
       <div className="relative hidden lg:flex lg:w-[42%] shrink-0 flex-col overflow-hidden bg-[#111318]">
 
         <div className="relative flex flex-col h-full p-10 xl:p-14">
-          {/* Logo + Brand */}
+          {/* Logo + Brand - top center */}
           <motion.div
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="flex items-center gap-3"
+            className="absolute top-8 left-1/2 -translate-x-1/2 flex items-center gap-3"
           >
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white">
               <Car className="h-6 w-6 text-[#111318]" />
@@ -226,7 +247,7 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
             </div>
 
             {/* Exam paper */}
-            <div className="space-y-1.5">
+            <div className="hidden lg:block space-y-1.5">
               <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                 Đề thi
               </label>
@@ -239,7 +260,7 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
 
             {/* Training center + Course */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <div className="space-y-1.5">
+              <div className="hidden lg:block space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                   Cơ sở
                 </label>
@@ -297,6 +318,40 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
               />
             </div>
 
+            {/* Exam info based on selected rank */}
+            {EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]] && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="rounded-2xl border border-amber-500/50 bg-amber-500/5 p-4"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileQuestion className="w-4 h-4 text-blue-400" />
+                    <span className="text-sm font-bold text-[var(--text-primary)]">
+                      {EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]].totalQuestions} câu hỏi
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-emerald-400" />
+                    <span className="text-sm font-bold text-[var(--text-primary)]">
+                      {EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]].timeMinutes} phút
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-amber-400" />
+                    <span className="text-sm font-bold text-[var(--text-primary)]">
+                      ≥{EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]].passingScore}/{EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]].totalQuestions}
+                    </span>
+                  </div>
+                </div>
+                <p className="mt-2 text-xs text-[var(--text-muted)]">
+                  ⚠️ Theo Dự thảo Công văn 2333/C08-P5 - Tăng số câu hỏi 2026
+                </p>
+              </motion.div>
+            )}
+
             {/* Status pill */}
             <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3">
               <div className="flex items-center gap-2">
@@ -323,7 +378,7 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
               <motion.button
                 type="button"
                 whileTap={{ scale: canStart ? 0.98 : 1 }}
-                onClick={onStartExam}
+                onClick={() => onStartExam(RANK_TO_LICENSE_TYPE[licenseRank] || 'B1')}
                 disabled={!canStart || isStarting}
                 className={`w-full rounded-2xl px-4 py-4 text-sm font-black uppercase tracking-wide transition-opacity flex items-center justify-center gap-2
                   ${canStart && !isStarting

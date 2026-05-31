@@ -13,16 +13,32 @@ interface MainContentProps {
   onCurrentQuestionNumberChange?: (n: number) => void;
   onRestartExam?: () => void;
   onExamStatsComputed?: (stats: ChapterStat[]) => void;
+  examTimeMinutes?: number;
 }
+
+type ChapterAnalysis = {
+  chapterNumber: number;
+  chapter: string;
+  chapterShort: string;
+  correct: number;
+  total: number;
+  accuracy: number;
+};
 
 type ExamScore = {
   correct: number;
   incorrect: number;
+  skipped: number;
   criticalWrong: number;
   pass: boolean;
+  totalQuestions: number;
+  accuracy: number;
+  chapterAnalysis: ChapterAnalysis[];
+  strongestChapters: ChapterAnalysis[];
+  weakestChapters: ChapterAnalysis[];
+  studyRecommendations: string[];
 };
 
-const EXAM_DURATION_SECONDS = 20 * 60;
 const AMBER_WARNING_SECONDS = 5 * 60;
 const RED_WARNING_SECONDS = 60;
 const STUCK_THRESHOLD_MS = 120 * 1000;
@@ -41,19 +57,23 @@ const MainContent: React.FC<MainContentProps> = ({
   onCurrentQuestionNumberChange,
   onRestartExam,
   onExamStatsComputed,
+  examTimeMinutes = 30,
 }) => {
   const { t } = useLanguage();
   const totalQuestions = questions.length;
+  const examDurationSeconds = examTimeMinutes * 60;
 
   const examStartedAtRef = useRef<number>(Date.now());
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
   const [examFinished, setExamFinished] = useState(false);
   const [examScore, setExamScore] = useState<ExamScore | null>(null);
-  const [timeLeftSeconds, setTimeLeftSeconds] = useState(EXAM_DURATION_SECONDS);
+  const [timeLeftSeconds, setTimeLeftSeconds] = useState(examDurationSeconds);
   const [questionStartTime, setQuestionStartTime] = useState<number>(Date.now());
   const [isStuck, setIsStuck] = useState(false);
   const [imageEnlarged, setImageEnlarged] = useState(false);
+  const [isDissolving, setIsDissolving] = useState(false);
+  const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
 
   const currentIndex = currentQuestionNumber - 1;
   const question = questions[currentIndex];
@@ -61,14 +81,14 @@ const MainContent: React.FC<MainContentProps> = ({
   // ── Reset on new exam ──
   useEffect(() => {
     examStartedAtRef.current = Date.now();
-    setTimeLeftSeconds(EXAM_DURATION_SECONDS);
+    setTimeLeftSeconds(examDurationSeconds);
     setCurrentQuestionNumber(1);
     setSelectedOption(null);
     setExamFinished(false);
     setExamScore(null);
     setQuestionStartTime(Date.now());
     setIsStuck(false);
-  }, [questions]);
+  }, [questions, examDurationSeconds]);
 
   // ── Reset image enlarged when question changes ──
   useEffect(() => {
@@ -80,7 +100,7 @@ const MainContent: React.FC<MainContentProps> = ({
     if (examFinished) return;
     const tick = () => {
       const elapsedSeconds = (Date.now() - examStartedAtRef.current) / 1000;
-      const remaining = EXAM_DURATION_SECONDS - elapsedSeconds;
+      const remaining = examDurationSeconds - elapsedSeconds;
       if (remaining <= 0) {
         setTimeLeftSeconds(0);
         return;
@@ -183,6 +203,18 @@ const MainContent: React.FC<MainContentProps> = ({
   const showResult = currentConfirmedAnswer !== null && currentConfirmedAnswer !== undefined;
   const correctOptionId = question?.correctAnswer;
 
+  // ── Auto-dismiss explanation after 5 seconds ──
+  useEffect(() => {
+    if (!showResult) {
+      setIsDissolving(false);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setIsDissolving(true);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [showResult, currentQuestionNumber]);
+
   // ── Timer visuals ──
   const timeLabel = useMemo(() => formatMmSs(timeLeftSeconds), [timeLeftSeconds]);
   const isLastMinutes = timeLeftSeconds > 0 && timeLeftSeconds <= AMBER_WARNING_SECONDS;
@@ -273,6 +305,77 @@ const MainContent: React.FC<MainContentProps> = ({
 
   const confirmCurrentAnswer = () => {
     if (examFinished || timeLeftSeconds <= 0 || !question || !selectedOption) return;
+    
+    // Check if wrong answer on critical question - exam ends immediately
+    const isWrongAnswer = selectedOption !== question.correctAnswer;
+    if (question.isCritical && isWrongAnswer) {
+      // Mark this answer and immediately end the exam
+      const next = [...confirmedAnswers];
+      next[currentIndex] = selectedOption;
+      onConfirmedAnswersChange(next);
+      
+      // Calculate results
+      const answersForScore = next;
+      let correct = 0;
+      let incorrect = 0;
+      let skipped = 0;
+      const chapterMap = new Map<number, { correct: number; total: number; skipped: number }>();
+      
+      for (let i = 0; i < questions.length; i += 1) {
+        const q = questions[i];
+        const selected = answersForScore[i];
+        const isSkipped = selected == null;
+        const ok = !isSkipped && selected === q.correctAnswer;
+        const entry = chapterMap.get(q.chapterNumber) ?? { correct: 0, total: 0, skipped: 0 };
+        entry.total += 1;
+        if (isSkipped) {
+          entry.skipped += 1;
+          skipped += 1;
+        } else if (ok) {
+          entry.correct += 1;
+          correct += 1;
+        } else {
+          incorrect += 1;
+        }
+        chapterMap.set(q.chapterNumber, entry);
+      }
+      
+      const accuracy = Math.round((correct / questions.length) * 100);
+      const chapterAnalysis: ChapterAnalysis[] = EXAM_CHAPTERS_ORDERED.map(({ chapterNumber, title }) => {
+        const value = chapterMap.get(chapterNumber) ?? { correct: 0, total: 0, skipped: 0 };
+        const answeredInChapter = value.total - value.skipped;
+        const chapterAcc = answeredInChapter > 0 ? Math.round((value.correct / answeredInChapter) * 100) : 0;
+        const shortTitle = title.replace(/^Chương \d+\.\s*/, '').substring(0, 30);
+        return { chapterNumber, chapter: title, chapterShort: shortTitle, correct: value.correct, total: value.total, accuracy: chapterAcc };
+      });
+      const sortedChapters = [...chapterAnalysis].filter(c => c.total > 0).sort((a, b) => b.accuracy - a.accuracy);
+      const weakestChapters = sortedChapters.filter(c => c.accuracy < 80).sort((a, b) => a.accuracy - b.accuracy).slice(0, 3);
+      const studyRecommendations: string[] = [];
+      if (weakestChapters.length > 0) {
+        studyRecommendations.push(`Hãy tập trung vào "${weakestChapters[0].chapterShort}" - đây là lĩnh vực cần cải thiện.`);
+      }
+      studyRecommendations.push(`Chú ý các câu hỏi nghiêm trọng - sai 1 câu sẽ dẫn đến trượt.`);
+      
+      setExamScore({ 
+        correct, incorrect, skipped, criticalWrong: 1, pass: false, 
+        totalQuestions: questions.length, accuracy, 
+        chapterAnalysis, 
+        strongestChapters: sortedChapters.filter(c => c.accuracy >= 80).slice(0, 3),
+        weakestChapters,
+        studyRecommendations 
+      });
+      setExamFinished(true);
+      
+      if (onExamStatsComputed) {
+        const chapterStats: ChapterStat[] = EXAM_CHAPTERS_ORDERED.map(({ chapterNumber, title }) => {
+          const value = chapterMap.get(chapterNumber) ?? { correct: 0, total: 0, skipped: 0 };
+          return { chapterNumber, chapter: title, correct: value.correct, total: value.total };
+        });
+        onExamStatsComputed(chapterStats);
+      }
+      return;
+    }
+    
     const next = [...confirmedAnswers];
     next[currentIndex] = selectedOption;
     onConfirmedAnswersChange(next);
@@ -293,17 +396,22 @@ const MainContent: React.FC<MainContentProps> = ({
 
     let correct = 0;
     let incorrect = 0;
+    let skipped = 0;
     let criticalWrong = 0;
-    const chapterMap = new Map<number, { correct: number; total: number }>();
+    const chapterMap = new Map<number, { correct: number; total: number; skipped: number }>();
 
     for (let i = 0; i < questions.length; i += 1) {
       const q = questions[i];
       const selected = answersForScore[i];
-      const ok = selected === q.correctAnswer;
+      const isSkipped = selected == null;
+      const ok = !isSkipped && selected === q.correctAnswer;
 
-      const entry = chapterMap.get(q.chapterNumber) ?? { correct: 0, total: 0 };
+      const entry = chapterMap.get(q.chapterNumber) ?? { correct: 0, total: 0, skipped: 0 };
       entry.total += 1;
-      if (ok) {
+      if (isSkipped) {
+        entry.skipped += 1;
+        skipped += 1;
+      } else if (ok) {
         entry.correct += 1;
         correct += 1;
       } else {
@@ -311,16 +419,70 @@ const MainContent: React.FC<MainContentProps> = ({
       }
       chapterMap.set(q.chapterNumber, entry);
 
-      if (q.isCritical && !ok) criticalWrong += 1;
+      if (q.isCritical && !ok && !isSkipped) criticalWrong += 1;
     }
 
-    const pass = criticalWrong === 0;
-    setExamScore({ correct, incorrect, criticalWrong, pass });
+    const pass = criticalWrong === 0 && correct >= questions.length * 0.9;
+
+    // Build chapter analysis
+    const chapterAnalysis: ChapterAnalysis[] = EXAM_CHAPTERS_ORDERED.map(({ chapterNumber, title }) => {
+      const value = chapterMap.get(chapterNumber) ?? { correct: 0, total: 0, skipped: 0 };
+      const answeredInChapter = value.total - value.skipped;
+      const accuracy = answeredInChapter > 0 ? Math.round((value.correct / answeredInChapter) * 100) : 0;
+      const shortTitle = title.replace(/^Chương \d+\.\s*/, '').substring(0, 30);
+      return { chapterNumber, chapter: title, chapterShort: shortTitle, correct: value.correct, total: value.total, accuracy };
+    });
+
+    // Sort by accuracy for strongest/weakest
+    const sortedChapters = [...chapterAnalysis].filter(c => c.total > 0).sort((a, b) => b.accuracy - a.accuracy);
+    const strongestChapters = sortedChapters.filter(c => c.accuracy >= 80).slice(0, 3);
+    const weakestChapters = sortedChapters.filter(c => c.accuracy < 80).sort((a, b) => a.accuracy - b.accuracy).slice(0, 3);
+
+    // Generate study recommendations
+    const studyRecommendations: string[] = [];
+    const accuracy = Math.round((correct / questions.length) * 100);
+
+    if (weakestChapters.length > 0) {
+      const lowestAccuracy = weakestChapters[0];
+      if (lowestAccuracy.accuracy < 50) {
+        studyRecommendations.push(`Tập trung vào "${lowestAccuracy.chapterShort}" - độ chính xác của bạn là ${lowestAccuracy.accuracy}%. Hãy bắt đầu từ những kiến thức cơ bản.`);
+      } else if (lowestAccuracy.accuracy < 70) {
+        studyRecommendations.push(`Ôn tập "${lowestAccuracy.chapterShort}" - bạn đang đạt ${lowestAccuracy.accuracy}% độ chính xác. Hãy luyện thêm câu hỏi trong lĩnh vực này.`);
+      } else {
+        studyRecommendations.push(`Hoàn thiện "${lowestAccuracy.chapterShort}" - bạn gần đạt mức thành thạo với ${lowestAccuracy.accuracy}%!`);
+      }
+    }
+    if (criticalWrong > 0) {
+      studyRecommendations.push(`Đặc biệt chú ý các câu hỏi nghiêm trọng - sai 1 câu sẽ dẫn đến trượt bài thi.`);
+    }
+    if (weakestChapters.length >= 2) {
+      const secondLowest = weakestChapters[1];
+      studyRecommendations.push(`Ưu tiên thứ hai: Cải thiện "${secondLowest.chapterShort}" (độ chính xác ${secondLowest.accuracy}%).`);
+    }
+    if (accuracy >= 90 && pass) {
+      studyRecommendations.push(`Xuất sắc! Hãy tiếp tục luyện tập để duy trì kiến thức của bạn.`);
+    }
+
+    const score: ExamScore = { 
+      correct, 
+      incorrect, 
+      skipped, 
+      criticalWrong, 
+      pass, 
+      totalQuestions: questions.length,
+      accuracy,
+      chapterAnalysis,
+      strongestChapters,
+      weakestChapters,
+      studyRecommendations 
+    };
+
+    setExamScore(score);
     setExamFinished(true);
 
     if (onExamStatsComputed) {
       const chapterStats: ChapterStat[] = EXAM_CHAPTERS_ORDERED.map(({ chapterNumber, title }) => {
-        const value = chapterMap.get(chapterNumber) ?? { correct: 0, total: 0 };
+        const value = chapterMap.get(chapterNumber) ?? { correct: 0, total: 0, skipped: 0 };
         return { chapterNumber, chapter: title, correct: value.correct, total: value.total };
       });
       onExamStatsComputed(chapterStats);
@@ -352,45 +514,265 @@ const MainContent: React.FC<MainContentProps> = ({
   // ── Exam finished ──
   if (examFinished && examScore) {
     return (
-      <div className="flex-1 bg-[var(--bg-primary)] flex items-center justify-center">
+      <div className="flex-1 bg-[var(--bg-primary)] flex items-center justify-center p-4 overflow-y-auto">
         <motion.div
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          className="w-full max-w-md bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl p-6 sm:p-8"
+          className="w-full max-w-lg bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl overflow-hidden shadow-2xl"
         >
-          <div className="text-center space-y-5">
-            <div
-              className={`inline-flex items-center gap-2 justify-center rounded-full px-5 py-2.5 text-lg font-bold ${
-                examScore.pass ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'
-              }`}
+          {/* Header with Pass/Fail */}
+          <div className={`relative px-6 py-8 text-center ${examScore.pass ? 'bg-gradient-to-br from-emerald-500/20 to-emerald-600/10' : 'bg-gradient-to-br from-amber-500/20 to-amber-600/10'}`}>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.2 }}
+              className={`inline-flex items-center justify-center w-20 h-20 rounded-full ${examScore.pass ? 'bg-emerald-500' : 'bg-amber-500'}`}
             >
-              {examScore.pass ? <Check className="w-5 h-5" /> : <XIcon className="w-5 h-5" />}
-              {examScore.pass ? 'ĐẠT' : 'KHÔNG ĐẠT'}
+              {examScore.pass ? (
+                <Check className="w-10 h-10 text-white" />
+              ) : (
+                <XIcon className="w-10 h-10 text-white" />
+              )}
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className={`mt-4 text-2xl font-black ${examScore.pass ? 'text-emerald-600' : 'text-amber-600'}`}
+            >
+              {examScore.pass ? 'CHÚC MỪNG!' : 'CẦN CỐ GẮNG THÊM'}
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="mt-1 text-sm text-[var(--text-secondary)]"
+            >
+              {examScore.pass ? 'Bạn đã vượt qua bài thi' : 'Hãy ôn tập thêm để cải thiện'}
+            </motion.p>
+          </div>
+
+          {/* Score Overview */}
+          <div className="px-6 py-5 border-b border-[var(--border)]">
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-center flex-1">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 400, delay: 0.5 }}
+                  className="text-4xl font-black text-[var(--text-primary)]"
+                >
+                  {examScore.accuracy}%
+                </motion.div>
+                <div className="text-xs text-[var(--text-secondary)] mt-1">Độ chính xác</div>
+              </div>
+              <div className="h-12 w-px bg-[var(--border)]" />
+              <div className="text-center flex-1">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 400, delay: 0.6 }}
+                  className="text-4xl font-black text-emerald-500"
+                >
+                  {examScore.correct}
+                </motion.div>
+                <div className="text-xs text-[var(--text-secondary)] mt-1">Đúng</div>
+              </div>
+              <div className="h-12 w-px bg-[var(--border)]" />
+              <div className="text-center flex-1">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 400, delay: 0.7 }}
+                  className="text-4xl font-black text-rose-500"
+                >
+                  {examScore.incorrect}
+                </motion.div>
+                <div className="text-xs text-[var(--text-secondary)] mt-1">Sai</div>
+              </div>
+              {examScore.skipped > 0 && (
+                <>
+                  <div className="h-12 w-px bg-[var(--border)]" />
+                  <div className="text-center flex-1">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 400, delay: 0.75 }}
+                      className="text-4xl font-black text-amber-500"
+                    >
+                      {examScore.skipped}
+                    </motion.div>
+                    <div className="text-xs text-[var(--text-secondary)] mt-1">Bỏ qua</div>
+                  </div>
+                </>
+              )}
             </div>
-            <div className="space-y-2 text-[var(--text-primary)]">
-              <div className="text-base flex items-center justify-center gap-2">
-                <span className="text-sm text-[var(--text-secondary)]">Đúng</span>
-                <span className="font-bold text-emerald-600">{examScore.correct}</span>
-                <span className="text-sm text-[var(--text-secondary)]">/ {totalQuestions}</span>
-              </div>
-              <div className="text-base flex items-center justify-center gap-2">
-                <span className="text-sm text-[var(--text-secondary)]">Sai</span>
-                <span className="font-bold text-rose-500">{examScore.incorrect}</span>
-              </div>
-              {examScore.criticalWrong > 0 && (
-                <div className="text-sm text-rose-500 font-medium">
-                  Câu nghiêm trọng sai: <span className="font-bold">{examScore.criticalWrong}</span>
+
+            {/* Progress bar */}
+            <div className="h-3 bg-[var(--bg-tertiary)] rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${examScore.accuracy}%` }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.8 }}
+                className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full"
+              />
+            </div>
+            <div className="flex justify-between mt-2 text-xs text-[var(--text-secondary)]">
+              <span>0%</span>
+              <span>{examScore.correct}/{examScore.totalQuestions} câu</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          {/* Chapter Breakdown */}
+          <div className="px-6 py-5 border-b border-[var(--border)]">
+            <h3 className="text-sm font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-500 flex items-center justify-center text-xs">📊</span>
+              Phân tích theo chương
+            </h3>
+            <div className="space-y-3">
+              {examScore.chapterAnalysis.filter(c => c.total > 0).map((chapter, idx) => (
+                <motion.div
+                  key={chapter.chapterNumber}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.9 + idx * 0.1 }}
+                  className="group"
+                >
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-medium text-[var(--text-secondary)] truncate pr-2 flex-1">
+                      {chapter.chapterShort}
+                    </span>
+                    <span className={`text-xs font-bold ${chapter.accuracy >= 80 ? 'text-emerald-500' : chapter.accuracy >= 60 ? 'text-amber-500' : 'text-rose-500'}`}>
+                      {chapter.accuracy}%
+                    </span>
+                  </div>
+                  <div className="h-2 bg-[var(--bg-tertiary)] rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${chapter.accuracy}%` }}
+                      transition={{ duration: 0.8, ease: 'easeOut', delay: 1 + idx * 0.1 }}
+                      className={`h-full rounded-full ${
+                        chapter.accuracy >= 80 ? 'bg-emerald-500' : 
+                        chapter.accuracy >= 60 ? 'bg-amber-500' : 'bg-rose-500'
+                      }`}
+                    />
+                  </div>
+                  <div className="text-[10px] text-[var(--text-muted)] mt-1">
+                    {chapter.correct}/{chapter.total} câu đúng
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Strengths & Weaknesses */}
+          <div className="px-6 py-5 border-b border-[var(--border)]">
+            <div className="grid grid-cols-2 gap-4">
+              {/* Strengths */}
+              {examScore.strongestChapters.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-bold text-emerald-500 mb-2 flex items-center gap-1.5">
+                    <span>💪</span> Điểm mạnh
+                  </h4>
+                  <div className="space-y-1.5">
+                    {examScore.strongestChapters.map(ch => (
+                      <div key={ch.chapterNumber} className="bg-emerald-500/10 rounded-lg px-3 py-2">
+                        <div className="text-xs font-semibold text-emerald-600">{ch.chapterShort}</div>
+                        <div className="text-[10px] text-emerald-500/80">{ch.accuracy}% accuracy</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Weaknesses */}
+              {examScore.weakestChapters.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-bold text-amber-500 mb-2 flex items-center gap-1.5">
+                    <span>📚</span> Cần cải thiện
+                  </h4>
+                  <div className="space-y-1.5">
+                    {examScore.weakestChapters.map(ch => (
+                      <div key={ch.chapterNumber} className="bg-amber-500/10 rounded-lg px-3 py-2">
+                        <div className="text-xs font-semibold text-amber-600">{ch.chapterShort}</div>
+                        <div className="text-[10px] text-amber-500/80">{ch.accuracy}% accuracy</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
-            <button
-              type="button"
-              onClick={onRestartExam}
-              className="w-full rounded-2xl bg-[var(--text-primary)] text-[var(--bg-primary)] px-4 py-4 text-sm font-bold transition-opacity hover:opacity-80 active:scale-[0.99]"
+          </div>
+
+          {/* Study Recommendations */}
+          {examScore.studyRecommendations.length > 0 && (
+            <div className="px-6 py-5 border-b border-[var(--border)]">
+              <h3 className="text-sm font-bold text-[var(--text-primary)] mb-3 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-500 flex items-center justify-center text-xs">💡</span>
+                Đề xuất học tập
+              </h3>
+              <div className="space-y-2">
+                {examScore.studyRecommendations.map((rec, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.5 + idx * 0.1 }}
+                    className="flex items-start gap-2 text-xs text-[var(--text-secondary)]"
+                  >
+                    <span className="text-blue-500 mt-0.5">→</span>
+                    <span>{rec}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Critical Warning */}
+          {examScore.criticalWrong > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.8 }}
+              className="mx-6 mb-5 p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl"
             >
-              Làm lại
-            </button>
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-full bg-rose-500/20 flex items-center justify-center shrink-0">
+                  <span className="text-rose-500 text-sm">⚠️</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-rose-500">Câu hỏi nghiêm trọng</div>
+                  <div className="text-xs text-rose-500/80 mt-0.5">
+                    Bạn đã sai {examScore.criticalWrong} câu nghiêm trọng. Mỗi câu sai sẽ dẫn đến trượt bài thi.
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="px-6 py-5 bg-[var(--bg-tertiary)]/50">
+            <div className="flex gap-3">
+              <motion.button
+                type="button"
+                onClick={onRestartExam}
+                className="flex-1 bg-[var(--text-primary)] text-[var(--bg-primary)] px-4 py-4 rounded-2xl text-sm font-bold transition-opacity hover:opacity-80 active:scale-[0.99]"
+                whileTap={{ scale: 0.98 }}
+              >
+                Làm lại bài thi
+              </motion.button>
+              <motion.button
+                type="button"
+                onClick={() => window.print()}
+                className="px-6 bg-[var(--bg-secondary)] border border-[var(--border)] text-[var(--text-primary)] px-4 py-4 rounded-2xl text-sm font-bold transition-opacity hover:opacity-80 active:scale-[0.99]"
+                whileTap={{ scale: 0.98 }}
+              >
+                <span className="hidden sm:inline">In kết quả</span>
+                <span className="sm:hidden">📤</span>
+              </motion.button>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -404,7 +786,7 @@ const MainContent: React.FC<MainContentProps> = ({
         {/* Progress + timer + question numbers — above image */}
         <div className="shrink-0 bg-[var(--bg-secondary)]/40">
           {/* Answered count + timer */}
-          <div className="px-3 py-1.5 flex items-center justify-between gap-2">
+          <div className="px-3 py-1.5 flex items-center justify-between gap-2 mt-2">
             <span className="text-xs text-[var(--text-secondary)] font-medium truncate">
               {answeredCount}/{totalQuestions} đã trả lời
             </span>
@@ -437,9 +819,9 @@ const MainContent: React.FC<MainContentProps> = ({
           </div>
         </div>
 
-        {/* Image container */}
+        {/* Image container - hidden on mobile if no image */}
         <div
-          className="flex-1 min-h-0 overflow-hidden relative flex items-center justify-center bg-[var(--bg-tertiary)] cursor-zoom-in"
+          className="h-32 sm:h-40 lg:h-auto flex-1 min-h-0 overflow-hidden relative flex items-center justify-center bg-[var(--bg-tertiary)] cursor-zoom-in lg:flex"
           onClick={() => question.image && setImageEnlarged(true)}
         >
           <AnimatePresence mode="wait">
@@ -456,30 +838,29 @@ const MainContent: React.FC<MainContentProps> = ({
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <div
-                key={`no-img-${currentQuestionNumber}`}
-                className="w-full h-full flex items-center justify-center min-h-[200px]"
-              >
+              <div className="hidden lg:flex w-full h-full items-center justify-center min-h-[200px]">
                 <span className="text-[var(--text-muted)] text-sm">Không có ảnh</span>
               </div>
             )}
           </AnimatePresence>
         </div>
-        {/* Image footer */}
-        <div className="shrink-0 px-4 py-3 bg-[var(--bg-secondary)] border-t border-[var(--border)] flex items-center justify-between">
-          <span className="text-xs font-medium text-[var(--text-secondary)]">{question.chapter}</span>
-          {question.isCritical && (
-            <span className="bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-medium px-2.5 py-1 rounded-full">
-              Nghiêm trọng
-            </span>
-          )}
-        </div>
+        {/* Image footer - hidden on mobile */}
+        {question.image && (
+          <div className="hidden lg:flex shrink-0 px-4 py-3 bg-[var(--bg-secondary)] border-t border-[var(--border)] items-center justify-between">
+            <span className="text-xs font-medium text-[var(--text-secondary)]">{question.chapter}</span>
+            {question.isCritical && (
+              <span className="bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-medium px-2.5 py-1 rounded-full">
+                Nghiêm trọng
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       {/* ══════════ RIGHT COLUMN: QUESTION + ANSWERS ══════════ */}
-      <div className="flex-1 flex flex-col border-t lg:border-t-0 overflow-hidden min-h-0">
+      <div className="flex-1 flex flex-col border-t lg:border-t-0 overflow-hidden min-h-0 relative">
         {/* Scrollable content area */}
-        <div className="flex-1 min-h-0 overflow-y-auto">
+        <div className="flex-1 min-h-0 overflow-y-auto lg:pb-24 pb-52">
           <div className="p-5 xl:p-6 space-y-4">
             {/* Question header */}
             <div className="flex items-start gap-2 flex-wrap">
@@ -559,13 +940,25 @@ const MainContent: React.FC<MainContentProps> = ({
         <AnimatePresence>
           {showResult && (
             <motion.div
-              initial={{ opacity: 0, height: 0, y: 8 }}
-              animate={{ opacity: 1, height: 'auto', y: 0 }}
-              exit={{ opacity: 0, height: 0, y: 8 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-              className="shrink-0 mx-4 border-t border-[var(--border)] overflow-hidden"
+              initial={{ opacity: 0, height: 0, y: 40, scale: 0.85, filter: 'blur(0px)' }}
+              animate={{ 
+                opacity: isDissolving ? 0 : 1,
+                height: isDissolving ? 0 : 'auto',
+                y: isDissolving ? 20 : 0,
+                scale: isDissolving ? 1.08 : 1,
+                filter: isDissolving ? 'blur(12px)' : 'blur(0px)',
+              }}
+              exit={{ opacity: 0, height: 0, y: 20, scale: 0.95, filter: 'blur(12px)' }}
+              transition={{ 
+                opacity: { duration: 0.6, ease: 'easeOut' },
+                height: { type: 'spring', stiffness: 350, damping: 28 },
+                y: { type: 'spring', stiffness: 350, damping: 28 },
+                scale: { type: 'spring', stiffness: 350, damping: 28 },
+                filter: { duration: 0.6, ease: 'easeOut' },
+              }}
+              className="shrink-0 lg:relative lg:top-auto lg:left-auto lg:right-auto lg:bottom-auto lg:mx-4 lg:border-t lg:border-[var(--border)] overflow-hidden fixed lg:static bottom-[88px] left-0 right-0 mx-4 border-t border-[var(--border)]"
             >
-              <div className="py-3">
+              <div>
                 <div className="bg-[var(--bg-tertiary)] border border-[var(--border)] rounded-xl px-4 py-3">
                   <div className="flex items-start gap-3">
                     <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
@@ -596,7 +989,7 @@ const MainContent: React.FC<MainContentProps> = ({
         </AnimatePresence>
 
         {/* Action bar — pinned to bottom */}
-        <div className="shrink-0 border-t border-[var(--border)] bg-[var(--bg-secondary)] p-4">
+        <div className="shrink-0 lg:static fixed bottom-0 left-0 right-0 border-t border-[var(--border)] bg-[var(--bg-secondary)] p-4">
           {currentQuestionNumber < totalQuestions ? (
             <div className="flex gap-2">
               <motion.button
@@ -618,18 +1011,100 @@ const MainContent: React.FC<MainContentProps> = ({
               </motion.button>
             </div>
           ) : (
-            <motion.button
-              type="button"
-              onClick={confirmCurrentAnswer}
-              disabled={!selectedOption || timeLeftSeconds <= 0}
-              className="w-full bg-emerald-500 text-white font-bold py-3 rounded-2xl text-sm transition-opacity hover:opacity-80 active:scale-[0.99] disabled:opacity-35 disabled:cursor-not-allowed"
-              whileTap={selectedOption ? { scale: 0.98 } : {}}
-            >
-              Xác nhận & Nộp bài
-            </motion.button>
+            <>
+              <motion.button
+                type="button"
+                onClick={() => setShowSubmitConfirm(true)}
+                disabled={!selectedOption || timeLeftSeconds <= 0}
+                className="w-full bg-emerald-500 text-white font-bold py-3 rounded-2xl text-sm transition-opacity hover:opacity-80 active:scale-[0.99] disabled:opacity-35 disabled:cursor-not-allowed"
+                whileTap={selectedOption ? { scale: 0.98 } : {}}
+              >
+                Xác nhận & Nộp bài
+              </motion.button>
+            </>
           )}
         </div>
       </div>
+
+      {/* ── Submit Confirmation Dialog ── */}
+      <AnimatePresence>
+        {showSubmitConfirm && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 pb-32 sm:pb-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {/* Backdrop */}
+            <motion.div
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowSubmitConfirm(false)}
+            />
+            
+            {/* Dialog */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              className="relative bg-[var(--bg-secondary)] border border-[var(--border)] rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl mx-4 my-auto"
+            >
+              <div className="text-center space-y-5 sm:space-y-6">
+                {/* Icon */}
+                <div className="w-16 h-16 mx-auto bg-amber-500/20 rounded-full flex items-center justify-center">
+                  <span className="text-3xl">📝</span>
+                </div>
+                
+                {/* Title */}
+                <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+                  Nộp bài thi?
+                </h3>
+                
+                {/* Message */}
+                <div className="text-sm sm:text-base text-[var(--text-secondary)] space-y-2">
+                  <p>
+                    Bạn đã trả lời <span className="font-bold text-emerald-500">{answeredCount}</span> / <span className="font-bold">{totalQuestions}</span> câu hỏi.
+                  </p>
+                  {answeredCount < totalQuestions && (
+                    <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3 text-amber-600">
+                      ⚠️ Còn {totalQuestions - answeredCount} câu chưa trả lời
+                    </div>
+                  )}
+                  {answeredCount === totalQuestions && (
+                    <p className="text-emerald-500 font-medium">
+                      ✓ Bạn đã trả lời tất cả câu hỏi
+                    </p>
+                  )}
+                </div>
+                
+                {/* Buttons */}
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowSubmitConfirm(false)}
+                    className="flex-1 px-4 py-3 bg-[var(--bg-tertiary)] hover:bg-[var(--bg-hover)] border border-[var(--border)] text-[var(--text-primary)] font-semibold rounded-2xl text-sm transition-colors"
+                  >
+                    Hủy
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowSubmitConfirm(false);
+                      confirmCurrentAnswer();
+                    }}
+                    className="flex-1 px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl text-sm transition-colors"
+                  >
+                    Nộp bài
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Image Lightbox ── */}
       <AnimatePresence>

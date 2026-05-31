@@ -21,7 +21,7 @@ export interface Question {
   chapter: string;
   isCritical: boolean;
   text: string;
-  image: string;
+  image: string | null;
   options: QuestionOption[];
   correctAnswer: string;
   explanation: string;

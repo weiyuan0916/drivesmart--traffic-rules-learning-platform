@@ -14,6 +14,15 @@ function indexToOptionId(idx: number): string {
   return String.fromCharCode(base + idx);
 }
 
+// Convert "phương án 1/2/3/4" to "phương án A/B/C/D" in explanations
+function normalizeExplanation(explanation: string): string {
+  return explanation
+    .replace(/\bphương án\s*1\b/gi, 'phương án A')
+    .replace(/\bphương án\s*2\b/gi, 'phương án B')
+    .replace(/\bphương án\s*3\b/gi, 'phương án C')
+    .replace(/\bphương án\s*4\b/gi, 'phương án D');
+}
+
 export function chapterNumberFromQuestionId(id: number): number | null {
   if (id >= 1 && id <= 180) return 1;
   if (id >= 181 && id <= 205) return 2;
@@ -66,7 +75,7 @@ function mapRawToQuestion(raw: RawQuestion): Question | null {
   if (!correctAnswer) return null;
 
   const localImage = questionIdToLocalImageUrl(raw.id);
-  const image = localImage ?? raw.image ?? `https://picsum.photos/seed/q${raw.id}/800/600`;
+  const image = localImage ?? raw.image ?? null;
 
   return {
     id: raw.id,
@@ -77,7 +86,7 @@ function mapRawToQuestion(raw: RawQuestion): Question | null {
     image,
     options,
     correctAnswer,
-    explanation: raw.explanation,
+    explanation: normalizeExplanation(raw.explanation),
   };
 }
 

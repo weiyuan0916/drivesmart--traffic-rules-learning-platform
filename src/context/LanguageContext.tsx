@@ -82,6 +82,36 @@ export const translations: Translations = {
   support: { vi: 'Hỗ trợ', en: 'Support' },
   collapseSidebars: { vi: 'Thu gọn thanh bên', en: 'Collapse sidebars' },
   expandSidebars: { vi: 'Mở rộng thanh bên', en: 'Expand sidebars' },
+  open3dSimulator: { vi: 'Mô phỏng 3D', en: '3D Simulator' },
+  backToLanding: { vi: 'Về menu mô phỏng', en: 'Back to simulator menu' },
+  backToLearning: { vi: 'Về ôn thi lý thuyết', en: 'Back to learning mode' },
+  drivingLandingTitle: { vi: 'MÔ PHỎNG THI THỰC HÀNH GPLX', en: 'DRIVING PRACTICE SIMULATOR' },
+  drivingLandingDescription: {
+    vi: 'Chọn bài thi ô tô hoặc mô tô để xem mô phỏng 3D theo sa hình, gồm chuyển động phương tiện và bối cảnh giao thông.',
+    en: 'Choose car or motorcycle practical tests to explore 3D simulation scenes with traffic context and vehicle behavior.',
+  },
+  sim3dSubtitle: { vi: 'Three.js + React Three Fiber', en: 'Three.js + React Three Fiber' },
+  carTestMenu: { vi: 'Thi ô tô mô phỏng 3D', en: 'Car driving test simulation' },
+  motorcycleTestMenu: { vi: 'Thi mô tô mô phỏng số 8', en: 'Motorcycle figure-eight test' },
+  carTestDescription: {
+    vi: 'Mô phỏng xe chạy vòng tròn, dừng đèn đỏ, rồi đổi làn. Hỗ trợ Mustang GLB khi có model.',
+    en: 'Simulates circular driving, red light stop, and lane change. Supports Mustang GLB model when available.',
+  },
+  motorcycleTestDescription: {
+    vi: 'Mô phỏng bài thi sa hình số 8 với mô tô phân khối lớn và góc nghiêng khi vào cua.',
+    en: 'Simulates the figure-eight test using a large-displacement motorcycle model with corner lean dynamics.',
+  },
+  motorcycleFigureEightSubtitle: { vi: 'Sa hình mô tô số 8', en: 'Motorcycle figure-eight practice' },
+  simulationPhase: { vi: 'Giai đoạn', en: 'Phase' },
+  simulationSpeed: { vi: 'Tốc độ', en: 'Speed' },
+  simulationLean: { vi: 'Độ nghiêng', en: 'Lean angle' },
+  carPhaseCircle: { vi: 'Chạy vòng tròn', en: 'Driving in circles' },
+  carPhaseRedLight: { vi: 'Dừng đèn đỏ', en: 'Stopping at red light' },
+  carPhaseLaneChange: { vi: 'Chuyển làn', en: 'Changing lane' },
+  carPhaseCruise: { vi: 'Chạy trên cao tốc', en: 'Highway cruise' },
+  carPhaseMergeIn: { vi: 'Nhập làn', en: 'Merging in' },
+  carPhaseIntersectionStop: { vi: 'Dừng đèn đỏ (giao lộ)', en: 'Intersection red light stop' },
+  carPhaseMergeOut: { vi: 'Ra làn', en: 'Exiting lane' },
 };
 
 interface LanguageContextType {
