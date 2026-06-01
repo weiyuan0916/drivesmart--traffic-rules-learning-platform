@@ -1,19 +1,20 @@
-import { ReactLenis } from 'lenis/react';
 import type { ComponentProps } from 'react';
 
-const defaultOptions: NonNullable<ComponentProps<typeof ReactLenis>['options']> = {
-  lerp: 0.1,
-  smoothWheel: true,
-  syncTouch: true,
-  allowNestedScroll: true,
-};
+interface SmoothScrollProps extends ComponentProps<'div'> {
+  children: React.ReactNode;
+}
 
-export function SmoothScroll({ options, className = '', ...rest }: ComponentProps<typeof ReactLenis>) {
+export function SmoothScroll({ 
+  children, 
+  className = '', 
+  ...rest 
+}: SmoothScrollProps) {
   return (
-    <ReactLenis
-      options={{ ...defaultOptions, ...options }}
-      className={`h-full min-h-0 flex flex-col overflow-y-auto ${className}`.trim()}
+    <div
+      className={`flex-1 overflow-y-auto ${className}`.trim()}
       {...rest}
-    />
+    >
+      {children}
+    </div>
   );
 }

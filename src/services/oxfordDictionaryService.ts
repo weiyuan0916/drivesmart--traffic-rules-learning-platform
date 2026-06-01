@@ -70,8 +70,17 @@ export class WordNotFoundError extends Error {
   }
 }
 
-// CORS proxy to avoid CORS issues when fetching from Oxford website
-const CORS_PROXY = 'https://corsproxy.io/?';
+// Backend API server for Oxford Dictionary (avoids CORS issues)
+// Run: python3 server/dictionary_server.py
+// Then update API_BASE to point to your backend
+const API_BASE = 'http://127.0.0.1:3001';
+
+// CORS proxy fallback (only used if backend is not available)
+const CORS_PROXIES = [
+  'https://api.codetabs.com/v1/proxy?quest=',
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+];
 const BASE_URL = 'https://www.oxfordlearnersdictionaries.com/definition/english/';
 
 // Extract word ID from link
@@ -315,27 +324,123 @@ export const parseWordHtml = (html: string, word: string): WordInfo => {
   return wordInfo;
 };
 
-// Fetch word information from Oxford Dictionary
+// Try backend API first, then fall back to CORS proxies
 export const fetchWordInfo = async (word: string): Promise<WordInfo> => {
+  // First try: Use backend Python server (recommended - no CORS issues)
   try {
-    const url = `${CORS_PROXY}${encodeURIComponent(BASE_URL + word)}`;
-    const response = await fetch(url);
+    const apiUrl = `${API_BASE}/api/dictionary/${encodeURIComponent(word.toLowerCase())}`;
+    const response = await fetch(apiUrl, { signal: AbortSignal.timeout(8000) });
     
-    if (!response.ok) {
-      if (response.status === 404) {
-        throw new WordNotFoundError();
+    if (response.ok) {
+      const data = await response.json();
+      // If it's an error response from backend
+      if (data.error) {
+        if (data.error === 'Word not found' || (response.status === 404)) {
+          throw new WordNotFoundError();
+        }
+        throw new Error(data.error);
       }
-      throw new Error(`Failed to fetch word: ${response.statusText}`);
+      // Backend returns Python dict structure, need to transform
+      return transformPythonData(data);
     }
-    
-    const html = await response.text();
-    return parseWordHtml(html, word);
   } catch (error) {
-    if (error instanceof WordNotFoundError) {
-      throw error;
-    }
-    throw new Error(`Error fetching word "${word}": ${(error as Error).message}`);
+    // Backend failed, continue to CORS proxies
+    console.log('Backend unavailable, trying CORS proxies...');
   }
+
+  // Second try: Use CORS proxies as fallback
+  let lastError: Error | null = null;
+  
+  for (const proxy of CORS_PROXIES) {
+    try {
+      const url = `${proxy}${encodeURIComponent(BASE_URL + word)}`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new WordNotFoundError();
+        }
+        throw new Error(`Failed to fetch word: ${response.statusText}`);
+      }
+      
+      const html = await response.text();
+      
+      // Check if we got actual HTML content
+      if (html.includes('<html') || html.includes('<!DOCTYPE')) {
+        return parseWordHtml(html, word);
+      }
+      
+      continue;
+    } catch (error) {
+      lastError = error as Error;
+      if (error instanceof WordNotFoundError) {
+        throw error;
+      }
+      continue;
+    }
+  }
+  
+  throw new Error(`Error fetching word "${word}": All methods failed. ${lastError?.message || 'Unknown error'}`);
+};
+
+// Transform Python dict structure to match frontend interface
+const transformPythonData = (pythonData: any): WordInfo => {
+  // Extract CEFR level from other_results or word data
+  let cefrLevel: string | undefined;
+  
+  // Try to get level from Oxford 5000 wordlist link
+  if (pythonData.other_results) {
+    for (const resultGroup of pythonData.other_results) {
+      for (const [key, results] of Object.entries(resultGroup)) {
+        if (key.toLowerCase().includes('ox') || key.toLowerCase().includes('word')) {
+          const resultsArray = results as any[];
+          for (const item of resultsArray) {
+            const href = item.href || item.id || '';
+            const match = href.match(/level=([a-z]\d)/i);
+            if (match) {
+              cefrLevel = match[1].toUpperCase();
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Fallback to preset levels
+  if (!cefrLevel) {
+    cefrLevel = getCefrLevel(pythonData.name || '');
+  }
+
+  return {
+    id: pythonData.id || '',
+    name: pythonData.name || '',
+    wordform: pythonData.wordform || null,
+    pronunciations: pythonData.pronunciations || [],
+    property: pythonData.property,
+    cefrLevel,
+    definitions: transformDefinitions(pythonData.definitions),
+    idioms: transformIdioms(pythonData.idioms),
+    phrasal_verbs: pythonData.phrasal_verbs,
+    other_results: pythonData.other_results,
+  };
+};
+
+const transformDefinitions = (defs: any[]): NamespaceDefinition[] => {
+  if (!defs) return [];
+  return defs.map(ns => ({
+    namespace: ns.namespace || ns[0] || null,
+    definitions: ns.definitions || ns[1] || [],
+  }));
+};
+
+const transformIdioms = (idioms: any[]): Idiom[] => {
+  if (!idioms) return [];
+  return idioms.map(idiom => ({
+    name: typeof idiom === 'string' ? idiom : idiom.name || '',
+    summary: typeof idiom === 'object' ? (idiom.summary || {}) : {},
+    definitions: typeof idiom === 'object' ? (idiom.definitions || []) : [],
+  }));
 };
 
 // Sample common English words for vocabulary practice with CEFR levels

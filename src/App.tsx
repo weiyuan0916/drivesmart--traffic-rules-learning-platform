@@ -3,9 +3,10 @@ import { AnimatePresence, motion } from 'motion/react';
 import MainContent from './components/MainContent';
 import ImageAnalyzer from './components/ImageAnalyzer';
 import LanguageSwitcher from './components/LanguageSwitcher';
-import DashboardDesktopHeader from './components/DashboardDesktopHeader';
 import ExamSetupScreen from './components/ExamSetupScreen';
+import ExamTakingScreen from './components/ExamTakingScreen';
 import VocabularyFlashcards from './components/VocabularyFlashcards';
+import OPALFlashcards from './components/OPALFlashcards';
 import { SmoothScroll } from './components/SmoothScroll';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -14,19 +15,24 @@ import type { ChapterStat, Question } from './types';
 import { loadExamQuestions } from './services/questionsService';
 import { generateExamQuestions, EXAM_CONFIGS, LicenseType } from './services/examGenerator';
 
+type AppMode = 'none' | 'driving' | 'vocabulary' | 'opal';
+type DrivingView = 'setup' | 'exam' | 'analyzer';
+
 function AppContent() {
-  const [selectedMode, setSelectedMode] = useState<'none' | 'driving' | 'vocabulary'>('none');
-  const [examStarted, setExamStarted] = useState(false);
+  const [selectedMode, setSelectedMode] = useState<AppMode>('none');
+  const [drivingView, setDrivingView] = useState<DrivingView>('setup');
   const [examLoading, setExamLoading] = useState(false);
   const [examQuestions, setExamQuestions] = useState<Question[]>([]);
   const [confirmedAnswers, setConfirmedAnswers] = useState<(string | null)[]>([]);
-  const [view, setView] = useState<'dashboard' | 'analyzer'>('dashboard');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
   const [chapterStats, setChapterStats] = useState<ChapterStat[] | null>(null);
   const [selectedLicenseType, setSelectedLicenseType] = useState<LicenseType>('B1');
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [candidateName, setCandidateName] = useState('');
   const { t } = useLanguage();
+
+  const examTimeMinutes = EXAM_CONFIGS[selectedLicenseType]?.timeMinutes || 30;
 
   const startExam = async (licenseType?: LicenseType) => {
     if (examLoading) return;
@@ -41,103 +47,111 @@ function AppContent() {
       setConfirmedAnswers(selected.map(() => null));
       setCurrentQuestionNumber(1);
       setChapterStats(null);
-      setExamStarted(true);
-      setView('dashboard');
+      setDrivingView('exam');
     } finally {
       setExamLoading(false);
     }
   };
 
+  const handleExamComplete = (results: { correct: number; incorrect: number; skipped: number; totalQuestions: number; accuracy: number; pass: boolean; answers: (string | null)[]; timeSpentSeconds: number }) => {
+    // Update confirmed answers with results
+    setConfirmedAnswers(results.answers);
+    
+    // Compute chapter stats for the old MainContent
+    const chapterMap = new Map<number, { correct: number; total: number }>();
+    for (let i = 0; i < examQuestions.length; i++) {
+      const q = examQuestions[i];
+      const answer = results.answers[i];
+      const isCorrect = answer !== null && answer === q.correctAnswer;
+      
+      const entry = chapterMap.get(q.chapterNumber) ?? { correct: 0, total: 0 };
+      entry.total++;
+      if (isCorrect) entry.correct++;
+      chapterMap.set(q.chapterNumber, entry);
+    }
+    
+    const stats: ChapterStat[] = Array.from(chapterMap.entries()).map(([chapterNumber, value]) => ({
+      chapterNumber,
+      chapter: examQuestions.find(q => q.chapterNumber === chapterNumber)?.chapter || '',
+      correct: value.correct,
+      total: value.total,
+    }));
+    setChapterStats(stats);
+  };
+
+  const handleExamExit = () => {
+    setDrivingView('setup');
+  };
+
+  const handleRetry = () => {
+    startExam(selectedLicenseType);
+  };
+
+  const returnToSetup = () => {
+    setDrivingView('setup');
+  };
+
   return (
     <div className="flex flex-col h-screen font-sans overflow-hidden relative transition-colors duration-300 bg-[var(--bg-primary)] text-[var(--text-primary)]">
-      {examStarted && (
-        <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[var(--bg-secondary)] border-b border-[var(--border)] z-40">
+      {/* Driving Mode Mobile Header (visible during exam on mobile) */}
+      {drivingView === 'exam' && (
+        <header className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-[var(--bg-secondary)] border-b border-[var(--border)] z-40">
           <div className="h-full flex items-center justify-between px-4">
-            {/* Left spacer */}
-            <div className="w-10" />
-            {/* Centered logo - using absolute positioning for true centering */}
-            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
-              <div className="w-8 h-8 bg-[var(--text-primary)] rounded-lg flex items-center justify-center">
-                <Car className="w-5 h-5 text-[var(--bg-primary)]" />
+            <button
+              onClick={() => setShowExitConfirm(true)}
+              className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 bg-[var(--text-primary)] rounded-lg flex items-center justify-center">
+                <Car className="w-4 h-4 text-[var(--bg-primary)]" />
               </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-[var(--text-primary)] text-sm tracking-tight leading-tight">DriveSmart</span>
-                <span className="text-[10px] text-[var(--text-secondary)] leading-tight">Bài thi B1</span>
-              </div>
+              <span className="font-bold text-sm">DriveSmart</span>
             </div>
-            {/* Right side buttons */}
-            <div className="flex items-center">
-              <button
-                onClick={() => {
-                  setExamStarted(false);
-                  setSelectedMode('driving');
-                }}
-                className="flex items-center justify-center w-8 h-8 bg-red-500 text-white font-bold rounded-md shadow-sm"
-              >
-                ✕
-              </button>
-            </div>
+            <div className="w-9" />
           </div>
         </header>
       )}
 
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
-      {examStarted && mobileMenuOpen && (
-        <motion.div
-          key="mobile-nav-overlay"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex flex-col p-6 gap-6"
-        >
+        {drivingView === 'exam' && mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
+            key="mobile-nav-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ delay: 0.05, duration: 0.2 }}
-            className="flex justify-end"
+            transition={{ duration: 0.2 }}
+            className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex flex-col p-6 gap-6"
           >
-            <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-white">
-              <X className="w-8 h-8" />
-            </button>
-          </motion.div>
-          <div className="flex flex-col gap-3">
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: -16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.08, duration: 0.2 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.05, duration: 0.2 }}
+              className="flex justify-end"
             >
-              <button
-                onClick={() => { setView('dashboard'); setMobileMenuOpen(false); }}
-                className={`w-full flex items-center gap-4 p-4 rounded-2xl text-xl font-bold transition-colors ${view === 'dashboard' ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]' : 'text-gray-400'}`}
-              >
-                <LayoutDashboard /> {t('dashboard')}
+              <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-white">
+                <X className="w-8 h-8" />
               </button>
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.12, duration: 0.2 }}
-            >
-              <button
-                onClick={() => { setView('analyzer'); setMobileMenuOpen(false); }}
-                className={`w-full flex items-center gap-4 p-4 rounded-2xl text-xl font-bold transition-colors ${view === 'analyzer' ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]' : 'text-gray-400'}`}
+            <div className="flex flex-col gap-3">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.08, duration: 0.2 }}
               >
-                <Brain /> {t('aiAnalyzer')}
-              </button>
-            </motion.div>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.16, duration: 0.2 }}
-            className="mt-auto pt-6 border-t border-white/15 flex justify-center"
-          >
-            <LanguageSwitcher className="relative top-auto right-auto z-auto flex items-center gap-2" />
+                <button
+                  onClick={() => { returnToSetup(); setMobileMenuOpen(false); }}
+                  className="w-full flex items-center gap-4 p-4 rounded-2xl text-xl font-bold bg-[var(--text-primary)] text-[var(--bg-primary)]"
+                >
+                  <LayoutDashboard /> Thoát
+                </button>
+              </motion.div>
+            </div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
       </AnimatePresence>
 
       {/* Exit Confirmation Modal */}
@@ -177,8 +191,7 @@ function AppContent() {
                 <button
                   onClick={() => {
                     setShowExitConfirm(false);
-                    setExamStarted(false);
-                    setSelectedMode('driving');
+                    handleExamExit();
                   }}
                   className="flex-1 px-4 py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition-colors"
                 >
@@ -190,18 +203,27 @@ function AppContent() {
         )}
       </AnimatePresence>
 
-      {!examStarted && view === 'analyzer' && (
+      {/* Desktop Bottom Navigation (only when not in exam) */}
+      {drivingView !== 'exam' && (
         <div className="hidden lg:flex fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[var(--bg-secondary)] p-1.5 rounded-2xl border border-[var(--border)] gap-1">
           <button
-            onClick={() => setView('dashboard')}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-colors"
+            onClick={() => setDrivingView('setup')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+              drivingView === 'setup'
+                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
+            }`}
           >
-            <LayoutDashboard className="w-4 h-4" />
-            {t('dashboard')}
+            <Car className="w-4 h-4" />
+            Thi GPLX
           </button>
           <button
-            onClick={() => setView('analyzer')}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-[var(--text-primary)] text-[var(--bg-primary)] transition-colors"
+            onClick={() => setDrivingView('analyzer')}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+              drivingView === 'analyzer'
+                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
+            }`}
           >
             <Brain className="w-4 h-4" />
             {t('aiAnalyzer')}
@@ -273,6 +295,27 @@ function AppContent() {
                   </svg>
                 </div>
               </button>
+
+              {/* Menu 3: OPAL Phrases */}
+              <button
+                onClick={() => setSelectedMode('opal')}
+                className="group relative bg-slate-800 hover:bg-slate-700 border-2 border-slate-700 hover:border-purple-500 rounded-xl md:rounded-2xl p-3 md:p-5 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/10"
+                style={{ animation: 'fadeInRight 0.5s ease-out 0.6s both' }}
+              >
+                <div className="w-10 h-10 md:w-16 md:h-16 bg-purple-600 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+                  <span className="text-xl md:text-2xl">📚</span>
+                </div>
+                <h3 className="text-base md:text-xl font-bold text-purple-400 mb-1 md:mb-2">OPAL Phrases</h3>
+                <p className="text-xs md:text-sm text-slate-400 leading-relaxed hidden sm:block">
+                  Learn academic phrases and vocabulary from the Oxford Phrase Academy. Master spoken and written English for academic success with pronunciation audio.
+                </p>
+                <div className="mt-3 md:mt-4 flex items-center text-purple-400 font-semibold text-xs md:text-sm">
+                  Start learning
+                  <svg className="w-3 h-3 md:w-4 md:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </button>
             </div>
 
             {/* Language Switcher */}
@@ -283,160 +326,41 @@ function AppContent() {
         </div>
       )}
 
-      {/* Driving Test Mode - Original logic preserved */}
+      {/* Driving Test Mode */}
       {selectedMode === 'driving' && (
         <>
-          {examStarted && (
-            <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[var(--bg-secondary)] border-b border-[var(--border)] z-40 flex items-center justify-between px-4">
-              {/* Left spacer */}
-              <div className="w-10" />
-              {/* Centered logo - using absolute positioning for true centering */}
-              <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
-                <div className="w-8 h-8 bg-[var(--text-primary)] rounded-lg flex items-center justify-center">
-                  <Car className="w-5 h-5 text-[var(--bg-primary)]" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-bold text-[var(--text-primary)] text-sm tracking-tight leading-tight">DriveSmart</span>
-                  <span className="text-[10px] text-[var(--text-secondary)] leading-tight">Bài thi B1</span>
-                </div>
-              </div>
-              <div className="hidden lg:flex items-center gap-3">
-                <span className="text-xs font-semibold text-[var(--text-secondary)] tabular-nums">
-                  {examQuestions.length > 0 ? `${confirmedAnswers.filter(Boolean).length}/${examQuestions.length}` : ''}
-                </span>
-                <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                >
-                  {mobileMenuOpen ? <X /> : <Menu />}
-                </button>
-              </div>
-            </div>
+          {/* Exam Taking Screen (New modern exam flow) */}
+          {drivingView === 'exam' && examQuestions.length > 0 && (
+            <ExamTakingScreen
+              questions={examQuestions}
+              initialAnswers={confirmedAnswers}
+              examTimeMinutes={examTimeMinutes}
+              candidateName={candidateName}
+              onComplete={handleExamComplete}
+              onExit={handleExamExit}
+            />
           )}
 
-          <AnimatePresence>
-          {examStarted && mobileMenuOpen && (
-            <motion.div
-              key="mobile-nav-overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex flex-col p-6 gap-6"
-            >
-              <motion.div
-                initial={{ opacity: 0, y: -16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0.05, duration: 0.2 }}
-                className="flex justify-end"
-              >
-                <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-white">
-                  <X className="w-8 h-8" />
-                </button>
-              </motion.div>
-              <div className="flex flex-col gap-3">
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.08, duration: 0.2 }}
-                >
-                  <button
-                    onClick={() => { setView('dashboard'); setMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-4 p-4 rounded-2xl text-xl font-bold transition-colors ${view === 'dashboard' ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]' : 'text-gray-400'}`}
-                  >
-                    <LayoutDashboard /> {t('dashboard')}
-                  </button>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.12, duration: 0.2 }}
-                >
-                  <button
-                    onClick={() => { setView('analyzer'); setMobileMenuOpen(false); }}
-                    className={`w-full flex items-center gap-4 p-4 rounded-2xl text-xl font-bold transition-colors ${view === 'analyzer' ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]' : 'text-gray-400'}`}
-                  >
-                    <Brain /> {t('aiAnalyzer')}
-                  </button>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.14, duration: 0.2 }}
-                >
-                  <button
-                    onClick={() => setSelectedMode('none')}
-                    className="w-full flex items-center gap-4 p-4 rounded-2xl text-xl font-bold text-gray-400 hover:text-white transition-colors"
-                  >
-                    <ArrowLeft /> Back to Main Menu
-                  </button>
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
-          </AnimatePresence>
-
-          {!examStarted && view === 'analyzer' && (
-            <div className="hidden lg:flex fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[var(--bg-secondary)] p-1.5 rounded-2xl border border-[var(--border)] gap-1">
-              <button
-                onClick={() => setView('dashboard')}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-colors"
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                {t('dashboard')}
-              </button>
-              <button
-                onClick={() => setView('analyzer')}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold bg-[var(--text-primary)] text-[var(--bg-primary)] transition-colors"
-              >
-                <Brain className="w-4 h-4" />
-                {t('aiAnalyzer')}
-              </button>
-              <button
-                onClick={() => setSelectedMode('none')}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Main Menu
-              </button>
-            </div>
+          {/* Exam Setup Screen */}
+          {drivingView === 'setup' && (
+            <ExamSetupScreen
+              onStartExam={(licenseType) => {
+                setCandidateName(''); // Would get from form
+                startExam(licenseType);
+              }}
+              isStarting={examLoading}
+              onBack={() => setSelectedMode('none')}
+            />
           )}
 
-          {!examStarted ? (
-            <div className="relative">
-              <button
-                onClick={() => setSelectedMode('none')}
-                className="fixed top-4 left-4 z-50 flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-white text-xs transition-colors"
-              >
-                <ArrowLeft className="w-3 h-3" />
-                Back
-              </button>
-              <ExamSetupScreen
-                onStartExam={(licenseType) => startExam(licenseType)}
-                isStarting={examLoading}
-              />
-            </div>
-          ) : view === 'dashboard' ? (
-            <div className="relative flex flex-col flex-1 overflow-hidden pt-14 lg:pt-14">
-              <MainContent
-                questions={examQuestions}
-                confirmedAnswers={confirmedAnswers}
-                onConfirmedAnswersChange={setConfirmedAnswers}
-                onExamStatsComputed={setChapterStats}
-                onCurrentQuestionNumberChange={setCurrentQuestionNumber}
-                onRestartExam={() => startExam()}
-                examTimeMinutes={EXAM_CONFIGS[selectedLicenseType]?.timeMinutes || 30}
-              />
-            </div>
-          ) : (
+          {/* AI Analyzer View */}
+          {drivingView === 'analyzer' && (
             <SmoothScroll className="flex-1 pt-20 lg:pt-12 p-4 lg:p-12 bg-[var(--bg-primary)]">
               <button
                 onClick={() => setSelectedMode('none')}
-                className="fixed top-4 left-4 z-50 flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-white text-xs transition-colors"
+                className="fixed top-4 left-4 z-50 p-2 bg-[var(--bg-secondary)]/80 backdrop-blur-sm hover:bg-[var(--bg-secondary)] rounded-xl border border-[var(--border)] text-[var(--text-primary)] transition-all hover:scale-105"
               >
-                <ArrowLeft className="w-3 h-3" />
-                Main Menu
+                <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="max-w-6xl mx-auto space-y-8 lg:space-y-12">
                 <div className="text-center space-y-4">
@@ -470,6 +394,11 @@ function AppContent() {
       {/* Vocabulary Flashcards Mode */}
       {selectedMode === 'vocabulary' && (
         <VocabularyFlashcards onBack={() => setSelectedMode('none')} />
+      )}
+
+      {/* OPAL Flashcards Mode */}
+      {selectedMode === 'opal' && (
+        <OPALFlashcards onBack={() => setSelectedMode('none')} />
       )}
     </div>
   );

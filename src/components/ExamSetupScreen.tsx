@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { Car, CheckCircle2, ChevronDown, BookOpen, Clock, FileQuestion, Headphones, ShieldCheck } from 'lucide-react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { Car, CheckCircle2, ChevronDown, Bike, Clock, FileQuestion, ShieldCheck, Play, Loader2, Check, Circle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -19,8 +19,10 @@ const DEFAULT_TRAINING_CENTER = 'TRUNG TÂM SÁT HẠCH LÁI XE GIA LAI';
 
 const COURSE_OPTIONS = ['TỰ LUYỆN LÝ THUYẾT', 'KHÓA 25B1K01', 'KHÓA 25B1K02', 'KHÓA 25B1K03'];
 
-const VEHICLE_OPTIONS = ['Ô tô', 'Mô tô'] as const;
-type VehicleType = (typeof VEHICLE_OPTIONS)[number];
+const VEHICLE_OPTIONS = [
+  { id: 'car' as const, label: 'Ô tô', icon: Car },
+  { id: 'moto' as const, label: 'Mô tô', icon: Bike },
+];
 
 const OTO_RANK_OPTIONS = [
   'Ô tô hạng B (tự động & sàn)',
@@ -37,12 +39,11 @@ const OTO_RANK_OPTIONS = [
   'Ô tô hạng DE',
 ];
 
-const MOTO_RANK_OPTIONS = ['Mô tô hạng A1 (dưới 125cc)', 'Mô tô hạng A (trên 125 cc)**'];
+const MOTO_RANK_OPTIONS = ['Mô tô hạng A1 (dưới 125cc)', 'Mô tô hạng A (trên 125 cc)'];
 
 const OTO_GROUP_LABEL = '+ Ô TÔ NĂM 2025 - bộ công an';
 const MOTO_GROUP_LABEL = '+ HẠNG MÔ TÔ - Bộ công an';
 
-// Mapping from rank display text to LicenseType
 const RANK_TO_LICENSE_TYPE: Record<string, LicenseType> = {
   'Ô tô hạng B (tự động & sàn)': 'B',
   'Ô tô hạng C1': 'C1',
@@ -57,7 +58,7 @@ const RANK_TO_LICENSE_TYPE: Record<string, LicenseType> = {
   'Ô tô hạng D2E': 'D2E',
   'Ô tô hạng DE': 'DE',
   'Mô tô hạng A1 (dưới 125cc)': 'A1',
-  'Mô tô hạng A (trên 125 cc)**': 'A',
+  'Mô tô hạng A (trên 125 cc)': 'A',
 };
 
 const EXAM_PAPER_GROUPS: { label: string; options: string[] }[] = [
@@ -68,7 +69,7 @@ const EXAM_PAPER_GROUPS: { label: string; options: string[] }[] = [
   },
 ];
 
-function rankOptionsForVehicle(v: VehicleType): { label: string; options: string[] }[] {
+function rankOptionsForVehicle(v: string): { label: string; options: string[] }[] {
   return [
     {
       label: v === 'Ô tô' ? OTO_GROUP_LABEL : MOTO_GROUP_LABEL,
@@ -80,31 +81,159 @@ function rankOptionsForVehicle(v: VehicleType): { label: string; options: string
 interface ExamSetupScreenProps {
   onStartExam: (licenseType: LicenseType) => void;
   isStarting?: boolean;
+  onBack?: () => void;
 }
 
-const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarting }) => {
-  const { t } = useLanguage();
-  const [candidateName, setCandidateName] = useState('LÊ VĂN TÙNG');
-  const [examPaper, setExamPaper] = useState('Ngẫu nhiên');
-  const [trainingCenter, setTrainingCenter] = useState(DEFAULT_TRAINING_CENTER);
-  const [course, setCourse] = useState(COURSE_OPTIONS[0]);
-  const [vehicleType, setVehicleType] = useState<VehicleType>('Ô tô');
-  const [licenseRank, setLicenseRank] = useState(OTO_RANK_OPTIONS[0]);
-  const [verified, setVerified] = useState(false);
+// Step indicator component
+const StepIndicator = ({ currentStep }: { currentStep: number }) => {
+  const steps = [
+    { num: 1, label: 'Thông tin' },
+    { num: 2, label: 'Bài thi' },
+    { num: 3, label: 'Kết quả' },
+  ];
 
-  const statusLabel = useMemo(
-    () => (verified ? t('setupStatusVerified') : t('setupStatusPending')),
-    [verified, t],
+  return (
+    <div className="flex items-center justify-center gap-2 mb-6">
+      {steps.map((step, idx) => (
+        <React.Fragment key={step.num}>
+          <div className="flex items-center gap-2">
+            <div
+              className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                currentStep > step.num
+                  ? 'bg-emerald-500 text-white'
+                  : currentStep === step.num
+                  ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
+                  : 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]'
+              }`}
+            >
+              {currentStep > step.num ? <Check className="w-4 h-4" /> : step.num}
+            </div>
+            <span
+              className={`text-xs font-medium hidden sm:block ${
+                currentStep >= step.num ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'
+              }`}
+            >
+              {step.label}
+            </span>
+          </div>
+          {idx < steps.length - 1 && (
+            <div
+              className={`w-8 sm:w-12 h-0.5 rounded-full transition-all duration-300 ${
+                currentStep > step.num ? 'bg-emerald-500' : 'bg-[var(--bg-tertiary)]'
+              }`}
+            />
+          )}
+        </React.Fragment>
+      ))}
+    </div>
   );
+};
 
-  const canStart = verified && candidateName.trim().length > 0;
+// Status badge component
+const StatusBadge = ({ isValid }: { isValid: boolean }) => (
+  <div
+    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 ${
+      isValid
+        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+        : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+    }`}
+  >
+    <span
+      className={`w-1.5 h-1.5 rounded-full ${isValid ? 'bg-emerald-500' : 'bg-amber-500'} animate-pulse`}
+    />
+    {isValid ? 'Sẵn sàng bắt đầu' : 'Cần hoàn tất thông tin'}
+  </div>
+);
 
-  const licenseGroups = useMemo(() => rankOptionsForVehicle(vehicleType), [vehicleType]);
+// Exam info card component
+const ExamInfoCard = ({ licenseRank }: { licenseRank: string }) => {
+  const config = EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]];
 
-  const onVehicleChange = (v: VehicleType) => {
+  if (!config) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative rounded-2xl bg-gradient-to-br from-[var(--text-primary)] to-[var(--text-primary)]/80 overflow-hidden"
+    >
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)`,
+          backgroundSize: '16px 16px'
+        }} />
+      </div>
+
+      <div className="relative p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-sm font-bold text-[var(--bg-primary)]">Thông tin bài thi</h3>
+          <span className="text-[10px] font-medium text-[var(--bg-primary)]/60">Chuẩn 2026</span>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          <div className="bg-[var(--bg-primary)]/10 rounded-xl p-3 text-center">
+            <FileQuestion className="w-5 h-5 mx-auto mb-1.5 text-blue-300" />
+            <p className="text-lg font-black text-white">{config.totalQuestions}</p>
+            <p className="text-[10px] font-medium text-white/60">câu hỏi</p>
+          </div>
+
+          <div className="bg-[var(--bg-primary)]/10 rounded-xl p-3 text-center">
+            <Clock className="w-5 h-5 mx-auto mb-1.5 text-emerald-300" />
+            <p className="text-lg font-black text-white">{config.timeMinutes}</p>
+            <p className="text-[10px] font-medium text-white/60">phút</p>
+          </div>
+
+          <div className="bg-[var(--bg-primary)]/10 rounded-xl p-3 text-center">
+            <ShieldCheck className="w-5 h-5 mx-auto mb-1.5 text-amber-300" />
+            <p className="text-lg font-black text-white">≥{config.passingScore}</p>
+            <p className="text-[10px] font-medium text-white/60">để đạt</p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarting, onBack }) => {
+  const { t } = useLanguage();
+  const [candidateName, setCandidateName] = useState('');
+  const [examPaper] = useState('Ngẫu nhiên');
+  const [trainingCenter] = useState(DEFAULT_TRAINING_CENTER);
+  const [course, setCourse] = useState(COURSE_OPTIONS[0]);
+  const [vehicleType, setVehicleType] = useState<'car' | 'moto'>('car');
+  const [licenseRank, setLicenseRank] = useState(OTO_RANK_OPTIONS[0]);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  // Auto-validate on mount and when fields change
+  const isFormValid = useMemo(() => {
+    return candidateName.trim().length > 0;
+  }, [candidateName]);
+
+  // Determine current step based on form completion
+  const currentStep = useMemo(() => {
+    if (!isFormValid) return 1;
+    return 2;
+  }, [isFormValid]);
+
+  const licenseGroups = useMemo(() => rankOptionsForVehicle(vehicleType === 'car' ? 'Ô tô' : 'Mô tô'), [vehicleType]);
+
+  const onVehicleChange = (v: 'car' | 'moto') => {
     setVehicleType(v);
-    setLicenseRank(v === 'Ô tô' ? OTO_RANK_OPTIONS[0] : MOTO_RANK_OPTIONS[0]);
-    setVerified(false);
+    setLicenseRank(v === 'car' ? OTO_RANK_OPTIONS[0] : MOTO_RANK_OPTIONS[0]);
+  };
+
+  // Show success animation when name is entered
+  useEffect(() => {
+    if (candidateName.trim().length > 0) {
+      setShowSuccess(true);
+    }
+  }, [candidateName]);
+
+  const handleStartExam = () => {
+    if (isFormValid) {
+      onStartExam(RANK_TO_LICENSE_TYPE[licenseRank] || 'B1');
+    }
   };
 
   return (
@@ -114,11 +243,10 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
         <LanguageSwitcher className="relative flex items-center gap-2" />
       </div>
 
-      {/* ═══ LEFT PANEL — Branding ═══ */}
+      {/* LEFT PANEL — Branding (Desktop only) */}
       <div className="relative hidden lg:flex lg:w-[42%] shrink-0 flex-col overflow-hidden bg-[#111318]">
-
         <div className="relative flex flex-col h-full p-10 xl:p-14">
-          {/* Logo + Brand - top center */}
+          {/* Logo + Brand */}
           <motion.div
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -136,7 +264,6 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
 
           {/* Center content */}
           <div className="flex-1 flex flex-col items-center justify-center text-center space-y-8">
-            {/* Simple icon */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -146,7 +273,6 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
               <Car className="w-10 h-10 text-white" />
             </motion.div>
 
-            {/* Title */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -164,7 +290,6 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
               </p>
             </motion.div>
 
-            {/* Benefit pills */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -199,231 +324,170 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
         </div>
       </div>
 
-      {/* ═══ RIGHT PANEL — Form ═══ */}
-      <div className="flex-1 flex flex-col overflow-y-auto bg-[var(--bg-primary)]">
-        <div className="flex-1 flex flex-col justify-center px-6 py-10 sm:px-8 lg:px-14 xl:px-20 max-w-xl lg:max-w-none mx-auto lg:mx-0 w-full lg:w-auto">
+      {/* RIGHT PANEL — Form */}
+      <div className="flex-1 flex flex-col overflow-y-auto modern-scrollbar scroll-smooth" style={{ scrollBehavior: 'smooth' }}>
+        {/* Back button - fixed to viewport but contained in panel */}
+        {onBack && (
+          <div className="sticky top-0 z-10 px-4 sm:px-6 lg:px-10 pt-4">
+            <button
+              onClick={onBack}
+              className="p-2 bg-[var(--bg-secondary)]/80 backdrop-blur-sm hover:bg-[var(--bg-secondary)] rounded-xl border border-[var(--border)] text-[var(--text-primary)] transition-all hover:scale-105"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+          </div>
+        )}
+
+        <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-10 xl:px-14 max-w-lg mx-auto w-full py-6 lg:py-8">
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
-            className="space-y-6"
           >
             {/* Mobile logo */}
-            <div className="flex lg:hidden items-center gap-2.5 mb-2">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--text-primary)]">
-                <Car className="h-5 w-5 text-[var(--bg-primary)]" />
+            <div className="flex items-center gap-3 mb-8">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--text-primary)] shadow-lg">
+                <Car className="h-6 w-6 text-[var(--bg-primary)]" />
               </div>
               <div>
-                <h1 className="text-lg font-black text-[var(--text-primary)] tracking-tight leading-tight">DriveSmart</h1>
-                <p className="text-[10px] text-[var(--text-secondary)] font-medium tracking-wider">Driver License Platform</p>
+                <h1 className="text-xl font-black text-[var(--text-primary)] tracking-tight leading-tight">DriveSmart</h1>
+                <p className="text-[11px] text-[var(--text-secondary)] font-medium tracking-wider">Driver License Platform</p>
               </div>
             </div>
 
             {/* Header */}
-            <div className="space-y-1">
-              <h2 className="text-2xl sm:text-3xl font-black text-[var(--text-primary)] tracking-tight leading-tight">
+            <div className="mb-6">
+              <h2 className="text-2xl sm:text-3xl font-black text-[var(--text-primary)] tracking-tight leading-tight mb-1">
                 Bắt đầu bài thi
               </h2>
               <p className="text-sm text-[var(--text-secondary)]">
-                Điền thông tin và chọn hạng GPLX của bạn
+                Nhập thông tin để bắt đầu ôn thi
               </p>
             </div>
 
-            {/* Candidate name */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
-                Họ và tên thí sinh
-              </label>
-              <input
-                type="text"
-                value={candidateName}
-                onChange={(e) => {
-                  setCandidateName(e.target.value);
-                  setVerified(false);
-                }}
-                className="w-full rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3.5 pr-12 text-sm font-bold uppercase tracking-wide text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--text-primary)]"
-                placeholder="NHẬP HỌ TÊN"
-              />
+            {/* Step indicator */}
+            <StepIndicator currentStep={currentStep} />
+
+            {/* Status badge */}
+            <div className="mb-6">
+              <StatusBadge isValid={isFormValid} />
             </div>
 
-            {/* Exam paper */}
-            <div className="hidden lg:block space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
-                Đề thi
-              </label>
-              <SelectField
-                value={examPaper}
-                onChange={(v) => { setExamPaper(v); setVerified(false); }}
-                groups={EXAM_PAPER_GROUPS}
-              />
-            </div>
-
-            {/* Training center + Course */}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <div className="hidden lg:block space-y-1.5">
+            {/* Form sections with consistent spacing */}
+            <div className="space-y-5">
+              {/* Candidate name */}
+              <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
-                  Cơ sở
+                  Họ và tên thí sinh
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={candidateName}
+                    onChange={(e) => setCandidateName(e.target.value.toUpperCase())}
+                    className="w-full rounded-xl border-2 border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3.5 pr-12 text-sm font-bold uppercase tracking-wide text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--text-primary)]"
+                    placeholder="NHẬP HỌ TÊN"
+                  />
+                  <AnimatePresence>
+                    {showSuccess && candidateName.trim().length > 0 && (
+                      <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center"
+                      >
+                        <Check className="w-4 h-4 text-white" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Vehicle type - improved segmented control */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                  Phương tiện
+                </label>
+                <div className="grid grid-cols-2 gap-2 p-1 bg-[var(--bg-secondary)] rounded-xl border border-[var(--border)]">
+                  {VEHICLE_OPTIONS.map(({ id, label, icon: Icon }) => (
+                    <motion.button
+                      key={id}
+                      type="button"
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => onVehicleChange(id)}
+                      className={`relative flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-bold transition-all duration-200 min-h-[48px] ${
+                        vehicleType === id
+                          ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-lg'
+                          : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                      }`}
+                    >
+                      <Icon className="w-5 h-5" />
+                      <span>{label}</span>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* License rank */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+                  Hạng GPLX
                 </label>
                 <SelectField
-                  value={trainingCenter}
-                  onChange={(v) => { setTrainingCenter(v); setVerified(false); }}
-                  options={TRAINING_OPTIONS}
+                  value={licenseRank}
+                  onChange={setLicenseRank}
+                  groups={licenseGroups}
                 />
               </div>
-              <div className="space-y-1.5">
+
+              {/* Course */}
+              <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
                   Khóa học
                 </label>
                 <SelectField
                   value={course}
-                  onChange={(v) => { setCourse(v); setVerified(false); }}
+                  onChange={setCourse}
                   options={COURSE_OPTIONS}
                 />
               </div>
+
+              {/* Exam info card */}
+              <ExamInfoCard licenseRank={licenseRank} />
             </div>
 
-            {/* Vehicle type */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
-                Phương tiện
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {(Object.values(VEHICLE_OPTIONS) as VehicleType[]).map((v) => (
-                  <motion.button
-                    key={v}
-                    type="button"
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => onVehicleChange(v)}
-                    className={`rounded-2xl border py-3 px-4 text-sm font-bold transition-colors ${
-                      vehicleType === v
-                        ? 'bg-[var(--text-primary)] border-[var(--text-primary)] text-[var(--bg-primary)]'
-                        : 'border-[var(--border)] bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:border-[var(--border-strong)]'
-                    }`}
-                  >
-                    {v}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
-            {/* License rank */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
-                Hạng GPLX
-              </label>
-              <SelectField
-                value={licenseRank}
-                onChange={(v) => { setLicenseRank(v); setVerified(false); }}
-                groups={licenseGroups}
-              />
-            </div>
-
-            {/* Exam info based on selected rank */}
-            {EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]] && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
-                className="rounded-2xl border border-amber-500/50 bg-amber-500/5 p-4"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <FileQuestion className="w-4 h-4 text-blue-400" />
-                    <span className="text-sm font-bold text-[var(--text-primary)]">
-                      {EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]].totalQuestions} câu hỏi
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-emerald-400" />
-                    <span className="text-sm font-bold text-[var(--text-primary)]">
-                      {EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]].timeMinutes} phút
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-amber-400" />
-                    <span className="text-sm font-bold text-[var(--text-primary)]">
-                      ≥{EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]].passingScore}/{EXAM_CONFIGS[RANK_TO_LICENSE_TYPE[licenseRank]].totalQuestions}
-                    </span>
-                  </div>
-                </div>
-                <p className="mt-2 text-xs text-[var(--text-muted)]">
-                  ⚠️ Theo Dự thảo Công văn 2333/C08-P5 - Tăng số câu hỏi 2026
-                </p>
-              </motion.div>
-            )}
-
-            {/* Status pill */}
-            <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3">
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${verified ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                <span className="text-sm font-semibold text-[var(--text-secondary)]">
-                  {statusLabel}
-                </span>
-              </div>
-              <span className="text-xs text-[var(--text-muted)]">{licenseRank.length > 28 ? licenseRank.slice(0, 26) + '…' : licenseRank}</span>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col gap-3 pt-1">
+            {/* CTA - Single primary action */}
+            <div className="mt-8 mb-4">
               <motion.button
                 type="button"
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setVerified(true)}
-                className="w-full rounded-2xl bg-[var(--text-primary)] px-4 py-3.5 text-sm font-bold uppercase tracking-wide text-[var(--bg-primary)] transition-opacity hover:opacity-80 flex items-center justify-center gap-2"
-              >
-                <CheckCircle2 className="h-5 w-5 shrink-0" />
-                Xác nhận thông tin
-              </motion.button>
-
-              <motion.button
-                type="button"
-                whileTap={{ scale: canStart ? 0.98 : 1 }}
-                onClick={() => onStartExam(RANK_TO_LICENSE_TYPE[licenseRank] || 'B1')}
-                disabled={!canStart || isStarting}
-                className={`w-full rounded-2xl px-4 py-4 text-sm font-black uppercase tracking-wide transition-opacity flex items-center justify-center gap-2
-                  ${canStart && !isStarting
-                    ? 'bg-emerald-500 text-white hover:opacity-80'
-                    : 'bg-[var(--bg-hover)] text-[var(--text-muted)] cursor-not-allowed'
+                whileTap={{ scale: isFormValid && !isStarting ? 0.98 : 1 }}
+                onClick={handleStartExam}
+                disabled={!isFormValid || isStarting}
+                className={`w-full rounded-xl py-4 text-sm font-bold uppercase tracking-wide transition-all duration-200 flex items-center justify-center gap-2 min-h-[52px]
+                  ${isFormValid && !isStarting
+                    ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 active:scale-[0.98]'
+                    : 'bg-[var(--bg-tertiary)] text-[var(--text-muted)] cursor-not-allowed'
                   }`}
               >
                 {isStarting ? (
                   <>
-                    <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                    </svg>
+                    <Loader2 className="h-5 w-5 animate-spin" />
                     Đang khởi tạo…
                   </>
                 ) : (
                   <>
-                    <Car className="h-5 w-5" />
-                    Bắt đầu làm bài thi
+                    <Play className="h-5 w-5" />
+                    Bắt đầu thi ngay
+                    <ArrowRight className="h-5 w-5" />
                   </>
                 )}
               </motion.button>
-            </div>
 
-            {/* Footer links */}
-            <div className="flex items-center justify-center gap-8 pt-2">
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
-              >
-                <BookOpen className="h-4 w-4" />
-                Hướng dẫn
-              </button>
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
-              >
-                <Headphones className="h-4 w-4" />
-                Hỗ trợ
-              </button>
+              {/* Helper text */}
+              <p className="text-center text-[11px] text-[var(--text-muted)] mt-3">
+                Kết quả thi chỉ mang tính tham khảo
+              </p>
             </div>
-
-            <p className="text-center text-[10px] leading-relaxed text-[var(--text-muted)]">
-              Kết quả thi chỉ mang tính tham khảo. Vui lòng kiểm tra tại trang của cơ quan có thẩm quyền.
-            </p>
           </motion.div>
         </div>
       </div>
@@ -438,14 +502,12 @@ function SelectField({
   options,
   groups,
   disabled,
-  textAlign = 'left',
 }: {
   value: string;
   onChange: (v: string) => void;
   options?: string[];
   groups?: { label: string; options: string[] }[];
   disabled?: boolean;
-  textAlign?: 'left' | 'center' | 'right';
 }) {
   const [open, setOpen] = useState(false);
 
@@ -457,39 +519,36 @@ function SelectField({
   const isOptGroup = !!groups;
   const optGroups = groups ?? [{ label: '', options: options ?? [] }];
 
-  const alignClass =
-    textAlign === 'center' ? 'text-center' : textAlign === 'right' ? 'text-right' : 'text-left';
-
   return (
     <div className="relative">
       <button
         type="button"
         disabled={disabled}
         onClick={() => !disabled && setOpen(o => !o)}
-        className={`w-full flex items-center appearance-none rounded-xl border font-semibold outline-none transition-colors disabled:cursor-not-allowed disabled:opacity-70 py-3 pl-4 pr-10 text-sm bg-[var(--bg-secondary)] border-[var(--border)] text-[var(--text-primary)] hover:border-[var(--border-strong)] focus:border-[var(--text-primary)] ${alignClass}`}
+        className="w-full flex items-center appearance-none rounded-xl border-2 border-[var(--border)] font-semibold outline-none transition-colors disabled:cursor-not-allowed disabled:opacity-70 py-3 pl-4 pr-10 text-sm bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:border-[var(--border-strong)] focus:border-[var(--text-primary)]"
       >
         <span className="flex-1 text-left truncate">{value}</span>
       </button>
       <ChevronDown
-        className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)] transition-transform duration-200"
+        className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-muted)] transition-transform duration-200"
         style={{ transform: open ? 'translateY(-50%) rotate(180deg)' : 'translateY(-50%)' }}
       />
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
+            initial={{ opacity: 0, y: -4, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-50 mt-1 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] overflow-hidden"
+            className="absolute z-50 mt-1 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-secondary)] overflow-hidden shadow-xl"
             style={{ left: 0, right: 0 }}
           >
-            <div className="max-h-56 overflow-y-auto py-1">
+            <div className="max-h-56 overflow-y-auto modern-scrollbar py-1">
               {isOptGroup
                 ? optGroups.map((group) => (
                     <div key={group.label}>
                       {group.label && (
-                        <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                        <div className="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] bg-[var(--bg-tertiary)]">
                           {group.label}
                         </div>
                       )}
@@ -498,9 +557,9 @@ function SelectField({
                           key={opt}
                           type="button"
                           onClick={() => { onChange(opt); setOpen(false); }}
-                          className={`w-full px-3 py-2.5 text-sm text-left font-semibold transition-colors ${
+                          className={`w-full px-3 py-2.5 text-sm text-left font-medium transition-colors ${
                             opt === value
-                              ? 'bg-[var(--bg-tertiary)] text-[var(--text-primary)]'
+                              ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                               : 'text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                           }`}
                         >
@@ -514,9 +573,9 @@ function SelectField({
                       key={opt}
                       type="button"
                       onClick={() => { onChange(opt); setOpen(false); }}
-                      className={`w-full px-3 py-2.5 text-sm text-left font-semibold transition-colors ${
+                      className={`w-full px-3 py-2.5 text-sm text-left font-medium transition-colors ${
                         opt === value
-                          ? 'bg-[var(--bg-tertiary)] text-[var(--text-primary)]'
+                          ? 'bg-[var(--text-primary)] text-[var(--bg-primary)]'
                           : 'text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
                       }`}
                     >
