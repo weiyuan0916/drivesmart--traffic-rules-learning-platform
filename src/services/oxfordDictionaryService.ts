@@ -36,16 +36,31 @@ export interface OtherResult {
   wordform?: string;
 }
 
+export interface NearbyWord {
+  name: string;
+  id: string;
+  wordform?: string;
+}
+
+export interface Topic {
+  name: string;
+  cefr?: string;
+  href: string;
+}
+
 export interface WordInfo {
   id: string;
   name: string;
   wordform: string | null;
   pronunciations: Pronunciation[];
   property?: string;
+  cefrLevel?: string;
   definitions: NamespaceDefinition[];
   idioms: Idiom[];
   other_results?: { [key: string]: OtherResult[] }[];
   phrasal_verbs?: { name: string; id: string }[];
+  nearbyWords?: NearbyWord[];
+  topics?: Topic[];
 }
 
 export class WordNotFoundError extends Error {
@@ -56,7 +71,7 @@ export class WordNotFoundError extends Error {
 }
 
 // CORS proxy to avoid CORS issues when fetching from Oxford website
-const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+const CORS_PROXY = 'https://corsproxy.io/?';
 const BASE_URL = 'https://www.oxfordlearnersdictionaries.com/definition/english/';
 
 // Extract word ID from link
@@ -95,6 +110,35 @@ export const parseWordHtml = (html: string, word: string): WordInfo => {
   // Get global property
   const propertyEl = selectFirst('.top-container .grammar');
   const property = propertyEl?.textContent?.trim() || undefined;
+
+  // Get CEFR level (A1, A2, B1, B2, C1, C2) from word list symbols
+  let cefrLevel: string | undefined;
+  
+  // Look for level in the symbols div (e.g., /wordlists/...?level=c1)
+  const symbolsEl = selectFirst('div.symbols');
+  if (symbolsEl) {
+    const links = symbolsEl.querySelectorAll('a');
+    for (const link of links) {
+      const href = link.getAttribute('href') || '';
+      const levelMatch = href.match(/level=([a-z]\d)/i);
+      if (levelMatch) {
+        cefrLevel = levelMatch[1].toUpperCase();
+        break;
+      }
+    }
+    
+    // Alternative: check for span class like ox5ksym_c1
+    if (!cefrLevel) {
+      const spanEl = symbolsEl.querySelector('span[class*="ox5ksym"]');
+      if (spanEl) {
+        const className = spanEl.className || '';
+        const classMatch = className.match(/ox5ksym_([a-z]\d)/i);
+        if (classMatch) {
+          cefrLevel = classMatch[1].toUpperCase();
+        }
+      }
+    }
+  }
 
   // Get pronunciations
   const britain: Pronunciation = { prefix: null, ipa: null, url: null };
@@ -201,6 +245,45 @@ export const parseWordHtml = (html: string, word: string): WordInfo => {
     idioms.push({ name: idiomName, summary, definitions: idiomDefs });
   }
 
+  // Get nearby words
+  const nearbyWords: NearbyWord[] = [];
+  const nearbySection = selectFirst('.nearby');
+  if (nearbySection) {
+    const nearbyLinks = nearbySection.querySelectorAll('a');
+    for (const link of nearbyLinks) {
+      const dataEl = link.querySelector('data.hwd');
+      if (dataEl) {
+        const hwdEl = dataEl.querySelector('.hwd');
+        const posEl = dataEl.querySelector('pos');
+        const wordName = hwdEl?.textContent?.trim() || dataEl.textContent?.trim() || '';
+        const wordform = posEl?.textContent?.trim() || undefined;
+        const href = link.getAttribute('href') || '';
+        const id = extractId(href);
+        
+        if (wordName && id && id !== word) {
+          nearbyWords.push({ name: wordName, id, wordform });
+        }
+      }
+    }
+  }
+
+  // Get topics
+  const topics: Topic[] = [];
+  const topicElements = select('.topic-g');
+  for (const topicEl of topicElements) {
+    const topicNameEl = topicEl.querySelector('.topic_name');
+    const topicCefrEl = topicEl.querySelector('.topic_cefr');
+    const linkEl = topicEl.querySelector('a');
+    
+    if (topicNameEl) {
+      topics.push({
+        name: topicNameEl.textContent?.trim() || '',
+        cefr: topicCefrEl?.textContent?.trim() || undefined,
+        href: linkEl?.getAttribute('href') || '',
+      });
+    }
+  }
+
   // Build the full word info object
   const wordInfo: WordInfo = {
     id,
@@ -212,6 +295,9 @@ export const parseWordHtml = (html: string, word: string): WordInfo => {
   };
 
   if (property) wordInfo.property = property;
+  if (cefrLevel) wordInfo.cefrLevel = cefrLevel;
+  if (nearbyWords.length > 0) wordInfo.nearbyWords = nearbyWords;
+  if (topics.length > 0) wordInfo.topics = topics;
 
   // Add phrasal verbs if it's a verb
   if (wordform === 'verb') {
@@ -252,7 +338,7 @@ export const fetchWordInfo = async (word: string): Promise<WordInfo> => {
   }
 };
 
-// Sample common English words for vocabulary practice
+// Sample common English words for vocabulary practice with CEFR levels
 export const commonWords = [
   'aberration', 'ephemeral', 'ubiquitous', 'serendipity', 'eloquent',
   'resilient', 'meticulous', 'pragmatic', 'altruistic', 'pervasive',
@@ -261,3 +347,38 @@ export const commonWords = [
   'magnanimous', 'nefarious', 'obsequious', 'prevalent', 'quintessential',
   'resplendent', 'sagacious', 'tangible'
 ];
+
+// Preset CEFR levels for common words (fallback when API doesn't return level)
+export const presetCefrLevels: { [word: string]: string } = {
+  // A1 - Beginner
+  'hello': 'A1', 'good': 'A1', 'big': 'A1', 'run': 'A1', 'walk': 'A1',
+  'house': 'A1', 'water': 'A1', 'food': 'A1', 'book': 'A1', 'time': 'A1',
+  'world': 'A1', 'people': 'A1', 'life': 'A1', 'way': 'A1',
+  
+  // A2 - Elementary  
+  'beautiful': 'A2', 'important': 'A2', 'different': 'A2',
+  'happy': 'A2', 'difficult': 'A2', 'experience': 'A2', 'problem': 'A2',
+  'answer': 'A2', 'question': 'A2', 'believe': 'A2', 'understand': 'A2',
+  
+  // B1 - Intermediate
+  'resilient': 'B2', 'jubilant': 'B2', 'kinetic': 'B2', 'tangible': 'B2',
+  
+  // B2 - Upper Intermediate
+  'serendipity': 'B2', 'pragmatic': 'B2',
+  
+  // C1 - Advanced
+  'meticulous': 'C1', 'eloquent': 'C1', 'altruistic': 'C1', 'aberration': 'C1',
+  'cogent': 'C1', 'derogatory': 'C1', 'luminous': 'C1', 'prevalent': 'C1',
+  
+  // C2 - Proficiency
+  'ephemeral': 'C2', 'ubiquitous': 'C2', 'pervasive': 'C2', 'ethereal': 'C2',
+  'fortuitous': 'C2', 'garrulous': 'C2', 'hackneyed': 'C2', 'iconoclastic': 'C2',
+  'magnanimous': 'C2', 'nefarious': 'C2', 'obsequious': 'C2', 'quintessential': 'C2',
+  'resplendent': 'C2', 'sagacious': 'C2',
+};
+
+// Get CEFR level with fallback to preset
+export const getCefrLevel = (word: string): string | undefined => {
+  const lowerWord = word.toLowerCase();
+  return presetCefrLevels[lowerWord];
+};
