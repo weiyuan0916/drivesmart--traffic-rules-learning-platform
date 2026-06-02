@@ -134,6 +134,7 @@ const OPALFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [knownItems, setKnownItems] = useState<Set<string>>(new Set());
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const [playingPhraseId, setPlayingPhraseId] = useState<string | null>(null);
   const [showCategories, setShowCategories] = useState(true);
   const [showTopicDetail, setShowTopicDetail] = useState(false);
   const [currentTopic, setCurrentTopic] = useState<string>('');
@@ -246,12 +247,12 @@ const OPALFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     const mp3Url = selectedAccent === 'uk' ? item.uk_mp3 : item.us_mp3;
     if (!mp3Url) return;
     
-    setIsPlayingPhrase(true);
+    setPlayingPhraseId(item.headword);
     const fullUrl = mp3Url.startsWith('http') ? mp3Url : `${MP3_BASE_URL}${mp3Url}`;
     const audio = new Audio(fullUrl);
-    audio.onended = () => setIsPlayingPhrase(false);
-    audio.onerror = () => setIsPlayingPhrase(false);
-    audio.play().catch(() => setIsPlayingPhrase(false));
+    audio.onended = () => setPlayingPhraseId(null);
+    audio.onerror = () => setPlayingPhraseId(null);
+    audio.play().catch(() => setPlayingPhraseId(null));
   };
 
   // Navigation
@@ -482,16 +483,16 @@ const OPALFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <div className="flex items-center gap-3 mb-3">
                           <button
                             onClick={() => playPhraseAudio(item)}
-                            disabled={isPlayingPhrase}
+                            disabled={playingPhraseId === item.headword}
                             className={`
                               flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-medium transition-all
-                              ${isPlayingPhrase 
+                              ${playingPhraseId === item.headword
                                 ? 'bg-blue-600 text-white' 
                                 : 'bg-slate-700/80 hover:bg-slate-600 text-slate-200'
                               }
                             `}
                           >
-                            {isPlayingPhrase ? (
+                            {playingPhraseId === item.headword ? (
                               <>
                                 <Loader2 className="w-5 h-5 animate-spin" />
                                 <span>Playing...</span>
