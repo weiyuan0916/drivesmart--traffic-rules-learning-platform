@@ -5,8 +5,6 @@ import { useLanguage } from '../context/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 import { LicenseType, EXAM_CONFIGS } from '../services/examGenerator';
 
-// Exam info based on Dự thảo Công văn 2333/C08-P5 (5/2026) - Tăng số câu hỏi tất cả các hạng
-
 const TRAINING_OPTIONS = [
   'CƠ SỞ ĐÀO TẠO SÁT HẠCH LÁI XE',
   'TRUNG TÂM SÁT HẠCH LÁI XE HẢI DƯƠNG',
@@ -14,9 +12,7 @@ const TRAINING_OPTIONS = [
   'TRUNG TÂM SÁT HẠCH LÁI XE HƯNG YÊN',
   'TRUNG TÂM SÁT HẠCH LÁI XE GIA LAI',
 ];
-
 const DEFAULT_TRAINING_CENTER = 'TRUNG TÂM SÁT HẠCH LÁI XE GIA LAI';
-
 const COURSE_OPTIONS = ['TỰ LUYỆN LÝ THUYẾT', 'KHÓA 25B1K01', 'KHÓA 25B1K02', 'KHÓA 25B1K03'];
 
 const VEHICLE_OPTIONS = [
@@ -238,11 +234,6 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
 
   return (
     <div className="flex h-screen overflow-hidden font-sans">
-      {/* Language switcher */}
-      <div className="fixed right-4 top-4 z-20">
-        <LanguageSwitcher className="relative flex items-center gap-2" />
-      </div>
-
       {/* LEFT PANEL — Branding (Desktop only) */}
       <div className="relative hidden lg:flex lg:w-[42%] shrink-0 flex-col overflow-hidden bg-[#111318]">
         <div className="relative flex flex-col h-full p-10 xl:p-14">
@@ -267,10 +258,15 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-              className="w-20 h-20 rounded-3xl bg-[#1a1d24] border border-[#2a2f3a] flex items-center justify-center"
+              transition={{ delay: 0.1, duration: 0.4 }}
+              className="relative"
             >
-              <Car className="w-10 h-10 text-white" />
+              <div className="flex h-40 w-40 items-center justify-center rounded-full bg-white/5 backdrop-blur-sm">
+                <Car className="h-16 w-16 text-white" />
+              </div>
+              <div className="absolute -bottom-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
             </motion.div>
 
             <motion.div
@@ -293,33 +289,30 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.25 }}
-              className="flex flex-wrap items-center justify-center gap-3"
+              transition={{ delay: 0.4, duration: 0.4 }}
             >
-              {[
-                { icon: FileQuestion, text: '30 câu' },
-                { icon: Clock, text: '20 phút' },
-                { icon: ShieldCheck, text: 'Chuẩn 2026' },
-              ].map(({ icon: Icon, text }) => (
-                <div
-                  key={text}
-                  className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold bg-[#1a1d24] border border-[#2a2f3a] text-[#9CA3AF]"
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  {text}
-                </div>
-              ))}
+              <span className="text-[11px] font-medium text-[#4B5563] tracking-widest uppercase">Phiên bản 2026</span>
             </motion.div>
           </div>
 
-          {/* Bottom badge */}
+          {/* Bottom info */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-            className="flex items-center justify-center"
+            transition={{ delay: 0.5, duration: 0.4 }}
+            className="space-y-4"
           >
-            <span className="text-[11px] font-medium text-[#4B5563] tracking-widest uppercase">Phiên bản 2026</span>
+            <div className="h-px bg-white/10" />
+            <div className="flex items-center justify-between text-[11px] text-[#4B5563]">
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" />
+                20 câu / phút
+              </span>
+              <span className="flex items-center gap-1.5">
+                <FileQuestion className="h-3.5 w-3.5" />
+                6 chương
+              </span>
+            </div>
           </motion.div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 export type Language = 'vi' | 'en';
 
@@ -114,6 +114,8 @@ export const translations: Translations = {
   carPhaseMergeOut: { vi: 'Ra làn', en: 'Exiting lane' },
 };
 
+const LS_KEY = 'language';
+
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -123,7 +125,19 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('vi');
+  const [language, setLanguageState] = useState<Language>(() => {
+    const saved = localStorage.getItem(LS_KEY);
+    if (saved === 'vi' || saved === 'en') return saved;
+    return 'vi';
+  });
+
+  useEffect(() => {
+    localStorage.setItem(LS_KEY, language);
+  }, [language]);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+  };
 
   const t = (key: string) => {
     return translations[key]?.[language] || key;

@@ -11,7 +11,7 @@ interface LanguageSwitcherProps {
 
 const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className, variant = 'default' }) => {
   const { language, setLanguage, t } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
+  const { resolved, toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -66,7 +66,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className, variant 
   };
 
   const selectTheme = (next: 'light' | 'dark') => {
-    if (theme !== next) toggleTheme();
+    if (resolved !== next) toggleTheme();
   };
 
   if (variant === 'menu') {
@@ -156,7 +156,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className, variant 
                   >
                     <Sun className="h-6 w-6 shrink-0 text-amber-500" />
                     <span className="flex-1">{t('themeLight')}</span>
-                    {theme === 'light' ? <Check className="h-5 w-5 shrink-0 text-blue-500" /> : null}
+                    {resolved === 'light' ? <Check className="h-5 w-5 shrink-0 text-blue-500" /> : null}
                   </button>
                   <button
                     type="button"
@@ -168,7 +168,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className, variant 
                   >
                     <Moon className="h-6 w-6 shrink-0 text-indigo-400" />
                     <span className="flex-1">{t('themeDark')}</span>
-                    {theme === 'dark' ? <Check className="h-5 w-5 shrink-0 text-blue-500" /> : null}
+                    {resolved === 'dark' ? <Check className="h-5 w-5 shrink-0 text-blue-500" /> : null}
                   </button>
                 </div>
               </div>
@@ -185,21 +185,21 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ className, variant 
         type="button"
         onClick={toggleTheme}
         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-all shadow-lg backdrop-blur-md ${
-          theme === 'dark' 
+          resolved === 'dark' 
             ? 'bg-[#1C1D31]/80 border-gray-800 text-yellow-500 hover:bg-[#252642]' 
             : 'bg-white/80 border-gray-200 text-blue-600 hover:bg-gray-100'
         }`}
-        title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-        aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        title={resolved === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+        aria-label={resolved === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
       >
-        {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+        {resolved === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
       </button>
 
       <button
         type="button"
         onClick={toggleLanguage}
         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-all shadow-lg backdrop-blur-md ${
-          theme === 'dark'
+          resolved === 'dark'
             ? 'bg-[#1C1D31]/80 border-gray-800 hover:bg-[#252642]'
             : 'bg-white/80 border-gray-200 hover:bg-gray-100'
         }`}

@@ -61,6 +61,13 @@
     scroll-behavior: smooth;
   }
 
+  /* Font-size levels via data-font-size attribute on <html> */
+  html[data-font-size="1"] { font-size: 13px; }
+  html[data-font-size="2"] { font-size: 15px; }
+  html[data-font-size="3"] { font-size: 17px; }
+  html[data-font-size="4"] { font-size: 19px; }
+  html[data-font-size="5"] { font-size: 21px; }
+
   .scrollbar-visible {
     scrollbar-width: thin;
     scrollbar-color: #6366F1 var(--bg-tertiary);

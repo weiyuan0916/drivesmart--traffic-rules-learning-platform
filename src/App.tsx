@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import MainContent from './components/MainContent';
 import ImageAnalyzer from './components/ImageAnalyzer';
@@ -54,10 +54,8 @@ function AppContent() {
   };
 
   const handleExamComplete = (results: { correct: number; incorrect: number; skipped: number; totalQuestions: number; accuracy: number; pass: boolean; answers: (string | null)[]; timeSpentSeconds: number }) => {
-    // Update confirmed answers with results
     setConfirmedAnswers(results.answers);
     
-    // Compute chapter stats for the old MainContent
     const chapterMap = new Map<number, { correct: number; total: number }>();
     for (let i = 0; i < examQuestions.length; i++) {
       const q = examQuestions[i];

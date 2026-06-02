@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Check, Clock, X as XIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { useSettings } from '../context/SettingsContext';
 import type { ChapterStat, Question } from '../types';
 import { EXAM_CHAPTERS_ORDERED } from '../services/examGenerator';
 import QuestionNav from './QuestionNav';
@@ -60,6 +61,7 @@ const MainContent: React.FC<MainContentProps> = ({
   examTimeMinutes = 30,
 }) => {
   const { t } = useLanguage();
+  const { showAllAnswers } = useSettings();
   const totalQuestions = questions.length;
   const examDurationSeconds = examTimeMinutes * 60;
 
@@ -285,6 +287,10 @@ const MainContent: React.FC<MainContentProps> = ({
       iconBg = 'bg-white';
       iconText = 'text-blue-500';
       textCls = 'text-white';
+    } else if (showAllAnswers && isCorrectOption) {
+      // Hint: subtle green when showAllAnswers is on and answer not yet confirmed
+      bg = 'bg-emerald-50 dark:bg-emerald-500/10';
+      border = 'border-emerald-400 dark:border-emerald-500/50';
     }
 
     return {

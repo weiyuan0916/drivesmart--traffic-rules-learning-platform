@@ -11,7 +11,7 @@ const ImageAnalyzer: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { t } = useLanguage();
-  const { theme } = useTheme();
+  const { resolved } = useTheme();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -120,7 +120,7 @@ const ImageAnalyzer: React.FC = () => {
         {/* Results Section */}
         <div className="bg-[var(--bg-secondary)] rounded-3xl p-6 min-h-[300px] border border-[var(--border)]">
           {analysis ? (
-            <div className={`prose max-w-none prose-sm ${theme === 'dark' ? 'prose-invert' : ''}`}>
+            <div className={`prose max-w-none prose-sm ${resolved === 'dark' ? 'prose-invert' : ''}`}>
               <h4 className="text-[var(--text-primary)] font-bold mb-4 flex items-center gap-2">
                 <Brain className="w-4 h-4 text-blue-500" />
                 {t('analysisResult')}
