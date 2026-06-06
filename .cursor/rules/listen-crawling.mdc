@@ -1,0 +1,217 @@
+---
+alwaysApply: true
+---
+
+Bạn là Senior Python Engineer.
+
+Tôi muốn xây dựng một service crawl dữ liệu từ website Daily Dictation:
+
+https://dailydictation.com/exercises
+
+Mục tiêu
+
+Tạo một Python service có khả năng:
+
+Crawl danh sách các topic trên trang exercises.
+Lấy toàn bộ section bên trong mỗi topic.
+Lấy toàn bộ lesson của từng section.
+Truy cập từng lesson.
+Thu thập metadata:
+topic_name
+section_name
+lesson_name
+vocab_level
+number_of_parts
+transcript
+audio_url
+Download file audio mp3 về local storage.
+Lưu metadata vào database.
+Tech Stack
+Python 3.11+
+Playwright (ưu tiên vì site có thể render bằng JS)
+SQLAlchemy
+PostgreSQL
+aiohttp để download file
+asyncio để crawl song song
+Cấu trúc project
+crawler/
+│
+├── app/
+│   ├── crawler/
+│   │   ├── topics.py
+│   │   ├── sections.py
+│   │   ├── lessons.py
+│   │   └── downloader.py
+│   │
+│   ├── db/
+│   │   ├── models.py
+│   │   └── session.py
+│   │
+│   ├── services/
+│   │   └── daily_dictation_service.py
+│   │
+│   └── main.py
+│
+├── storage/
+│   └── audio/
+│
+├── requirements.txt
+└── README.md
+Database Schema
+
+Topic
+
+id
+name
+url
+created_at
+
+Section
+
+id
+topic_id
+name
+order_index
+
+Lesson
+
+id
+section_id
+name
+lesson_url
+vocab_level
+parts_count
+audio_url
+transcript
+local_audio_path
+Crawl Flow
+Step 1
+
+Truy cập:
+
+https://dailydictation.com/exercises
+
+Lấy toàn bộ topic:
+
+Ví dụ:
+
+Short Stories
+Conversations
+TOEIC Listening
+IELTS Listening
+TED
+News
+TOEFL Listening
+...
+
+Lưu vào bảng Topic.
+
+Step 2
+
+Vào từng topic.
+
+Ví dụ:
+
+Short Stories
+
+Lấy toàn bộ section:
+
+Section 1
+Section 2
+Section 3
+...
+Step 3
+
+Mở từng section.
+
+Lấy toàn bộ lesson:
+
+Ví dụ:
+
+First snowfall
+Jessica's first day of school
+My flower garden
+...
+Step 4
+
+Truy cập từng lesson.
+
+Từ lesson page lấy:
+
+lesson title
+transcript
+audio source url
+vocab level
+number of parts
+Step 5
+
+Download audio.
+
+Lưu theo format:
+
+storage/audio/{topic}/{section}/{lesson}.mp3
+Download Requirements
+
+Sử dụng:
+
+aiohttp
+retry 3 lần
+timeout 60s
+skip nếu file đã tồn tại
+Playwright Requirements
+Headless mode
+Random delay giữa requests
+Có retry
+Chờ page load hoàn toàn
+
+Ví dụ:
+
+await page.wait_for_load_state("networkidle")
+Data Deduplication
+
+Không lưu trùng:
+
+topic url
+lesson url
+
+Sử dụng unique constraint.
+
+Error Handling
+
+Nếu lesson lỗi:
+
+log warning
+tiếp tục crawl lesson khác
+
+Không được crash toàn bộ crawler.
+
+Logging
+
+Sử dụng logging module.
+
+Ví dụ:
+
+INFO  Topic found: Short Stories
+INFO  Lesson found: First snowfall
+INFO  Audio downloaded: ...
+ERROR Failed lesson: ...
+Output mong muốn
+
+Sinh đầy đủ source code:
+
+SQLAlchemy models
+Playwright crawler
+Downloader
+Database integration
+Async architecture
+README hướng dẫn chạy
+
+Sau khi sinh code, giải thích từng thành phần và cách chạy project.
+
+Tuy nhiên trước khi bắt tay code, tôi còn khuyên thêm một prompt nữa để Cursor điều tra website trước, vì nhiều trang kiểu này gọi API ngầm và không cần Playwright.
+
+Prompt giai đoạn 1:
+
+Hãy phân tích website https://dailydictation.com/exercises trước. Tìm xem dữ liệu topic, section, lesson, transcript và audio được lấy từ API nào. Ưu tiên reverse engineer network requests thay vì crawl DOM. Nếu tìm được API thì thiết kế crawler sử dụng HTTP requests thay vì Playwright để đạt tốc độ cao hơn. Hãy liệt kê toàn bộ endpoint, request params và response schema trước khi viết code.
+
+Cách này thường giúp giảm thời gian crawl từ hàng giờ xuống vài phút nếu site có API nội bộ.

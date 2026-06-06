@@ -1,0 +1,525 @@
+---
+alwaysApply: true
+---
+
+PROJECT OVERVIEW
+
+Tôi đang xây dựng một hệ thống học tiếng Anh với ReactJS.
+
+Hãy tạo thêm một menu mới có tên:
+
+Practice Listening to English
+
+Dữ liệu đã được crawl từ DailyDictation bao gồm:
+
+Topics
+Sections
+Audio files
+Youtube videos
+Transcript
+Vocabulary
+Difficulty level
+Duration
+Metadata SEO
+
+Hãy sử dụng toàn bộ dữ liệu hiện có để xây dựng một hệ thống luyện nghe chép chính tả hoàn chỉnh.
+
+DESIGN SYSTEM
+
+Sử dụng đúng Design System sau:
+
+Main Colors
+--primary: #35375B;
+--accent: #FF5632;
+--dark: #2B2727;
+Secondary Colors
+--success: #00BE7C;
+--error: #FF3257;
+--light: #EFEFEF;
+--brown: #B15224;
+--cream: #F0E7DF;
+Typography
+
+Font Family:
+
+Nimbus Sans
+
+Fallback:
+
+Nimbus Sans, Inter, sans-serif
+
+Typography Scale:
+
+H1 36px
+H2 28px
+H3 20px
+Body 16px
+Small 14px
+Caption 12px
+DESIGN PRINCIPLES
+
+Thiết kế theo:
+
+Duolingo
+Dễ học
+Dễ thao tác
+DailyDictation
+Tập trung vào Listening
+Apple
+Smooth
+Tối giản
+Linear
+Professional
+Stripe
+Premium
+UX GOALS
+
+Đối tượng:
+
+Sinh viên
+Người đi làm
+Người luyện IELTS
+Người phỏng vấn tiếng Anh
+
+Ưu tiên:
+
+Mobile First
+Tablet Second
+Desktop Third
+
+Mọi thao tác phải:
+
+Dễ hiểu
+Ít click
+Không gây rối mắt
+INFORMATION ARCHITECTURE
+
+Menu:
+
+Practice Listening to English
+
+Sub Pages:
+
+Overview
+Topics
+Listening Practice
+My Progress
+Leaderboard
+Bookmarks
+History
+PAGE 1: OVERVIEW
+
+Hero Section
+
+Hiển thị:
+
+Continue Learning
+Today's Practice
+Recommended Topics
+Popular Topics
+
+Cards:
+
+Recently learned
+Most popular
+New lessons
+
+Có animation nhẹ:
+
+Fade In
+Slide Up
+
+Không dùng animation quá nhiều.
+
+PAGE 2: TOPICS
+
+Danh sách Topic:
+
+Ví dụ:
+
+Business
+Travel
+IELTS
+Daily Life
+Technology
+Health
+Education
+
+Mỗi Topic Card gồm:
+
+Thumbnail
+Total Lessons
+Difficulty
+Estimated Time
+
+Filter:
+
+Beginner
+Intermediate
+Advanced
+
+Search realtime.
+
+PAGE 3: LISTENING PRACTICE
+
+Đây là trang quan trọng nhất.
+
+Layout:
+
+Desktop:
+
+----------------------------------
+Video/Audio Player
+----------------------------------
+Transcript Input Area
+
+Progress
+
+Result Panel
+----------------------------------
+
+Mobile:
+
+Player
+
+Progress
+
+Transcript Input
+
+Result
+PLAYER REQUIREMENTS
+
+Hỗ trợ:
+
+Audio
+Youtube
+
+Tính năng:
+
+Play
+Pause
+Replay
+
+Speed:
+
+0.5x
+0.75x
+1x
+1.25x
+1.5x
+
+Keyboard Shortcuts:
+
+Space = Play/Pause
+
+Ctrl + Enter = Check
+
+R = Replay
+DICTATION EXPERIENCE
+
+User nghe audio.
+
+Sau đó nhập transcript.
+
+Ví dụ:
+
+Audio:
+I am learning English every day.
+
+User:
+I am learn English every day.
+CHECKING SYSTEM
+
+So sánh transcript thực tế và transcript user.
+
+Hiển thị:
+
+Correct
+
+Màu:
+
+#00BE7C
+Wrong
+
+Màu:
+
+#FF3257
+Missing
+
+Underline
+
+Extra Word
+
+Highlight màu cam
+
+#FF5632
+SCORE SYSTEM
+
+Hiển thị:
+
+Accuracy
+Words Correct
+Words Wrong
+Completion Rate
+
+Ví dụ:
+
+Accuracy: 85%
+
+Correct: 34
+
+Wrong: 6
+
+Completion: 90%
+SMART ANALYSIS
+
+Sau khi submit:
+
+AI Feedback:
+
+Bạn thường bỏ sót mạo từ.
+
+Bạn thường nghe nhầm thì quá khứ.
+
+Bạn gặp khó khăn với linking sound.
+RESULT SCREEN
+
+Animation:
+
+Count Up
+Progress Ring
+
+Hiển thị:
+
+Accuracy
+XP Earned
+Streak
+
+Button:
+
+Retry
+Next Lesson
+Review Mistakes
+PAGE 4: MY PROGRESS
+
+Dashboard:
+
+Total Lessons
+
+Listening Hours
+
+Accuracy Average
+
+Current Streak
+
+Best Streak
+
+Charts:
+
+Weekly
+Monthly
+
+Dùng:
+
+Recharts
+PAGE 5: LEADERBOARD
+
+Hiển thị:
+
+Top Accuracy
+Top XP
+Top Streak
+
+Gamification nhẹ.
+
+Không biến thành game.
+
+PAGE 6: BOOKMARKS
+
+Cho phép lưu:
+
+Lessons
+Topics
+Difficult Sentences
+PAGE 7: HISTORY
+
+Hiển thị:
+
+Date
+
+Topic
+
+Score
+
+Duration
+
+Cho phép xem lại lỗi.
+
+SEO REQUIREMENTS
+
+Sử dụng:
+
+React Helmet
+Structured Data
+Open Graph
+Twitter Card
+Canonical URL
+
+Generate:
+
+/meta/title
+
+/meta/description
+
+/meta/keywords
+
+Từ dữ liệu topic đã crawl.
+
+PERFORMANCE REQUIREMENTS
+
+Lighthouse:
+
+Performance > 90
+
+Accessibility > 95
+
+SEO > 95
+
+Best Practices > 95
+
+Tối ưu:
+
+Lazy Loading
+
+Code Splitting
+
+Suspense
+
+Memoization
+
+Virtual List
+ANIMATION REQUIREMENTS
+
+Sử dụng:
+
+Framer Motion
+
+Chỉ cho:
+
+Page Transition
+Fade In
+Progress Animation
+Result Animation
+
+Không sử dụng:
+
+Heavy Parallax
+Heavy 3D
+Unnecessary Effects
+RESPONSIVE REQUIREMENTS
+
+Breakpoints:
+
+Mobile:
+320px - 767px
+
+Tablet:
+768px - 1024px
+
+Desktop:
+1025px+
+
+Kiểm tra:
+
+iPhone SE
+iPhone 15
+iPad
+Galaxy S Series
+Macbook
+Windows Laptop
+ACCESSIBILITY
+
+Đạt WCAG AA.
+
+Bắt buộc:
+
+Keyboard Navigation
+Screen Reader
+Focus States
+Contrast Ratio
+AUTOMATED TESTING
+
+Sử dụng:
+
+Vitest
+React Testing Library
+Playwright
+
+Coverage tối thiểu:
+
+80%
+
+Test:
+
+Unit
+Transcript comparison
+Score calculation
+Accuracy calculation
+Integration
+Audio player
+Submit transcript
+Result calculation
+E2E
+User học bài
+User submit
+User xem kết quả
+User học bài tiếp theo
+ERROR HANDLING
+
+Xử lý:
+
+Network Error
+
+Youtube Load Error
+
+Audio Missing
+
+Transcript Missing
+
+Timeout
+
+Empty Input
+
+Hiển thị UI fallback đẹp.
+
+Không được crash.
+
+COMMERCIALIZATION
+
+Chuẩn bị sẵn kiến trúc cho:
+
+Premium Lessons
+
+Subscription
+
+Ads
+
+Affiliate
+
+Certificates
+
+AI Listening Coach
+FINAL DELIVERABLE
+
+Trước khi hoàn thành:
+
+Review toàn bộ source code.
+Kiểm tra TypeScript errors.
+Kiểm tra ESLint.
+Chạy Unit Test.
+Chạy Integration Test.
+Chạy Playwright E2E.
+Kiểm tra Responsive.
+Kiểm tra Accessibility.
+Kiểm tra SEO.
+Tạo báo cáo audit cuối cùng.

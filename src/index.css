@@ -1,0 +1,376 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bg-primary: #F5F6F8;
+  --color-bg-secondary: #FFFFFF;
+  --color-bg-tertiary: #ECEEF2;
+  --color-bg-hover: #E2E5EA;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6B7280;
+  --color-text-muted: #9CA3AF;
+  --color-border: #E5E7EB;
+  --color-border-strong: #D1D5DB;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+}
+
+@layer base {
+  :root {
+    --bg-primary: #F5F6F8;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #ECEEF2;
+    --bg-hover: #E2E5EA;
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --text-muted: #9CA3AF;
+    --border: #E5E7EB;
+    --border-strong: #D1D5DB;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark {
+    --bg-primary: #0D0F14;
+    --bg-secondary: #16181F;
+    --bg-tertiary: #1C1F28;
+    --bg-hover: #242730;
+    --text-primary: #F3F4F6;
+    --text-secondary: #9CA3AF;
+    --text-muted: #6B7280;
+    --border: #2D303B;
+    --border-strong: #3D424F;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+
+  body {
+    @apply transition-colors duration-200 antialiased;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  .scrollbar-visible {
+    scrollbar-width: thin;
+    scrollbar-color: #6366F1 var(--bg-tertiary);
+  }
+
+  .scrollbar-visible::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scrollbar-visible::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-visible::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #6366F1, #8B5CF6);
+    border-radius: 10px;
+  }
+
+  .dark .scrollbar-visible::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #6366F1, #8B5CF6);
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+  }
+
+  .scrollbar-visible::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #818CF8, #A78BFA);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+  }
+
+  /* OPAL Flashcards custom scrollbar - purple theme */
+  .opal-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(168, 85, 247, 0.6) rgba(30, 30, 46, 0.3);
+  }
+
+  .opal-scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .opal-scrollbar::-webkit-scrollbar-track {
+    background: linear-gradient(180deg, rgba(30, 30, 46, 0.2) 0%, rgba(30, 30, 46, 0.4) 100%);
+    border-radius: 10px;
+    margin: 8px 0;
+  }
+
+  .opal-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #A855F7 0%, #7C3AED 50%, #6D28D9 100%);
+    border-radius: 10px;
+    border: 3px solid rgba(30, 30, 46, 0.4);
+    background-clip: padding-box;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .opal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #C084FC 0%, #8B5CF6 50%, #7C3AED 100%);
+    border-color: rgba(30, 30, 46, 0.2);
+    transform: scaleX(1.1);
+  }
+
+  .opal-scrollbar::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg, #D8B4FE 0%, #A78BFA 50%, #8B5CF6 100%);
+  }
+
+  .opal-scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  /* Glow effect on scrollbar when scrolling */
+  .opal-scrollbar::-webkit-scrollbar-thumb {
+    box-shadow: 0 0 0 rgba(168, 85, 247, 0);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .opal-scrollbar:active::-webkit-scrollbar-thumb {
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.6), 0 0 30px rgba(139, 92, 246, 0.4);
+  }
+
+  /* Light mode adjustment */
+  .opal-scrollbar:not(:where(.dark, .dark *))::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #9333EA 0%, #7E22CE 50%, #6B21A8 100%);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* CSS Animations for landing page - replaces motion library animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Global scrollbar hide */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Modern beautiful scrollbar */
+.modern-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.4) transparent;
+}
+
+.modern-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modern-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px 0;
+}
+
+.modern-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6366F1, #8B5CF6, #A855F7);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.2s ease;
+}
+
+.modern-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #818CF8, #A78BFA, #C084FC);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.5), 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.modern-scrollbar::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #A5B4FC, #C4B5FD, #D8B4FE);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.7), 0 0 30px rgba(139, 92, 246, 0.5);
+  transform: scaleY(1.1);
+}
+
+.dark .modern-scrollbar::-webkit-scrollbar-thumb {
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.4), 0 0 16px rgba(139, 92, 246, 0.2);
+}
+
+.dark .modern-scrollbar::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.6), 0 0 24px rgba(139, 92, 246, 0.4);
+}
+
+/* ============================================================
+   DICTIONARY THEME — Design Tokens (8pt grid system)
+   ============================================================ */
+
+.dict-theme {
+  /* 8pt spacing scale */
+  --dict-space-1: 0.25rem;   /* 4px  */
+  --dict-space-2: 0.5rem;    /* 8px  */
+  --dict-space-3: 0.75rem;   /* 12px */
+  --dict-space-4: 1rem;      /* 16px */
+  --dict-space-5: 1.25rem;   /* 20px */
+  --dict-space-6: 1.5rem;    /* 24px */
+  --dict-space-8: 2rem;      /* 32px */
+  --dict-space-10: 2.5rem;   /* 40px */
+  --dict-space-12: 3rem;     /* 48px */
+
+  /* Touch targets — WCAG AA */
+  --dict-touch-min: 44px;
+
+  /* Corner radii */
+  --dict-radius-sm: 0.5rem;   /* 8px  */
+  --dict-radius-md: 0.75rem;  /* 12px */
+  --dict-radius-lg: 1rem;      /* 16px */
+  --dict-radius-xl: 1.5rem;   /* 24px */
+  --dict-radius-full: 9999px;
+
+  /* Semantic colors — dark palette */
+  --dict-bg: #0C0E16;
+  --dict-surface: #141720;
+  --dict-surface-raised: #1C1F2E;
+  --dict-surface-hover: #242736;
+  --dict-border: #2A2D3E;
+  --dict-border-subtle: #1E2130;
+
+  /* Text hierarchy */
+  --dict-text-primary: #F1F3F9;
+  --dict-text-secondary: #A0A6BF;
+  --dict-text-muted: #6B7280;
+
+  /* Accent palette */
+  --dict-accent-blue: #4F8EF7;
+  --dict-accent-blue-dim: rgba(79, 142, 247, 0.15);
+  --dict-accent-green: #34D399;
+  --dict-accent-green-dim: rgba(52, 211, 153, 0.15);
+  --dict-accent-purple: #A78BFA;
+  --dict-accent-purple-dim: rgba(167, 139, 250, 0.15);
+  --dict-accent-amber: #FBBF24;
+  --dict-accent-amber-dim: rgba(251, 191, 36, 0.15);
+  --dict-accent-red: #F87171;
+  --dict-accent-red-dim: rgba(248, 113, 113, 0.15);
+
+  /* Glow shadows */
+  --dict-glow-blue: 0 0 20px rgba(79, 142, 247, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4);
+  --dict-glow-purple: 0 0 20px rgba(167, 139, 250, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4);
+  --dict-glow-green: 0 0 20px rgba(52, 211, 153, 0.25), 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Dictionary theme scrollbar */
+.dict-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79, 142, 247, 0.4) transparent;
+}
+
+.dict-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dict-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dict-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #4F8EF7, #A78BFA);
+  border-radius: 10px;
+}
+
+/* Glass / frosted panel */
+.dict-glass {
+  background: rgba(20, 23, 32, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--dict-border);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   LISTENING MODULE — Design Tokens
+   ============================================================ */
+
+@layer components {
+  .listening-root {
+    --lm-bg: #F5F6F8;
+    --lm-surface: #FFFFFF;
+    --lm-surface-raised: #ECEEF2;
+    --lm-border: #E5E7EB;
+    --lm-text-primary: #111827;
+    --lm-text-secondary: #6B7280;
+    --lm-text-muted: #9CA3AF;
+
+    --lm-primary: #35375B;
+    --lm-accent: #FF5632;
+    --lm-dark: #2B2727;
+    --lm-success: #00BE7C;
+    --lm-error: #FF3257;
+    --lm-light: #EFEFEF;
+    --lm-brown: #B15224;
+    --lm-cream: #F0E7DF;
+
+    --lm-radius-sm: 0.5rem;
+    --lm-radius-md: 0.75rem;
+    --lm-radius-lg: 1rem;
+    --lm-radius-xl: 1.5rem;
+    --lm-radius-full: 9999px;
+
+    --lm-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --lm-shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    --lm-shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .dark .listening-root {
+    --lm-bg: #0D0F14;
+    --lm-surface: #16181F;
+    --lm-surface-raised: #1C1F28;
+    --lm-border: #2D303B;
+    --lm-text-primary: #F3F4F6;
+    --lm-text-secondary: #9CA3AF;
+    --lm-text-muted: #6B7280;
+  }
+}
+
+/* Listening module scrollbar */
+.lm-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(53, 55, 91, 0.3) transparent;
+}
+
+.lm-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lm-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.lm-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--lm-primary), #5A5D8B);
+  border-radius: 10px;
+}

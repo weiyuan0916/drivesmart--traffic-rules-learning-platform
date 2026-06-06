@@ -1,0 +1,1 @@
+"Không được thay đổi hoặc phá vỡ chức năng hiện có khi thêm UI/UX mới. Mọi thay đổi phải được kiểm tra trên Mobile, Tablet và Desktop. Nếu sửa một component thì phải kiểm tra ảnh hưởng tới toàn bộ luồng điều hướng, animation và responsive layout."
