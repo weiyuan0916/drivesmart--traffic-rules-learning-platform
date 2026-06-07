@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Play, Pause, RotateCcw, CheckCircle, XCircle, SkipForward, Bookmark,
-  Keyboard, ChevronRight, Volume2, Star, Trophy,
+  ChevronRight, Volume2, Star, Trophy,
 } from 'lucide-react';
 import type { ListeningLessonDetail, Challenge, DictationResult } from '@/types/listening';
 import { checkDictation, getWordStatusColor } from '@/services/dictationService';
@@ -326,22 +326,18 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLInputElement) {
-        if (e.code === 'Space' && !e.ctrlKey && !e.metaKey) {
-          e.preventDefault();
-          isPlaying ? handlePause() : handlePlay();
-        }
         if ((e.ctrlKey || e.metaKey) && e.code === 'Enter') {
           e.preventDefault();
           if (sentenceState === 'idle' || sentenceState === 'playing') {
             handleCheck();
           }
         }
-      } else {
-        if (e.code === 'Space') {
+        if ((e.ctrlKey || e.metaKey) && e.code === 'KeyR') {
           e.preventDefault();
-          isPlaying ? handlePause() : handlePlay();
+          handleReplay();
         }
-        if (e.code === 'KeyR') {
+      } else {
+        if ((e.ctrlKey || e.metaKey) && e.code === 'KeyR') {
           e.preventDefault();
           handleReplay();
         }
@@ -349,7 +345,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [isPlaying, sentenceState, handlePlay, handlePause, handleReplay, handleCheck]);
+  }, [sentenceState, handleReplay, handleCheck]);
 
   // Completed screen
   if (sentenceState === 'completed') {
@@ -806,14 +802,10 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
             {/* Keyboard hint */}
             <div className="flex items-center gap-3 mt-2 pt-2" style={{ borderTop: '1px solid var(--lm-border)' }}>
               <span className="flex items-center gap-1 text-[10px]" style={{ color: 'var(--lm-text-muted)' }}>
-                <Keyboard size={10} />
-                <kbd className="px-1 py-0.5 rounded bg-[var(--lm-surface-raised)] font-mono">Space</kbd>
-              </span>
-              <span className="flex items-center gap-1 text-[10px]" style={{ color: 'var(--lm-text-muted)' }}>
                 <kbd className="px-1 py-0.5 rounded bg-[var(--lm-surface-raised)] font-mono">Ctrl+↵</kbd>
               </span>
               <span className="flex items-center gap-1 text-[10px]" style={{ color: 'var(--lm-text-muted)' }}>
-                <kbd className="px-1 py-0.5 rounded bg-[var(--lm-surface-raised)] font-mono">R</kbd>
+                <kbd className="px-1 py-0.5 rounded bg-[var(--lm-surface-raised)] font-mono">Ctrl+R</kbd>
               </span>
             </div>
           </div>

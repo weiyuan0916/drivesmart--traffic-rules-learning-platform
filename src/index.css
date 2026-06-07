@@ -3,6 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  /* DriveSmart original colors */
   --color-bg-primary: #F5F6F8;
   --color-bg-secondary: #FFFFFF;
   --color-bg-tertiary: #ECEEF2;
@@ -13,6 +14,23 @@
   --color-border: #E5E7EB;
   --color-border-strong: #D1D5DB;
 
+  /* VinaListen brand colors */
+  --color-primary: #35375B;
+  --color-primary-dark: #252640;
+  --color-accent: #FF5632;
+  --color-accent-dark: #CC3A1A;
+  --color-success: #00BE7C;
+  --color-error: #FF3257;
+  --color-warning: #FFAB00;
+  --color-warning-dark: #CC8800;
+  --color-dark: #2B2727;
+  --color-light: #EFEFEF;
+  --color-brown: #B15224;
+  --color-cream: #F0E7DF;
+  --color-muted: #6B7280;
+  --color-muted-foreground: #6B7280;
+
+  /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -32,6 +50,22 @@
     --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
     --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+    /* VinaListen tokens */
+    --primary: #35375B;
+    --primary-dark: #252640;
+    --accent: #FF5632;
+    --accent-dark: #CC3A1A;
+    --success: #00BE7C;
+    --error: #FF3257;
+    --warning: #FFAB00;
+    --warning-dark: #CC8800;
+    --dark: #2B2727;
+    --light: #EFEFEF;
+    --brown: #B15224;
+    --cream: #F0E7DF;
+    --muted: #6B7280;
+    --muted-foreground: #6B7280;
   }
 
   .dark {
@@ -44,6 +78,22 @@
     --text-muted: #6B7280;
     --border: #2D303B;
     --border-strong: #3D424F;
+
+    /* VinaListen dark tokens */
+    --primary: #5A5D8B;
+    --primary-dark: #35375B;
+    --accent: #FF6B4A;
+    --accent-dark: #FF5632;
+    --success: #10D99A;
+    --error: #FF4D6A;
+    --warning: #FFC33D;
+    --warning-dark: #FFAB00;
+    --dark: #F3F4F6;
+    --light: #1C1F28;
+    --brown: #C4734A;
+    --cream: #1C1F28;
+    --muted: #9CA3AF;
+    --muted-foreground: #9CA3AF;
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -356,21 +406,156 @@
   }
 }
 
-/* Listening module scrollbar */
-.lm-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(53, 55, 91, 0.3) transparent;
-}
+/* ============================================================
+   VINALISTEN — Design Tokens
+   Primary color system for VinaListen learning platform
+   ============================================================ */
 
-.lm-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
+@layer components {
+  .vinalisten {
+    /* Semantic colors */
+    --bg-primary: #F5F6F8;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #ECEEF2;
+    --bg-hover: #E2E5EA;
 
-.lm-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --text-muted: #9CA3AF;
+    --text-muted-foreground: #9CA3AF;
 
-.lm-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--lm-primary), #5A5D8B);
-  border-radius: 10px;
+    --border: #E5E7EB;
+    --border-strong: #D1D5DB;
+
+    /* Brand colors */
+    --primary: #35375B;
+    --primary-dark: #252640;
+    --accent: #FF5632;
+    --accent-dark: #CC3A1A;
+    --success: #00BE7C;
+    --error: #FF3257;
+    --warning: #FFAB00;
+    --warning-dark: #CC8800;
+    --dark: #2B2727;
+    --light: #EFEFEF;
+    --brown: #B15224;
+    --cream: #F0E7DF;
+    --muted: #6B7280;
+    --muted-foreground: #6B7280;
+
+    /* Border radius */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  /* VinaListen scrollbar */
+  .vinalisten-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(53, 55, 91, 0.3) transparent;
+  }
+
+  .vinalisten-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .vinalisten-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .vinalisten-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary), #5A5D8B);
+    border-radius: 10px;
+  }
+
+  /* VinaListen glass effect */
+  .vinalisten-glass {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+  }
+
+  /* Score word colors */
+  .word-correct {
+    color: var(--success);
+    background: rgba(0, 190, 124, 0.1);
+    border-radius: 4px;
+    padding: 1px 4px;
+  }
+
+  .word-wrong {
+    color: var(--error);
+    background: rgba(255, 50, 87, 0.1);
+    border-radius: 4px;
+    padding: 1px 4px;
+    text-decoration: line-through;
+  }
+
+  .word-missing {
+    color: var(--muted);
+    background: rgba(107, 114, 128, 0.1);
+    border-radius: 4px;
+    padding: 1px 4px;
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    text-decoration-color: var(--muted);
+  }
+
+  .word-extra {
+    color: var(--accent);
+    background: rgba(255, 86, 50, 0.1);
+    border-radius: 4px;
+    padding: 1px 4px;
+  }
+
+  /* Streak fire animation */
+  @keyframes streak-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  .streak-fire {
+    animation: streak-pulse 2s ease-in-out infinite;
+  }
+
+  /* Count-up animation */
+  @keyframes count-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-count-up {
+    animation: count-up 0.5s ease-out forwards;
+  }
+
+  /* Slide up animation */
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.4s ease-out forwards;
+  }
+
+  /* Shimmer skeleton */
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
 }

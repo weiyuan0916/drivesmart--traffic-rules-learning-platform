@@ -13,3 +13,7 @@ dist/
 .pydeps/
 crawler/storage/audio/
 *.db
+backend/vendor/
+backend/.env
+backend/.env.backup
+backend/storage/*.key

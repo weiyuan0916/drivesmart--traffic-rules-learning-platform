@@ -12,12 +12,28 @@ const DIFFICULTY_FILTERS = ['All', 'Beginner', 'Intermediate', 'Advanced'] as co
 type FilterType = (typeof DIFFICULTY_FILTERS)[number];
 
 const DIFFICULTY_LEVELS: Record<string, FilterType> = {
-  A1: 'Beginner',
-  A2: 'Beginner',
-  B1: 'Intermediate',
-  B2: 'Intermediate',
-  C1: 'Advanced',
+  A1: 'Beginner', A2: 'Beginner',
+  B1: 'Intermediate', B2: 'Intermediate',
+  C1: 'Advanced', C2: 'Advanced',
 };
+
+function topicLevelsToCategory(levelsStr: string): FilterType | null {
+  if (!levelsStr) return null;
+  // Parse "Levels: A1-C1" or "Levels: A1" → extract all level codes
+  const parts = levelsStr.replace(/Levels:\s*/gi, '').split('-');
+  const categories = parts
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((l) => DIFFICULTY_LEVELS[l])
+    .filter(Boolean);
+
+  if (categories.length === 0) return null;
+  // Priority: Beginner > Intermediate > Advanced
+  if (categories.includes('Beginner')) return 'Beginner';
+  if (categories.includes('Intermediate')) return 'Intermediate';
+  if (categories.includes('Advanced')) return 'Advanced';
+  return null;
+}
 
 export default function TopicsPage({ onTopicSelect }: TopicsPageProps) {
   const [topics, setTopics] = useState<ListeningTopic[]>([]);
@@ -40,7 +56,7 @@ export default function TopicsPage({ onTopicSelect }: TopicsPageProps) {
     }
     if (filter !== 'All') {
       result = result.filter((t) => {
-        const level = DIFFICULTY_LEVELS[t.levels?.split('-')[0]?.trim() || ''] || '';
+        const level = topicLevelsToCategory(t.levels || '');
         return level === filter;
       });
     }
@@ -48,10 +64,10 @@ export default function TopicsPage({ onTopicSelect }: TopicsPageProps) {
   }, [topics, search, filter]);
 
   const getDifficultyColor = (levels?: string) => {
-    const first = levels?.split('-')[0]?.trim() || '';
-    if (first === 'A1' || first === 'A2') return { bg: '#E6FAF3', text: '#00BE7C' };
-    if (first === 'B1' || first === 'B2') return { bg: '#FFF7ED', text: '#F97316' };
-    if (first === 'C1') return { bg: '#FFF0ED', text: '#FF5632' };
+    const category = topicLevelsToCategory(levels || '');
+    if (category === 'Beginner') return { bg: '#E6FAF3', text: '#00BE7C' };
+    if (category === 'Intermediate') return { bg: '#FFF7ED', text: '#F97316' };
+    if (category === 'Advanced') return { bg: '#FFF0ED', text: '#FF5632' };
     return { bg: '#EEEDFB', text: '#35375B' };
   };
 
