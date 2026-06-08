@@ -8,6 +8,7 @@ import { memo } from 'react'
 import { Star } from 'lucide-react'
 import { cn } from '../lib/utils'
 import type { CheckData, CheckWordResult } from '../types/lesson'
+import { ExplanationPanel } from './explanation-panel/ExplanationPanel'
 
 interface ResultPanelProps {
   result: CheckData
@@ -182,6 +183,11 @@ export const ResultPanel = memo(function ResultPanel({
               </p>
             ))}
         </div>
+      )}
+
+      {/* Multi-Language Explanation */}
+      {result.clip_completed && (
+        <ExplanationPanel clipId={result.clip_id.toString()} />
       )}
 
       {/* Action buttons */}
