@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  BookOpen, 
-  ArrowLeft, 
-  Search, 
-  Loader2, 
-  Mic, 
+import {
+  BookOpen,
+  ArrowLeft,
+  Search,
+  Loader2,
+  Mic,
   BookMarked,
   RotateCcw,
   ChevronLeft,
@@ -36,6 +36,7 @@ import {
 } from 'lucide-react';
 import { SmoothScroll } from './SmoothScroll';
 import opalData from '../../opal_extracted.json';
+import { useGlobalAudio } from '@/features/listening/hooks/useGlobalAudio.tsx';
 
 interface OPALItem {
   headword: string;
@@ -139,7 +140,7 @@ const OPALFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [currentTopic, setCurrentTopic] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedAccent, setSelectedAccent] = useState<'uk' | 'us'>('uk');
-  
+
   // Voice practice states
   const [practiceMode, setPracticeMode] = useState<PracticeMode>('phrases');
   const [isRecording, setIsRecording] = useState(false);
@@ -149,9 +150,13 @@ const OPALFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [feedbackTip, setFeedbackTip] = useState('');
   const [conversationTurn, setConversationTurn] = useState(0);
   const [isAITalking, setIsAITalking] = useState(false);
-  
+
   // Topic progress (mock)
   const [topicProgress, setTopicProgress] = useState(45);
+
+  // Global audio manager
+  const { registerAudio, pauseAllOthers } = useGlobalAudio();
+  const controllerRef = useRef<{ pause: () => void; play: () => Promise<void>; setSrc: (src: string) => void } | null>(null);
 
   // Touch/swipe state
   const touchStartX = useRef<number>(0);
@@ -226,33 +231,70 @@ const OPALFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   }, [cards, searchQuery]);
 
   // Audio playback
-  const playAudio = (mp3Url: string | null, accent: 'uk' | 'us') => {
+  const playAudio = useCallback((mp3Url: string | null, accent: 'uk' | 'us') => {
     if (!mp3Url) return;
-    
+
     const fullUrl = mp3Url.startsWith('http') ? mp3Url : `${MP3_BASE_URL}${mp3Url}`;
     const audio = new Audio(fullUrl);
-    
+
+    // Create controller for global audio manager
+    const controller = {
+      pause: () => audio.pause(),
+      play: () => audio.play(),
+      setSrc: (newSrc: string) => { audio.src = newSrc; audio.load(); },
+    };
+    controllerRef.current = controller;
+
+    // Register with global audio manager
+    const unregister = registerAudio(controller);
+
     setPlayingAudio(`${currentItem?.headword}-${accent}`);
-    audio.onended = () => setPlayingAudio(null);
+    audio.onended = () => {
+      setPlayingAudio(null);
+      unregister();
+    };
     audio.onerror = () => {
       console.error('Failed to load audio:', fullUrl);
       setPlayingAudio(null);
+      unregister();
     };
+    // Pause all other audio before playing
+    pauseAllOthers(controller);
     audio.play().catch(console.error);
-  };
+  }, [currentItem, registerAudio, pauseAllOthers]);
 
   // Play phrase audio
-  const playPhraseAudio = (item: OPALItem, index: number) => {
+  const playPhraseAudio = useCallback((item: OPALItem, index: number) => {
     const mp3Url = selectedAccent === 'uk' ? item.uk_mp3 : item.us_mp3;
     if (!mp3Url) return;
-    
+
     setIsPlayingPhrase(index);
     const fullUrl = mp3Url.startsWith('http') ? mp3Url : `${MP3_BASE_URL}${mp3Url}`;
     const audio = new Audio(fullUrl);
-    audio.onended = () => setIsPlayingPhrase(null);
-    audio.onerror = () => setIsPlayingPhrase(null);
+
+    // Create controller for global audio manager
+    const controller = {
+      pause: () => audio.pause(),
+      play: () => audio.play(),
+      setSrc: (newSrc: string) => { audio.src = newSrc; audio.load(); },
+    };
+    controllerRef.current = controller;
+
+    // Register with global audio manager
+    const unregister = registerAudio(controller);
+
+    audio.onended = () => {
+      setIsPlayingPhrase(null);
+      unregister();
+    };
+    audio.onerror = () => {
+      setIsPlayingPhrase(null);
+      unregister();
+    };
+    // Pause all other audio before playing
+    pauseAllOthers(controller);
     audio.play().catch(() => setIsPlayingPhrase(null));
-  };
+  }, [selectedAccent, registerAudio, pauseAllOthers]);
 
   // Navigation
   const goNext = () => {

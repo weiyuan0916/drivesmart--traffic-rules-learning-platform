@@ -6,6 +6,7 @@ import { ListeningLayout } from './components/ListeningLayout'
 import { AuthLayout } from './components/AuthLayout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Spinner } from './components/ui/Spinner'
+import { GlobalAudioProvider } from './hooks/useGlobalAudio.tsx'
 
 // Lazy-loaded pages for code splitting
 const TopicsPage = lazy(() => import('./pages/topics/TopicsPage'))
@@ -50,7 +51,8 @@ export function AppRouter({ children }: AppRouterProps) {
       <BrowserRouter>
         <ErrorBoundary>
           {children}
-          <Routes>
+          <GlobalAudioProvider>
+            <Routes>
             {/* Public routes */}
             <Route path="/" element={<Navigate to="/topics" replace />} />
 
@@ -138,6 +140,7 @@ export function AppRouter({ children }: AppRouterProps) {
             <Route path="*" element={<Navigate to="/topics" replace />} />
           </Routes>
           <ToastContainer />
+        </GlobalAudioProvider>
         </ErrorBoundary>
       </BrowserRouter>
     </QueryClientProvider>

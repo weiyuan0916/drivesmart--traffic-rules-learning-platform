@@ -6,6 +6,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { useLessonStore } from '../stores/lessonStore'
 import { PLAYBACK_SPEEDS, type PlaybackSpeed } from '../lib/constants'
+import { useGlobalAudio } from './useGlobalAudio.tsx'
 
 interface UseAudioPlayerOptions {
   src: string
@@ -21,6 +22,9 @@ export function useAudioPlayer({ src, onClipEnd, autoPlay = false }: UseAudioPla
   const [isLoaded, setIsLoaded] = useState(false)
   const [isError, setIsError] = useState(false)
   const [playbackRate, setPlaybackRateState] = useState<PlaybackSpeed>(1)
+
+  const { registerAudio, pauseAllOthers } = useGlobalAudio()
+  const controllerRef = useRef<{ pause: () => void; play: () => Promise<void>; setSrc: (src: string) => void } | null>(null)
 
   // Sync playbackRate from persisted store value on mount
   useEffect(() => {
@@ -42,6 +46,18 @@ export function useAudioPlayer({ src, onClipEnd, autoPlay = false }: UseAudioPla
     audio.preload = 'metadata'
     audio.crossOrigin = 'anonymous'
     audioRef.current = audio
+
+    // Create controller for global audio manager
+    const controller = {
+      pause: () => audio.pause(),
+      play: () => audio.play(),
+      setSrc: (newSrc: string) => { audio.src = newSrc; audio.load(); },
+    }
+
+    controllerRef.current = controller
+
+    // Register with global audio manager
+    const unregister = registerAudio(controller)
 
     const handleLoadedMetadata = () => {
       setDuration(audio.duration)
@@ -71,6 +87,7 @@ export function useAudioPlayer({ src, onClipEnd, autoPlay = false }: UseAudioPla
     audio.addEventListener('error', handleError)
 
     return () => {
+      unregister()
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata)
       audio.removeEventListener('timeupdate', handleTimeUpdate)
       audio.removeEventListener('ended', handleEnded)
@@ -78,7 +95,7 @@ export function useAudioPlayer({ src, onClipEnd, autoPlay = false }: UseAudioPla
       audio.pause()
       audio.src = ''
     }
-  }, [onClipEnd])
+  }, [onClipEnd, registerAudio])
 
   // Update src when clip changes
   useEffect(() => {
@@ -101,12 +118,14 @@ export function useAudioPlayer({ src, onClipEnd, autoPlay = false }: UseAudioPla
   const play = useCallback(async () => {
     if (!audioRef.current || isError) return
     try {
+      // Pause all other audio before playing
+      pauseAllOthers(controllerRef.current ?? undefined)
       await audioRef.current.play()
       setIsPlaying(true)
     } catch {
       // Playback blocked
     }
-  }, [isError])
+  }, [isError, pauseAllOthers])
 
   const pause = useCallback(() => {
     if (!audioRef.current) return
@@ -124,12 +143,14 @@ export function useAudioPlayer({ src, onClipEnd, autoPlay = false }: UseAudioPla
 
   const replay = useCallback(() => {
     if (!audioRef.current) return
+    // Pause all other audio before replaying
+    pauseAllOthers(controllerRef.current ?? undefined)
     audioRef.current.currentTime = 0
     audioRef.current.play().catch(() => {
       // Blocked
     })
     setIsPlaying(true)
-  }, [])
+  }, [pauseAllOthers])
 
   const seek = useCallback((time: number) => {
     if (!audioRef.current || !isLoaded) return

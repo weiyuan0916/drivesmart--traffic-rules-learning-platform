@@ -13,6 +13,7 @@ import { SmoothScroll } from './components/SmoothScroll';
 import ListeningModule from './components/listening/ListeningModule';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { GlobalAudioProvider } from './features/listening/hooks/useGlobalAudio.tsx';
 import { LayoutDashboard, Menu, X, Car, BookOpen, ArrowLeft, AlertTriangle } from 'lucide-react';
 import type { ChapterStat, Question } from './types';
 import { loadExamQuestions } from './services/questionsService';
@@ -441,7 +442,9 @@ export default function App() {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <AppContent />
+        <GlobalAudioProvider>
+          <AppContent />
+        </GlobalAudioProvider>
       </LanguageProvider>
     </ThemeProvider>
   );
