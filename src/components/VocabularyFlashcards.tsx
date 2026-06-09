@@ -3,9 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen, Clock, RotateCcw, ArrowLeft, Search, Volume2, Loader2,
   Mic, BookMarked, Home, BarChart2, Sparkles, ChevronRight,
-  X, Trash2, TrendingUp, Target, Zap, Star, ChevronLeft
+  X, Trash2, TrendingUp, Target, Zap, Star, ChevronLeft, Globe
 } from 'lucide-react';
 import { fetchWordInfo, WordInfo, WordNotFoundError, getCefrLevel, commonWords } from '../services/oxfordDictionaryService';
+import { LanguageSelector } from '@/features/listening/components/language-selector/LanguageSelector';
+import { VocabularyLanguageProvider, useVocabularyLanguage } from '@/context/VocabularyLanguageContext';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -1027,6 +1029,21 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     </motion.div>
   );
 
+// ─── Vocabulary Language Dropdown ───────────────────────────────────────────────
+
+function VocabularyLanguageDropdown() {
+  const { language, setLanguage, availableLanguages } = useVocabularyLanguage()
+
+  return (
+    <LanguageSelector
+      value={language}
+      onChange={setLanguage}
+      variant="dropdown"
+      className="min-w-[180px]"
+    />
+  )
+}
+
   // ── Layout ────────────────────────────────────────────────────────────────
 
   return (
@@ -1049,13 +1066,16 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <p className="text-[10px] text-dict-text-muted">Oxford Learner</p>
               </div>
             </div>
-            <button
-              onClick={onBack}
-              className="p-2.5 rounded-xl bg-dict-surface-raised hover:bg-dict-surface-hover text-dict-text-muted hover:text-dict-text-primary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label="Go back"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-2">
+              <VocabularyLanguageDropdown />
+              <button
+                onClick={onBack}
+                className="p-2.5 rounded-xl bg-dict-surface-raised hover:bg-dict-surface-hover text-dict-text-muted hover:text-dict-text-primary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Go back"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           {/* Desktop back button */}
@@ -1069,6 +1089,8 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             </button>
             <div className="h-4 w-px bg-dict-border" />
             <h2 className="text-base font-bold text-dict-text-primary">Oxford Learner Dictionary</h2>
+            <div className="flex-1" />
+            <VocabularyLanguageDropdown />
           </div>
 
           {/* Desktop view tabs */}
