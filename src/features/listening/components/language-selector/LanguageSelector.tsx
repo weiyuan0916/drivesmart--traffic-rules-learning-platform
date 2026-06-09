@@ -228,7 +228,9 @@ const Dropdown = memo(function Dropdown({
                 >
                   <span className="text-base">{lang.flag}</span>
                   <span>{lang.nativeName}</span>
-                  <span className="ml-auto text-xs text-text-muted">{lang.name}</span>
+                  {lang.name !== lang.nativeName && (
+                    <span className="ml-auto text-xs text-text-muted">{lang.name}</span>
+                  )}
                 </button>
               </li>
             ))}
@@ -312,6 +314,9 @@ const InlineSelector = memo(function InlineSelector({
                 >
                   <span>{lang.flag}</span>
                   <span>{lang.nativeName}</span>
+                  {lang.name !== lang.nativeName && (
+                    <span className="ml-auto text-xs text-text-muted">{lang.name}</span>
+                  )}
                 </button>
               </li>
             ))}
