@@ -8,6 +8,8 @@ export interface LanguageOption {
   code: LanguageCode
   name: string
   nativeName: string
+  /** Translated language name used in localized UI (e.g. error messages, labels). */
+  displayName: string
   flag: string
   direction: 'ltr'
 }

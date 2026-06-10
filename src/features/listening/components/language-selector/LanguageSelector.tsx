@@ -122,7 +122,7 @@ const ButtonGroup = memo(function ButtonGroup({
             type="button"
             role="radio"
             aria-checked={isActive}
-            aria-label={`Explanation language: ${lang.name}`}
+            aria-label={`Explanation language: ${lang.displayName}`}
             disabled={disabled}
             onClick={() => onChange(lang.code)}
             onKeyDown={handleKeyDown}
@@ -139,7 +139,7 @@ const ButtonGroup = memo(function ButtonGroup({
           >
             <span className="text-base leading-none" aria-hidden="true">{lang.flag}</span>
             {showLabel && (
-              <span className="text-[10px] leading-none mt-0.5">{lang.name}</span>
+              <span className="text-[10px] leading-none mt-0.5">{lang.displayName}</span>
             )}
           </button>
         )
