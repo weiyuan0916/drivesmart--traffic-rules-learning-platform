@@ -46,14 +46,6 @@ describe('LanguageSelector', () => {
       expect(onChange).toHaveBeenCalledWith('en')
     })
 
-    it('renders flags for each language', () => {
-      const onChange = vi.fn()
-      render(<LanguageSelector value="vi" onChange={onChange} variant="button-group" showLabel={false} />)
-      const buttons = screen.getAllByRole('radio')
-      buttons.forEach((btn) => {
-        expect(btn.textContent).toMatch(/[^\s]/)
-      })
-    })
   })
 
   describe('dropdown variant', () => {

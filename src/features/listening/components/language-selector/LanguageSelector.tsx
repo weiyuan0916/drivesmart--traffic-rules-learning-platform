@@ -137,7 +137,7 @@ const ButtonGroup = memo(function ButtonGroup({
               disabled && 'opacity-50 cursor-not-allowed',
             )}
           >
-            <span className="text-base leading-none" aria-hidden="true">{lang.flag}</span>
+            <span className="text-base leading-none" aria-hidden="true" />
             {showLabel && (
               <span className="text-[10px] leading-none mt-0.5">{lang.displayName}</span>
             )}
@@ -197,9 +197,8 @@ const Dropdown = memo(function Dropdown({
         )}
         style={{ minHeight: '44px', minWidth: '200px' }}
       >
-        {/* Flag */}
+        {/* Label */}
         <span className="flex-1 text-sm leading-none truncate text-left">
-          <span aria-hidden="true">{activeLang.flag}</span>{' '}
           English - <span className="font-medium">{activeLang.name}</span>
         </span>
 
@@ -260,9 +259,8 @@ const Dropdown = memo(function Dropdown({
                       )}
                       style={{ height: '44px' }}
                     >
-                      {/* Flag */}
+                      {/* Label */}
                       <span className="flex-1 text-left leading-tight">
-                        <span aria-hidden="true">{lang.flag}</span>{' '}
                         English - {lang.name}
                       </span>
 
@@ -377,7 +375,6 @@ const InlineSelector = memo(function InlineSelector({
           disabled && 'opacity-50 cursor-not-allowed',
         )}
       >
-        <span aria-hidden="true">{activeLang.flag}</span>
         <span className="text-text-primary font-medium">English - {activeLang.name}</span>
         <ChevronDown size={14} className="text-text-secondary" aria-hidden="true" />
       </button>
@@ -416,7 +413,6 @@ const InlineSelector = memo(function InlineSelector({
                     lang.code === value ? 'text-primary font-semibold' : 'text-text-primary',
                   )}
                 >
-                  <span aria-hidden="true">{lang.flag}</span>
                   <span>English - {lang.name}</span>
                 </button>
               </li>
