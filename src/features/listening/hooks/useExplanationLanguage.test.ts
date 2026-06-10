@@ -1,11 +1,26 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { renderHook } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { renderHook, act } from '@testing-library/react'
 import { useExplanationLanguage } from './useExplanationLanguage'
-import { useExplanationStore } from '../stores/explanationStore'
 
-// Mock stores
+// Use module-level mock functions so they can be verified after hook calls
+const mockSetLanguage = vi.fn()
+const mockSetOverride = vi.fn()
+const mockClearOverride = vi.fn()
+
+// Stable mock state — shared across all mock calls
+const mockStoreState = {
+  currentLanguage: 'vi',
+  localOverride: null as string | null,
+  setLanguage: mockSetLanguage,
+  setOverride: mockSetOverride,
+  clearOverride: mockClearOverride,
+}
+
 vi.mock('../stores/explanationStore', () => ({
-  useExplanationStore: vi.fn(),
+  useExplanationStore: vi.fn((selector?: (s: typeof mockStoreState) => unknown) => {
+    if (selector) return selector(mockStoreState)
+    return mockStoreState
+  }),
 }))
 
 vi.mock('../stores/authStore', () => ({
@@ -15,77 +30,37 @@ vi.mock('../stores/authStore', () => ({
 describe('useExplanationLanguage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    // Default: no localOverride, currentLanguage is 'vi'
-    ;(useExplanationStore as ReturnType<typeof vi.fn>).mockImplementation(
-      (selector?: (s: { currentLanguage: string; localOverride: string | null; setLanguage: typeof vi.fn; setOverride: typeof vi.fn; clearOverride: typeof vi.fn }) => unknown) => {
-        const state = {
-          currentLanguage: 'vi',
-          localOverride: null,
-          setLanguage: vi.fn(),
-          setOverride: vi.fn(),
-          clearOverride: vi.fn(),
-        }
-        return selector ? selector(state) : state
-      },
-    )
+    mockStoreState.localOverride = null
+    mockStoreState.currentLanguage = 'vi'
   })
 
-  describe('language resolution priority', () => {
+  describe('language resolution', () => {
     it('returns localOverride when set', () => {
-      ;(useExplanationStore as ReturnType<typeof vi.fn>).mockImplementation(
-        (selector?: (s: { currentLanguage: string; localOverride: string | null; setLanguage: typeof vi.fn; setOverride: typeof vi.fn; clearOverride: typeof vi.fn }) => unknown) => {
-          const state = {
-            currentLanguage: 'vi',
-            localOverride: 'ja',
-            setLanguage: vi.fn(),
-            setOverride: vi.fn(),
-            clearOverride: vi.fn(),
-          }
-          return selector ? selector(state) : state
-        },
-      )
+      mockStoreState.localOverride = 'ja'
 
       const { result } = renderHook(() => useExplanationLanguage())
       expect(result.current.language).toBe('ja')
     })
 
-    it('returns default vi when no localOverride and browser returns null', () => {
-      ;(useExplanationStore as ReturnType<typeof vi.fn>).mockImplementation(
-        (selector?: (s: { currentLanguage: string; localOverride: string | null }) => unknown) => {
-          const state = { currentLanguage: 'vi', localOverride: null }
-          return selector ? selector(state) : state
-        },
-      )
+    it('returns default when localOverride is null', () => {
+      mockStoreState.localOverride = null
 
       const { result } = renderHook(() => useExplanationLanguage())
-      // Falls back to DEFAULT_LANGUAGE when browserLang resolves to default
       expect(result.current.language).toBeTruthy()
     })
 
-    it('updates language when localOverride changes', () => {
+    it('updates when localOverride changes between renders', () => {
       const { result, rerender } = renderHook(() => useExplanationLanguage())
+      expect(result.current.language).toBeTruthy()
 
-      // Simulate store update
-      ;(useExplanationStore as ReturnType<typeof vi.fn>).mockImplementation(
-        (selector?: (s: { currentLanguage: string; localOverride: string | null; setLanguage: typeof vi.fn; setOverride: typeof vi.fn; clearOverride: typeof vi.fn }) => unknown) => {
-          const state = {
-            currentLanguage: 'vi',
-            localOverride: 'fr',
-            setLanguage: vi.fn(),
-            setOverride: vi.fn(),
-            clearOverride: vi.fn(),
-          }
-          return selector ? selector(state) : state
-        },
-      )
-
+      mockStoreState.localOverride = 'fr'
       rerender()
       expect(result.current.language).toBe('fr')
     })
   })
 
   describe('returned API shape', () => {
-    it('returns an object with language, setLanguage, setOverride, clearOverride', () => {
+    it('returns language, setLanguage, setOverride, clearOverride', () => {
       const { result } = renderHook(() => useExplanationLanguage())
 
       expect(result.current).toHaveProperty('language')
@@ -97,11 +72,25 @@ describe('useExplanationLanguage', () => {
       expect(typeof result.current.clearOverride).toBe('function')
     })
 
-    it('returns a valid LanguageCode', () => {
+    it('returns a valid LanguageCode string', () => {
       const { result } = renderHook(() => useExplanationLanguage())
+      const lang = result.current.language
+      expect(typeof lang).toBe('string')
+      expect(['vi', 'en', 'ja', 'zh', 'ko', 'fr']).toContain(lang)
+    })
+  })
 
-      const validCodes = ['vi', 'en', 'ja', 'zh', 'ko', 'fr']
-      expect(validCodes).toContain(result.current.language)
+  describe('actions', () => {
+    it('setOverride calls the store setOverride with the given language', () => {
+      const { result } = renderHook(() => useExplanationLanguage())
+      act(() => result.current.setOverride('ko'))
+      expect(mockSetOverride).toHaveBeenCalledWith('ko')
+    })
+
+    it('clearOverride calls the store clearOverride', () => {
+      const { result } = renderHook(() => useExplanationLanguage())
+      act(() => result.current.clearOverride())
+      expect(mockClearOverride).toHaveBeenCalled()
     })
   })
 })
