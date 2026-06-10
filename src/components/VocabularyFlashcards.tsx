@@ -6,6 +6,7 @@ import {
   X, Trash2, TrendingUp, Target, Zap, Star, ChevronLeft, Globe
 } from 'lucide-react';
 import { fetchWordInfo, WordInfo, WordNotFoundError, getCefrLevel, commonWords } from '../services/oxfordDictionaryService';
+import { translateWordInfo } from '../services/vocabularyTranslationService';
 import { LanguageSelector } from '@/features/listening/components/language-selector/LanguageSelector';
 import { VocabularyLanguageProvider, useVocabularyLanguage } from '@/context/VocabularyLanguageContext';
 
@@ -558,6 +559,7 @@ function WordResultCard({
 const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   // View routing — replaces showSearch boolean
   const [currentView, setCurrentView] = useState<DictView>('home');
+  const { language: vocabularyLanguage } = useVocabularyLanguage()
 
   // Storage state
   const [storage, setStorage] = useState<StorageState>(() => loadStorage());
@@ -631,7 +633,16 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     setSearchQuery(query);
 
     try {
-      const result = await fetchWordInfo(query);
+      let result = await fetchWordInfo(query);
+
+      // Translate if language is not English
+      if (vocabularyLanguage !== 'en') {
+        const geminiKey = import.meta.env.VITE_GEMINI_API_KEY
+        if (geminiKey) {
+          result = await translateWordInfo(result, vocabularyLanguage, geminiKey)
+        }
+      }
+
       setSearchResult(result);
       updateStorage(prev => ({
         ...prev,
@@ -643,7 +654,7 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     } finally {
       setSearchLoading(false);
     }
-  }, [searchQuery, updateStorage]);
+  }, [searchQuery, updateStorage, vocabularyLanguage]);
 
   const handleSearchKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') handleSearch();
@@ -670,14 +681,23 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const loadWordData = useCallback(async (word: string) => {
     setCardLoading(true);
     try {
-      const wordInfo = await fetchWordInfo(word);
+      let wordInfo = await fetchWordInfo(word);
+
+      // Translate if language is not English
+      if (vocabularyLanguage !== 'en') {
+        const geminiKey = import.meta.env.VITE_GEMINI_API_KEY
+        if (geminiKey) {
+          wordInfo = await translateWordInfo(wordInfo, vocabularyLanguage, geminiKey)
+        }
+      }
+
       setCards(prev => prev.map(c => c.word === word ? { ...c, wordInfo } : c));
     } catch (error) {
       console.error('Error loading word data:', error);
     } finally {
       setCardLoading(false);
     }
-  }, []);
+  }, [vocabularyLanguage]);
 
   const handleCardClick = useCallback(async (cardId: number) => {
     if (activeCard === cardId && showWord) return;
