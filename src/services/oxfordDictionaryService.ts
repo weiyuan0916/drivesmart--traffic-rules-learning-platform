@@ -385,6 +385,10 @@ async function tryOxfordViaProxy(word: string, proxy: string): Promise<WordInfo>
     if (response.status === 404) {
       throw new WordNotFoundError();
     }
+    // Treat 400, 500, 502, 503, 504 as proxy failures - try next proxy
+    if (response.status === 400 || response.status >= 500) {
+      throw new Error(`Proxy error ${response.status}: ${response.statusText}`);
+    }
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
   }
 
