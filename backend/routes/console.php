@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\MigrateCrawlerData;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 

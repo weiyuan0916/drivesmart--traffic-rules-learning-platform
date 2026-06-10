@@ -1,19 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
 import Database from 'better-sqlite3';
+import fs from 'fs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// Resolve DB path: server/ -> project root -> crawler/data/
-const PROJECT_ROOT = path.resolve(__dirname, '..');
-const DB_PATH = process.env.CRAWLER_DB_PATH || path.join(PROJECT_ROOT, 'crawler', 'data', 'dailydictation.db');
+// Resolve DB path using explicit absolute path to avoid import.meta.url issues
+const DB_PATH = process.env.CRAWLER_DB_PATH || '/Users/edward/Documents/GitHub/drivesmart--traffic-rules-learning-platform/crawler/data/dailydictation.db';
 const db = new Database(DB_PATH, { readonly: true });
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = parseInt(process.env.PORT || '3002');
 
 app.use(cors());
 app.use(express.json());
@@ -28,22 +23,36 @@ function getTopicInfoForLesson(lessonId: number) {
     WHERE l.id = ?
     LIMIT 1
   `).get(lessonId) as any;
-
-  if (row) return row;
-
-  // Fallback: look up by direct join
-  const row2 = db.prepare(`
-    SELECT t.id, t.name, t.slug, t.levels, t.lesson_count
-    FROM topics t
-    JOIN sections s ON s.topic_id = t.id
-    JOIN lessons l ON l.section_id = s.id
-    WHERE l.id = ?
-    LIMIT 1
-  `).get(lessonId) as any;
-  return row2;
+  return row;
 }
 
-// GET /api/listening/topics
+// ─── Health check ─────────────────────────────────────────────────────────────
+app.get('/api/listening/health', (_req: Request, res: Response) => {
+  try {
+    const stats = {
+      topics:    db.prepare('SELECT COUNT(*) as c FROM topics').get() as any,
+      sections:  db.prepare('SELECT COUNT(*) as c FROM sections').get() as any,
+      lessons:   db.prepare('SELECT COUNT(*) as c FROM lessons').get() as any,
+      challenges:db.prepare('SELECT COUNT(*) as c FROM challenges').get() as any,
+    };
+    res.json({
+      status: 'ok',
+      stats: {
+        topics:    stats.topics.c,
+        sections:  stats.sections.c,
+        lessons:   stats.lessons.c,
+        challenges:stats.challenges.c,
+      },
+      source: 'sqlite',
+      db: DB_PATH,
+    });
+  } catch (err) {
+    console.error('Health check error:', err);
+    res.status(500).json({ error: 'Health check failed' });
+  }
+});
+
+// ─── GET /api/listening/topics ────────────────────────────────────────────────
 app.get('/api/listening/topics', (_req: Request, res: Response) => {
   try {
     const topics = db.prepare(`
@@ -65,14 +74,14 @@ app.get('/api/listening/topics', (_req: Request, res: Response) => {
     `).all();
 
     const result = topics.map((t: any) => ({
-      id: t.id,
-      name: t.name,
-      slug: t.slug,
-      url: t.url,
-      lessonCount: t.lesson_count_actual || t.lesson_count,
-      levels: t.levels,
-      description: t.description,
-      sectionCount: t.section_count,
+      id:           Number(t.id),
+      name:         t.name,
+      slug:         t.slug,
+      url:          t.url,
+      lessonCount:  Number(t.lesson_count_actual || t.lesson_count),
+      levels:       t.levels || '',
+      description:  t.description || '',
+      sectionCount: Number(t.section_count),
     }));
 
     res.json({ topics: result });
@@ -82,7 +91,7 @@ app.get('/api/listening/topics', (_req: Request, res: Response) => {
   }
 });
 
-// GET /api/listening/topics/:slug
+// ─── GET /api/listening/topics/:slug ─────────────────────────────────────────
 app.get('/api/listening/topics/:slug', (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
@@ -111,24 +120,33 @@ app.get('/api/listening/topics/:slug', (req: Request, res: Response) => {
       `).all(s.id);
 
       return {
-        ...s,
-        lessonCount: s.lesson_count,
+        id:           Number(s.id),
+        topicId:      Number(s.topic_id),
+        name:         s.name,
+        slug:         s.slug,
+        orderIndex:   Number(s.order_index),
+        lessonCount:  Number(s.lesson_count),
+        vocabLevel:   s.vocab_level || '',
         lessons: lessons.map((l: any) => ({
-          id: l.id,
-          sectionId: l.section_id,
-          name: l.lesson_name || l.name,
-          partsCount: l.parts_count,
-          vocabLevel: l.vocab_level,
-          hasAudio: !!l.audio_src,
+          id:           Number(l.id),
+          sectionId:    Number(l.section_id),
+          name:         l.lesson_name || l.name,
+          partsCount:   Number(l.parts_count),
+          vocabLevel:   l.vocab_level || '',
+          hasAudio:     !!l.audio_src,
           hasTranscript: !!l.transcript,
         })),
       };
     });
 
     res.json({
-      ...topic,
-      lessonCount: topic.lesson_count,
-      sections: sectionsWithLessons,
+      id:           Number(topic.id),
+      slug:         topic.slug,
+      name:         topic.name,
+      lessonCount:  Number(topic.lesson_count),
+      levels:       topic.levels || '',
+      description:  topic.description || '',
+      sections:     sectionsWithLessons,
     });
   } catch (err) {
     console.error('Error fetching topic:', err);
@@ -136,7 +154,7 @@ app.get('/api/listening/topics/:slug', (req: Request, res: Response) => {
   }
 });
 
-// GET /api/listening/sections/:id/lessons
+// ─── GET /api/listening/sections/:id/lessons ──────────────────────────────────
 app.get('/api/listening/sections/:id/lessons', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -149,22 +167,22 @@ app.get('/api/listening/sections/:id/lessons', (req: Request, res: Response) => 
 
     res.json({
       lessons: lessons.map((l: any) => ({
-        id: l.id,
-        sectionId: l.section_id,
-        name: l.lesson_name || l.name,
-        partsCount: l.parts_count,
-        vocabLevel: l.vocab_level,
-        hasAudio: !!l.audio_src,
+        id:           Number(l.id),
+        sectionId:    Number(l.section_id),
+        name:         l.lesson_name || l.name,
+        partsCount:   Number(l.parts_count),
+        vocabLevel:   l.vocab_level || '',
+        hasAudio:     !!l.audio_src,
         hasTranscript: !!l.transcript,
       })),
     });
   } catch (err) {
     console.error('Error fetching lessons:', err);
-    res.status(500).json({ error: 'Failed to fetch lessons' });
+    res.status(500).json({ error: 'Failed to fetch section lessons' });
   }
 });
 
-// GET /api/listening/lessons/:id
+// ─── GET /api/listening/lessons/:id ─────────────────────────────────────────
 app.get('/api/listening/lessons/:id', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -193,28 +211,38 @@ app.get('/api/listening/lessons/:id', (req: Request, res: Response) => {
       : null;
 
     res.json({
-      id: lesson.id,
-      sectionId: lesson.section_id,
-      name: lesson.lesson_name || lesson.name,
-      partsCount: lesson.parts_count,
-      vocabLevel: lesson.vocab_level,
-      audioSrc: lesson.audio_src,
-      localAudioPath: lesson.local_audio_path,
-      transcript: lesson.transcript,
-      section: section as any,
-      topic: topicInfo as any,
+      id:            Number(lesson.id),
+      sectionId:     Number(lesson.section_id),
+      name:          lesson.lesson_name || lesson.name,
+      partsCount:    Number(lesson.parts_count),
+      vocabLevel:    lesson.vocab_level || '',
+      audioSrc:      lesson.audio_src || '',
+      localAudioPath: lesson.local_audio_path || '',
+      transcript:    lesson.transcript || '',
+      section: section ? {
+        id:        Number((section as any).id),
+        name:      (section as any).name,
+        vocabLevel: (section as any).vocab_level || '',
+      } : null,
+      topic: topicInfo ? {
+        id:         Number(topicInfo.id),
+        name:       topicInfo.name,
+        slug:       topicInfo.slug,
+        levels:     topicInfo.levels || '',
+        lessonCount: Number(topicInfo.lesson_count),
+      } : null,
       challenges: challenges.map((c: any) => ({
-        id: c.id,
-        position: c.position,
-        content: c.content,
-        solution: c.solution ? JSON.parse(c.solution) : [],
-        audioSrc: c.audio_src,
+        id:           Number(c.id),
+        position:     Number(c.position),
+        content:      c.content,
+        solution:     c.solution ? JSON.parse(c.solution) : [],
+        audioSrc:     c.audio_src || '',
         localClipPath: c.local_clip_path || '',
-        timeStart: c.time_start,
-        timeEnd: c.time_end,
-        hints: c.hints ? JSON.parse(c.hints) : [],
-        nbComments: c.nb_comments,
-        discussionUrl: c.discussion_url,
+        timeStart:    c.time_start || '',
+        timeEnd:      c.time_end || '',
+        hints:        c.hints ? JSON.parse(c.hints) : [],
+        nbComments:   Number(c.nb_comments || 0),
+        discussionUrl: c.discussion_url || '',
       })),
     });
   } catch (err) {
@@ -223,9 +251,7 @@ app.get('/api/listening/lessons/:id', (req: Request, res: Response) => {
   }
 });
 
-// GET /api/listening/challenges/:id/audio
-// Returns JSON: { audioSrc: string, timeStart?: string, timeEnd?: string }
-// Priority: local clip > CDN clip > local full audio
+// ─── GET /api/listening/challenges/:id/audio ─────────────────────────────────
 app.get('/api/listening/challenges/:id/audio', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -241,36 +267,21 @@ app.get('/api/listening/challenges/:id/audio', (req: Request, res: Response) => 
       return;
     }
 
-    // Priority 1: Local clip file (already sliced by ffmpeg)
+    // Priority 1: Local clip file
     if (challenge.local_clip_path && fs.existsSync(challenge.local_clip_path)) {
-      res.json({
-        audioSrc: `/api/listening/clips/${id}`,
-        timeStart: null,
-        timeEnd: null,
-        source: 'local_clip',
-      });
+      res.json({ audioSrc: `/api/listening/clips/${id}`, timeStart: null, timeEnd: null, source: 'local_clip' });
       return;
     }
 
-    // Priority 2: CDN per-sentence clip URL (from DB)
+    // Priority 2: CDN clip URL
     if (challenge.audio_src) {
-      res.json({
-        audioSrc: challenge.audio_src,
-        timeStart: challenge.time_start,
-        timeEnd: challenge.time_end,
-        source: 'cdn_clip',
-      });
+      res.json({ audioSrc: challenge.audio_src, timeStart: challenge.time_start, timeEnd: challenge.time_end, source: 'cdn_clip' });
       return;
     }
 
-    // Priority 3: Local full audio + timestamps (frontend slices by timeStart/timeEnd)
+    // Priority 3: Local full audio
     if (challenge.local_audio_path && fs.existsSync(challenge.local_audio_path)) {
-      res.json({
-        audioSrc: `/api/listening/audio/${challenge.lesson_id}`,
-        timeStart: challenge.time_start,
-        timeEnd: challenge.time_end,
-        source: 'local_full',
-      });
+      res.json({ audioSrc: `/api/listening/audio/${challenge.lesson_id}`, timeStart: challenge.time_start, timeEnd: challenge.time_end, source: 'local_full' });
       return;
     }
 
@@ -281,19 +292,16 @@ app.get('/api/listening/challenges/:id/audio', (req: Request, res: Response) => 
   }
 });
 
-// Serve local clip files (binary MP3)
+// ─── Serve local clip files ───────────────────────────────────────────────────
 app.get('/api/listening/clips/:id', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const challenge = db.prepare(`
-      SELECT local_clip_path FROM challenges WHERE id = ? LIMIT 1
-    `).get(id) as any;
+    const challenge = db.prepare(`SELECT local_clip_path FROM challenges WHERE id = ? LIMIT 1`).get(id) as any;
 
     if (!challenge || !challenge.local_clip_path || !fs.existsSync(challenge.local_clip_path)) {
       res.status(404).json({ error: 'Clip not found' });
       return;
     }
-
     res.sendFile(challenge.local_clip_path);
   } catch (err) {
     console.error('Error serving clip:', err);
@@ -301,13 +309,11 @@ app.get('/api/listening/clips/:id', (req: Request, res: Response) => {
   }
 });
 
-// GET /api/listening/audio/:id
+// ─── Serve full lesson audio ─────────────────────────────────────────────────
 app.get('/api/listening/audio/:id', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const lesson = db.prepare(`
-      SELECT local_audio_path, audio_src FROM lessons WHERE id = ? LIMIT 1
-    `).get(id) as any;
+    const lesson = db.prepare(`SELECT local_audio_path, audio_src FROM lessons WHERE id = ? LIMIT 1`).get(id) as any;
 
     if (!lesson) {
       res.status(404).json({ error: 'Audio not available' });
@@ -327,26 +333,7 @@ app.get('/api/listening/audio/:id', (req: Request, res: Response) => {
   }
 });
 
-// Health check
-app.get('/api/listening/health', (_req: Request, res: Response) => {
-  const stats = {
-    topics: db.prepare('SELECT COUNT(*) as c FROM topics').get() as any,
-    sections: db.prepare('SELECT COUNT(*) as c FROM sections').get() as any,
-    lessons: db.prepare('SELECT COUNT(*) as c FROM lessons').get() as any,
-    challenges: db.prepare('SELECT COUNT(*) as c FROM challenges').get() as any,
-  };
-  res.json({
-    status: 'ok',
-    stats: {
-      topics: stats.topics.c,
-      sections: stats.sections.c,
-      lessons: stats.lessons.c,
-      challenges: stats.challenges.c,
-    },
-  });
-});
-
-// Error handler
+// ─── Error handler ─────────────────────────────────────────────────────────────
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err);
   res.status(500).json({ error: 'Internal server error' });

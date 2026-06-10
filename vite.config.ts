@@ -22,6 +22,10 @@ export default defineConfig(({mode}) => {
           target: 'http://localhost:3002',
           changeOrigin: true,
         },
+        '/api': {
+          target: env.VITE_API_URL || 'http://vinalisten.test',
+          changeOrigin: true,
+        },
       },
     },
     build: {

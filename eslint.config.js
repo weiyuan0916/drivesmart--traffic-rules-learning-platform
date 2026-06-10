@@ -6,9 +6,13 @@ import reactRecommended from 'eslint-config-react'
 import prettier from 'eslint-config-prettier'
 import globals from 'globals'
 
+const reactConfig = Array.isArray(reactRecommended)
+  ? reactRecommended
+  : reactRecommended?.configs?.recommended || reactRecommended?.default || [];
+
 export default [
   js.configs.recommended,
-  ...reactRecommended,
+  ...reactConfig,
   prettier,
 
   {

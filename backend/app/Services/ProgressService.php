@@ -43,8 +43,8 @@ class ProgressService
      */
     public function getWeeklyActivity(User $user): array
     {
-        $start = Carbon::now()->startOfWeek()->toDateString();
-        $end = Carbon::now()->endOfWeek()->toDateString();
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
 
         // Group clip progress by date
         $activities = \App\Models\UserClipProgress::query()
@@ -53,14 +53,15 @@ class ProgressService
                          SUM(accuracy) as total_accuracy")
             ->where('user_id', $user->id)
             ->whereNotNull('completed_at')
-            ->whereBetween('completed_at', [$start, $end])
+            ->where('completed_at', '>=', $startOfWeek)
+            ->where('completed_at', '<=', $endOfWeek)
             ->groupByRaw('DATE(completed_at)')
             ->get()
             ->keyBy('date');
 
         $result = [];
         for ($i = 0; $i < 7; $i++) {
-            $date = Carbon::now()->startOfWeek()->addDays($i)->toDateString();
+            $date = $startOfWeek->copy()->addDays($i)->toDateString();
             $activity = $activities->get($date);
 
             $result[] = [
