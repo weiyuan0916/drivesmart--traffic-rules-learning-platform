@@ -5,14 +5,24 @@
 // ============================================================
 
 import { apiClient } from './client'
-import type { LanguageCode, ExplanationContent, ExplanationApiResponse } from '../types/explanation'
+import type { LanguageCode, ExplanationContent, ExplanationApiResponse, VocabularyItem } from '../types/explanation'
 
 const BASE_PATH = '/api/v1'
 
+// Error codes thrown by apiClient (defined in client.ts)
+type ApiError = Error & { code: string; errors?: Record<string, string[]> }
+const isApiError = (err: unknown): err is ApiError =>
+  err instanceof Error && 'code' in err
+
+// Custom error classes — thrown by this module to signal specific failures
 export class ExplanationNotFoundError extends Error {
+  readonly clipId: string
+  readonly lang: LanguageCode
   constructor(clipId: string, lang: LanguageCode) {
     super(`Explanation not found for clip ${clipId} in language ${lang}`)
     this.name = 'ExplanationNotFoundError'
+    this.clipId = clipId
+    this.lang = lang
   }
 }
 
@@ -29,7 +39,7 @@ const LOCAL_EXPLANATIONS: Record<LanguageCode, string> = {
   en: 'Loading explanation... Please wait a moment.',
   ja: '解説を読み込み中입니다。しばらくお待ちください。',
   zh: '正在加载解释。请稍候。',
-  ko: '해설을 로딩 중입니다. 잠시만 기다려 주세요.',
+  ko: '해설을 로딩 중입니다。잠시만 기다려 주세요。',
   fr: 'Chargement de l\'explication... Veuillez patienter.',
 }
 
@@ -66,8 +76,6 @@ const LOCAL_VOCABULARY: Record<LanguageCode, VocabularyItem[]> = {
   ],
 }
 
-type VocabularyItem = { word: string; translation: string; phonetic?: string; partOfSpeech?: string; exampleSentence?: string }
-
 function createFallbackContent(clipId: string, lang: LanguageCode): ExplanationContent {
   return {
     clipId,
@@ -94,6 +102,13 @@ function mapApiResponse(data: ExplanationApiResponse): ExplanationContent {
   }
 }
 
+/**
+ * Fetches explanation content for a given clip in the specified language.
+ * Returns local fallback for timeout (AbortError) and 503 / E_SERVER.
+ * Throws ExplanationNotFoundError for 404 / E_NOT_FOUND.
+ * Throws AIServiceUnavailableError for 429 / E_RATE_LIMITED.
+ * Re-throws all other errors so callers can handle them.
+ */
 export const explanationApi = {
   async getExplanation(clipId: string, lang: LanguageCode): Promise<ExplanationContent> {
     const cacheKey = `explanation_${clipId}_${lang}`
@@ -122,17 +137,33 @@ export const explanationApi = {
         sessionStorage.setItem(cacheKey, JSON.stringify(fallback))
         return fallback
       }
-      const response = (err as { response?: { status?: number } }).response
-      if (response?.status === 503) {
-        const fallback = createFallbackContent(clipId, lang)
-        sessionStorage.setItem(cacheKey, JSON.stringify(fallback))
-        return fallback
+      if (isApiError(err)) {
+        if (err.code === 'E_NOT_FOUND') {
+          throw new ExplanationNotFoundError(clipId, lang)
+        }
+        if (err.code === 'E_RATE_LIMITED') {
+          throw new AIServiceUnavailableError()
+        }
+        if (err.code === 'E_SERVER') {
+          const fallback = createFallbackContent(clipId, lang)
+          sessionStorage.setItem(cacheKey, JSON.stringify(fallback))
+          return fallback
+        }
       }
       throw err
     }
   },
 
+  /**
+   * Updates the user's default explanation language preference on the backend.
+   * @param lang - The new default language code
+   * @throws Error if the user is not authenticated
+   */
   async updateDefaultLanguage(lang: LanguageCode): Promise<void> {
+    const { useAuthStore } = await import('../stores/authStore')
+    if (!useAuthStore.getState().isAuthenticated) {
+      throw new Error('updateDefaultLanguage requires authentication')
+    }
     await apiClient.patch(`${BASE_PATH}/user/settings`, {
       explanation_language: lang,
     })
