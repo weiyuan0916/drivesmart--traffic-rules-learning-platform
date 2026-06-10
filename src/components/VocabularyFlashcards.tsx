@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen, Clock, RotateCcw, ArrowLeft, Search, Volume2, Loader2,
-  Mic, BookMarked, Home, BarChart2, Sparkles, ChevronRight,
-  X, Trash2, TrendingUp, Target, Zap, Star, ChevronLeft, Globe
+  Mic, BookMarked, Home, Sparkles, ChevronRight,
+  X, Trash2, TrendingUp, Zap, Star, ChevronLeft
 } from 'lucide-react';
 import { fetchWordInfo, WordInfo, WordNotFoundError, getCefrLevel, commonWords } from '../services/oxfordDictionaryService';
 import { translateWordInfo } from '../services/vocabularyTranslationService';
@@ -621,6 +621,32 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     }
   }, [countdown]);
 
+  // Re-fetch word when language changes (auto-translate on language switch)
+  useEffect(() => {
+    if (!searchResult || searchLoading) return;
+
+    const retranslate = async () => {
+      setSearchLoading(true);
+      setSearchError(null);
+      try {
+        let result = await fetchWordInfo(searchResult.name);
+
+      if (vocabularyLanguage !== 'en') {
+        result = await translateWordInfo(result, vocabularyLanguage)
+      }
+
+        setSearchResult(result);
+      } catch (error) {
+        setSearchError('Failed to load word. Please try again.');
+      } finally {
+        setSearchLoading(false);
+      }
+    };
+
+    retranslate();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vocabularyLanguage]); // intentionally omitting searchResult.name to avoid re-triggering on searchResult change
+
   // ── Search handlers ───────────────────────────────────────────────────────
 
   const handleSearch = useCallback(async (word?: string) => {
@@ -637,10 +663,7 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
       // Translate if language is not English
       if (vocabularyLanguage !== 'en') {
-        const geminiKey = import.meta.env.VITE_GEMINI_API_KEY
-        if (geminiKey) {
-          result = await translateWordInfo(result, vocabularyLanguage, geminiKey)
-        }
+        result = await translateWordInfo(result, vocabularyLanguage)
       }
 
       setSearchResult(result);
@@ -685,10 +708,7 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
       // Translate if language is not English
       if (vocabularyLanguage !== 'en') {
-        const geminiKey = import.meta.env.VITE_GEMINI_API_KEY
-        if (geminiKey) {
-          wordInfo = await translateWordInfo(wordInfo, vocabularyLanguage, geminiKey)
-        }
+        wordInfo = await translateWordInfo(wordInfo, vocabularyLanguage)
       }
 
       setCards(prev => prev.map(c => c.word === word ? { ...c, wordInfo } : c));
@@ -698,6 +718,34 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       setCardLoading(false);
     }
   }, [vocabularyLanguage]);
+
+  // Re-translate the visible flashcard when language changes
+  useEffect(() => {
+    if (!showResult || activeCard === null) return;
+
+    const activeCardData = cards[activeCard];
+    if (!activeCardData?.wordInfo) return;
+
+    const retrans = async () => {
+      setCardLoading(true);
+      try {
+        let wordInfo = await fetchWordInfo(activeCardData.word);
+
+        if (vocabularyLanguage !== 'en') {
+          wordInfo = await translateWordInfo(wordInfo, vocabularyLanguage);
+        }
+
+        setCards(prev => prev.map(c => c.word === activeCardData.word ? { ...c, wordInfo } : c));
+      } catch (error) {
+        console.error('Error re-translating flashcard:', error);
+      } finally {
+        setCardLoading(false);
+      }
+    };
+
+    retrans();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vocabularyLanguage]); // intentionally omitting cards to avoid re-triggering on loadWordData
 
   const handleCardClick = useCallback(async (cardId: number) => {
     if (activeCard === cardId && showWord) return;

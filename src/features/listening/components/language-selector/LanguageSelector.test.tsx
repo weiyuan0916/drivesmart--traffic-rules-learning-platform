@@ -25,7 +25,7 @@ describe('LanguageSelector', () => {
     it('calls onChange with correct code when a language button is clicked', () => {
       const onChange = vi.fn()
       render(<LanguageSelector value="vi" onChange={onChange} variant="button-group" />)
-      fireEvent.click(screen.getByLabelText('Explanation language: 日本語'))
+      fireEvent.click(screen.getByLabelText('Explanation language: Japanese'))
       expect(onChange).toHaveBeenCalledWith('ja')
     })
 
@@ -34,7 +34,7 @@ describe('LanguageSelector', () => {
       render(<LanguageSelector value="ko" onChange={onChange} variant="button-group" />)
       expect(screen.getByRole('radio', { checked: true })).toHaveAttribute(
         'aria-label',
-        'Explanation language: 한국어',
+        'Explanation language: Korean',
       )
     })
 
@@ -60,7 +60,11 @@ describe('LanguageSelector', () => {
       const onChange = vi.fn()
       render(<LanguageSelector value="vi" onChange={onChange} variant="dropdown" />)
       fireEvent.click(screen.getByRole('combobox'))
-      expect(screen.getByRole('listbox')).toBeVisible()
+      const listbox = screen.getByRole('listbox')
+      expect(listbox).toBeVisible()
+      fireEvent.click(screen.getByRole('option', { name: 'English - Japanese' }))
+      expect(onChange).toHaveBeenCalledWith('ja')
+      expect(listbox).not.toBeVisible()
     })
   })
 

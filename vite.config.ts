@@ -37,5 +37,14 @@ export default defineConfig(({mode}) => {
         },
       },
     },
+    test: {
+      environment: 'jsdom',
+      setupFiles: './vitest.setup.ts',
+      globals: true,
+      include: ['src/**/*.test.{ts,tsx}'],
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
+    },
   };
 });

@@ -324,52 +324,70 @@ export const parseWordHtml = (html: string, word: string): WordInfo => {
   return wordInfo;
 };
 
-// Try backend API first, then fall back to CORS proxies
+// Free Dictionary API fallback (no API key required, CORS-friendly)
+const FREE_DICT_BASE = 'https://api.dictionaryapi.dev/api/v2/entries/en';
+
+// Try backend API first, then Free Dictionary API, then CORS proxies
 export const fetchWordInfo = async (word: string): Promise<WordInfo> => {
   // First try: Use backend Python server (recommended - no CORS issues)
   try {
     const apiUrl = `${API_BASE}/api/dictionary/${encodeURIComponent(word.toLowerCase())}`;
     const response = await fetch(apiUrl, { signal: AbortSignal.timeout(8000) });
-    
+
     if (response.ok) {
       const data = await response.json();
-      // If it's an error response from backend
       if (data.error) {
-        if (data.error === 'Word not found' || (response.status === 404)) {
+        if (data.error === 'Word not found' || response.status === 404) {
           throw new WordNotFoundError();
         }
         throw new Error(data.error);
       }
-      // Backend returns Python dict structure, need to transform
       return transformPythonData(data);
     }
   } catch (error) {
-    // Backend failed, continue to CORS proxies
-    console.log('Backend unavailable, trying CORS proxies...');
+    console.log('Backend unavailable, trying Free Dictionary API...');
   }
 
-  // Second try: Use CORS proxies as fallback
+  // Second try: Free Dictionary API (no API key, CORS-friendly)
+  try {
+    const response = await fetch(`${FREE_DICT_BASE}/${encodeURIComponent(word.toLowerCase())}`, {
+      signal: AbortSignal.timeout(8000),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (Array.isArray(data) && data.length > 0) {
+        return transformFreeDictData(data[0]);
+      }
+    } else if (response.status === 404) {
+      throw new WordNotFoundError();
+    }
+  } catch (error) {
+    if (error instanceof WordNotFoundError) throw error;
+    console.log('Free Dictionary API unavailable, trying CORS proxies...');
+  }
+
+  // Third try: Use CORS proxies to access Oxford directly
   let lastError: Error | null = null;
-  
+
   for (const proxy of CORS_PROXIES) {
     try {
       const url = `${proxy}${encodeURIComponent(BASE_URL + word)}`;
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         if (response.status === 404) {
           throw new WordNotFoundError();
         }
         throw new Error(`Failed to fetch word: ${response.statusText}`);
       }
-      
+
       const html = await response.text();
-      
-      // Check if we got actual HTML content
+
       if (html.includes('<html') || html.includes('<!DOCTYPE')) {
         return parseWordHtml(html, word);
       }
-      
+
       continue;
     } catch (error) {
       lastError = error as Error;
@@ -379,8 +397,56 @@ export const fetchWordInfo = async (word: string): Promise<WordInfo> => {
       continue;
     }
   }
-  
+
   throw new Error(`Error fetching word "${word}": All methods failed. ${lastError?.message || 'Unknown error'}`);
+};
+
+// Transform Free Dictionary API response to WordInfo
+const transformFreeDictData = (data: any): WordInfo => {
+  const name = data.word || '';
+  const phonetics = data.phonetics || [];
+
+  const pronunciations: Pronunciation[] = [];
+  for (const p of phonetics) {
+    if (p.text || p.audio) {
+      pronunciations.push({
+        prefix: null,
+        ipa: p.text || null,
+        url: p.audio || null,
+      });
+    }
+  }
+
+  const definitions: NamespaceDefinition[] = [];
+  for (const meaning of data.meanings || []) {
+    const partOfSpeech = meaning.partOfSpeech || '';
+    const defs: Definition[] = [];
+
+    for (const def of meaning.definitions || []) {
+      defs.push({
+        property: partOfSpeech,
+        description: def.definition || '',
+        examples: def.example ? [def.example] : [],
+        extra_example: [],
+      });
+    }
+
+    definitions.push({ namespace: partOfSpeech, definitions: defs });
+  }
+
+  return {
+    id: name,
+    name,
+    wordform: null,
+    pronunciations: pronunciations.length > 0 ? pronunciations : [{ prefix: null, ipa: data.phonetic || null, url: null }],
+    cefrLevel: getCefrLevel(name),
+    definitions,
+    idioms: [],
+    nearbyWords: [],
+    topics: [],
+    phrasal_verbs: [],
+    other_results: [],
+  };
 };
 
 // Transform Python dict structure to match frontend interface

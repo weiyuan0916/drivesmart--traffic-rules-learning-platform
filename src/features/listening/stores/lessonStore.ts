@@ -63,13 +63,18 @@ export const useLessonStore = create<LessonStore>()((set) => ({
       currentResult: null,
     }),
 
-  setCurrentClipIndex: (index) =>
+  setCurrentClipIndex: (index) => {
+    // Dynamically import to avoid circular dependency
+    import('./explanationStore').then(({ useExplanationStore }) => {
+      useExplanationStore.getState().clearOverride()
+    })
     set({
       currentClipIndex: index,
       transcriptInput: '',
       practiceState: 'idle',
       currentResult: null,
-    }),
+    })
+  },
 
   setTranscriptInput: (transcriptInput) => set({ transcriptInput }),
 

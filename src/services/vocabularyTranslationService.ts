@@ -1,202 +1,117 @@
 // ============================================================
 // Vocabulary Translation Service — VinaListen
-// Translates WordInfo definitions/examples to target language
+// Translates WordInfo definitions/examples using MyMemory API
+// Free, no API key required, CORS-friendly
 // ============================================================
 
-import type { WordInfo, Definition, NamespaceDefinition, Idiom, Pronunciation } from './oxfordDictionaryService'
+import type { WordInfo, NamespaceDefinition, Idiom } from './oxfordDictionaryService'
 import type { LanguageCode } from '@/features/listening/types/explanation'
-import { SUPPORTED_LANGUAGES } from '@/features/listening/constants/languages'
 
-interface TranslationPrompt {
-  word: string
-  definitions: string[]
-  examples: string[]
-  idioms: string[]
+// MyMemory language code mapping
+const LANG_MAP: Record<LanguageCode, string> = {
+  en: 'en',
+  vi: 'vi',
+  ja: 'ja',
+  zh: 'zh',
+  ko: 'ko',
+  fr: 'fr',
 }
 
-interface TranslatedWordInfo extends WordInfo {
-  translated: boolean
-  targetLanguage: LanguageCode
-}
+// Cache for translation results (avoids re-translating same text)
+const translationCache = new Map<string, string>()
 
-// Build translation prompt for Gemini
-function buildTranslationPrompt(data: TranslationPrompt, targetLang: LanguageCode): string {
-  const langInfo = SUPPORTED_LANGUAGES.find(l => l.code === targetLang)
-  const langName = langInfo?.nativeName || 'Vietnamese'
+// Translate a single text snippet via MyMemory
+async function translateText(text: string, targetLang: LanguageCode): Promise<string> {
+  if (targetLang === 'en') return text
 
-  return `
-You are a professional English dictionary translator. Translate the following dictionary content for "${data.word}" into ${langName}.
+  const cacheKey = `${text.toLowerCase().trim()}|${targetLang}`
+  if (translationCache.has(cacheKey)) {
+    return translationCache.get(cacheKey)!
+  }
 
-Source content (English):
-${JSON.stringify({
-  definitions: data.definitions,
-  examples: data.examples,
-  idioms: data.idioms
-}, null, 2)}
+  const langPair = `${LANG_MAP['en']}|${LANG_MAP[targetLang]}`
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${langPair}`
 
-Output format (JSON only):
-{
-  "definitions": [
-    {
-      "namespace": "namespace or null",
-      "definitions": [
-        {
-          "property": "part of speech",
-          "label": "usage label",
-          "description": "translated definition",
-          "examples": ["translated example 1", "translated example 2"],
-          "extra_example": ["extra example"]
-        }
-      ]
-    }
-  ],
-  "idioms": [
-    {
-      "name": "idiom phrase",
-      "summary": { "label": "translated label", "refer": "translated refer" },
-      "definitions": [
-        { "description": "translated idiom definition", "examples": ["translated example"] }
-      ]
-    }
-  ]
-}
-
-Rules:
-- Translate ONLY definition.description, definition.examples, definition.extra_example, idiom.name, idiom.summary.label/refer
-- Keep property (part of speech) in English
-- Keep namespace names in English
-- Keep pronunciation/IPA unchanged
-- Keep wordform unchanged
-- Return natural, dictionary-quality translations
-- If no translation needed (target is English), return original
-`
-}
-
-// Parse translated response
-function parseTranslatedResponse(response: string, original: WordInfo): Partial<WordInfo> {
   try {
-    const parsed = JSON.parse(response)
-    const result: Partial<WordInfo> = {}
+    const response = await fetch(url, { signal: AbortSignal.timeout(5000) })
+    if (!response.ok) throw new Error(`MyMemory error: ${response.status}`)
 
-    if (parsed.definitions) {
-      result.definitions = parsed.definitions.map((ns: any) => ({
-        namespace: ns.namespace,
-        definitions: ns.definitions.map((d: any) => ({
-          property: d.property,
-          label: d.label,
-          refer: d.refer,
-          description: d.description,
-          examples: d.examples || [],
-          extra_example: d.extra_example || [],
-        }))
-      }))
+    const data = await response.json() as {
+      responseData?: { translatedText?: string }
+      responseStatus?: number
     }
 
-    if (parsed.idioms) {
-      result.idioms = parsed.idioms.map((i: any) => ({
-        name: i.name,
-        summary: i.summary,
-        definitions: i.definitions?.map((d: any) => ({
-          description: d.description,
-          examples: d.examples || [],
-        })) || [],
-      }))
+    const translated = data.responseData?.translatedText
+    if (!translated || data.responseStatus !== 200) {
+      throw new Error('MyMemory returned empty response')
     }
 
-    return result
+    translationCache.set(cacheKey, translated)
+    return translated
   } catch (error) {
-    console.error('Failed to parse translation response:', error)
-    return {}
+    console.warn(`MyMemory translation failed for "${text}":`, error)
+    return text // Fallback to original
   }
 }
 
-// Translate WordInfo using Gemini
+// Translate a full WordInfo object to target language
 export async function translateWordInfo(
   wordInfo: WordInfo,
   targetLang: LanguageCode,
-  geminiApiKey: string
 ): Promise<WordInfo> {
   if (targetLang === 'en') return wordInfo
 
-  // Extract text to translate
-  const definitions: string[] = []
-  const examples: string[] = []
-  const idioms: string[] = []
-
-  wordInfo.definitions?.forEach(ns => {
-    ns.definitions?.forEach(d => {
-      if (d.description) definitions.push(d.description)
-      d.examples?.forEach(ex => examples.push(ex))
-      d.extra_example?.forEach(ex => examples.push(ex))
+  // Translate all definition descriptions and examples in parallel
+  const translatedDefinitions: NamespaceDefinition[] = await Promise.all(
+    (wordInfo.definitions ?? []).map(async (ns): Promise<NamespaceDefinition> => {
+      const translatedDefs = await Promise.all(
+        ns.definitions.map(async (def) => ({
+          ...def,
+          description: def.description
+            ? await translateText(def.description, targetLang)
+            : def.description,
+          examples: await Promise.all(
+            def.examples.map((ex) => translateText(ex, targetLang))
+          ),
+          extra_example: await Promise.all(
+            def.extra_example.map((ex) => translateText(ex, targetLang))
+          ),
+        }))
+      )
+      return { namespace: ns.namespace, definitions: translatedDefs }
     })
-  })
+  )
 
-  wordInfo.idioms?.forEach(i => {
-    if (i.name) idioms.push(i.name)
-    if (i.summary?.label) idioms.push(i.summary.label)
-    if (i.summary?.refer) idioms.push(i.summary.refer)
-    i.definitions?.forEach(d => {
-      if (d.description) definitions.push(d.description)
-      d.examples?.forEach(ex => examples.push(ex))
-    })
-  })
+  // Translate idioms
+  const translatedIdioms: Idiom[] = await Promise.all(
+    (wordInfo.idioms ?? []).map(async (idiom): Promise<Idiom> => ({
+      ...idiom,
+      name: await translateText(idiom.name, targetLang),
+      definitions: await Promise.all(
+        idiom.definitions.map(async (def) => ({
+          ...def,
+          description: def.description
+            ? await translateText(def.description, targetLang)
+            : def.description,
+          examples: await Promise.all(
+            def.examples.map((ex) => translateText(ex, targetLang))
+          ),
+        }))
+      ),
+    }))
+  )
 
-  const prompt = buildTranslationPrompt({
-    word: wordInfo.name,
-    definitions,
-    examples,
-    idioms,
-  }, targetLang)
-
-  try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.1,
-          maxOutputTokens: 4096,
-        }
-      })
-    })
-
-    if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`)
-    }
-
-    const data = await response.json()
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text
-
-    if (!text) throw new Error('Empty translation response')
-
-    const translated = parseTranslatedResponse(text, wordInfo)
-
-    return {
-      ...wordInfo,
-      definitions: translated.definitions ?? wordInfo.definitions,
-      idioms: translated.idioms ?? wordInfo.idioms,
-      translated: true,
-      targetLanguage: targetLang,
-    }
-  } catch (error) {
-    console.error('Translation failed:', error)
-    return wordInfo // Fallback to original
+  return {
+    ...wordInfo,
+    definitions: translatedDefinitions,
+    idioms: translatedIdioms,
   }
 }
 
-// Batch translate multiple words (for flashcards)
+// Batch translate multiple WordInfo objects
 export async function translateMultipleWords(
   words: WordInfo[],
   targetLang: LanguageCode,
-  geminiApiKey: string
 ): Promise<WordInfo[]> {
-  if (targetLang === 'en') return words
-
-  const results: WordInfo[] = []
-  for (const word of words) {
-    const translated = await translateWordInfo(word, targetLang, geminiApiKey)
-    results.push(translated)
-  }
-  return results
+  return Promise.all(words.map((w) => translateWordInfo(w, targetLang)))
 }
