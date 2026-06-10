@@ -295,10 +295,10 @@
   /* Semantic colors — dark palette */
   --dict-bg: #0C0E16;
   --dict-surface: #141720;
-  --dict-surface-raised: #1C1F2E;
-  --dict-surface-hover: #242736;
-  --dict-border: #2A2D3E;
-  --dict-border-subtle: #1E2130;
+  --dict-surface-raised: #1A1D2C;
+  --dict-surface-hover: #20233A;
+  --dict-border: #1F2233;
+  --dict-border-subtle: #181B28;
 
   /* Text hierarchy */
   --dict-text-primary: #F1F3F9;
@@ -344,10 +344,10 @@
 
 /* Glass / frosted panel */
 .dict-glass {
-  background: rgba(20, 23, 32, 0.8);
+  background: rgba(20, 23, 32, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--dict-border);
+  border: 1px solid var(--dict-border-subtle);
 }
 
 /* Reduced motion */
