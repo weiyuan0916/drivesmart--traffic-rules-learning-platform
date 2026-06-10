@@ -98,18 +98,18 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
   const showNav = nav.currentView !== 'practice';
 
   return (
-    <div
-      className="listening-root flex flex-col"
-      style={{ background: 'var(--lm-bg, #F5F6F8)', minHeight: '100dvh' }}
-    >
-      {/* Header */}
-      <header
-        className="sticky top-0 z-30 border-b backdrop-blur-md"
-        style={{
-          background: 'color-mix(in srgb, var(--lm-surface, #fff) 90%, transparent)',
-          borderColor: 'var(--lm-border, #E5E7EB)',
-        }}
+      <div
+        className="listening-root flex flex-col"
+        style={{ background: 'var(--lm-bg, #F5F6F8)', minHeight: '100dvh' }}
       >
+        {/* Header */}
+        <header
+          className="sticky top-0 z-30 border-b backdrop-blur-md"
+          style={{
+            background: 'color-mix(in srgb, var(--lm-surface, #fff) 90%, transparent)',
+            borderColor: 'var(--lm-border, #E5E7EB)',
+          }}
+        >
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-3">
           <button
             onClick={nav.currentView === 'overview' ? onBack : () => {

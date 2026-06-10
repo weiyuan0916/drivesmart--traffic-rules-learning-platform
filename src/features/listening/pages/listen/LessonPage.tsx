@@ -572,32 +572,32 @@ export default function LessonPage() {
   }
 
   return (
-    <div className="min-h-full flex flex-col">
-      {/* Page header */}
-      <div className="hidden lg:flex items-center justify-between px-8 py-4 border-b border-border bg-bg-secondary">
-        <div className="flex items-center gap-3">
-          {lesson.topic?.slug && (
-            <Link
-              to={`/topics/${lesson.topic.slug}`}
-              className="flex items-center gap-1 text-sm text-text-muted hover:text-primary transition-colors"
-            >
-              <ChevronLeft size={16} aria-hidden="true" />
-              Back to topic
-            </Link>
+      <div className="min-h-full flex flex-col">
+        {/* Page header */}
+        <div className="hidden lg:flex items-center justify-between px-8 py-4 border-b border-border bg-bg-secondary">
+          <div className="flex items-center gap-3">
+            {lesson.topic?.slug && (
+              <Link
+                to={`/topics/${lesson.topic.slug}`}
+                className="flex items-center gap-1 text-sm text-text-muted hover:text-primary transition-colors"
+              >
+                <ChevronLeft size={16} aria-hidden="true" />
+                Back to topic
+              </Link>
+            )}
+            <h1 className="text-base font-semibold text-text-primary">{lesson.name}</h1>
+          </div>
+          {streak > 0 && (
+            <span className="flex items-center gap-1.5 text-sm text-accent font-medium">
+              <Flame size={16} aria-hidden="true" />
+              Day {streak} streak
+            </span>
           )}
-          <h1 className="text-base font-semibold text-text-primary">{lesson.name}</h1>
         </div>
-        {streak > 0 && (
-          <span className="flex items-center gap-1.5 text-sm text-accent font-medium">
-            <Flame size={16} aria-hidden="true" />
-            Day {streak} streak
-          </span>
-        )}
-      </div>
 
-      {/* Lesson content */}
-      <div className="flex-1">
-        <InnerLesson
+        {/* Lesson content */}
+        <div className="flex-1">
+          <InnerLesson
           lessonId={lesson.id}
           lessonName={lesson.name}
           topicSlug={lesson.topic?.slug}

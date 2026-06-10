@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  BookOpen, Clock, RotateCcw, ArrowLeft, Search, Volume2, Loader2,
-  Mic, BookMarked, Home, BarChart2, Sparkles, ChevronRight,
-  X, Trash2, TrendingUp, Target, Zap, Star, ChevronLeft
+  BookOpen, Clock, RotateCcw, ArrowLeft, Search, Loader2,
+  Mic, BookMarked, Home, Sparkles, ChevronRight,
+  X, Trash2, TrendingUp, Zap, Star, ChevronDown,
+  Play, Pause, CheckCircle2
 } from 'lucide-react';
 import { fetchWordInfo, WordInfo, WordNotFoundError, getCefrLevel, commonWords } from '../services/oxfordDictionaryService';
+import { translateWordInfo } from '../services/vocabularyTranslationService';
+import { LanguageSelector } from '@/features/listening/components/language-selector/LanguageSelector';
+import { VocabularyLanguageProvider, useVocabularyLanguage } from '@/context/VocabularyLanguageContext';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -115,7 +119,7 @@ function ProgressCard({ progress }: { progress: LearningProgress }) {
   };
 
   return (
-    <div className="dict-glass rounded-2xl p-5 border-dict-border">
+    <div className="dict-glass rounded-2xl p-5 border-dict-border-subtle">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-semibold text-dict-text-secondary uppercase tracking-wider">Your Progress</h3>
         <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30">
@@ -386,7 +390,58 @@ function SidebarNav({ active, onChange }: { active: DictView; onChange: (v: Dict
   );
 }
 
-// --- WordResultCard (extracted+styled existing content) ---
+// --- CollapsibleSection ---
+function CollapsibleSection({
+  title,
+  icon,
+  defaultOpen = false,
+  children,
+  className = '',
+}: {
+  title: string;
+  icon: React.ReactNode;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <div className={`border-t border-dict-border ${className}`}>
+      <button
+        onClick={() => setIsOpen(prev => !prev)}
+        className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-dict-surface-raised/50 transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-dict-text-muted">{icon}</span>
+          <span className="text-sm font-semibold text-dict-text-secondary">{title}</span>
+        </div>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
+        >
+          <ChevronDown className="w-4 h-4 text-dict-text-muted" />
+        </motion.div>
+      </button>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 pb-5">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// --- WordResultCard (redesigned: progressive disclosure, breathing layout, clean hierarchy) ---
 function WordResultCard({
   wordInfo,
   onClose,
@@ -399,26 +454,49 @@ function WordResultCard({
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
 
   const playAudio = useCallback((url: string, accent: string) => {
+    const prev = playingAudio;
+    if (prev) {
+      // Stop any currently playing audio
+      const prevAudio = document.querySelector(`audio[data-accent="${prev}"]`) as HTMLAudioElement | null;
+      if (prevAudio) {
+        prevAudio.pause();
+        prevAudio.currentTime = 0;
+      }
+    }
     const audio = new Audio(url);
+    audio.dataset.accent = accent;
     setPlayingAudio(accent);
     audio.onended = () => setPlayingAudio(null);
+    audio.onerror = () => setPlayingAudio(null);
     audio.play();
-  }, []);
+  }, [playingAudio]);
 
   const level = wordInfo.cefrLevel || getCefrLevel(wordInfo.name);
 
+  // First definition for the quick-read header
+  const firstDef = wordInfo.definitions[0]?.definitions[0];
+  const firstDescription = firstDef?.description ?? '';
+  const firstExamples = firstDef?.examples ?? [];
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 16 }}
+      exit={{ opacity: 0, y: 12 }}
       className="bg-dict-surface rounded-2xl border border-dict-border overflow-hidden"
     >
-      {/* Word header */}
-      <div className="p-5 border-b border-dict-border">
+      {/* ── Word header ── */}
+      <div className="px-5 pt-5 pb-4">
         <div className="flex items-start justify-between mb-4">
-          <h2 className="text-2xl font-black text-dict-text-primary capitalize">{wordInfo.name}</h2>
-          <div className="flex gap-2">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-3xl font-black text-dict-text-primary capitalize leading-none mb-1">
+              {wordInfo.name}
+            </h2>
+            {wordInfo.wordform && (
+              <span className="text-sm text-dict-text-muted">{wordInfo.wordform}</span>
+            )}
+          </div>
+          <div className="flex gap-1.5 ml-4 shrink-0">
             <button
               onClick={onSearchAnother}
               className="p-2 rounded-xl bg-dict-surface-raised hover:bg-dict-surface-hover text-dict-text-muted hover:text-dict-text-primary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -436,45 +514,58 @@ function WordResultCard({
           </div>
         </div>
 
-        {/* Pronunciation */}
+        {/* Pronunciation — audio as primary CTA */}
         {wordInfo.pronunciations.some(p => p.ipa) && (
-          <div className="flex gap-3 mb-4">
+          <div className="flex flex-wrap gap-2 mb-4">
             {wordInfo.pronunciations.map((pron, idx) =>
               pron.ipa ? (
-                <button
-                  key={idx}
-                  onClick={() => pron.url && playAudio(pron.url, pron.prefix || String(idx))}
-                  disabled={!pron.url}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all min-h-[44px] ${
-                    pron.url
-                      ? 'bg-dict-surface-raised hover:bg-dict-surface-hover cursor-pointer'
-                      : 'opacity-40 cursor-not-allowed'
-                  } ${playingAudio === pron.prefix ? 'ring-2 ring-blue-400' : ''}`}
-                >
-                  <Mic className={`w-4 h-4 ${playingAudio === pron.prefix ? 'text-blue-400' : 'text-dict-text-muted'}`} />
-                  <div className="text-left">
-                    <span className="text-[10px] text-dict-text-muted font-medium">{pron.prefix}</span>
-                    <p className="text-sm font-semibold text-dict-text-primary">{pron.ipa}</p>
-                  </div>
-                </button>
+                <div key={idx} className="flex items-center gap-2">
+                  <button
+                    onClick={() => pron.url && playAudio(pron.url, pron.prefix || String(idx))}
+                    disabled={!pron.url}
+                    className={`flex items-center gap-2 pl-3 pr-4 py-2.5 rounded-xl transition-all min-h-[44px] ${
+                      pron.url
+                        ? 'bg-blue-500/15 hover:bg-blue-500/25 border border-blue-500/30 cursor-pointer'
+                        : 'bg-dict-surface-raised border border-dict-border opacity-50 cursor-not-allowed'
+                    } ${playingAudio === (pron.prefix || String(idx)) ? 'ring-2 ring-blue-400 ring-offset-2 ring-offset-dict-surface' : ''}`}
+                  >
+                    {pron.url ? (
+                      playingAudio === (pron.prefix || String(idx)) ? (
+                        <div className="w-5 h-5 rounded-full bg-blue-400 flex items-center justify-center">
+                          <Pause className="w-2.5 h-2.5 text-dict-bg fill-current" />
+                        </div>
+                      ) : (
+                        <div className="w-5 h-5 rounded-full bg-blue-500/40 flex items-center justify-center">
+                          <Play className="w-2.5 h-2.5 text-blue-400 ml-0.5" />
+                        </div>
+                      )
+                    ) : (
+                      <Mic className="w-4 h-4 text-dict-text-muted" />
+                    )}
+                    <div className="text-left">
+                      {pron.prefix && (
+                        <span className="text-[10px] text-dict-text-muted font-medium block">{pron.prefix}</span>
+                      )}
+                      <p className="text-base font-mono font-semibold text-dict-text-primary">{pron.ipa}</p>
+                    </div>
+                  </button>
+                  {idx < wordInfo.pronunciations.filter(p => p.ipa).length - 1 && (
+                    <span className="text-dict-text-muted/40 text-xs self-center">/</span>
+                  )}
+                </div>
               ) : null
             )}
           </div>
         )}
 
-        {/* Badges */}
+        {/* Level badges */}
         <div className="flex flex-wrap gap-2">
-          {wordInfo.wordform && (
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/15 text-blue-400 border border-blue-500/30">
-              {wordInfo.wordform}
-            </span>
-          )}
           {level && (
             <>
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              <span className="px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                 {level}
               </span>
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/15 text-purple-400 border border-purple-500/30">
+              <span className="px-3 py-1.5 rounded-full text-xs font-bold bg-purple-500/15 text-purple-400 border border-purple-500/30">
                 IELTS {getIeltsBand(level)}
               </span>
             </>
@@ -482,71 +573,107 @@ function WordResultCard({
         </div>
       </div>
 
-      {/* Definitions */}
-      <div className="p-5 space-y-5 max-h-[50vh] overflow-y-auto dict-scrollbar">
-        {wordInfo.definitions.map((ns, nsIdx) => (
-          <div key={nsIdx}>
-            {ns.namespace && ns.namespace !== '__GLOBAL__' && (
-              <h4 className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-3">{ns.namespace}</h4>
-            )}
-            {ns.definitions.map((def, defIdx) => (
-              <div key={defIdx} className="mb-4">
-                {def.description && (
-                  <p className="text-sm text-dict-text-secondary mb-2 leading-relaxed">
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-dict-surface-raised text-[10px] text-dict-text-muted font-bold mr-2 shrink-0">
-                      {defIdx + 1}
-                    </span>
-                    {def.description}
-                  </p>
+      {/* ── Quick definition (always visible) ── */}
+      {firstDescription && (
+        <div className="px-5 pb-4 border-t border-dict-border pt-4">
+          <p className="text-sm text-dict-text-secondary leading-relaxed">
+            {firstDescription}
+          </p>
+          {firstExamples[0] && (
+            <p className="mt-3 pl-4 border-l-2 border-blue-500/40 text-xs text-dict-text-muted italic leading-relaxed">
+              &ldquo;{firstExamples[0]}&rdquo;
+            </p>
+          )}
+          {firstExamples.length > 1 && (
+            <p className="mt-1 pl-4 border-l-2 border-dict-border text-xs text-dict-text-muted/70 italic leading-relaxed">
+              &ldquo;{firstExamples[1]}&rdquo;
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* ── Collapsible: All Definitions ── */}
+      {wordInfo.definitions.length > 0 && (
+        <CollapsibleSection
+          title={`All Definitions (${wordInfo.definitions.reduce((acc, ns) => acc + ns.definitions.length, 0)})`}
+          icon={<BookOpen className="w-4 h-4" />}
+          defaultOpen={true}
+        >
+          <div className="space-y-5">
+            {wordInfo.definitions.map((ns, nsIdx) => (
+              <div key={nsIdx}>
+                {ns.namespace && ns.namespace !== '__GLOBAL__' && (
+                  <h4 className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-3">
+                    {ns.namespace}
+                  </h4>
                 )}
-                {def.examples.length > 0 && (
-                  <div className="ml-7 space-y-1">
-                    {def.examples.slice(0, 2).map((ex, exIdx) => (
-                      <p key={exIdx} className="text-xs text-dict-text-muted italic pl-3 border-l-2 border-dict-border">
-                        &ldquo;{ex}&rdquo;
-                      </p>
-                    ))}
+                {ns.definitions.map((def, defIdx) => (
+                  <div key={defIdx} className="mb-4">
+                    {def.description && (
+                      <div className="flex gap-3 mb-2">
+                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-dict-surface-raised text-[10px] text-dict-text-muted font-bold shrink-0 mt-0.5">
+                          {defIdx + 1}
+                        </span>
+                        <p className="text-sm text-dict-text-secondary leading-relaxed">{def.description}</p>
+                      </div>
+                    )}
+                    {def.examples.length > 0 && (
+                      <div className="ml-8 space-y-1">
+                        {def.examples.slice(0, 2).map((ex, exIdx) => (
+                          <p key={exIdx} className="text-xs text-dict-text-muted italic pl-3 border-l-2 border-dict-border">
+                            &ldquo;{ex}&rdquo;
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
+                ))}
               </div>
             ))}
           </div>
-        ))}
+        </CollapsibleSection>
+      )}
 
-        {/* Topics */}
-        {wordInfo.topics && wordInfo.topics.length > 0 && (
-          <div className="pt-4 border-t border-dict-border">
-            <h4 className="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-3">Related Topics</h4>
-            <div className="flex flex-wrap gap-2">
-              {wordInfo.topics.map((topic, idx) => (
-                <span key={idx} className="px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
-                  {topic.name}
+      {/* ── Collapsible: Related Words ── */}
+      {wordInfo.nearbyWords && wordInfo.nearbyWords.length > 0 && (
+        <CollapsibleSection
+          title={`Related Words (${Math.min(wordInfo.nearbyWords.length, 8)})`}
+          icon={<TrendingUp className="w-4 h-4" />}
+        >
+          <div className="flex flex-wrap gap-2">
+            {wordInfo.nearbyWords.slice(0, 12).map((nearby, idx) => {
+              const cleanName = nearby.name
+                .replace(/\s+(noun|verb|adjective|adverb|preposition|conjunction|pronoun|phrase|determiner|auxiliary|combining form)$/i, '')
+                .trim();
+              return (
+                <span
+                  key={idx}
+                  className="px-3 py-1.5 rounded-lg text-sm bg-dict-surface-raised text-dict-text-secondary border border-dict-border hover:border-dict-border-hover transition-colors"
+                >
+                  <span className="font-semibold">{cleanName}</span>
+                  {nearby.wordform && <span className="text-dict-text-muted ml-1">({nearby.wordform})</span>}
                 </span>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        )}
+        </CollapsibleSection>
+      )}
 
-        {/* Nearby Words */}
-        {wordInfo.nearbyWords && wordInfo.nearbyWords.length > 0 && (
-          <div className="pt-4 border-t border-dict-border">
-            <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-3">Related Words</h4>
-            <div className="flex flex-wrap gap-2">
-              {wordInfo.nearbyWords.slice(0, 8).map((nearby, idx) => {
-                const cleanName = nearby.name
-                  .replace(/\s+(noun|verb|adjective|adverb|preposition|conjunction|pronoun|phrase|determiner|auxiliary|combining form)$/i, '')
-                  .trim();
-                return (
-                  <span key={idx} className="px-3 py-1.5 rounded-lg text-sm bg-dict-surface-raised text-dict-text-secondary border border-dict-border">
-                    <span className="font-semibold">{cleanName}</span>
-                    {nearby.wordform && <span className="text-dict-text-muted ml-1">({nearby.wordform})</span>}
-                  </span>
-                );
-              })}
-            </div>
+      {/* ── Collapsible: Topics ── */}
+      {wordInfo.topics && wordInfo.topics.length > 0 && (
+        <CollapsibleSection
+          title="Related Topics"
+          icon={<Star className="w-4 h-4" />}
+        >
+          <div className="flex flex-wrap gap-2">
+            {wordInfo.topics.map((topic, idx) => (
+              <span key={idx} className="px-3 py-1.5 rounded-full text-xs font-medium bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+                {topic.name}
+              </span>
+            ))}
           </div>
-        )}
-      </div>
+        </CollapsibleSection>
+      )}
     </motion.div>
   );
 }
@@ -556,6 +683,7 @@ function WordResultCard({
 const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   // View routing — replaces showSearch boolean
   const [currentView, setCurrentView] = useState<DictView>('home');
+  const { language: vocabularyLanguage } = useVocabularyLanguage()
 
   // Storage state
   const [storage, setStorage] = useState<StorageState>(() => loadStorage());
@@ -577,7 +705,6 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   );
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [showWord, setShowWord] = useState(false);
-  const [countdown, setCountdown] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [cardLoading, setCardLoading] = useState(false);
 
@@ -607,15 +734,31 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     });
   }, [updateStorage]);
 
-  // Countdown effect (preserved from original)
+  // Re-fetch word when language changes (auto-translate on language switch)
   useEffect(() => {
-    if (countdown !== null && countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (countdown === 0) {
-      setShowResult(true);
-    }
-  }, [countdown]);
+    if (!searchResult || searchLoading) return;
+
+    const retranslate = async () => {
+      setSearchLoading(true);
+      setSearchError(null);
+      try {
+        let result = await fetchWordInfo(searchResult.name);
+
+      if (vocabularyLanguage !== 'en') {
+        result = await translateWordInfo(result, vocabularyLanguage)
+      }
+
+        setSearchResult(result);
+      } catch (error) {
+        setSearchError('Failed to load word. Please try again.');
+      } finally {
+        setSearchLoading(false);
+      }
+    };
+
+    retranslate();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vocabularyLanguage]); // intentionally omitting searchResult.name to avoid re-triggering on searchResult change
 
   // ── Search handlers ───────────────────────────────────────────────────────
 
@@ -629,7 +772,13 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     setSearchQuery(query);
 
     try {
-      const result = await fetchWordInfo(query);
+      let result = await fetchWordInfo(query);
+
+      // Translate if language is not English
+      if (vocabularyLanguage !== 'en') {
+        result = await translateWordInfo(result, vocabularyLanguage)
+      }
+
       setSearchResult(result);
       updateStorage(prev => ({
         ...prev,
@@ -637,11 +786,11 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         progress: { ...prev.progress, totalSearches: prev.progress.totalSearches + 1 },
       }));
     } catch (error) {
-      setSearchError(error instanceof WordNotFoundError ? `&ldquo;${query}&rdquo; not found in dictionary` : 'Error searching for word');
+      setSearchError(error instanceof WordNotFoundError ? `"${query}" not found in dictionary` : 'Error searching for word');
     } finally {
       setSearchLoading(false);
     }
-  }, [searchQuery, updateStorage]);
+  }, [searchQuery, updateStorage, vocabularyLanguage]);
 
   const handleSearchKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') handleSearch();
@@ -668,32 +817,66 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const loadWordData = useCallback(async (word: string) => {
     setCardLoading(true);
     try {
-      const wordInfo = await fetchWordInfo(word);
+      let wordInfo = await fetchWordInfo(word);
+
+      // Translate if language is not English
+      if (vocabularyLanguage !== 'en') {
+        wordInfo = await translateWordInfo(wordInfo, vocabularyLanguage)
+      }
+
       setCards(prev => prev.map(c => c.word === word ? { ...c, wordInfo } : c));
     } catch (error) {
       console.error('Error loading word data:', error);
     } finally {
       setCardLoading(false);
     }
-  }, []);
+  }, [vocabularyLanguage]);
+
+  // Re-translate the visible flashcard when language changes
+  useEffect(() => {
+    if (!showResult || activeCard === null) return;
+
+    const activeCardData = cards[activeCard];
+    if (!activeCardData?.wordInfo) return;
+
+    const retrans = async () => {
+      setCardLoading(true);
+      try {
+        let wordInfo = await fetchWordInfo(activeCardData.word);
+
+        if (vocabularyLanguage !== 'en') {
+          wordInfo = await translateWordInfo(wordInfo, vocabularyLanguage);
+        }
+
+        setCards(prev => prev.map(c => c.word === activeCardData.word ? { ...c, wordInfo } : c));
+      } catch (error) {
+        console.error('Error re-translating flashcard:', error);
+      } finally {
+        setCardLoading(false);
+      }
+    };
+
+    retrans();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vocabularyLanguage]); // intentionally omitting cards to avoid re-triggering on loadWordData
 
   const handleCardClick = useCallback(async (cardId: number) => {
-    if (activeCard === cardId && showWord) return;
+    if (activeCard === cardId) {
+      // Toggle: second tap on same card = flip to answer
+      setShowResult(true);
+      return;
+    }
 
     const card = cards[cardId];
     setActiveCard(cardId);
     setShowWord(true);
     setShowResult(false);
-    setCountdown(3);
 
     if (!card.wordInfo) await loadWordData(card.word);
-  }, [activeCard, showWord, cards, loadWordData]);
+  }, [activeCard, cards, loadWordData]);
 
-  const handleDoubleClick = useCallback((cardId: number) => {
-    if (activeCard !== cardId) return;
+  const handleMarkLearned = useCallback((cardId: number) => {
     setShowResult(true);
-    setCountdown(null);
-
     updateStorage(prev => ({
       ...prev,
       progress: {
@@ -710,8 +893,14 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       setActiveCard(null);
       setShowWord(false);
       setShowResult(false);
-    }, 4000);
-  }, [activeCard, updateStorage]);
+    }, 2500);
+  }, [updateStorage]);
+
+  const handleSkipCard = useCallback(() => {
+    setActiveCard(null);
+    setShowWord(false);
+    setShowResult(false);
+  }, []);
 
   const resetCards = useCallback(() => {
     setCards(vocabularyWords.map((w, i) => ({ id: i, word: w, isHidden: false })));
@@ -738,19 +927,19 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      className="space-y-6"
+      className="space-y-5"
     >
       {/* Hero greeting */}
       <div>
         <h2 className="text-2xl font-black text-dict-text-primary mb-1">
-          Welcome back
+          Vocabulary Builder
         </h2>
         <p className="text-sm text-dict-text-secondary">
-          Expand your vocabulary — one word at a time.
+          Search, study, and master new words.
         </p>
       </div>
 
-      {/* Quick search bar */}
+      {/* Search bar */}
       <div className="relative">
         <input
           type="text"
@@ -758,10 +947,10 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           onChange={e => setSearchQuery(e.target.value)}
           onKeyDown={handleSearchKeyDown}
           placeholder="Search any English word…"
-          className="w-full px-5 py-4 pl-12 bg-dict-surface-raised border border-dict-border rounded-2xl text-dict-text-primary placeholder-dict-text-muted focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm min-h-[52px]"
+          className="w-full px-5 py-4 pl-12 bg-dict-surface-raised border border-dict-border-subtle rounded-2xl text-dict-text-primary placeholder-dict-text-muted focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm min-h-[52px]"
           aria-label="Search dictionary"
         />
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dict-text-muted" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dict-text-muted pointer-events-none" />
         {searchQuery.trim() ? (
           <button
             onClick={() => handleSearch()}
@@ -820,7 +1009,7 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           onChange={e => setSearchQuery(e.target.value)}
           onKeyDown={handleSearchKeyDown}
           placeholder="Search any English word…"
-          className="w-full px-5 py-4 pl-12 bg-dict-surface-raised border border-dict-border rounded-2xl text-dict-text-primary placeholder-dict-text-muted focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm min-h-[52px]"
+          className="w-full px-5 py-4 pl-12 bg-dict-surface-raised border border-dict-border-subtle rounded-2xl text-dict-text-primary placeholder-dict-text-muted focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-sm min-h-[52px]"
           aria-label="Search dictionary"
         />
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dict-text-muted" />
@@ -924,67 +1113,77 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       {/* Cards grid */}
       <div className="grid grid-cols-2 gap-3 sm:gap-4">
         <AnimatePresence>
-          {visibleCards.map(card => (
-            <motion.div
-              key={card.id}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              exit={{ opacity: 0, scale: 0.9, y: -16 }}
-              onClick={() => handleCardClick(card.id)}
-              onDoubleClick={() => handleDoubleClick(card.id)}
-              className={`relative aspect-square rounded-2xl cursor-pointer transition-all duration-300 flex flex-col items-center justify-center p-4 border overflow-hidden select-none ${
-                activeCard === card.id
-                  ? 'bg-gradient-to-br from-blue-600/80 to-purple-600/80 border-blue-400/60 shadow-xl'
-                  : 'bg-dict-surface border-dict-border hover:border-dict-border-hover hover:bg-dict-surface-raised'
-              }`}
-            >
-              {!showWord || activeCard !== card.id ? (
-                <div className="text-center">
-                  <div className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-dict-surface-raised flex items-center justify-center">
-                    <span className="text-2xl opacity-30">?</span>
-                  </div>
-                  <p className="text-dict-text-muted text-xs">Tap to reveal</p>
-                </div>
-              ) : (
-                <div className="text-center w-full h-full flex flex-col">
-                  {cardLoading ? (
-                    <div className="flex-1 flex items-center justify-center">
-                      <Loader2 className="w-8 h-8 animate-spin text-white" />
+          {visibleCards.map(card => {
+            const isActive = activeCard === card.id;
+            return (
+              <motion.div
+                key={card.id}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                exit={{ opacity: 0, scale: 0.9, y: -16 }}
+                onClick={() => handleCardClick(card.id)}
+                className={`relative aspect-square rounded-2xl cursor-pointer transition-all duration-300 flex flex-col items-center justify-center p-4 border overflow-hidden select-none ${
+                  isActive
+                    ? 'bg-gradient-to-br from-blue-600/80 to-purple-600/80 border-blue-400/60 shadow-xl shadow-blue-500/20'
+                    : 'bg-dict-surface border-dict-border hover:border-blue-500/40 hover:bg-dict-surface-raised'
+                }`}
+              >
+                {/* Word front */}
+                {!isActive || !showWord ? (
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-14 h-14 rounded-2xl bg-dict-surface-raised flex items-center justify-center">
+                      <span className="text-2xl text-dict-text-muted/40 font-black">
+                        {card.word.charAt(0).toUpperCase()}
+                      </span>
                     </div>
-                  ) : !showResult ? (
-                    <>
-                      <h3 className="text-lg font-black text-dict-text-primary mb-2 capitalize">{card.word}</h3>
-                      {countdown !== null && (
-                        <div className="flex items-center justify-center gap-2 text-amber-400">
-                          <Clock className="w-5 h-5" />
-                          <span className="text-3xl font-black">{countdown}</span>
-                        </div>
-                      )}
-                      <p className="text-dict-text-muted text-xs mt-3">Double tap for answer</p>
-                    </>
-                  ) : (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-left overflow-y-auto flex-1 w-full"
+                    <p className="text-base font-bold text-dict-text-primary capitalize">{card.word}</p>
+                    <p className="text-xs text-dict-text-muted">Tap to study</p>
+                  </div>
+                ) : cardLoading ? (
+                  <div className="flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 animate-spin text-white" />
+                  </div>
+                ) : !showResult ? (
+                  /* Back: definition peek — tap again to flip */
+                  <div className="flex flex-col items-center gap-3 text-center w-full">
+                    <h3 className="text-lg font-black text-white capitalize leading-tight">{card.word}</h3>
+                    <div className="w-8 h-px bg-white/20" />
+                    <p className="text-xs text-white/60">Tap to see definition</p>
+                  </div>
+                ) : (
+                  /* Full result: definition + mark learned */
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-start gap-2 w-full h-full overflow-hidden"
+                  >
+                    <div className="flex items-center gap-2 w-full">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span className="text-xs font-bold text-emerald-400">Learned</span>
+                    </div>
+                    <h3 className="text-sm font-black text-white capitalize leading-tight">{card.word}</h3>
+                    {activeCardData?.wordInfo?.wordform && (
+                      <span className="px-2 py-0.5 bg-white/15 text-white/70 rounded text-xs font-semibold">
+                        {activeCardData.wordInfo.wordform}
+                      </span>
+                    )}
+                    {activeCardData?.wordInfo?.definitions[0]?.definitions[0]?.description && (
+                      <p className="text-xs text-white/80 leading-relaxed mt-1 flex-1 overflow-y-auto">
+                        {activeCardData.wordInfo.definitions[0].definitions[0].description}
+                      </p>
+                    )}
+                    {/* Skip */}
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleSkipCard(); }}
+                      className="w-full mt-auto pt-2 border-t border-white/15 flex items-center justify-center gap-1 text-xs text-white/50 hover:text-white/80 transition-colors min-h-[36px]"
                     >
-                      <h3 className="text-base font-black text-dict-text-primary mb-1.5 capitalize">{activeCardData?.word}</h3>
-                      {activeCardData?.wordInfo?.wordform && (
-                        <span className="inline-block px-2 py-0.5 bg-blue-500/20 text-blue-300 rounded text-xs font-semibold mb-2">
-                          {activeCardData.wordInfo.wordform}
-                        </span>
-                      )}
-                      {activeCardData?.wordInfo?.definitions[0]?.definitions[0]?.description && (
-                        <p className="text-xs text-dict-text-secondary leading-relaxed">
-                          {activeCardData.wordInfo.definitions[0].definitions[0].description}
-                        </p>
-                      )}
-                    </motion.div>
-                  )}
-                </div>
-              )}
-            </motion.div>
-          ))}
+                      Skip
+                    </button>
+                  </motion.div>
+                )}
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
       </div>
 
@@ -1027,6 +1226,21 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     </motion.div>
   );
 
+// ─── Vocabulary Language Dropdown ───────────────────────────────────────────────
+
+function VocabularyLanguageDropdown() {
+  const { language, setLanguage, availableLanguages } = useVocabularyLanguage()
+
+  return (
+    <LanguageSelector
+      value={language}
+      onChange={setLanguage}
+      variant="dropdown"
+      className="min-w-[180px]"
+    />
+  )
+}
+
   // ── Layout ────────────────────────────────────────────────────────────────
 
   return (
@@ -1049,13 +1263,16 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <p className="text-[10px] text-dict-text-muted">Oxford Learner</p>
               </div>
             </div>
-            <button
-              onClick={onBack}
-              className="p-2.5 rounded-xl bg-dict-surface-raised hover:bg-dict-surface-hover text-dict-text-muted hover:text-dict-text-primary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label="Go back"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-2">
+              <VocabularyLanguageDropdown />
+              <button
+                onClick={onBack}
+                className="p-2.5 rounded-xl bg-dict-surface-raised hover:bg-dict-surface-hover text-dict-text-muted hover:text-dict-text-primary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Go back"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           {/* Desktop back button */}
@@ -1069,6 +1286,8 @@ const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             </button>
             <div className="h-4 w-px bg-dict-border" />
             <h2 className="text-base font-bold text-dict-text-primary">Oxford Learner Dictionary</h2>
+            <div className="flex-1" />
+            <VocabularyLanguageDropdown />
           </div>
 
           {/* Desktop view tabs */}

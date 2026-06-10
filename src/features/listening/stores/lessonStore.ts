@@ -6,6 +6,7 @@
 
 import { create } from 'zustand'
 import type { LessonPracticeState, ClipStatus, CheckData } from '../types/lesson'
+import { useExplanationStore } from './explanationStore'
 
 interface ClipAttemptRecord {
   status: ClipStatus
@@ -63,13 +64,17 @@ export const useLessonStore = create<LessonStore>()((set) => ({
       currentResult: null,
     }),
 
-  setCurrentClipIndex: (index) =>
+  setCurrentClipIndex: (index) => {
+    // Clear language override when switching clips — synchronous call is safe
+    // because Zustand stores are singletons with no initialization order dependency
+    useExplanationStore.getState().clearOverride()
     set({
       currentClipIndex: index,
       transcriptInput: '',
       practiceState: 'idle',
       currentResult: null,
-    }),
+    })
+  },
 
   setTranscriptInput: (transcriptInput) => set({ transcriptInput }),
 

@@ -12,7 +12,9 @@ import { ImmersiveLanding } from './components/three/ImmersiveLanding';
 import { SmoothScroll } from './components/SmoothScroll';
 import ListeningModule from './components/listening/ListeningModule';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
+import { VocabularyLanguageProvider } from './context/VocabularyLanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { GlobalAudioProvider } from './features/listening/hooks/useGlobalAudio.tsx';
 import { LayoutDashboard, Menu, X, Car, BookOpen, ArrowLeft, AlertTriangle } from 'lucide-react';
 import type { ChapterStat, Question } from './types';
 import { loadExamQuestions } from './services/questionsService';
@@ -416,7 +418,9 @@ function AppContent() {
 
       {/* Vocabulary Flashcards Mode */}
       {selectedMode === 'vocabulary' && (
-        <VocabularyFlashcards onBack={() => setSelectedMode('none')} />
+        <VocabularyLanguageProvider>
+          <VocabularyFlashcards onBack={() => setSelectedMode('none')} />
+        </VocabularyLanguageProvider>
       )}
 
       {/* OPAL Flashcards Mode */}
@@ -441,7 +445,9 @@ export default function App() {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <AppContent />
+        <GlobalAudioProvider>
+          <AppContent />
+        </GlobalAudioProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

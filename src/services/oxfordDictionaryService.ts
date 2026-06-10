@@ -70,18 +70,27 @@ export class WordNotFoundError extends Error {
   }
 }
 
-// Backend API server for Oxford Dictionary (avoids CORS issues)
-// Run: python3 server/dictionary_server.py
-// Then update API_BASE to point to your backend
-const API_BASE = 'http://127.0.0.1:3001';
-
-// CORS proxy fallback (only used if backend is not available)
+// CORS proxies to access Oxford Learners Dictionaries directly (PRIMARY)
 const CORS_PROXIES = [
+  'https://api.allorigins.win/raw?url=',
   'https://api.codetabs.com/v1/proxy?quest=',
   'https://corsproxy.io/?',
-  'https://api.allorigins.win/raw?url=',
 ];
 const BASE_URL = 'https://www.oxfordlearnersdictionaries.com/definition/english/';
+
+// Free Dictionary API fallback (no API key required, CORS-friendly)
+const FREE_DICT_BASE = 'https://api.dictionaryapi.dev/api/v2/entries/en';
+
+// In-memory cache for Oxford HTML results (avoids re-crawling same word in session)
+const oxfordCache = new Map<string, WordInfo>();
+
+// Rate limit error class
+export class RateLimitError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'RateLimitError';
+  }
+}
 
 // Extract word ID from link
 export const extractId = (link: string): string => {
@@ -324,124 +333,157 @@ export const parseWordHtml = (html: string, word: string): WordInfo => {
   return wordInfo;
 };
 
-// Try backend API first, then fall back to CORS proxies
+// PRIMARY: Oxford HTML via CORS proxies -> FALLBACK: Free Dictionary API
 export const fetchWordInfo = async (word: string): Promise<WordInfo> => {
-  // First try: Use backend Python server (recommended - no CORS issues)
-  try {
-    const apiUrl = `${API_BASE}/api/dictionary/${encodeURIComponent(word.toLowerCase())}`;
-    const response = await fetch(apiUrl, { signal: AbortSignal.timeout(8000) });
-    
-    if (response.ok) {
-      const data = await response.json();
-      // If it's an error response from backend
-      if (data.error) {
-        if (data.error === 'Word not found' || (response.status === 404)) {
-          throw new WordNotFoundError();
-        }
-        throw new Error(data.error);
-      }
-      // Backend returns Python dict structure, need to transform
-      return transformPythonData(data);
-    }
-  } catch (error) {
-    // Backend failed, continue to CORS proxies
-    console.log('Backend unavailable, trying CORS proxies...');
+  const lowerWord = word.toLowerCase();
+
+  // Check cache first
+  if (oxfordCache.has(lowerWord)) {
+    return oxfordCache.get(lowerWord)!;
   }
 
-  // Second try: Use CORS proxies as fallback
-  let lastError: Error | null = null;
-  
+  // 1. PRIMARY: Try Oxford HTML via CORS proxies
   for (const proxy of CORS_PROXIES) {
     try {
-      const url = `${proxy}${encodeURIComponent(BASE_URL + word)}`;
-      const response = await fetch(url);
-      
-      if (!response.ok) {
-        if (response.status === 404) {
-          throw new WordNotFoundError();
-        }
-        throw new Error(`Failed to fetch word: ${response.statusText}`);
-      }
-      
-      const html = await response.text();
-      
-      // Check if we got actual HTML content
-      if (html.includes('<html') || html.includes('<!DOCTYPE')) {
-        return parseWordHtml(html, word);
-      }
-      
-      continue;
+      const result = await tryOxfordViaProxy(lowerWord, proxy);
+      oxfordCache.set(lowerWord, result);
+      return result;
     } catch (error) {
-      lastError = error as Error;
       if (error instanceof WordNotFoundError) {
         throw error;
       }
+      if (isRateLimitError(error)) {
+        console.log(`Oxford proxy rate limited: ${proxy}, trying next...`);
+        continue;
+      }
+      console.log(`Oxford proxy failed (${proxy}): ${error instanceof Error ? error.message : 'Unknown'}`);
       continue;
     }
   }
-  
-  throw new Error(`Error fetching word "${word}": All methods failed. ${lastError?.message || 'Unknown error'}`);
+
+  // 2. FALLBACK: Free Dictionary API
+  try {
+    const result = await tryFreeDictionaryAPI(lowerWord);
+    oxfordCache.set(lowerWord, result);
+    return result;
+  } catch (error) {
+    if (error instanceof WordNotFoundError) throw error;
+    console.warn('Free Dictionary API failed:', error instanceof Error ? error.message : 'Unknown');
+    throw new Error(`Error fetching word "${word}": All methods failed.`);
+  }
 };
 
-// Transform Python dict structure to match frontend interface
-const transformPythonData = (pythonData: any): WordInfo => {
-  // Extract CEFR level from other_results or word data
-  let cefrLevel: string | undefined;
-  
-  // Try to get level from Oxford 5000 wordlist link
-  if (pythonData.other_results) {
-    for (const resultGroup of pythonData.other_results) {
-      for (const [key, results] of Object.entries(resultGroup)) {
-        if (key.toLowerCase().includes('ox') || key.toLowerCase().includes('word')) {
-          const resultsArray = results as any[];
-          for (const item of resultsArray) {
-            const href = item.href || item.id || '';
-            const match = href.match(/level=([a-z]\d)/i);
-            if (match) {
-              cefrLevel = match[1].toUpperCase();
-              break;
-            }
-          }
-        }
-      }
+// Try fetching Oxford HTML via a specific CORS proxy
+async function tryOxfordViaProxy(word: string, proxy: string): Promise<WordInfo> {
+  const url = `${proxy}${encodeURIComponent(BASE_URL + word)}`;
+  const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
+
+  if (!response.ok) {
+    if (response.status === 429 || response.status === 403) {
+      throw new RateLimitError(`Proxy rate limited: ${response.status}`);
+    }
+    if (response.status === 404) {
+      throw new WordNotFoundError();
+    }
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+
+  const html = await response.text();
+
+  if (!isValidOxfordHTML(html)) {
+    throw new Error('Invalid HTML response from Oxford');
+  }
+
+  return parseWordHtml(html, word);
+}
+
+// Try Free Dictionary API
+async function tryFreeDictionaryAPI(word: string): Promise<WordInfo> {
+  const response = await fetch(`${FREE_DICT_BASE}/${encodeURIComponent(word)}`, {
+    signal: AbortSignal.timeout(8000),
+  });
+
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new WordNotFoundError();
+    }
+    throw new Error(`Free Dict API HTTP ${response.status}: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  if (Array.isArray(data) && data.length > 0) {
+    return transformFreeDictData(data[0]);
+  }
+  throw new Error('Free Dictionary API returned empty result');
+}
+
+// Check if error indicates rate limiting
+function isRateLimitError(error: unknown): boolean {
+  if (error instanceof RateLimitError) return true;
+  if (error instanceof Error) {
+    const msg = error.message.toLowerCase();
+    return msg.includes('rate limit') || msg.includes('too many requests') || msg.includes('429');
+  }
+  return false;
+}
+
+// Validate HTML response is from Oxford Learners Dictionaries
+function isValidOxfordHTML(html: string): boolean {
+  return html.includes('<html')
+    || html.includes('<!DOCTYPE')
+    || html.includes('.headword')
+    || html.includes('.entry')
+    || html.includes('oxfordlearnersdictionaries');
+}
+
+// Transform Free Dictionary API response to WordInfo
+const transformFreeDictData = (data: any): WordInfo => {
+  const name = data.word || '';
+  const phonetics = data.phonetics || [];
+
+  const pronunciations: Pronunciation[] = [];
+  for (const p of phonetics) {
+    if (p.text || p.audio) {
+      pronunciations.push({
+        prefix: null,
+        ipa: p.text || null,
+        url: p.audio || null,
+      });
     }
   }
 
-  // Fallback to preset levels
-  if (!cefrLevel) {
-    cefrLevel = getCefrLevel(pythonData.name || '');
+  const definitions: NamespaceDefinition[] = [];
+  for (const meaning of data.meanings || []) {
+    const partOfSpeech = meaning.partOfSpeech || '';
+    const defs: Definition[] = [];
+
+    for (const def of meaning.definitions || []) {
+      defs.push({
+        property: partOfSpeech,
+        description: def.definition || '',
+        examples: def.example ? [def.example] : [],
+        extra_example: [],
+      });
+    }
+
+    definitions.push({ namespace: partOfSpeech, definitions: defs });
   }
 
   return {
-    id: pythonData.id || '',
-    name: pythonData.name || '',
-    wordform: pythonData.wordform || null,
-    pronunciations: pythonData.pronunciations || [],
-    property: pythonData.property,
-    cefrLevel,
-    definitions: transformDefinitions(pythonData.definitions),
-    idioms: transformIdioms(pythonData.idioms),
-    phrasal_verbs: pythonData.phrasal_verbs,
-    other_results: pythonData.other_results,
+    id: name,
+    name,
+    wordform: null,
+    pronunciations: pronunciations.length > 0 ? pronunciations : [{ prefix: null, ipa: data.phonetic || null, url: null }],
+    cefrLevel: getCefrLevel(name),
+    definitions,
+    idioms: [],
+    nearbyWords: [],
+    topics: [],
+    phrasal_verbs: [],
+    other_results: [],
   };
 };
 
-const transformDefinitions = (defs: any[]): NamespaceDefinition[] => {
-  if (!defs) return [];
-  return defs.map(ns => ({
-    namespace: ns.namespace || ns[0] || null,
-    definitions: ns.definitions || ns[1] || [],
-  }));
-};
-
-const transformIdioms = (idioms: any[]): Idiom[] => {
-  if (!idioms) return [];
-  return idioms.map(idiom => ({
-    name: typeof idiom === 'string' ? idiom : idiom.name || '',
-    summary: typeof idiom === 'object' ? (idiom.summary || {}) : {},
-    definitions: typeof idiom === 'object' ? (idiom.definitions || []) : [],
-  }));
-};
 
 // Sample common English words for vocabulary practice with CEFR levels
 export const commonWords = [

@@ -7,6 +7,7 @@ import {
 import type { ListeningLessonDetail, Challenge, DictationResult } from '@/types/listening';
 import { checkDictation, getWordStatusColor } from '@/services/dictationService';
 import { recordCompletedLesson, addBookmark, isLessonBookmarked } from '@/services/listeningProgressService';
+import { useGlobalAudio } from '@/features/listening/hooks/useGlobalAudio.tsx';
 
 interface PracticePageProps {
   lesson: ListeningLessonDetail;
@@ -47,6 +48,9 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
   const sentenceStateRef = useRef<SentenceState>('idle');
   const clipInfoRef = useRef<{ timeStart: number; timeEnd: number } | null>(null);
 
+  const { registerAudio, pauseAllOthers } = useGlobalAudio();
+  const controllerRef = useRef<{ pause: () => void; play: () => Promise<void>; setSrc: (src: string) => void } | null>(null);
+
   const currentChallenge = challenges[currentIdx];
   const totalSentences = challenges.length;
   const completedCount = sentenceResults.length;
@@ -78,6 +82,18 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
     audio.pause();
     audio.src = '';
     audio.load();
+
+    // Create controller for global audio manager
+    const controller = {
+      pause: () => audio.pause(),
+      play: () => audio.play(),
+      setSrc: (newSrc: string) => { audio.src = newSrc; audio.load(); },
+    };
+
+    controllerRef.current = controller;
+
+    // Register with global audio manager
+    const unregister = registerAudio(controller);
 
     // Priority 1: Local sliced clip (already on disk)
     if (currentChallenge.localClipPath) {
@@ -111,7 +127,11 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
         timeEnd: parseFloat(currentChallenge.timeEnd),
       };
     }
-  }, [currentChallenge?.id, lesson.id]);
+
+    return () => {
+      unregister();
+    };
+  }, [currentChallenge?.id, lesson.id, registerAudio]);
 
   // Sync speed on audio element
   useEffect(() => {
@@ -138,6 +158,8 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
       const audio = audioRef.current;
       if (!audio) return;
       audio.playbackRate = speed;
+      // Pause all other audio before auto-playing
+      pauseAllOthers(controllerRef.current ?? undefined);
       audio.play().catch((err) => {
         console.warn('Play failed on canplay:', err);
         setIsPlaying(false);
@@ -146,7 +168,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
       setIsPlaying(true);
       setSentenceState('playing');
     }
-  }, [speed]);
+  }, [speed, pauseAllOthers]);
 
   const handleAudioEnded = useCallback(() => {
     setIsPlaying(false);
@@ -171,6 +193,8 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
     audio.playbackRate = speed;
 
     if (audioReady) {
+      // Pause all other audio before playing
+      pauseAllOthers(controllerRef.current ?? undefined);
       audio.play().catch((err) => {
         console.warn('Play failed:', err);
         setIsPlaying(false);
@@ -181,7 +205,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
     } else {
       pendingPlayRef.current = true;
     }
-  }, [speed, audioError, audioReady]);
+  }, [speed, audioError, audioReady, pauseAllOthers]);
 
   const handlePause = useCallback(() => {
     audioRef.current?.pause();
@@ -197,6 +221,8 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
       audio.currentTime = clipInfo.timeStart;
     }
     audio.playbackRate = speed;
+    // Pause all other audio before replaying
+    pauseAllOthers(controllerRef.current ?? undefined);
     audio.play().catch((err) => {
       console.warn('Replay failed:', err);
       setIsPlaying(false);
@@ -204,7 +230,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
     });
     setIsPlaying(true);
     setSentenceState('playing');
-  }, [speed, audioError]);
+  }, [speed, audioError, pauseAllOthers]);
 
   const handleSpeedChange = useCallback((s: typeof SPEEDS[number]) => {
     setSpeed(s);
