@@ -376,7 +376,20 @@ export const fetchWordInfo = async (word: string): Promise<WordInfo> => {
 // Try fetching Oxford HTML via a specific CORS proxy
 async function tryOxfordViaProxy(word: string, proxy: string): Promise<WordInfo> {
   const url = `${proxy}${encodeURIComponent(BASE_URL + word)}`;
-  const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
+  let response: Response;
+
+  try {
+    response = await fetch(url, { signal: AbortSignal.timeout(8000) });
+  } catch (error) {
+    // Network error, CORS error, or timeout - treat as proxy failure
+    if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+      throw new Error(`Proxy network error: ${error.message}`);
+    }
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw new Error('Proxy timeout');
+    }
+    throw error;
+  }
 
   if (!response.ok) {
     if (response.status === 429 || response.status === 403) {
