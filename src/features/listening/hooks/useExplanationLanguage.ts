@@ -29,8 +29,9 @@ export function useExplanationLanguage(): {
       return localOverride
     }
     // Priority 2: User preference from profile (when backend field is available)
-    // Currently returns null until backend adds explanation_language to User type
-    // TODO: Replace with user.explanation_language when backend is updated
+    // Currently skipped until backend adds explanation_language field to User type
+    // and exposes it via useAuthStore. To enable: import useAuthStore and read
+    // user?.explanation_language instead of returning null.
     // const userPref = user?.explanation_language as LanguageCode | null
     // if (userPref) return userPref
     // Priority 3: Browser language

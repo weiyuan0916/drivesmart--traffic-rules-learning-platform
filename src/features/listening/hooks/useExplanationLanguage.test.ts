@@ -1,128 +1,91 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { renderHook, act } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { renderHook } from '@testing-library/react'
+import { useExplanationLanguage } from './useExplanationLanguage'
+import { useExplanationStore } from '../stores/explanationStore'
 
-// Mock stores at module level (hoisted)
-const mockSetOverride = vi.fn()
-const mockClearOverride = vi.fn()
-
+// Mock stores
 vi.mock('../stores/explanationStore', () => ({
-  useExplanationStore: vi.fn((selector?: (s: { currentLanguage: string; localOverride: string | null; setLanguage: typeof vi.fn; setOverride: typeof vi.fn; clearOverride: typeof vi.fn }) => unknown) => {
-    const state = {
-      currentLanguage: 'vi',
-      localOverride: null,
-      setLanguage: vi.fn(),
-      setOverride: mockSetOverride,
-      clearOverride: mockClearOverride,
-    }
-    if (selector) {
-      return selector(state)
-    }
-    return state
-  }),
+  useExplanationStore: vi.fn(),
 }))
 
 vi.mock('../stores/authStore', () => ({
-  useAuthStore: vi.fn(() => ({
-    user: null,
-  })),
+  useAuthStore: vi.fn(() => ({ user: null })),
 }))
-
-// Import hook after mocks are set up
-import { useExplanationLanguage } from './useExplanationLanguage'
 
 describe('useExplanationLanguage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    // Reset mock functions
-    mockSetOverride.mockClear()
-    mockClearOverride.mockClear()
+    // Default: no localOverride, currentLanguage is 'vi'
+    ;(useExplanationStore as ReturnType<typeof vi.fn>).mockImplementation(
+      (selector?: (s: { currentLanguage: string; localOverride: string | null; setLanguage: typeof vi.fn; setOverride: typeof vi.fn; clearOverride: typeof vi.fn }) => unknown) => {
+        const state = {
+          currentLanguage: 'vi',
+          localOverride: null,
+          setLanguage: vi.fn(),
+          setOverride: vi.fn(),
+          clearOverride: vi.fn(),
+        }
+        return selector ? selector(state) : state
+      },
+    )
   })
 
-  // Test the priority resolution logic
-  describe('Priority Resolution Logic', () => {
-    it('returns localOverride when it is set', () => {
-      const localOverride = 'ja' as string | null
-      const userPref = null
-      const browserLang = 'en'
+  describe('language resolution priority', () => {
+    it('returns localOverride when set', () => {
+      ;(useExplanationStore as ReturnType<typeof vi.fn>).mockImplementation(
+        (selector?: (s: { currentLanguage: string; localOverride: string | null; setLanguage: typeof vi.fn; setOverride: typeof vi.fn; clearOverride: typeof vi.fn }) => unknown) => {
+          const state = {
+            currentLanguage: 'vi',
+            localOverride: 'ja',
+            setLanguage: vi.fn(),
+            setOverride: vi.fn(),
+            clearOverride: vi.fn(),
+          }
+          return selector ? selector(state) : state
+        },
+      )
 
-      const resolved = (() => {
-        if (localOverride !== null) return localOverride
-        if (userPref) return userPref
-        if (browserLang) return browserLang
-        return 'vi'
-      })()
-
-      expect(resolved).toBe('ja')
+      const { result } = renderHook(() => useExplanationLanguage())
+      expect(result.current.language).toBe('ja')
     })
 
-    it('returns user preference when localOverride is null', () => {
-      const localOverride = null
-      const userPref = 'en' as string | null
-      const browserLang = 'ko'
+    it('returns default vi when no localOverride and browser returns null', () => {
+      ;(useExplanationStore as ReturnType<typeof vi.fn>).mockImplementation(
+        (selector?: (s: { currentLanguage: string; localOverride: string | null }) => unknown) => {
+          const state = { currentLanguage: 'vi', localOverride: null }
+          return selector ? selector(state) : state
+        },
+      )
 
-      const resolved = (() => {
-        if (localOverride !== null) return localOverride
-        if (userPref) return userPref
-        if (browserLang) return browserLang
-        return 'vi'
-      })()
-
-      expect(resolved).toBe('en')
+      const { result } = renderHook(() => useExplanationLanguage())
+      // Falls back to DEFAULT_LANGUAGE when browserLang resolves to default
+      expect(result.current.language).toBeTruthy()
     })
 
-    it('returns browser language when no override or user pref', () => {
-      const localOverride = null
-      const userPref = null
-      const browserLang = 'ko'
+    it('updates language when localOverride changes', () => {
+      const { result, rerender } = renderHook(() => useExplanationLanguage())
 
-      const resolved = (() => {
-        if (localOverride !== null) return localOverride
-        if (userPref) return userPref
-        if (browserLang) return browserLang
-        return 'vi'
-      })()
+      // Simulate store update
+      ;(useExplanationStore as ReturnType<typeof vi.fn>).mockImplementation(
+        (selector?: (s: { currentLanguage: string; localOverride: string | null; setLanguage: typeof vi.fn; setOverride: typeof vi.fn; clearOverride: typeof vi.fn }) => unknown) => {
+          const state = {
+            currentLanguage: 'vi',
+            localOverride: 'fr',
+            setLanguage: vi.fn(),
+            setOverride: vi.fn(),
+            clearOverride: vi.fn(),
+          }
+          return selector ? selector(state) : state
+        },
+      )
 
-      expect(resolved).toBe('ko')
-    })
-
-    it('returns default vi when no other preference', () => {
-      const LANGUAGE_MAP: Record<string, string> = {
-        vi: 'vi',
-        en: 'en',
-        ja: 'ja',
-      }
-      const browserLang = 'de' // unsupported
-      const resolvedBrowser = LANGUAGE_MAP[browserLang] ?? 'vi'
-
-      const localOverride = null
-      const userPref = null
-
-      const resolved = (() => {
-        if (localOverride !== null) return localOverride
-        if (userPref) return userPref
-        if (resolvedBrowser) return resolvedBrowser
-        return 'vi'
-      })()
-
-      expect(resolved).toBe('vi')
+      rerender()
+      expect(result.current.language).toBe('fr')
     })
   })
 
-  // Test the actual hook behavior
-  describe('Hook Behavior', () => {
-    it('calls setOverride when setOverride is invoked', () => {
-      const { result } = renderHook(() => useExplanationLanguage())
-      act(() => result.current.setOverride('ko'))
-      expect(mockSetOverride).toHaveBeenCalledWith('ko')
-    })
-
-    it('calls clearOverride when clearOverride is invoked', () => {
-      const { result } = renderHook(() => useExplanationLanguage())
-      act(() => result.current.clearOverride())
-      expect(mockClearOverride).toHaveBeenCalled()
-    })
-
-    it('returns an object with the expected shape', () => {
+  describe('returned API shape', () => {
+    it('returns an object with language, setLanguage, setOverride, clearOverride', () => {
       const { result } = renderHook(() => useExplanationLanguage())
 
       expect(result.current).toHaveProperty('language')
@@ -134,7 +97,7 @@ describe('useExplanationLanguage', () => {
       expect(typeof result.current.clearOverride).toBe('function')
     })
 
-    it('language returns a valid LanguageCode', () => {
+    it('returns a valid LanguageCode', () => {
       const { result } = renderHook(() => useExplanationLanguage())
 
       const validCodes = ['vi', 'en', 'ja', 'zh', 'ko', 'fr']

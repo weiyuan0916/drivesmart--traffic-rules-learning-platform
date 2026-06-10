@@ -8,7 +8,6 @@ export interface LanguageOption {
   code: LanguageCode
   name: string
   nativeName: string
-  displayName: string
   flag: string
   direction: 'ltr'
 }

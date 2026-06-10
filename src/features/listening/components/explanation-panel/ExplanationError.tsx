@@ -36,7 +36,7 @@ export const ExplanationError = memo(function ExplanationError({
         <AlertCircle size={18} className="text-error mt-0.5 shrink-0" aria-hidden="true" />
         <div className="flex flex-col gap-1">
           <p className="text-sm font-semibold text-error">
-            Không thể tải giải thích bằng English - {langInfo.displayName}
+            Không thể tải giải thích bằng {langInfo.name}
           </p>
           {message && (
             <p className="text-xs text-text-muted">

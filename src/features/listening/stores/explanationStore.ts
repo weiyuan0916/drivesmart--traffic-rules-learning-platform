@@ -17,11 +17,17 @@ interface ExplanationStore {
   isLoading: boolean
   error: string | null
 
+  /** Sets the global default language (persisted to user profile). */
   setLanguage: (lang: LanguageCode) => void
+  /** Sets a per-session language override for the current lesson (cleared on lesson change). */
   setOverride: (lang: LanguageCode | null) => void
+  /** Clears the per-session language override. */
   clearOverride: () => void
+  /** Fetches explanation for a clip in the given language. Uses cache, sets loading/error state. */
   fetchExplanation: (clipId: string, lang: LanguageCode) => Promise<void>
+  /** Clears the content cache and current content. */
   clearCache: () => void
+  /** Clears any error state. */
   clearError: () => void
 }
 
