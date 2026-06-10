@@ -118,22 +118,17 @@ export const explanationApi = {
     } catch (err: unknown) {
       clearTimeout(timeoutId)
       if (err instanceof Error && err.name === 'AbortError') {
-        // Return local fallback instead of throwing — user sees translated placeholder
         const fallback = createFallbackContent(clipId, lang)
         sessionStorage.setItem(cacheKey, JSON.stringify(fallback))
         return fallback
       }
       const response = (err as { response?: { status?: number } }).response
-      if (response?.status === 404 || response?.status === 503) {
-        // Return local fallback instead of throwing — user sees translated placeholder
+      if (response?.status === 503) {
         const fallback = createFallbackContent(clipId, lang)
         sessionStorage.setItem(cacheKey, JSON.stringify(fallback))
         return fallback
       }
-      // For any other error, also return fallback so UI never shows stale content
-      const fallback = createFallbackContent(clipId, lang)
-      sessionStorage.setItem(cacheKey, JSON.stringify(fallback))
-      return fallback
+      throw err
     }
   },
 

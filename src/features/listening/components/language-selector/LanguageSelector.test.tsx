@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { LanguageSelector } from './LanguageSelector'
 import type { LanguageCode } from '../../types/explanation'
 
-// Mock zustand store
 vi.mock('../../stores/explanationStore', () => ({
   useExplanationStore: vi.fn(() => ({
     currentLanguage: 'vi',
@@ -46,6 +45,15 @@ describe('LanguageSelector', () => {
       fireEvent.keyDown(viButton, { key: 'ArrowRight' })
       expect(onChange).toHaveBeenCalledWith('en')
     })
+
+    it('renders flags for each language', () => {
+      const onChange = vi.fn()
+      render(<LanguageSelector value="vi" onChange={onChange} variant="button-group" showLabel={false} />)
+      const buttons = screen.getAllByRole('radio')
+      buttons.forEach((btn) => {
+        expect(btn.textContent).toMatch(/[^\s]/)
+      })
+    })
   })
 
   describe('dropdown variant', () => {
@@ -62,17 +70,62 @@ describe('LanguageSelector', () => {
       fireEvent.click(screen.getByRole('combobox'))
       const listbox = screen.getByRole('listbox')
       expect(listbox).toBeVisible()
-      fireEvent.click(screen.getByRole('option', { name: 'English - Japanese' }))
+      fireEvent.click(screen.getByRole('option', { name: /Japanese/ }))
       expect(onChange).toHaveBeenCalledWith('ja')
       expect(listbox).not.toBeVisible()
+    })
+
+    it('closes dropdown on Escape key', () => {
+      const onChange = vi.fn()
+      render(<LanguageSelector value="vi" onChange={onChange} variant="dropdown" />)
+      fireEvent.click(screen.getByRole('combobox'))
+      expect(screen.getByRole('listbox')).toBeVisible()
+      fireEvent.keyDown(screen.getByRole('combobox'), { key: 'Escape' })
+      expect(screen.queryByRole('listbox')).toBeNull()
     })
   })
 
   describe('inline-selector variant', () => {
-    it('renders as a compact select element', () => {
+    it('renders as a combobox', () => {
       const onChange = vi.fn()
       render(<LanguageSelector value="vi" onChange={onChange} variant="inline-selector" />)
       expect(screen.getByRole('combobox')).toBeInTheDocument()
+    })
+
+    it('opens dropdown on click', () => {
+      const onChange = vi.fn()
+      render(<LanguageSelector value="vi" onChange={onChange} variant="inline-selector" />)
+      fireEvent.click(screen.getByRole('combobox'))
+      expect(screen.getByRole('listbox')).toBeVisible()
+    })
+
+    it('closes dropdown on Escape key', () => {
+      const onChange = vi.fn()
+      render(<LanguageSelector value="vi" onChange={onChange} variant="inline-selector" />)
+      fireEvent.click(screen.getByRole('combobox'))
+      expect(screen.getByRole('listbox')).toBeVisible()
+      fireEvent.keyDown(screen.getByRole('combobox'), { key: 'Escape' })
+      expect(screen.queryByRole('listbox')).toBeNull()
+    })
+
+    it('closes dropdown on option click', () => {
+      const onChange = vi.fn()
+      render(<LanguageSelector value="vi" onChange={onChange} variant="inline-selector" />)
+      fireEvent.click(screen.getByRole('combobox'))
+      const options = screen.getAllByRole('option')
+      fireEvent.click(options[2])
+      expect(onChange).toHaveBeenCalled()
+      expect(screen.queryByRole('listbox')).toBeNull()
+    })
+
+    it('closes dropdown on option Enter key', () => {
+      const onChange = vi.fn()
+      render(<LanguageSelector value="vi" onChange={onChange} variant="inline-selector" />)
+      fireEvent.click(screen.getByRole('combobox'))
+      const options = screen.getAllByRole('option')
+      fireEvent.keyDown(options[2], { key: 'Enter' })
+      expect(onChange).toHaveBeenCalled()
+      expect(screen.queryByRole('listbox')).toBeNull()
     })
   })
 })

@@ -9,18 +9,14 @@ import { explanationApi } from '../api/explanationApi'
 import { DEFAULT_LANGUAGE } from '../constants/languages'
 
 interface ExplanationStore {
-  // Language state
   currentLanguage: LanguageCode
   localOverride: LanguageCode | null
-  pendingLanguage: LanguageCode | null
 
-  // Content state
   contentCache: Record<string, ExplanationContent> // key: `${clipId}_${lang}`
   currentContent: ExplanationContent | null
   isLoading: boolean
   error: string | null
 
-  // Actions
   setLanguage: (lang: LanguageCode) => void
   setOverride: (lang: LanguageCode | null) => void
   clearOverride: () => void
@@ -32,7 +28,6 @@ interface ExplanationStore {
 export const useExplanationStore = create<ExplanationStore>((set, get) => ({
   currentLanguage: DEFAULT_LANGUAGE,
   localOverride: null,
-  pendingLanguage: null,
   contentCache: {},
   currentContent: null,
   isLoading: false,
@@ -54,7 +49,7 @@ export const useExplanationStore = create<ExplanationStore>((set, get) => ({
       return
     }
 
-    set({ currentContent: null, isLoading: true, error: null, pendingLanguage: lang })
+    set({ currentContent: null, isLoading: true, error: null })
 
     try {
       const content = await explanationApi.getExplanation(clipId, lang)
@@ -64,11 +59,10 @@ export const useExplanationStore = create<ExplanationStore>((set, get) => ({
         currentContent: content,
         currentLanguage: lang,
         isLoading: false,
-        pendingLanguage: null,
       }))
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
-      set({ error: message, isLoading: false, pendingLanguage: null })
+      set({ error: message, isLoading: false })
     }
   },
 

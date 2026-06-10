@@ -31,6 +31,7 @@ export const ExplanationPanel = memo(function ExplanationPanel({
 
   useEffect(() => {
     store.fetchExplanation(clipId, effectiveLang)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- store.fetchExplanation is stable from Zustand; only re-run when clipId or language changes
   }, [clipId, effectiveLang])
 
   const handleLanguageChange = (code: LanguageCode) => {

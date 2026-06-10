@@ -137,6 +137,7 @@ const ButtonGroup = memo(function ButtonGroup({
               disabled && 'opacity-50 cursor-not-allowed',
             )}
           >
+            <span className="text-base leading-none" aria-hidden="true">{lang.flag}</span>
             {showLabel && (
               <span className="text-[10px] leading-none mt-0.5">{lang.displayName}</span>
             )}
@@ -184,6 +185,7 @@ const Dropdown = memo(function Dropdown({
         aria-label="Select language"
         disabled={disabled}
         onClick={() => setIsOpen((v) => !v)}
+        onKeyDown={handleKeyDown}
         className={cn(
           'dict-glass flex items-center gap-2 px-3 rounded-[var(--dict-radius-md)]',
           'text-[var(--dict-text-primary)] font-medium text-sm',
@@ -197,7 +199,8 @@ const Dropdown = memo(function Dropdown({
       >
         {/* Flag */}
         <span className="flex-1 text-sm leading-none truncate text-left">
-          English - {activeLang.displayName}
+          <span aria-hidden="true">{activeLang.flag}</span>{' '}
+          <span className="font-medium">{activeLang.name}</span>
         </span>
 
         {/* Chevron */}
@@ -259,7 +262,8 @@ const Dropdown = memo(function Dropdown({
                     >
                       {/* Flag */}
                       <span className="flex-1 text-left leading-tight">
-                        English - {lang.displayName}
+                        <span aria-hidden="true">{lang.flag}</span>{' '}
+                        {lang.name}
                       </span>
 
                       {/* Active check */}
@@ -328,10 +332,35 @@ const InlineSelector = memo(function InlineSelector({
 }: InlineSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
   const activeLang = SUPPORTED_LANGUAGES.find((l) => l.code === value) ?? SUPPORTED_LANGUAGES[0]
+  const listRef = useRef<HTMLUListElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false)
+        triggerRef.current?.focus()
+      }
+    },
+    [],
+  )
+
+  const handleOptionKeyDown = useCallback(
+    (e: React.KeyboardEvent, code: LanguageCode) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        onChange(code)
+        setIsOpen(false)
+        triggerRef.current?.focus()
+      }
+    },
+    [onChange],
+  )
 
   return (
     <div className={cn('relative inline-flex', className)}>
       <button
+        ref={triggerRef}
         type="button"
         role="combobox"
         aria-expanded={isOpen}
@@ -339,6 +368,7 @@ const InlineSelector = memo(function InlineSelector({
         aria-label="Explanation language"
         disabled={disabled}
         onClick={() => setIsOpen((v) => !v)}
+        onKeyDown={handleKeyDown}
         className={cn(
           'inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-sm',
           'border border-border hover:bg-light transition-colors',
@@ -347,7 +377,8 @@ const InlineSelector = memo(function InlineSelector({
           disabled && 'opacity-50 cursor-not-allowed',
         )}
       >
-        <span className="text-text-primary font-medium">English - {activeLang.displayName}</span>
+        <span aria-hidden="true">{activeLang.flag}</span>
+        <span className="text-text-primary font-medium">{activeLang.name}</span>
         <ChevronDown size={14} className="text-text-secondary" aria-hidden="true" />
       </button>
 
@@ -359,7 +390,9 @@ const InlineSelector = memo(function InlineSelector({
             aria-hidden="true"
           />
           <ul
+            ref={listRef}
             role="listbox"
+            aria-label="Language options"
             className={cn(
               'absolute top-full left-0 mt-1 z-20 rounded-lg border border-border',
               'bg-bg-primary shadow-lg py-1 min-w-[160px]',
@@ -374,14 +407,17 @@ const InlineSelector = memo(function InlineSelector({
                   onClick={() => {
                     onChange(lang.code)
                     setIsOpen(false)
+                    triggerRef.current?.focus()
                   }}
+                  onKeyDown={(e) => handleOptionKeyDown(e, lang.code)}
                   className={cn(
                     'w-full flex items-center gap-2 px-3 py-2 text-sm',
                     'hover:bg-light',
                     lang.code === value ? 'text-primary font-semibold' : 'text-text-primary',
                   )}
                 >
-                  <span>English - {lang.displayName}</span>
+                  <span aria-hidden="true">{lang.flag}</span>
+                  <span>{lang.name}</span>
                 </button>
               </li>
             ))}

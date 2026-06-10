@@ -4,7 +4,6 @@ import { ExplanationPanel } from './ExplanationPanel'
 import { ExplanationProvider } from '../../contexts/ExplanationContext'
 import type { ExplanationContent } from '../../types/explanation'
 
-// Mock the store
 const mockStore = {
   currentLanguage: 'vi' as const,
   localOverride: null,
@@ -46,26 +45,84 @@ describe('ExplanationPanel', () => {
     mockStore.localOverride = null
   })
 
-  it('renders explanation text when content is available', () => {
-    mockStore.currentContent = mockContent
+  describe('Content rendering', () => {
+    it('renders explanation text when content is available', () => {
+      mockStore.currentContent = mockContent
 
-    renderWithContext(<ExplanationPanel clipId="42" />)
-    expect(screen.getByText(/Bạn thường bỏ sót mạo từ/)).toBeInTheDocument()
+      renderWithContext(<ExplanationPanel clipId="42" />)
+      expect(screen.getByText(/Bạn thường bỏ sót mạo từ/)).toBeInTheDocument()
+    })
+
+    it('displays vocabulary items with phonetic transcription', () => {
+      mockStore.currentContent = mockContent
+
+      renderWithContext(<ExplanationPanel clipId="42" showVocabulary={true} />)
+      expect(screen.getByText('frequently')).toBeInTheDocument()
+      expect(screen.getByText('/ˈfriːkwəntli/')).toBeInTheDocument()
+      expect(screen.getByText('thường xuyên')).toBeInTheDocument()
+    })
+
+    it('renders the LanguageSelector with button-group variant', () => {
+      mockStore.currentContent = mockContent
+
+      renderWithContext(<ExplanationPanel clipId="42" />)
+      expect(screen.getByRole('radiogroup', { name: 'Explanation language' })).toBeInTheDocument()
+    })
   })
 
-  it('displays vocabulary items with phonetic transcription', () => {
-    mockStore.currentContent = mockContent
+  describe('Loading state', () => {
+    it('renders loading skeleton when isLoading is true', () => {
+      mockStore.isLoading = true
 
-    renderWithContext(<ExplanationPanel clipId="42" showVocabulary={true} />)
-    expect(screen.getByText('frequently')).toBeInTheDocument()
-    expect(screen.getByText('/ˈfriːkwəntli/')).toBeInTheDocument()
-    expect(screen.getByText('thường xuyên')).toBeInTheDocument()
+      renderWithContext(<ExplanationPanel clipId="42" />)
+      expect(screen.getByRole('status', { name: 'Đang tải giải thích...' })).toBeInTheDocument()
+    })
+
+    it('renders language selector buttons even while loading', () => {
+      mockStore.isLoading = true
+
+      renderWithContext(<ExplanationPanel clipId="42" />)
+      expect(screen.getByRole('radiogroup', { name: 'Explanation language' })).toBeInTheDocument()
+    })
   })
 
-  it('renders the LanguageSelector with button-group variant', () => {
-    mockStore.currentContent = mockContent
+  describe('Error state', () => {
+    it('renders error component when error is set', () => {
+      mockStore.error = 'Network request failed'
 
-    renderWithContext(<ExplanationPanel clipId="42" />)
-    expect(screen.getByRole('radiogroup', { name: 'Explanation language' })).toBeInTheDocument()
+      renderWithContext(<ExplanationPanel clipId="42" />)
+      expect(screen.getByRole('alert')).toBeInTheDocument()
+      expect(screen.getByText(/Không thể tải giải thích/)).toBeInTheDocument()
+    })
+
+    it('renders retry button in error state', () => {
+      mockStore.error = 'Network request failed'
+
+      renderWithContext(<ExplanationPanel clipId="42" />)
+      expect(screen.getByText('Thử lại')).toBeInTheDocument()
+    })
+
+    it('renders fallback button when language is not vi', () => {
+      mockStore.localOverride = 'en'
+      mockStore.error = 'Network request failed'
+
+      renderWithContext(<ExplanationPanel clipId="42" />)
+      expect(screen.getByText('🇻🇳 Dùng Tiếng Việt')).toBeInTheDocument()
+    })
+
+    it('does not render fallback button when language is already vi', () => {
+      mockStore.localOverride = 'vi'
+      mockStore.error = 'Network request failed'
+
+      renderWithContext(<ExplanationPanel clipId="42" />)
+      expect(screen.queryByText('🇻🇳 Dùng Tiếng Việt')).not.toBeInTheDocument()
+    })
+  })
+
+  describe('Empty state', () => {
+    it('renders empty state when no content, not loading, no error', () => {
+      renderWithContext(<ExplanationPanel clipId="42" />)
+      expect(screen.getByText('Đang tải giải thích...')).toBeInTheDocument()
+    })
   })
 })
