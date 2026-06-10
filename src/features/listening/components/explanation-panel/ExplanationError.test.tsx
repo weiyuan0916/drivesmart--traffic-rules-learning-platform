@@ -46,6 +46,6 @@ describe('ExplanationError', () => {
 
   it('shows language name in error message', () => {
     render(<ExplanationError {...defaultProps} language="ja" />)
-    expect(screen.getByText(/Tiếng Nhật/)).toBeInTheDocument()
+    expect(screen.getByText(/English - Japanese/)).toBeInTheDocument()
   })
 })

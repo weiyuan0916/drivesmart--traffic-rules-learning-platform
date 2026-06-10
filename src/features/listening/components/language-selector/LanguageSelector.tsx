@@ -122,7 +122,7 @@ const ButtonGroup = memo(function ButtonGroup({
             type="button"
             role="radio"
             aria-checked={isActive}
-            aria-label={`Explanation language: ${lang.displayName}`}
+            aria-label={`English - ${lang.name}`}
             disabled={disabled}
             onClick={() => onChange(lang.code)}
             onKeyDown={handleKeyDown}
@@ -200,7 +200,7 @@ const Dropdown = memo(function Dropdown({
         {/* Flag */}
         <span className="flex-1 text-sm leading-none truncate text-left">
           <span aria-hidden="true">{activeLang.flag}</span>{' '}
-          <span className="font-medium">{activeLang.name}</span>
+          English - <span className="font-medium">{activeLang.name}</span>
         </span>
 
         {/* Chevron */}
@@ -263,7 +263,7 @@ const Dropdown = memo(function Dropdown({
                       {/* Flag */}
                       <span className="flex-1 text-left leading-tight">
                         <span aria-hidden="true">{lang.flag}</span>{' '}
-                        {lang.name}
+                        English - {lang.name}
                       </span>
 
                       {/* Active check */}
@@ -378,7 +378,7 @@ const InlineSelector = memo(function InlineSelector({
         )}
       >
         <span aria-hidden="true">{activeLang.flag}</span>
-        <span className="text-text-primary font-medium">{activeLang.name}</span>
+        <span className="text-text-primary font-medium">English - {activeLang.name}</span>
         <ChevronDown size={14} className="text-text-secondary" aria-hidden="true" />
       </button>
 
@@ -417,7 +417,7 @@ const InlineSelector = memo(function InlineSelector({
                   )}
                 >
                   <span aria-hidden="true">{lang.flag}</span>
-                  <span>{lang.name}</span>
+                  <span>English - {lang.name}</span>
                 </button>
               </li>
             ))}

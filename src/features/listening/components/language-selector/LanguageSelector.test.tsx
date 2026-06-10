@@ -24,7 +24,7 @@ describe('LanguageSelector', () => {
     it('calls onChange with correct code when a language button is clicked', () => {
       const onChange = vi.fn()
       render(<LanguageSelector value="vi" onChange={onChange} variant="button-group" />)
-      fireEvent.click(screen.getByLabelText('Explanation language: Tiếng Nhật'))
+      fireEvent.click(screen.getByLabelText('English - Japanese'))
       expect(onChange).toHaveBeenCalledWith('ja')
     })
 
@@ -33,7 +33,7 @@ describe('LanguageSelector', () => {
       render(<LanguageSelector value="ko" onChange={onChange} variant="button-group" />)
       expect(screen.getByRole('radio', { checked: true })).toHaveAttribute(
         'aria-label',
-        'Explanation language: Tiếng Hàn',
+        'English - Korean',
       )
     })
 
