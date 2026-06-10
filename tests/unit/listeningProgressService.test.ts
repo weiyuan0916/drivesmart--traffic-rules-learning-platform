@@ -95,16 +95,20 @@ describe('recordCompletedLesson', () => {
   });
 
   it('increments streak on consecutive day', () => {
+    // Pre-seed localStorage with yesterday's date to simulate the "after yesterday" state
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
 
-    const lesson1 = makeLesson(1, 80, yesterday);
-    recordCompletedLesson(lesson1, 300);
+    localStorage.setItem('drivesmart_listening_progress', JSON.stringify({
+      completedLessons: [],
+      streakDays: 1,
+      lastPracticeDate: yesterdayStr,
+      totalListeningMinutes: 5,
+    }));
 
-    const today = new Date();
-    const lesson2 = makeLesson(2, 90, today);
-    recordCompletedLesson(lesson2, 120);
-
+    // Calling recordCompletedLesson today should increment streak from 1 to 2
+    recordCompletedLesson(makeLesson(1, 80, new Date()), 300);
     expect(getStreakDays()).toBe(2);
   });
 
@@ -289,10 +293,15 @@ describe('streak edge cases', () => {
 
   it('streak calculation handles month boundary', () => {
     // Simulate: last lesson yesterday (previous month)
+    // Use local date to match how the service stores lastPracticeDate
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const lastPracticeStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, '0')}-${String(yesterday.getDate()).padStart(2, '0')}`;
+
     const progress = {
       completedLessons: [makeLesson(1, 80, new Date(Date.now() - 86400000))],
       streakDays: 1,
-      lastPracticeDate: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+      lastPracticeDate: lastPracticeStr,
       totalListeningMinutes: 5,
     };
     localStorage.setItem('drivesmart_listening_progress', JSON.stringify(progress));

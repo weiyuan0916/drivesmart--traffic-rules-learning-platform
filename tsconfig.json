@@ -23,7 +23,7 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["src", "src/vitest.d.ts"],
+  "include": ["src", "src/vitest.d.ts", "tests"],
   "exclude": [
     "node_modules",
     "dist",

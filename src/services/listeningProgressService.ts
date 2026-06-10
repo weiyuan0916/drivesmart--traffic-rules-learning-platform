@@ -55,24 +55,29 @@ export function recordCompletedLesson(
   durationSeconds: number,
 ): void {
   const progress = getProgress();
-  const today = new Date().toISOString().split('T')[0];
+
+  // Use local date to match how dates are stored and read from localStorage
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
   // Update streak
   if (progress.lastPracticeDate) {
-    const lastDate = new Date(progress.lastPracticeDate);
-    const todayDate = new Date(today);
-    const diffDays = Math.floor(
-      (todayDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24),
-    );
+    const lastParts = progress.lastPracticeDate.split('-').map(Number);
+    const todayParts = todayStr.split('-').map(Number);
+    const lastDateNum = lastParts[0] * 10000 + lastParts[1] * 100 + lastParts[2];
+    const todayDateNum = todayParts[0] * 10000 + todayParts[1] * 100 + todayParts[2];
+    const diffDays = todayDateNum - lastDateNum;
+
     if (diffDays === 1) {
       progress.streakDays += 1;
-    } else if (diffDays > 1) {
+    } else if (diffDays !== 0) {
       progress.streakDays = 1;
     }
+    // diffDays === 0: same day, streak unchanged
   } else {
     progress.streakDays = 1;
   }
-  progress.lastPracticeDate = today;
+  progress.lastPracticeDate = todayStr;
 
   // Update total listening minutes
   progress.totalListeningMinutes += Math.floor(durationSeconds / 60);
@@ -95,6 +100,7 @@ export function getWeeklyActivity(): { day: string; count: number }[] {
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const result: Record<string, number> = {};
 
+  // Initialize last 7 days (from 6 days ago to today)
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
@@ -102,14 +108,17 @@ export function getWeeklyActivity(): { day: string; count: number }[] {
     result[key] = 0;
   }
 
+  // Parse dates as local date strings (YYYY-MM-DD) to avoid timezone shifts
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - 6);
-  cutoff.setHours(0, 0, 0, 0);
+  const cutoffStr = `${cutoff.getFullYear()}-${String(cutoff.getMonth() + 1).padStart(2, '0')}-${String(cutoff.getDate()).padStart(2, '0')}`;
 
   for (const lesson of completed) {
-    const date = new Date(lesson.completedAt);
-    if (date >= cutoff) {
-      const key = days[date.getDay()];
+    // Extract local date string from ISO timestamp
+    const localDate = new Date(lesson.completedAt);
+    const localStr = `${localDate.getFullYear()}-${String(localDate.getMonth() + 1).padStart(2, '0')}-${String(localDate.getDate()).padStart(2, '0')}`;
+    if (localStr >= cutoffStr) {
+      const key = days[localDate.getDay()];
       if (key in result) result[key]++;
     }
   }

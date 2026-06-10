@@ -9,12 +9,12 @@ use App\Models\User;
 use App\Models\UserClipProgress;
 use App\Models\UserProgress;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Tests\TestCase;
 
 class ProgressApiTest extends TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     private User $user;
     private string $token;
