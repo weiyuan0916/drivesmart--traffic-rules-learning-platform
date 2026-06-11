@@ -6,7 +6,7 @@ import type {
   ListeningSection,
 } from '@/types/listening';
 
-const API_BASE = '/api/listening';
+const API_BASE = import.meta.env.VITE_LISTENING_API_URL ?? '/api/listening';
 
 async function apiFetch<T>(url: string): Promise<T> {
   const res = await fetch(url);
@@ -43,4 +43,8 @@ export function getAudioUrl(lessonId: number): string {
 
 export function getChallengeAudioUrl(challengeId: number): string {
   return `${API_BASE}/challenges/${challengeId}/audio`;
+}
+
+export function getClipsUrl(clipId: number): string {
+  return `${API_BASE}/clips/${clipId}`;
 }

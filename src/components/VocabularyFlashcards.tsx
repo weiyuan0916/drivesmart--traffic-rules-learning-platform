@@ -333,9 +333,23 @@ function BottomNav({ active, onChange }: { active: DictView; onChange: (v: DictV
 }
 
 // --- SidebarNav ---
-function SidebarNav({ active, onChange }: { active: DictView; onChange: (v: DictView) => void }) {
+function SidebarNav({
+  active,
+  onChange,
+  recentSearches,
+  searchQuery,
+  setSearchQuery,
+  setCurrentView,
+}: {
+  active: DictView;
+  onChange: (v: DictView) => void;
+  recentSearches: string[];
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  setCurrentView: (v: DictView) => void;
+}) {
   const items: { view: DictView; icon: React.ReactNode; label: string }[] = [
-    { view: 'home', icon: <Home className="w-5 h-5" />, label: 'Home' },
+    { view: 'home', icon: <Home className="w-5 h-5" />, label: 'Library' },
     { view: 'search', icon: <Search className="w-5 h-5" />, label: 'Search' },
     { view: 'flashcards', icon: <BookMarked className="w-5 h-5" />, label: 'Flashcards' },
   ];
@@ -378,13 +392,28 @@ function SidebarNav({ active, onChange }: { active: DictView; onChange: (v: Dict
 
       {/* Stats summary */}
       <div className="px-4 py-5 border-t border-dict-border">
-        <div className="flex items-center gap-2 text-xs text-dict-text-muted mb-2">
-          <Star className="w-3.5 h-3.5" />
-          Keep learning daily
+        <div className="flex items-center gap-2 text-xs text-dict-text-muted mb-3">
+          <Clock className="w-3.5 h-3.5" />
+          Recently searched
         </div>
-        <div className="h-1.5 bg-dict-surface-raised rounded-full overflow-hidden">
-          <div className="h-full w-3/5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
-        </div>
+        {recentSearches.length === 0 ? (
+          <p className="text-xs text-dict-text-muted/60 italic">No searches yet</p>
+        ) : (
+          <div className="flex flex-wrap gap-1.5">
+            {recentSearches.slice(0, 6).map((word) => (
+              <button
+                key={word}
+                onClick={() => {
+                  setSearchQuery(word);
+                  setCurrentView('search');
+                }}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-dict-surface-raised text-dict-text-secondary hover:bg-blue-500/15 hover:text-blue-400 transition-colors"
+              >
+                {word}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </aside>
   );
@@ -682,7 +711,7 @@ function WordResultCard({
 
 const VocabularyFlashcards: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   // View routing — replaces showSearch boolean
-  const [currentView, setCurrentView] = useState<DictView>('home');
+  const [currentView, setCurrentView] = useState<DictView>('search');
   const { language: vocabularyLanguage } = useVocabularyLanguage()
 
   // Storage state
@@ -1246,7 +1275,14 @@ function VocabularyLanguageDropdown() {
   return (
     <div className="dict-theme min-h-screen bg-[var(--dict-bg,#0C0E16)] text-[var(--dict-text-primary,#F1F3F9)] flex">
       {/* Sidebar — tablet/desktop */}
-      <SidebarNav active={currentView} onChange={setCurrentView} />
+      <SidebarNav
+        active={currentView}
+        onChange={setCurrentView}
+        recentSearches={storage.recentSearches}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setCurrentView={setCurrentView}
+      />
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0">
@@ -1290,23 +1326,6 @@ function VocabularyLanguageDropdown() {
             <VocabularyLanguageDropdown />
           </div>
 
-          {/* Desktop view tabs */}
-          <div className="hidden lg:flex px-6 pt-3 gap-2">
-            {(['home', 'search', 'flashcards'] as DictView[]).map(view => (
-              <button
-                key={view}
-                onClick={() => setCurrentView(view)}
-                className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all capitalize ${
-                  currentView === view
-                    ? 'bg-blue-500/15 text-blue-400 border border-blue-500/30'
-                    : 'text-dict-text-muted hover:text-dict-text-secondary hover:bg-dict-surface-raised'
-                }`}
-              >
-                {view}
-              </button>
-            ))}
-          </div>
-          <div className="hidden lg:block pb-3" />
         </header>
 
         {/* Page content */}

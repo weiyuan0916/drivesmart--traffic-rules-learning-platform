@@ -7,6 +7,7 @@ import {
 import type { ListeningLessonDetail, Challenge, DictationResult } from '@/types/listening';
 import { checkDictation, getWordStatusColor } from '@/services/dictationService';
 import { recordCompletedLesson, addBookmark, isLessonBookmarked } from '@/services/listeningProgressService';
+import { getClipsUrl } from '@/services/listeningApi';
 import { useGlobalAudio } from '@/features/listening/hooks/useGlobalAudio.tsx';
 
 interface PracticePageProps {
@@ -97,7 +98,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
 
     // Priority 1: Local sliced clip (already on disk)
     if (currentChallenge.localClipPath) {
-      audio.src = `/api/listening/clips/${currentChallenge.id}`;
+      audio.src = getClipsUrl(currentChallenge.id);
       audio.load();
       // No time clipping needed - it's already the exact clip
       clipInfoRef.current = null;
