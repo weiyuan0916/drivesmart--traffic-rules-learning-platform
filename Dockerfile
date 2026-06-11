@@ -6,21 +6,26 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
+# Copy only files needed for server build
 COPY package.json package-lock.json* ./
+COPY server/ ./server/
+COPY tsconfig.server.json ./
 
-# Install production deps only (no native modules needed)
+# Install production deps
 RUN npm ci --omit=dev --ignore-scripts
 
-COPY server/ ./server/
-COPY tsconfig.json ./
+# Install TypeScript globally (needed to compile, but not in prod deps)
+RUN npm install -g typescript tsx
 
-RUN npx tsc server/listening_server.ts \
+# Build TypeScript server
+RUN tsc server/listening_server.ts \
   --outDir server/dist \
   --module ESNext \
   --moduleResolution node \
   --target ES2020 \
   --esModuleInterop true \
-  --skipLibCheck
+  --skipLibCheck \
+  --types node
 
 # ============================================================
 FROM node:22-alpine AS runner
@@ -28,8 +33,8 @@ FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV LISTENING_PORT=3002
 
+# Copy compiled server only
 COPY --from=builder /app/server/dist ./dist
 
 EXPOSE ${PORT:-3002}

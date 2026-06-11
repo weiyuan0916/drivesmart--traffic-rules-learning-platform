@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import MainContent from './components/MainContent';
+import { Homepage } from './components/marketing/Homepage';
+import { LenisProvider } from './components/marketing/LenisProvider';
 import ImageAnalyzer from './components/ImageAnalyzer';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import ExamSetupScreen from './components/ExamSetupScreen';
@@ -96,8 +98,15 @@ function AppContent() {
     setDrivingView('setup');
   };
 
+  const isHomepage = selectedMode === 'none';
+
   return (
-    <div className="flex flex-col h-screen font-sans overflow-hidden relative transition-colors duration-300 bg-[var(--bg-primary)] text-[var(--text-primary)]">
+    <div
+      className={`flex flex-col h-screen font-sans relative transition-colors duration-300 bg-[var(--bg-primary)] text-[var(--text-primary)] ${
+        isHomepage ? 'overflow-y-auto' : 'overflow-hidden'
+      }`}
+      data-lenis-scroll={isHomepage ? '' : undefined}
+    >
       {/* Driving Mode Mobile Header (visible during exam on mobile) */}
       {drivingView === 'exam' && (
         <header className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-[var(--bg-secondary)] border-b border-[var(--border)] z-40">
@@ -209,146 +218,12 @@ function AppContent() {
       </AnimatePresence>
 
 
-      {/* Main Menu Selection */}
+      {/* Lenis smooth scroll — must be placed at root level */}
+      {isHomepage && <LenisProvider />}
+
+      {/* Marketing Homepage — scroll storytelling landing page */}
       {selectedMode === 'none' && (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-8">
-          <div className="max-w-4xl w-full">
-            <div className="text-center mb-16">
-              <div 
-                className="flex items-center justify-center gap-4 mb-6" 
-                style={{ animation: 'fadeInDown 0.5s ease-out' }}
-              >
-                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center">
-                  <Car className="w-8 h-8 text-slate-900" />
-                </div>
-                <h1 className="text-5xl font-black text-white">DriveSmart</h1>
-              </div>
-              <p 
-                className="text-xl text-slate-400"
-                style={{ animation: 'fadeIn 0.5s ease-out 0.2s both' }}
-              >
-                Choose a learning platform to get started
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
-              {/* Menu 1: Driving Test */}
-              <button
-                onClick={() => setSelectedMode('driving')}
-                className="group relative bg-slate-800 hover:bg-slate-700 border-2 border-slate-700 hover:border-blue-500 rounded-xl md:rounded-2xl p-3 md:p-5 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/10"
-                style={{ animation: 'fadeInLeft 0.5s ease-out 0.3s both' }}
-              >
-                <div className="w-10 h-10 md:w-16 md:h-16 bg-blue-600 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                  <Car className="w-5 h-5 md:w-8 md:h-8 text-white" />
-                </div>
-                <h3 className="text-base md:text-xl font-bold text-blue-400 mb-1 md:mb-2">Driving Test</h3>
-                <p className="text-xs md:text-sm text-slate-400 leading-relaxed hidden sm:block">
-                  Practice for your driving license exam with 600 official theory questions. Track your progress, review mistakes, and get ready to pass your test with confidence.
-                </p>
-                <div className="mt-3 md:mt-4 flex items-center text-blue-400 font-semibold text-xs md:text-sm">
-                  Start learning
-                  <svg className="w-3 h-3 md:w-4 md:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </button>
-
-              {/* Menu 2: English Vocabulary Test */}
-              <button
-                onClick={() => setSelectedMode('vocabulary')}
-                className="group relative bg-slate-800 hover:bg-slate-700 border-2 border-slate-700 hover:border-green-500 rounded-xl md:rounded-2xl p-3 md:p-5 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-green-500/10"
-                style={{ animation: 'fadeInRight 0.5s ease-out 0.4s both' }}
-              >
-                <div className="w-10 h-10 md:w-16 md:h-16 bg-green-600 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                  <BookOpen className="w-5 h-5 md:w-8 md:h-8 text-white" />
-                </div>
-                <h3 className="text-base md:text-xl font-bold text-green-400 mb-1 md:mb-2">English Vocabulary</h3>
-                <p className="text-xs md:text-sm text-slate-400 leading-relaxed hidden sm:block">
-                  Learn English vocabulary with interactive flashcards powered by the Oxford Dictionary. Click to reveal words, guess their meanings, and double-click to check definitions and examples.
-                </p>
-                <div className="mt-3 md:mt-4 flex items-center text-green-400 font-semibold text-xs md:text-sm">
-                  Start learning
-                  <svg className="w-3 h-3 md:w-4 md:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </button>
-
-              {/* Menu 3: OPAL Phrases */}
-              <button
-                onClick={() => setSelectedMode('opal')}
-                className="group relative bg-slate-800 hover:bg-slate-700 border-2 border-slate-700 hover:border-purple-500 rounded-xl md:rounded-2xl p-3 md:p-5 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/10"
-                style={{ animation: 'fadeInRight 0.5s ease-out 0.6s both' }}
-              >
-                <div className="w-10 h-10 md:w-16 md:h-16 bg-purple-600 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                  <span className="text-xl md:text-2xl">📚</span>
-                </div>
-                <h3 className="text-base md:text-xl font-bold text-purple-400 mb-1 md:mb-2">OPAL Phrases</h3>
-                <p className="text-xs md:text-sm text-slate-400 leading-relaxed hidden sm:block">
-                  Learn academic phrases and vocabulary from the Oxford Phrase Academy. Master spoken and written English for academic success with pronunciation audio.
-                </p>
-                <div className="mt-3 md:mt-4 flex items-center text-purple-400 font-semibold text-xs md:text-sm">
-                  Start learning
-                  <svg className="w-3 h-3 md:w-4 md:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </button>
-
-              {/* Menu 4: AgriVietnam */}
-              <button
-                onClick={() => setSelectedMode('marketing')}
-                className="group relative bg-gradient-to-br from-emerald-900 via-green-900 to-teal-900 hover:from-emerald-800 hover:via-green-800 hover:to-teal-800 border-2 border-emerald-700 hover:border-emerald-400 rounded-xl md:rounded-2xl p-3 md:p-5 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/10"
-                style={{ animation: 'fadeInLeft 0.5s ease-out 0.7s both' }}
-              >
-                <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                  <svg className="w-5 h-5 md:w-8 md:h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                  </svg>
-                </div>
-                <h3 className="text-base md:text-xl font-bold text-emerald-300 mb-1 md:mb-2">AgriVietnam</h3>
-                <p className="text-xs md:text-sm text-emerald-200/70 leading-relaxed hidden sm:block">
-                  Explore Vietnam's finest agricultural products — premium coffee, macadamia, black pepper, passion fruit, and durian.
-                </p>
-                <div className="mt-3 md:mt-4 flex items-center text-emerald-300 font-semibold text-xs md:text-sm">
-                  View showcase
-                  <svg className="w-3 h-3 md:w-4 md:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </button>
-
-              {/* Menu 5: Practice Listening */}
-              <button
-                onClick={() => setSelectedMode('listening')}
-                className="group relative bg-gradient-to-br from-slate-800 hover:from-slate-700 border-2 border-slate-700 hover:border-indigo-400 rounded-xl md:rounded-2xl p-3 md:p-5 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/10"
-                style={{ animation: 'fadeInRight 0.5s ease-out 0.8s both' }}
-              >
-                <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                  <svg className="w-5 h-5 md:w-8 md:h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 18v-6a9 9 0 0118 0v6" />
-                    <path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z" />
-                  </svg>
-                </div>
-                <h3 className="text-base md:text-xl font-bold text-indigo-300 mb-1 md:mb-2">Practice Listening</h3>
-                <p className="text-xs md:text-sm text-slate-400 leading-relaxed hidden sm:block">
-                  Improve your English listening skills with dictation exercises. From beginner to advanced, thousands of exercises available.
-                </p>
-                <div className="mt-3 md:mt-4 flex items-center text-indigo-300 font-semibold text-xs md:text-sm">
-                  Start learning
-                  <svg className="w-3 h-3 md:w-4 md:h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </button>
-            </div>
-
-            {/* Language Switcher */}
-            <div className="flex justify-center mt-12">
-              <LanguageSwitcher className="relative flex items-center gap-2" />
-            </div>
-          </div>
-        </div>
+        <Homepage />
       )}
 
       {/* Driving Test Mode */}
