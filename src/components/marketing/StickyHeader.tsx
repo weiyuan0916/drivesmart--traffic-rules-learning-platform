@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Car, Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
@@ -7,10 +8,11 @@ import { useScrollDirection } from '../../hooks/useScrollAnimation';
 
 const NAV_ITEMS = [
   { id: 'hero', labelVi: 'Trang chủ', labelEn: 'Home' },
+  { id: 'driving', labelVi: 'Thi GPLX', labelEn: 'Driving Test' },
   { id: 'vocabulary', labelVi: 'Từ vựng', labelEn: 'Vocabulary' },
   { id: 'opal', labelVi: 'OPAL', labelEn: 'OPAL' },
   { id: 'listening', labelVi: 'Luyện nghe', labelEn: 'Listening' },
-  { id: 'agri', labelVi: 'AgriVietnam', labelEn: 'AgriVietnam' },
+  { id: 'faq', labelVi: 'FAQ', labelEn: 'FAQ' },
 ];
 
 interface StickyHeaderProps {
@@ -147,12 +149,18 @@ export function StickyHeader({ activeSection = 'hero', onNavigate }: StickyHeade
 
               {/* Login / Register — desktop */}
               <div className="hidden lg:flex items-center gap-2 ml-1">
-                <button className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors min-h-[36px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]">
+                <Link
+                  to="/auth/login"
+                  className="px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg hover:bg-[var(--bg-hover)] transition-colors min-h-[36px] flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+                >
                   {language === 'vi' ? 'Đăng nhập' : 'Login'}
-                </button>
-                <button className="px-4 py-2 text-sm font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-dark)] rounded-lg transition-colors min-h-[36px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2">
+                </Link>
+                <Link
+                  to="/auth/register"
+                  className="px-4 py-2 text-sm font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-dark)] rounded-lg transition-colors min-h-[36px] flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+                >
                   {language === 'vi' ? 'Đăng ký' : 'Register'}
-                </button>
+                </Link>
               </div>
 
               {/* Mobile hamburger */}
@@ -237,12 +245,18 @@ export function StickyHeader({ activeSection = 'hero', onNavigate }: StickyHeade
 
                 {/* Mobile auth buttons */}
                 <div className="pt-3 pb-1 border-t border-[var(--border)] flex gap-3 mt-3">
-                  <button className="flex-1 px-4 py-3 text-sm font-medium text-[var(--text-secondary)] bg-[var(--bg-tertiary)] hover:bg-[var(--bg-hover)] rounded-xl transition-colors min-h-[48px]">
+                  <Link
+                    to="/auth/login"
+                    className="flex-1 px-4 py-3 text-sm font-medium text-[var(--text-secondary)] bg-[var(--bg-tertiary)] hover:bg-[var(--bg-hover)] rounded-xl transition-colors min-h-[48px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+                  >
                     {language === 'vi' ? 'Đăng nhập' : 'Login'}
-                  </button>
-                  <button className="flex-1 px-4 py-3 text-sm font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-dark)] rounded-xl transition-colors min-h-[48px]">
+                  </Link>
+                  <Link
+                    to="/auth/register"
+                    className="flex-1 px-4 py-3 text-sm font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-dark)] rounded-xl transition-colors min-h-[48px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+                  >
                     {language === 'vi' ? 'Đăng ký' : 'Register'}
-                  </button>
+                  </Link>
                 </div>
               </div>
             </motion.nav>

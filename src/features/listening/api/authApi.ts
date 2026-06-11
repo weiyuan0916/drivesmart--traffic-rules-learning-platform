@@ -109,19 +109,3 @@ export function setToken(token: string): void {
 export function clearToken(): void {
   apiClient.setToken(null)
 }
-
-/**
- * Extract auth data from OAuth popup localStorage and return user+token.
- * This is called by the OAuth callback handler after the popup returns.
- */
-export function extractOAuthToken(): { user: User; token: string } | null {
-  try {
-    const raw = localStorage.getItem('oauth_token')
-    if (!raw) return null
-    const parsed = JSON.parse(raw) as { user: Record<string, unknown>; token: string }
-    localStorage.removeItem('oauth_token')
-    return { user: transformUser(parsed.user), token: parsed.token }
-  } catch {
-    return null
-  }
-}

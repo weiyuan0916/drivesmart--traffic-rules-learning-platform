@@ -1,7 +1,7 @@
-import { motion, type Easing } from 'motion/react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../../../context/LanguageContext';
-import { useReducedMotion } from '../../../hooks/useScrollAnimation';
-import { CheckCircle, ArrowRight, BarChart3, BookOpen, BrainCircuit, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CheckCircle, Car, BrainCircuit, BarChart3, ShieldCheck } from 'lucide-react';
+import { useReducedMotion } from '../../../hooks/useLandingAnimation';
 
 interface HeroSectionProps {
   onStartTest: () => void;
@@ -9,121 +9,128 @@ interface HeroSectionProps {
 }
 
 const TRUST_BADGES = [
-  { icon: CheckCircle, labelVi: '600 câu hỏi chính thức', labelEn: '600 official questions' },
-  { icon: BarChart3, labelVi: 'Theo dõi tiến độ', labelEn: 'Track your progress' },
-  { icon: BrainCircuit, labelVi: 'AI phân tích tình huống', labelEn: 'AI situation analysis' },
-  { icon: ShieldCheck, labelVi: 'Cập nhật 2024', labelEn: 'Updated for 2024' },
+  { icon: Car, labelVi: '600 câu hỏi chính thức', labelEn: '600 official questions' },
+  { icon: BrainCircuit, labelVi: 'AI phân tích tình huống', labelEn: 'AI traffic analyzer' },
+  { icon: BarChart3, labelVi: 'Theo dõi tiến độ', labelEn: 'Progress tracking' },
+  { icon: ShieldCheck, labelVi: 'Cập nhật 2024', labelEn: 'Updated 2024' },
 ];
 
 export function HeroSection({ onStartTest, onExplore }: HeroSectionProps) {
   const { language } = useLanguage();
   const reducedMotion = useReducedMotion();
 
-  const easeOut: Easing = 'easeOut';
-  const stagger = reducedMotion ? 0 : 0.08;
-  const container = {
-    hidden: {},
-    visible: { transition: { staggerChildren: stagger, delayChildren: 0.2 } },
-  };
-  const item = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeOut } },
-  };
-
   return (
     <section
-      className="relative min-h-screen flex items-center overflow-hidden bg-[var(--bg-primary)] pt-14 lg:pt-16"
-      aria-label="Hero section — Driving Test"
+      id="hero"
+      className="relative min-h-screen flex items-center overflow-hidden bg-[var(--primary)] pt-14"
+      aria-label="Hero section"
     >
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {/* Soft radial gradient top-left */}
+      {/* ── Background decorations ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        {/* Large soft glow top-right */}
         <div
-          className="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full opacity-[0.07]"
-          style={{ background: 'radial-gradient(circle, var(--accent) 0%, transparent 70%)' }}
+          className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(255,86,50,0.15) 0%, transparent 70%)' }}
         />
-        {/* Soft radial gradient bottom-right */}
+        {/* Medium glow bottom-left */}
         <div
-          className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full opacity-[0.05]"
-          style={{ background: 'radial-gradient(circle, var(--primary) 0%, transparent 70%)' }}
+          className="absolute -bottom-20 -left-20 w-[400px] h-[400px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(90,93,139,0.5) 0%, transparent 70%)' }}
         />
-        {/* Subtle grid pattern */}
+        {/* Subtle grid */}
         <div
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute inset-0 opacity-[0.03]"
           style={{
-            backgroundImage: `linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)`,
-            backgroundSize: '48px 48px',
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)`,
+            backgroundSize: '64px 64px',
           }}
         />
+        {/* Bottom gradient fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32" style={{ background: 'linear-gradient(to bottom, transparent, var(--primary))' }} />
       </div>
 
+      {/* ── Content ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-          {/* Left: Text content */}
+          {/* ── LEFT: Text content ── */}
           <motion.div
-            variants={container}
-            initial="hidden"
-            animate="visible"
+            initial={reducedMotion ? false : { opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
             className="flex flex-col items-center lg:items-start text-center lg:text-left"
           >
             {/* Eyebrow badge */}
-            <motion.div variants={item} className="mb-6">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20">
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" aria-hidden="true" />
-                {language === 'vi' ? 'Kỳ thi GPLX 2024' : 'GPLX Exam 2024'}
+            <motion.div
+              initial={reducedMotion ? false : { opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="mb-8"
+            >
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-white/10 text-white/80 border border-white/10 backdrop-blur-sm">
+                <span className="relative flex h-2 w-2" aria-hidden="true">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]" />
+                </span>
+                {language === 'vi' ? 'Kỳ thi GPLX 2024 — Miễn phí' : 'GPLX Exam 2024 — Free'}
               </span>
             </motion.div>
 
-            {/* Main headline */}
+            {/* Headline */}
             <motion.h1
-              variants={item}
-              className="text-4xl sm:text-5xl lg:text-6xl font-black text-[var(--text-primary)] leading-[1.05] tracking-tight mb-6"
-              style={{ fontFamily: 'var(--font-sans)' }}
+              initial={reducedMotion ? false : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.6, ease: 'easeOut' }}
+              className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[1.02] tracking-tight mb-8"
             >
               {language === 'vi' ? (
                 <>
-                  Chinh phục bài thi{' '}
-                  <span className="text-[var(--accent)]">GPLX</span>
+                  Chinh phục
                   <br />
-                  Tự tin lái xe
+                  <span className="text-[var(--accent)]">kỳ thi GPLX</span>
+                  <br />
+                  từ lần đầu
                 </>
               ) : (
                 <>
-                  Pass Your{' '}
+                  Pass Your
+                  <br />
                   <span className="text-[var(--accent)]">Driving Test</span>
                   <br />
-                  With Confidence
+                  First Try
                 </>
               )}
             </motion.h1>
 
             {/* Subheadline */}
             <motion.p
-              variants={item}
-              className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-xl mb-8"
+              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.6, ease: 'easeOut' }}
+              className="text-lg lg:text-xl text-white/60 leading-relaxed max-w-xl mb-10"
             >
               {language === 'vi'
-                ? '600 câu hỏi chính thức từ Tổng cục Đường bộ Việt Nam. Theo dõi tiến độ theo chương. Vượt qua kỳ thi ngay lần đầu với AI phân tích tình huống giao thông.'
-                : 'Practice with 600 official questions from Vietnam\'s Road Administration. Track progress by chapter. Pass your test on the first try with AI-powered traffic analysis.'}
+                ? '600 câu hỏi chính thức, AI phân tích tình huống giao thông, và theo dõi tiến độ thông minh. Đậu kỳ thi ngay lần đầu — hoàn toàn miễn phí.'
+                : '600 official questions, AI traffic analysis, and smart progress tracking. Pass your test the first time — completely free.'}
             </motion.p>
 
-            {/* CTA buttons */}
+            {/* CTA Buttons */}
             <motion.div
-              variants={item}
-              className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center lg:justify-start"
+              initial={reducedMotion ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.5 }}
+              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center lg:justify-start mb-10"
             >
               <button
                 onClick={onStartTest}
-                className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[var(--accent)] hover:bg-[var(--accent-dark)] text-white font-semibold text-sm rounded-xl transition-all duration-200 min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[var(--accent)]/20"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[var(--accent)] hover:bg-[var(--accent-dark)] text-white font-bold text-lg rounded-2xl transition-all duration-200 min-h-[60px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[var(--accent)]/25"
               >
-                {language === 'vi' ? 'Bắt đầu thi thử' : 'Start Free Test'}
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                {language === 'vi' ? 'Thi thử ngay' : 'Start Free Test'}
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </button>
-
               <button
                 onClick={onExplore}
-                className="group inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[var(--bg-secondary)] hover:bg-[var(--bg-tertiary)] text-[var(--text-primary)] font-semibold text-sm rounded-xl border border-[var(--border)] transition-all duration-200 min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 hover:-translate-y-0.5"
+                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold text-base rounded-2xl transition-all duration-200 min-h-[60px] border border-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--primary)] hover:-translate-y-0.5"
               >
                 {language === 'vi' ? 'Khám phá nền tảng' : 'Explore Platform'}
               </button>
@@ -131,94 +138,91 @@ export function HeroSection({ onStartTest, onExplore }: HeroSectionProps) {
 
             {/* Trust badges */}
             <motion.div
-              variants={item}
-              className="grid grid-cols-2 gap-x-6 gap-y-3 mt-8 w-full max-w-md"
+              initial={reducedMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="grid grid-cols-2 gap-x-8 gap-y-3 w-full max-w-md"
             >
               {TRUST_BADGES.map(({ icon: Icon, labelVi, labelEn }) => (
-                <div
-                  key={labelEn}
-                  className="flex items-center gap-2 text-xs text-[var(--text-muted)]"
-                >
-                  <Icon className="w-3.5 h-3.5 text-[var(--success)] flex-shrink-0" aria-hidden="true" />
+                <div key={labelEn} className="flex items-center gap-2 text-sm text-white/50">
+                  <Icon className="w-4 h-4 text-white/30 flex-shrink-0" aria-hidden="true" />
                   <span>{language === 'vi' ? labelVi : labelEn}</span>
                 </div>
               ))}
             </motion.div>
           </motion.div>
 
-          {/* Right: Illustration */}
+          {/* ── RIGHT: Product mockup ── */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={reducedMotion ? false : { opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' as const }}
-            className="relative flex items-center justify-center"
+            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+            className="flex items-center justify-center"
           >
-            {/* Illustration card — driving test visualization */}
-            <div className="relative w-full max-w-md">
-              {/* Card background */}
-              <div
-                className="bg-[var(--bg-secondary)] rounded-3xl border border-[var(--border)] shadow-xl overflow-hidden"
-                role="img"
-                aria-label={language === 'vi'
-                  ? 'Giao diện thi GPLX — hiển thị câu hỏi và tiến độ'
-                  : 'GPLX exam interface — showing questions and progress'}
-              >
+            <div className="relative w-full max-w-lg">
+
+              {/* Main card */}
+              <div className="bg-[var(--bg-secondary)] rounded-3xl shadow-2xl overflow-hidden border border-white/10">
                 {/* Card header */}
-                <div className="bg-[var(--primary)] px-5 py-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-white/80 text-xs font-medium">Kỳ thi GPLX B1</span>
-                    <span className="text-white/60 text-xs">30/30 câu</span>
+                <div className="bg-[var(--primary)] px-6 py-5 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-[var(--accent)] rounded-lg flex items-center justify-center">
+                      <Car className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-white/80 text-xs font-medium">Kỳ thi GPLX B1</p>
+                      <p className="text-white/40 text-[10px]">30 câu hỏi</p>
+                    </div>
                   </div>
+                  <span className="px-2.5 py-1 bg-[var(--accent)]/20 text-[var(--accent)] text-xs font-bold rounded-full">
+                    90%
+                  </span>
                 </div>
 
-                {/* Progress bar */}
-                <div className="px-5 pt-4">
-                  <div className="flex justify-between text-xs text-[var(--text-muted)] mb-1.5">
-                    <span>Câu hỏi 12/30</span>
+                {/* Progress */}
+                <div className="px-6 pt-5 pb-3">
+                  <div className="flex justify-between text-xs text-[var(--text-muted)] mb-2">
+                    <span>Câu 12 / 30</span>
                     <span>40% hoàn thành</span>
                   </div>
                   <div className="h-1.5 bg-[var(--bg-tertiary)] rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: '40%' }}
-                      transition={{ duration: 1, delay: 0.8, ease: 'easeOut' as const }}
+                      transition={{ delay: 1, duration: 1, ease: 'easeOut' }}
                       className="h-full bg-[var(--accent)] rounded-full"
                     />
                   </div>
                 </div>
 
-                {/* Question preview */}
-                <div className="px-5 py-5 space-y-3">
-                  <p className="text-sm font-semibold text-[var(--text-primary)]">
+                {/* Question */}
+                <div className="px-6 pb-5 space-y-4">
+                  <p className="text-sm font-semibold text-[var(--text-primary)] leading-relaxed">
                     Khi gặp biển báo hiệu nguy hiểm, người lái xe phải làm gì?
                   </p>
                   <div className="space-y-2">
                     {[
                       { label: 'Giảm tốc độ và quan sát kỹ', selected: true, correct: true },
-                      { label: 'Tăng tốc độ để nhanh chóng vượt qua', selected: false, correct: false },
-                      { label: 'Dừng xe ngay lập tức', selected: false, correct: false },
-                      { label: 'Bấm còi liên tục', selected: false, correct: false },
+                      { label: 'Tăng tốc để nhanh chóng vượt qua', selected: false },
+                      { label: 'Dừng xe ngay lập tức', selected: false },
+                      { label: 'Bấm còi liên tục', selected: false },
                     ].map((opt, i) => (
                       <div
                         key={i}
                         className={`
-                          flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium border transition-colors
+                          flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium border transition-colors
                           ${opt.selected && opt.correct
                             ? 'bg-[var(--success)]/10 border-[var(--success)]/30 text-[var(--success)]'
-                            : opt.selected
-                            ? 'bg-[var(--error)]/10 border-[var(--error)]/30 text-[var(--error)]'
                             : 'bg-[var(--bg-tertiary)] border-transparent text-[var(--text-secondary)]'}
                         `}
                       >
                         <span className={`
-                          w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border flex-shrink-0
+                          w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold border flex-shrink-0
                           ${opt.selected && opt.correct
                             ? 'bg-[var(--success)] text-white border-[var(--success)]'
-                            : opt.selected
-                            ? 'bg-[var(--error)] text-white border-[var(--error)]'
                             : 'bg-[var(--bg-secondary)] border-[var(--border)]'}
                         `}>
-                          {opt.selected ? (opt.correct ? '✓' : '✗') : String.fromCharCode(65 + i)}
+                          {opt.selected ? '✓' : String.fromCharCode(65 + i)}
                         </span>
                         {opt.label}
                       </div>
@@ -227,66 +231,64 @@ export function HeroSection({ onStartTest, onExplore }: HeroSectionProps) {
                 </div>
 
                 {/* Chapter stats */}
-                <div className="px-5 pb-5">
-                  <div className="flex gap-2">
+                <div className="px-6 pb-5">
+                  <div className="grid grid-cols-6 gap-2">
                     {[
-                      { chapter: 'Ch.1', correct: 9, total: 9 },
-                      { chapter: 'Ch.2', correct: 1, total: 1 },
-                      { chapter: 'Ch.3', correct: 0, total: 3 },
-                      { chapter: 'Ch.4', correct: 0, total: 2 },
-                      { chapter: 'Ch.5', correct: 0, total: 9 },
-                      { chapter: 'Ch.6', correct: 0, total: 6 },
-                    ].map(({ chapter, correct, total }) => (
+                      { label: 'Ch.1', done: true },
+                      { label: 'Ch.2', done: true },
+                      { label: 'Ch.3', done: false },
+                      { label: 'Ch.4', done: false },
+                      { label: 'Ch.5', done: false },
+                      { label: 'Ch.6', done: false },
+                    ].map(({ label, done }) => (
                       <div
-                        key={chapter}
+                        key={label}
                         className={`
-                          flex-1 min-w-0 px-1 py-1.5 rounded-lg text-center text-[9px] font-bold
-                          ${correct === total && total > 0
+                          px-1 py-2 rounded-lg text-center text-[10px] font-bold
+                          ${done
                             ? 'bg-[var(--success)]/15 text-[var(--success)]'
-                            : correct > 0
-                            ? 'bg-[var(--warning)]/15 text-[var(--warning)]'
                             : 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]'}
                         `}
                       >
-                        {chapter}
+                        {label}
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Floating AI badge */}
+              {/* Floating AI badge — top right */}
               <motion.div
-                initial={{ opacity: 0, x: 20 }}
+                initial={reducedMotion ? false : { opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                className="absolute -right-2 top-8 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-2xl px-4 py-3 shadow-lg max-w-[160px]"
+                transition={{ delay: 1.2, duration: 0.5 }}
+                className="absolute -right-4 top-6 bg-[var(--bg-secondary)] border border-white/10 rounded-2xl px-4 py-3 shadow-xl max-w-[170px]"
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <BrainCircuit className="w-3.5 h-3.5 text-[var(--accent)]" aria-hidden="true" />
-                  <span className="text-[10px] font-bold text-[var(--text-muted)]">AI Assistant</span>
+                  <BrainCircuit className="w-4 h-4 text-[var(--accent)]" aria-hidden="true" />
+                  <span className="text-[11px] font-bold text-[var(--text-muted)]">AI Assistant</span>
                 </div>
-                <p className="text-[10px] text-[var(--text-secondary)] leading-tight">
+                <p className="text-[11px] text-[var(--text-secondary)] leading-tight">
                   {language === 'vi'
-                    ? 'Phân tích tình huống giao thông bằng Gemini AI'
-                    : 'Analyze traffic with Gemini AI'}
+                    ? 'Gemini AI phân tích tình huống giao thông'
+                    : 'Gemini AI analyzes traffic situations'}
                 </p>
               </motion.div>
 
-              {/* Floating result badge */}
+              {/* Floating score badge — bottom left */}
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
+                initial={reducedMotion ? false : { opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.1, duration: 0.5 }}
-                className="absolute -left-2 bottom-12 bg-[var(--bg-secondary)] border border-[var(--border)] rounded-2xl px-4 py-3 shadow-lg"
+                transition={{ delay: 1.4, duration: 0.5 }}
+                className="absolute -left-4 bottom-16 bg-[var(--bg-secondary)] border border-white/10 rounded-2xl px-4 py-3 shadow-xl"
               >
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-[var(--success)]" aria-hidden="true" />
-                  <span className="text-[10px] font-bold text-[var(--success)]">
-                    90% {language === 'vi' ? 'đạt' : 'accuracy'}
+                  <span className="text-[11px] font-bold text-[var(--success)]">
+                    95% {language === 'vi' ? 'đạt' : 'accuracy'}
                   </span>
                 </div>
-                <p className="text-[9px] text-[var(--text-muted)] mt-0.5">
+                <p className="text-[10px] text-[var(--text-muted)] mt-0.5">
                   {language === 'vi' ? 'Đậu kỳ thi' : 'Pass threshold'}
                 </p>
               </motion.div>
@@ -299,18 +301,18 @@ export function HeroSection({ onStartTest, onExplore }: HeroSectionProps) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.5 }}
+        transition={{ delay: 1.8, duration: 0.5 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         aria-hidden="true"
       >
-        <span className="text-[10px] font-medium text-[var(--text-muted)] tracking-widest uppercase">
+        <span className="text-[10px] font-medium text-white/30 tracking-widest uppercase">
           {language === 'vi' ? 'Cuộn xuống' : 'Scroll'}
         </span>
         <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' as const }}
+          animate={reducedMotion ? {} : { y: [0, 6, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <svg className="w-4 h-4 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-4 h-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </motion.div>

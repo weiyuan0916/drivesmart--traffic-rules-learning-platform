@@ -3,30 +3,45 @@ import { motion } from 'motion/react';
 import { SEO } from './SEO';
 import { StickyHeader } from './StickyHeader';
 import { HeroSection } from './sections/HeroSection';
+import { TrustBar } from './sections/TrustBar';
+import { SocialProofSection } from './sections/SocialProofSection';
+import { DrivingTestSection } from './sections/DrivingTestSection';
 import { VocabularySection } from './sections/VocabularySection';
 import { OPALSection } from './sections/OPALSection';
 import { ListeningSection } from './sections/ListeningSection';
-import { AgriSection } from './sections/AgriSection';
-import { SocialProof } from './sections/SocialProof';
+import { TestimonialsSection } from './sections/TestimonialsSection';
+import { FAQSection } from './sections/FAQSection';
 import { FinalCTA } from './sections/FinalCTA';
 import { Footer } from './sections/Footer';
-import { useInViewSection, useReducedMotion } from '../../hooks/useScrollAnimation';
 
-const SECTION_IDS = ['hero', 'vocabulary', 'opal', 'listening', 'agri', 'social-proof', 'cta'];
+export interface HomepageNavCallbacks {
+  onNavigateDriving: () => void;
+  onNavigateVocabulary: () => void;
+  onNavigateOPAL: () => void;
+  onNavigateListening: () => void;
+  onNavigateAgri: () => void;
+}
+
+const SECTION_IDS = [
+  'hero',
+  'driving',
+  'vocabulary',
+  'opal',
+  'listening',
+  'testimonials',
+  'faq',
+  'cta',
+];
 
 const PAGE_VARIANTS = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+    transition: { staggerChildren: 0.06, delayChildren: 0.05 },
   },
-  exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
-export function Homepage() {
-  const activeSection = useInViewSection(SECTION_IDS);
-  const reducedMotion = useReducedMotion();
-
+export function Homepage({ nav }: { nav: HomepageNavCallbacks }) {
   const scrollToSection = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -38,15 +53,16 @@ export function Homepage() {
     <>
       <SEO />
 
-      <StickyHeader activeSection={activeSection} onNavigate={scrollToSection} />
+      <StickyHeader
+        onNavigate={scrollToSection}
+      />
 
       <motion.main
         id="main-content"
-        variants={reducedMotion ? undefined : PAGE_VARIANTS}
+        variants={PAGE_VARIANTS}
         initial="hidden"
         animate="visible"
-        exit="exit"
-        className="bg-[var(--bg-primary)] text-[var(--text-primary)]"
+        className="bg-[var(--bg-primary)]"
         role="main"
       >
         {/* Skip to content — accessibility */}
@@ -57,40 +73,41 @@ export function Homepage() {
           Skip to main content
         </a>
 
-        {/* Section 1: Hero — Driving Test */}
-        <section id="hero" aria-label="Hero — Driving Test">
-          <HeroSection onStartTest={() => scrollToSection('vocabulary')} onExplore={() => scrollToSection('vocabulary')} />
-        </section>
+        {/* 1. Hero */}
+        <HeroSection
+          onStartTest={nav.onNavigateDriving}
+          onExplore={() => scrollToSection('driving')}
+        />
 
-        {/* Section 2: Vocabulary */}
-        <section id="vocabulary" aria-label="English Vocabulary">
-          <VocabularySection onStart={() => scrollToSection('opal')} />
-        </section>
+        {/* 2. Trust bar */}
+        <TrustBar />
 
-        {/* Section 3: OPAL */}
-        <section id="opal" aria-label="OPAL Phrases">
-          <OPALSection onStart={() => scrollToSection('listening')} />
-        </section>
+        {/* 3. Social proof */}
+        <SocialProofSection />
 
-        {/* Section 4: Listening */}
-        <section id="listening" aria-label="Practice Listening">
-          <ListeningSection onStart={() => scrollToSection('agri')} />
-        </section>
+        {/* 4. Driving Test */}
+        <DrivingTestSection onStart={nav.onNavigateDriving} />
 
-        {/* Section 5: AgriVietnam */}
-        <section id="agri" aria-label="AgriVietnam Products">
-          <AgriSection onExplore={() => scrollToSection('social-proof')} />
-        </section>
+        {/* 5. Vocabulary */}
+        <VocabularySection onStart={nav.onNavigateVocabulary} />
 
-        {/* Section 6: Social Proof */}
-        <section id="social-proof" aria-label="Social Proof">
-          <SocialProof />
-        </section>
+        {/* 6. OPAL */}
+        <OPALSection onStart={nav.onNavigateOPAL} />
 
-        {/* Section 7: Final CTA */}
-        <section id="cta" aria-label="Call to Action">
-          <FinalCTA />
-        </section>
+        {/* 7. Listening */}
+        <ListeningSection onStart={nav.onNavigateListening} />
+
+        {/* 8. Testimonials */}
+        <TestimonialsSection />
+
+        {/* 9. FAQ */}
+        <FAQSection />
+
+        {/* 10. Final CTA */}
+        <FinalCTA
+          onStartLearning={nav.onNavigateDriving}
+          onRegister={nav.onNavigateDriving}
+        />
 
         {/* Footer */}
         <Footer />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import MainContent from './components/MainContent';
@@ -26,6 +26,8 @@ import { generateExamQuestions, EXAM_CONFIGS, LicenseType } from './services/exa
 import { lazy, Suspense } from 'react';
 const AuthLoginPage = lazy(() => import('./features/listening/pages/auth/LoginPage'))
 const AuthRegisterPage = lazy(() => import('./features/listening/pages/auth/RegisterPage'))
+const OAuthCallbackPage = lazy(() => import('./features/listening/pages/auth/OAuthCallbackPage'))
+import { useAuthStore } from './features/listening/stores/authStore'
 
 function PageLoader() {
   return (
@@ -35,10 +37,27 @@ function PageLoader() {
   )
 }
 
+/**
+ * Redirects to /topics if the user is already authenticated.
+ * Used to prevent authenticated users from seeing login/register pages.
+ */
+function AuthRedirectGuard() {
+  const { isAuthenticated } = useAuthStore()
+  const { navigate } = { navigate: (() => { /* lazy */ }) as unknown as ReturnType<typeof import('react-router-dom').useNavigate> }
+
+  if (isAuthenticated) {
+    // Use window.location as a fallback since we're not in a Router context
+    window.location.href = '/topics'
+    return null
+  }
+  return null
+}
+
 type AppMode = 'none' | 'driving' | 'vocabulary' | 'opal' | 'marketing' | 'listening';
 type DrivingView = 'setup' | 'exam' | 'analyzer';
 
 function AppContent() {
+  const location = useLocation();
   const [selectedMode, setSelectedMode] = useState<AppMode>('none');
   const [drivingView, setDrivingView] = useState<DrivingView>('setup');
   const [examLoading, setExamLoading] = useState(false);
@@ -51,6 +70,17 @@ function AppContent() {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [candidateName, setCandidateName] = useState('');
   const { t } = useLanguage();
+
+  // Sync URL pathname → selectedMode (handles direct navigation to /listening, etc.)
+  useEffect(() => {
+    const path = location.pathname;
+    if (path === '/' || path === '/home') {
+      setSelectedMode('none');
+    } else if (path === '/listening' || path === '/vocabulary' || path === '/opal' || path === '/agri-vietnam' || path === '/driving-test') {
+      // These routes render inside the homepage as sections
+      setSelectedMode('none');
+    }
+  }, [location.pathname]);
 
   const examTimeMinutes = EXAM_CONFIGS[selectedLicenseType]?.timeMinutes || 30;
 
@@ -236,7 +266,15 @@ function AppContent() {
 
       {/* Marketing Homepage — scroll storytelling landing page */}
       {selectedMode === 'none' && (
-        <Homepage />
+        <Homepage
+          nav={{
+            onNavigateDriving: () => setSelectedMode('driving'),
+            onNavigateVocabulary: () => setSelectedMode('vocabulary'),
+            onNavigateOPAL: () => setSelectedMode('opal'),
+            onNavigateListening: () => { window.location.href = '/listening'; },
+            onNavigateAgri: () => setSelectedMode('marketing'),
+          }}
+        />
       )}
 
       {/* Driving Test Mode */}
@@ -351,6 +389,27 @@ export default function App() {
                   <Suspense fallback={<PageLoader />}>
                     <AuthRegisterPage />
                   </Suspense>
+                }
+              />
+              <Route
+                path="/auth/callback"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <OAuthCallbackPage />
+                  </Suspense>
+                }
+              />
+              {/* Listening module — full standalone experience */}
+              <Route
+                path="/listening"
+                element={
+                  <ThemeProvider>
+                    <LanguageProvider>
+                      <GlobalAudioProvider>
+                        <ListeningModule onBack={() => window.history.back()} />
+                      </GlobalAudioProvider>
+                    </LanguageProvider>
+                  </ThemeProvider>
                 }
               />
               {/* Main app shell */}

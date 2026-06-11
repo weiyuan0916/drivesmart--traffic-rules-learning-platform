@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react'
-import { getOAuthRedirectUrl, extractOAuthToken, setToken } from '../api/authApi'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { getOAuthRedirectUrl, setToken } from '../api/authApi'
 import { useAuthStore } from '../stores/authStore'
 
 interface UseOAuthReturn {
@@ -11,18 +11,53 @@ interface UseOAuthReturn {
 const POPUP_WIDTH = 500
 const POPUP_HEIGHT = 700
 
+const MESSAGE_SOURCE = 'drivesmart-oauth'
+
+interface OAuthSuccessMessage {
+  source: typeof MESSAGE_SOURCE
+  type: 'OAUTH_SUCCESS'
+  token: string
+  user: Record<string, unknown>
+}
+
+interface OAuthErrorMessage {
+  source: typeof MESSAGE_SOURCE
+  type: 'OAUTH_ERROR'
+  error: string
+}
+
+type OAuthMessage = OAuthSuccessMessage | OAuthErrorMessage
+
 /**
  * Hook to initiate OAuth flow in a popup window.
- * Handles opening the popup, polling for the auth token, and storing it.
+ * Uses postMessage (not localStorage) to communicate between popup and opener,
+ * which works across different origins (e.g. localhost:3000 ↔ localhost:8000).
  */
 export function useOAuth(): UseOAuthReturn {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const { login } = useAuthStore()
+  const popupRef = useRef<Window | null>(null)
+  const listenerRef = useRef<((e: MessageEvent) => void) | null>(null)
+
+  // Cleanup listener on unmount
+  useEffect(() => {
+    return () => {
+      if (listenerRef.current) {
+        window.removeEventListener('message', listenerRef.current)
+      }
+    }
+  }, [])
 
   const initiateOAuth = useCallback(async (provider: 'google' | 'github') => {
     setIsLoading(true)
     setError(null)
+
+    // Remove any stale listener
+    if (listenerRef.current) {
+      window.removeEventListener('message', listenerRef.current)
+      listenerRef.current = null
+    }
 
     try {
       // Get redirect URL from our backend
@@ -38,42 +73,82 @@ export function useOAuth(): UseOAuthReturn {
         `${provider}-oauth`,
         `width=${POPUP_WIDTH},height=${POPUP_HEIGHT},left=${left},top=${top},toolbar=no,menubar=no`
       )
+      popupRef.current = popup
 
       if (!popup) {
         throw new Error('Popup was blocked. Please allow popups for this site.')
       }
 
-      // Poll for the auth token in localStorage (set by the OAuth callback handler)
+      // Listen for postMessage from the popup
       await new Promise<void>((resolve, reject) => {
-        const checkInterval = setInterval(() => {
-          try {
-            // The popup sets oauth_token in localStorage on success
-            const tokenData = extractOAuthToken()
+        const handleMessage = (event: MessageEvent<OAuthMessage>) => {
+          // Only accept messages from our own OAuth flow
+          if (event.data?.source !== MESSAGE_SOURCE) return
+          if (event.data.type === 'OAUTH_SUCCESS') {
+            setToken(event.data.token)
+            login(
+              {
+                id: String(event.data.user.id),
+                email: String(event.data.user.email ?? ''),
+                name: String(event.data.user.name ?? ''),
+                avatarUrl: event.data.user.avatar_url
+                  ? String(event.data.user.avatar_url)
+                  : null,
+                level: Number(event.data.user.level ?? 1),
+                totalXp: Number(event.data.user.total_xp ?? 0),
+                currentStreak: Number(event.data.user.current_streak ?? 0),
+                longestStreak: Number(event.data.user.longest_streak ?? 0),
+                lastLessonDate: event.data.user.last_lesson_date
+                  ? String(event.data.user.last_lesson_date)
+                  : null,
+                learningGoal:
+                  (event.data.user.learning_goal as 'daily' | 'weekly' | 'none') ??
+                  'daily',
+                timezone: String(event.data.user.timezone ?? 'Asia/Ho_Chi_Minh'),
+                dailyGoalMinutes: Number(event.data.user.daily_goal_minutes ?? 10),
+                onboardingCompleted: Boolean(event.data.user.onboarding_completed ?? false),
+                createdAt: event.data.user.created_at
+                  ? String(event.data.user.created_at)
+                  : new Date().toISOString(),
+                updatedAt: event.data.user.updated_at
+                  ? String(event.data.user.updated_at)
+                  : new Date().toISOString(),
+              },
+              event.data.token
+            )
+            popupRef.current?.close()
+            resolve()
+          } else if (event.data.type === 'OAUTH_ERROR') {
+            popupRef.current?.close()
+            reject(new Error(event.data.error ?? 'Authentication failed.'))
+          }
+        }
 
-            if (tokenData) {
-              clearInterval(checkInterval)
-              setToken(tokenData.token)
-              login(tokenData.user, tokenData.token)
-              popup.close()
-              resolve()
-            }
+        listenerRef.current = handleMessage
+        window.addEventListener('message', handleMessage)
 
-            // Check if popup was closed manually
-            if (popup.closed) {
-              clearInterval(checkInterval)
-              reject(new Error('Authentication was cancelled.'))
-            }
-          } catch {
-            // Cross-origin error — popup is still on OAuth provider page
+        // Poll for popup close (fallback if postMessage doesn't fire)
+        const pollClosed = setInterval(() => {
+          if (!popupRef.current || popupRef.current.closed) {
+            clearInterval(pollClosed)
+            window.removeEventListener('message', handleMessage)
+            listenerRef.current = null
+            // Only reject if we haven't received a success message
+            reject(new Error('Authentication was cancelled.'))
           }
         }, 500)
 
-        // Timeout after 5 minutes
-        setTimeout(() => {
-          clearInterval(checkInterval)
-          if (!popup.closed) popup.close()
-          reject(new Error('Authentication timed out.'))
-        }, 5 * 60 * 1000)
+        // Cleanup on resolve
+        const cleanup = () => {
+          clearInterval(pollClosed)
+          window.removeEventListener('message', handleMessage)
+          listenerRef.current = null
+        }
+        // Override resolve/reject to cleanup first
+        const originalResolve = resolve
+        const originalReject = reject
+        resolve = (v) => { cleanup(); originalResolve(v) }
+        reject = (e) => { cleanup(); originalReject(e) }
       })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Authentication failed.'

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { motion } from 'motion/react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react'
 import { AuthCard } from '../../components/auth/AuthCard'
 import { OAuthButton } from '../../components/auth/OAuthButton'
@@ -18,7 +18,6 @@ interface RegisterForm {
 }
 
 export default function RegisterPage() {
-  const navigate = useNavigate()
   const { login: loginStore } = useAuthStore()
   const { initiateOAuth, isLoading: oauthLoading } = useOAuth()
   const [showPassword, setShowPassword] = useState(false)
@@ -53,7 +52,7 @@ export default function RegisterPage() {
       })
       setToken(token)
       loginStore(user, token)
-      navigate('/onboarding')
+      window.location.href = '/onboarding'
     } catch (err: unknown) {
       const error = err as { message?: string; errors?: Record<string, string[]> }
       if (error.errors) {
@@ -73,7 +72,7 @@ export default function RegisterPage() {
     setApiError(null)
     try {
       await initiateOAuth(provider)
-      navigate('/onboarding')
+      window.location.href = '/onboarding'
     } catch {
       // Error managed by useOAuth
     }

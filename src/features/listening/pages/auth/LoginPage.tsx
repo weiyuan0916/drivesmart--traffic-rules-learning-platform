@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { motion } from 'motion/react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import { AuthCard } from '../../components/auth/AuthCard'
 import { OAuthButton } from '../../components/auth/OAuthButton'
@@ -21,7 +21,6 @@ const DIVIDER_TEXT = {
 }
 
 export default function LoginPage() {
-  const navigate = useNavigate()
   const { login: loginStore } = useAuthStore()
   const { initiateOAuth, isLoading: oauthLoading, error: oauthError } = useOAuth()
   const [showPassword, setShowPassword] = useState(false)
@@ -46,7 +45,7 @@ export default function LoginPage() {
       const { user, token } = await login({ email: data.email, password: data.password })
       setToken(token)
       loginStore(user, token)
-      navigate('/topics')
+      window.location.href = '/topics'
     } catch (err: unknown) {
       const error = err as { message?: string; code?: string }
       const lang = document.documentElement.lang === 'en' ? 'en' : 'vi'
@@ -69,7 +68,7 @@ export default function LoginPage() {
     setApiError(null)
     try {
       await initiateOAuth(provider)
-      navigate('/topics')
+      window.location.href = '/topics'
     } catch {
       // Error is already managed by useOAuth
     }

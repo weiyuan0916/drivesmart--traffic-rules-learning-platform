@@ -22,7 +22,8 @@ export default async function handler(_req: VercelRequest, res: VercelResponse) 
       host: process.env.DB_HOST,
     });
   } catch (err) {
-    console.error('Health check error:', err);
-    res.status(500).json({ error: 'Health check failed' });
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('Health check error:', message);
+    res.status(500).json({ error: 'Health check failed', detail: message });
   }
 }

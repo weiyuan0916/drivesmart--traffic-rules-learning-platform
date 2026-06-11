@@ -1,47 +1,52 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-
 /**
  * OAuth Callback Page
  *
  * This page is opened in a popup window by the OAuth flow.
- * It reads the token from the URL, stores it in localStorage,
- * and sends it to the opener window via postMessage, then closes.
- *
  * Backend redirects here after OAuth: /auth/callback?token=xxx&user=...
+ * It parses the token, sends it to the opener via postMessage, then closes.
+ *
+ * The MESSAGE_SOURCE identifier must match what useOAuth.ts listens for.
  */
-export default function OAuthCallbackPage() {
-  const navigate = useNavigate()
+const MESSAGE_SOURCE = 'drivesmart-oauth'
 
-  useEffect(() => {
+export default function OAuthCallbackPage() {
+  const handleCallback = () => {
     const params = new URLSearchParams(window.location.search)
     const token = params.get('token')
     const userParam = params.get('user')
+    const error = params.get('error')
 
     if (token && userParam) {
       try {
         const user = JSON.parse(atob(userParam))
-        // Store in localStorage for the opener to pick up
-        localStorage.setItem('oauth_token', JSON.stringify({ token, user }))
-        // Notify opener
         if (window.opener) {
-          window.opener.postMessage({ type: 'OAUTH_SUCCESS', token, user }, window.location.origin)
+          window.opener.postMessage(
+            { source: MESSAGE_SOURCE, type: 'OAUTH_SUCCESS', token, user },
+            window.location.origin
+          )
         }
-        // Close popup after short delay
-        setTimeout(() => {
-          window.close()
-        }, 500)
       } catch {
-        navigate('/auth/login?error=oauth_failed')
+        // Fall through to error redirect
       }
-    } else {
-      const error = params.get('error')
-      if (window.opener) {
-        window.opener.postMessage({ type: 'OAUTH_ERROR', error: error ?? 'unknown' }, window.location.origin)
-      }
-      navigate('/auth/login?error=' + (error ?? 'oauth_failed'))
     }
-  }, [navigate])
+
+    if (error || !token || !userParam) {
+      if (window.opener) {
+        window.opener.postMessage(
+          { source: MESSAGE_SOURCE, type: 'OAUTH_ERROR', error: error ?? 'oauth_failed' },
+          window.location.origin
+        )
+      }
+    }
+
+    // Close popup after short delay to allow postMessage to be sent
+    setTimeout(() => {
+      window.close()
+    }, 500)
+  }
+
+  // Run synchronously after render so postMessage is sent as early as possible
+  handleCallback()
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center">

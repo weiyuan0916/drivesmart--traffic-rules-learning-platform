@@ -255,6 +255,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
           challengeId: currentChallenge.id,
           accuracy: res.accuracy,
           correct: true,
+          skipped: false,
           wordResults: res.wordResults,
         },
       ]);
@@ -382,7 +383,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
       : 0;
 
     return (
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className="max-w-3xl mx-auto space-y-6 pb-8">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -562,11 +563,14 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
         </button>
       </div>
 
-      {/* Main layout: sentence list + practice area */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-        {/* Sentence Navigator — left panel */}
+      {/* Main layout */}
+      <div className="flex flex-col lg:flex-row gap-4 max-w-5xl mx-auto">
+        {/* ── Mobile: Sentences first, then practice area below ── */}
+        {/* ── Desktop: Sentences left panel + practice area right ── */}
+
+        {/* Sentence Navigator — top on mobile, left panel on desktop */}
         <div
-          className="lg:col-span-2 rounded-2xl overflow-hidden"
+          className="order-2 lg:order-1 lg:w-72 xl:w-80 rounded-2xl overflow-hidden flex-shrink-0"
           style={{ background: 'var(--lm-surface)', border: '1px solid var(--lm-border)' }}
         >
           <div className="px-4 py-3 border-b" style={{ borderColor: 'var(--lm-border)' }}>
@@ -579,11 +583,11 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
           </div>
           <div
             className="overflow-y-auto"
-            style={{ maxHeight: '400px', overscrollBehavior: 'contain' }}
+            style={{ maxHeight: 'clamp(200px, 40vh, 400px)', overscrollBehavior: 'contain' }}
           >
             {challenges.map((ch, idx) => {
               const sr = sentenceResults.find((r) => r.challengeId === ch.id);
-              const isActive = idx === currentIdx && sentenceState !== 'completed';
+              const isActive = idx === currentIdx;
               const isDone = !!sr;
               const isCorrect = sr?.correct;
 
@@ -671,8 +675,8 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
           </div>
         </div>
 
-        {/* Practice Area — right panel */}
-        <div className="lg:col-span-3 space-y-4">
+        {/* Practice Area — bottom on mobile, right on desktop */}
+        <div className="order-1 lg:order-2 flex-1 min-w-0 space-y-4">
           {/* Current sentence info */}
           <div
             className="p-4 rounded-2xl"
