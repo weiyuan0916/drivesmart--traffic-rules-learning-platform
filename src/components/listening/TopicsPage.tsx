@@ -15,12 +15,36 @@ const DIFFICULTY_LEVELS: Record<string, FilterType> = {
   A1: 'Beginner', A2: 'Beginner',
   B1: 'Intermediate', B2: 'Intermediate',
   C1: 'Advanced', C2: 'Advanced',
+  beginner: 'Beginner',
+  intermediate: 'Intermediate',
+  advanced: 'Advanced',
 };
 
 function topicLevelsToCategory(levelsStr: string): FilterType | null {
   if (!levelsStr) return null;
-  // Parse "Levels: A1-C1" or "Levels: A1" → extract all level codes
-  const parts = levelsStr.replace(/Levels:\s*/gi, '').split('-');
+
+  // Normalize: lower case, strip "Levels:" prefix
+  const normalized = levelsStr.replace(/Levels:\s*/gi, '').toLowerCase().trim();
+
+  // Format 1: comma-separated full words — "advanced, beginner, intermediate"
+  if (normalized.includes(',')) {
+    const categories = normalized
+      .split(',')
+      .map((l) => l.trim())
+      .filter(Boolean)
+      .map((l) => DIFFICULTY_LEVELS[l])
+      .filter(Boolean);
+
+    if (categories.length === 0) return null;
+    // Priority: Beginner > Intermediate > Advanced
+    if (categories.includes('Beginner')) return 'Beginner';
+    if (categories.includes('Intermediate')) return 'Intermediate';
+    if (categories.includes('Advanced')) return 'Advanced';
+    return categories[0] ?? null;
+  }
+
+  // Format 2: dash-separated CEFR codes — "A1-C1" or "A1"
+  const parts = normalized.split('-');
   const categories = parts
     .map((l) => l.trim())
     .filter(Boolean)
@@ -28,11 +52,10 @@ function topicLevelsToCategory(levelsStr: string): FilterType | null {
     .filter(Boolean);
 
   if (categories.length === 0) return null;
-  // Priority: Beginner > Intermediate > Advanced
   if (categories.includes('Beginner')) return 'Beginner';
   if (categories.includes('Intermediate')) return 'Intermediate';
   if (categories.includes('Advanced')) return 'Advanced';
-  return null;
+  return categories[0] ?? null;
 }
 
 export default function TopicsPage({ onTopicSelect }: TopicsPageProps) {
@@ -171,12 +194,21 @@ export default function TopicsPage({ onTopicSelect }: TopicsPageProps) {
                 >
                   {topic.description || `${topic.lessonCount} lessons`}
                 </p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span
                     className="text-xs font-semibold px-2 py-1 rounded-full"
                     style={{ background: colors.bg, color: colors.text }}
                   >
-                    {topic.levels || 'Mixed'}
+                    {(() => {
+                      if (!topic.levels) return 'Mixed';
+                      const normalized = topic.levels.toLowerCase();
+                      if (normalized.includes('beginner') && normalized.includes('advanced')) return 'Mixed';
+                      if (normalized.includes('beginner') && normalized.includes('intermediate')) return 'Mixed';
+                      if (normalized.includes('advanced')) return 'Advanced';
+                      if (normalized.includes('intermediate')) return 'Intermediate';
+                      if (normalized.includes('beginner')) return 'Beginner';
+                      return topic.levels;
+                    })()}
                   </span>
                   <span className="text-xs" style={{ color: 'var(--lm-text-muted)' }}>
                     {topic.lessonCount} lessons

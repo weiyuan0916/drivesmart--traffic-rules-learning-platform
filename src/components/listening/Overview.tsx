@@ -33,15 +33,22 @@ export default function Overview({ onNavigate }: OverviewProps) {
   }, []);
 
   const popularTopics = topics.slice(0, 4);
-  const recommendedTopics = topics.filter((t) => t.levels?.includes('A1') || t.levels?.includes('A2')).slice(0, 3);
+  const recommendedTopics = topics.filter((t) => {
+    const l = (t.levels || '').toLowerCase();
+    return l.includes('a1') || l.includes('a2') || l.includes('beginner');
+  }).slice(0, 3);
 
   const getDifficultyColor = (levels?: string) => {
     if (!levels) return '#9CA3AF';
-    if (levels.includes('A1')) return '#00BE7C';
-    if (levels.includes('A2')) return '#3B82F6';
-    if (levels.includes('B1')) return '#F59E0B';
-    if (levels.includes('B2')) return '#F97316';
-    if (levels.includes('C1')) return '#EF4444';
+    const l = levels.toLowerCase();
+    // Full-word format from Supabase
+    if (l.includes('beginner')) return '#00BE7C';
+    if (l.includes('advanced')) return '#EF4444';
+    if (l.includes('intermediate')) return '#F97316';
+    // CEFR code format from SQLite
+    if (l.includes('A1') || l.includes('A2')) return '#00BE7C';
+    if (l.includes('B1') || l.includes('B2')) return '#F97316';
+    if (l.includes('C1') || l.includes('C2')) return '#EF4444';
     return '#9CA3AF';
   };
 
@@ -255,7 +262,16 @@ export default function Overview({ onNavigate }: OverviewProps) {
                       color: getDifficultyColor(topic.levels),
                     }}
                   >
-                    {topic.levels || 'Mixed'}
+                    {(() => {
+                      const l = (topic.levels || '').toLowerCase();
+                      if (!topic.levels) return 'Mixed';
+                      if (l.includes('beginner') && l.includes('advanced')) return 'Mixed';
+                      if (l.includes('beginner') && l.includes('intermediate')) return 'Mixed';
+                      if (l.includes('advanced')) return 'Advanced';
+                      if (l.includes('intermediate')) return 'Intermediate';
+                      if (l.includes('beginner')) return 'Beginner';
+                      return topic.levels;
+                    })()}
                   </span>
                   <span className="text-xs" style={{ color: 'var(--lm-text-muted)' }}>
                     {topic.lessonCount} lessons

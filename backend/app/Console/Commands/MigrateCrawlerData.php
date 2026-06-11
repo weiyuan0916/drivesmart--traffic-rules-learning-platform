@@ -15,6 +15,7 @@ class MigrateCrawlerData extends Command
     protected $description = 'Migrate data from crawler SQLite database to Supabase PostgreSQL';
 
     private array $sectionToTopicMap = [];
+    private array $sectionIdMap = [];
     private array $sqliteLessonToLaravelLessonMap = [];
 
     public function handle(): int
@@ -78,9 +79,9 @@ class MigrateCrawlerData extends Command
         $startTime = microtime(true);
 
         $this->migrateTopics();
+        $this->migrateSections();
         $this->migrateLessons();
         $this->migrateLessonClips();
-        $this->migrateSections();
 
         $elapsed = round(microtime(true) - $startTime, 2);
         $this->newLine();
@@ -132,7 +133,7 @@ class MigrateCrawlerData extends Command
 
     private function migrateLessons(): void
     {
-        $this->info('Step 2/4: Migrating lessons...');
+        $this->info('Step 3/4: Migrating lessons...');
 
         $lessons = DB::connection('sqlite-crawler')
             ->table('lessons')
@@ -144,7 +145,16 @@ class MigrateCrawlerData extends Command
 
         $count = 0;
         foreach ($lessons as $lesson) {
-            $laravelTopicId = $this->resolveLaravelTopicId($lesson->section_id);
+            $laravelSectionId = $this->sectionIdMap[$lesson->section_id] ?? null;
+            $laravelTopicId = $laravelSectionId
+                ? $this->sqliteToLaravelTopicMap[DB::connection('sqlite-crawler')->table('sections')->where('id', $lesson->section_id)->value('topic_id')] ?? null
+                : null;
+
+            if (!$laravelTopicId && !empty($this->sqliteToLaravelTopicMap)) {
+                $laravelTopicId = array_values($this->sqliteToLaravelTopicMap)[0];
+            } elseif (!$laravelTopicId) {
+                $laravelTopicId = DB::connection('pgsql')->table('topics')->first()->id ?? 1;
+            }
 
             $slug = $this->generateSlug($lesson->name ?? $lesson->lesson_name ?? 'lesson-' . $lesson->id);
             $level = $this->mapVocabLevel($lesson->vocab_level);
@@ -153,6 +163,7 @@ class MigrateCrawlerData extends Command
 
             $laravelLessonId = DB::connection('pgsql')->table('lessons')->insertGetId([
                 'topic_id' => $laravelTopicId,
+                'section_id' => $laravelSectionId,
                 'name' => $name,
                 'slug' => $slug,
                 'audio_path' => $lesson->audio_src,
@@ -178,11 +189,11 @@ class MigrateCrawlerData extends Command
     private function migrateLessonClips(): void
     {
         if ($this->option('skip-clips')) {
-            $this->warn('Step 3/4: Skipping lesson_clips (--skip-clips flag).');
+            $this->warn('Step 4/4: Skipping lesson_clips (--skip-clips flag).');
             return;
         }
 
-        $this->info('Step 3/4: Migrating lesson_clips...');
+        $this->info('Step 4/4: Migrating lesson_clips...');
 
         $challenges = DB::connection('sqlite-crawler')
             ->table('challenges')
@@ -236,7 +247,7 @@ class MigrateCrawlerData extends Command
 
     private function migrateSections(): void
     {
-        $this->info('Step 4/4: Migrating sections as topic metadata...');
+        $this->info('Step 2/4: Migrating sections...');
 
         $sections = DB::connection('sqlite-crawler')
             ->table('sections')
@@ -254,20 +265,36 @@ class MigrateCrawlerData extends Command
                 continue;
             }
 
-            $currentDescription = DB::connection('pgsql')
-                ->table('topics')
-                ->where('id', $laravelTopicId)
-                ->value('description');
+            $existing = DB::connection('pgsql')
+                ->table('sections')
+                ->where('topic_id', $laravelTopicId)
+                ->where('slug', $section->slug)
+                ->first();
 
-            $sectionInfo = "Section: {$section->name}";
-            $newDescription = $currentDescription
-                ? $currentDescription . "\n" . $sectionInfo
-                : $sectionInfo;
+            if ($existing) {
+                $this->sectionIdMap[$section->id] = $existing->id;
+                $bar->advance();
+                continue;
+            }
+
+            $laravelSectionId = DB::connection('pgsql')->table('sections')->insertGetId([
+                'topic_id' => $laravelTopicId,
+                'name' => $section->name,
+                'slug' => $section->slug,
+                'order_index' => $section->order_index ?? $count,
+                'vocab_level' => $this->mapVocabLevel($section->vocab_level),
+                'lesson_count' => $section->lesson_count ?? 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $this->sectionIdMap[$section->id] = $laravelSectionId;
 
             DB::connection('pgsql')
-                ->table('topics')
-                ->where('id', $laravelTopicId)
-                ->update(['description' => $newDescription]);
+                ->table('lessons')
+                ->where('slug', 'LIKE', '%' . ($section->slug ?? '') . '%')
+                ->whereNull('section_id')
+                ->update(['section_id' => $laravelSectionId]);
 
             $count++;
             $bar->advance();
@@ -275,7 +302,7 @@ class MigrateCrawlerData extends Command
 
         $bar->finish();
         $this->line('');
-        $this->info("  -> {$count} sections integrated into topics.");
+        $this->info("  -> {$count} sections migrated.");
     }
 
     private function resolveLaravelTopicId(?int $sectionId): int

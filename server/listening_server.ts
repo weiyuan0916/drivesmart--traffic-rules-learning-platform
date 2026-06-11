@@ -1,50 +1,64 @@
+import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import Database from 'better-sqlite3';
+import { Pool } from 'pg';
 import fs from 'fs';
 
-// Resolve DB path using explicit absolute path to avoid import.meta.url issues
-const DB_PATH = process.env.CRAWLER_DB_PATH || '/Users/edward/Documents/GitHub/drivesmart--traffic-rules-learning-platform/crawler/data/dailydictation.db';
-const db = new Database(DB_PATH, { readonly: true });
-
 const app = express();
-const PORT = parseInt(process.env.PORT || '3002');
+const PORT = parseInt(process.env.LISTENING_PORT || '3002');
+
+// PostgreSQL connection pool (Supabase)
+const pool = new Pool({
+  host: process.env.DB_HOST || 'aws-1-ap-southeast-1.pooler.supabase.com',
+  port: parseInt(process.env.DB_PORT || '5432'),
+  database: process.env.DB_DATABASE || 'postgres',
+  user: process.env.DB_USERNAME || 'postgres.xcnhurrsrdjorfuzzjfz',
+  password: process.env.DB_PASSWORD || 'iZMmkt4SebxMoXIR',
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000,
+});
+
+// Helper: query with params
+async function query(text: string, params?: any[]) {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(text, params);
+    return result.rows;
+  } finally {
+    client.release();
+  }
+}
+
+// Helper: querySingle
+async function queryOne(text: string, params?: any[]) {
+  const rows = await query(text, params);
+  return rows[0] ?? null;
+}
 
 app.use(cors());
 app.use(express.json());
 
-// Helper: parse section ID -> topic info for a lesson
-function getTopicInfoForLesson(lessonId: number) {
-  const row = db.prepare(`
-    SELECT t.id, t.name, t.slug, t.levels, t.lesson_count
-    FROM topics t
-    JOIN sections s ON s.topic_id = t.id
-    JOIN lessons l ON l.section_id = s.id
-    WHERE l.id = ?
-    LIMIT 1
-  `).get(lessonId) as any;
-  return row;
-}
-
 // ─── Health check ─────────────────────────────────────────────────────────────
-app.get('/api/listening/health', (_req: Request, res: Response) => {
+app.get('/api/listening/health', async (_req: Request, res: Response) => {
   try {
-    const stats = {
-      topics:    db.prepare('SELECT COUNT(*) as c FROM topics').get() as any,
-      sections:  db.prepare('SELECT COUNT(*) as c FROM sections').get() as any,
-      lessons:   db.prepare('SELECT COUNT(*) as c FROM lessons').get() as any,
-      challenges:db.prepare('SELECT COUNT(*) as c FROM challenges').get() as any,
-    };
+    const [topics, sections, lessons, clips] = await Promise.all([
+      query('SELECT COUNT(*) as c FROM topics'),
+      query('SELECT COUNT(*) as c FROM sections'),
+      query('SELECT COUNT(*) as c FROM lessons'),
+      query('SELECT COUNT(*) as c FROM lesson_clips'),
+    ]);
     res.json({
       status: 'ok',
       stats: {
-        topics:    stats.topics.c,
-        sections:  stats.sections.c,
-        lessons:   stats.lessons.c,
-        challenges:stats.challenges.c,
+        topics: Number(topics[0].c),
+        sections: Number(sections[0].c),
+        lessons: Number(lessons[0].c),
+        challenges: Number(clips[0].c),
       },
-      source: 'sqlite',
-      db: DB_PATH,
+      source: 'postgresql',
+      host: process.env.DB_HOST,
     });
   } catch (err) {
     console.error('Health check error:', err);
@@ -53,35 +67,52 @@ app.get('/api/listening/health', (_req: Request, res: Response) => {
 });
 
 // ─── GET /api/listening/topics ────────────────────────────────────────────────
-app.get('/api/listening/topics', (_req: Request, res: Response) => {
+app.get('/api/listening/topics', async (_req: Request, res: Response) => {
   try {
-    const topics = db.prepare(`
+    const topics = await query(`
       SELECT
         t.id,
         t.name,
         t.slug,
-        t.url,
-        t.lesson_count,
-        t.levels,
         t.description,
+        t.color,
+        t.is_active,
+        t.order_index,
         COUNT(DISTINCT s.id) as section_count,
-        COUNT(DISTINCT l.id) as lesson_count_actual
+        COUNT(DISTINCT l.id) as lesson_count
       FROM topics t
       LEFT JOIN sections s ON s.topic_id = t.id
-      LEFT JOIN lessons l ON l.section_id = s.id
+      LEFT JOIN lessons l ON l.topic_id = t.id AND l.deleted_at IS NULL
+      WHERE t.is_active = true AND t.deleted_at IS NULL
       GROUP BY t.id
-      ORDER BY t.lesson_count DESC
-    `).all();
+      ORDER BY t.order_index ASC
+    `);
+
+    const levelsMap: Record<number, string[]> = {};
+    const levelsRows = await query(`
+      SELECT DISTINCT t.id, l.vocab_level
+      FROM topics t
+      JOIN lessons l ON l.topic_id = t.id AND l.deleted_at IS NULL
+      WHERE t.is_active = true AND l.vocab_level IS NOT NULL
+      ORDER BY t.id, l.vocab_level
+    `);
+    for (const row of levelsRows) {
+      if (!levelsMap[row.id]) levelsMap[row.id] = [];
+      if (!levelsMap[row.id].includes(row.vocab_level)) {
+        levelsMap[row.id].push(row.vocab_level);
+      }
+    }
 
     const result = topics.map((t: any) => ({
-      id:           Number(t.id),
-      name:         t.name,
-      slug:         t.slug,
-      url:          t.url,
-      lessonCount:  Number(t.lesson_count_actual || t.lesson_count),
-      levels:       t.levels || '',
-      description:  t.description || '',
+      id: Number(t.id),
+      name: t.name,
+      slug: t.slug,
+      url: `/topic/${t.slug}`,
+      lessonCount: Number(t.lesson_count),
+      levels: levelsMap[t.id]?.join(', ') || '',
+      description: t.description || '',
       sectionCount: Number(t.section_count),
+      color: t.color || '#35375B',
     }));
 
     res.json({ topics: result });
@@ -92,61 +123,67 @@ app.get('/api/listening/topics', (_req: Request, res: Response) => {
 });
 
 // ─── GET /api/listening/topics/:slug ─────────────────────────────────────────
-app.get('/api/listening/topics/:slug', (req: Request, res: Response) => {
+app.get('/api/listening/topics/:slug', async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
-    const topic = db.prepare(`
-      SELECT id, name, slug, url, lesson_count, levels, description
-      FROM topics WHERE slug = ? LIMIT 1
-    `).get(slug) as any;
+
+    const topic = await queryOne(
+      `SELECT id, name, slug, description, color, is_active, order_index
+       FROM topics WHERE slug = $1 AND is_active = true AND deleted_at IS NULL LIMIT 1`,
+      [slug]
+    );
 
     if (!topic) {
       res.status(404).json({ error: 'Topic not found' });
       return;
     }
 
-    const sections = db.prepare(`
-      SELECT id, topic_id, name, slug, order_index, lesson_count, vocab_level
-      FROM sections WHERE topic_id = ?
-      ORDER BY order_index ASC
-    `).all(topic.id);
+    const sections = await query(
+      `SELECT id, topic_id, name, slug, order_index, vocab_level
+       FROM sections WHERE topic_id = $1 AND deleted_at IS NULL
+       ORDER BY order_index ASC`,
+      [topic.id]
+    );
 
-    const sectionsWithLessons = sections.map((s: any) => {
-      const lessons = db.prepare(`
-        SELECT id, section_id, name, lesson_name, parts_count, vocab_level, audio_src,
-               audio_downloaded, transcript
-        FROM lessons WHERE section_id = ?
-        ORDER BY id ASC
-      `).all(s.id);
+    const sectionsWithLessons = await Promise.all(
+      sections.map(async (s: any) => {
+        const lessons = await query(
+          `SELECT id, section_id, name, vocab_level, duration, audio_path
+           FROM lessons WHERE section_id = $1 AND deleted_at IS NULL
+           ORDER BY order_index ASC`,
+          [s.id]
+        );
 
-      return {
-        id:           Number(s.id),
-        topicId:      Number(s.topic_id),
-        name:         s.name,
-        slug:         s.slug,
-        orderIndex:   Number(s.order_index),
-        lessonCount:  Number(s.lesson_count),
-        vocabLevel:   s.vocab_level || '',
-        lessons: lessons.map((l: any) => ({
-          id:           Number(l.id),
-          sectionId:    Number(l.section_id),
-          name:         l.lesson_name || l.name,
-          partsCount:   Number(l.parts_count),
-          vocabLevel:   l.vocab_level || '',
-          hasAudio:     !!l.audio_src,
-          hasTranscript: !!l.transcript,
-        })),
-      };
-    });
+        return {
+          id: Number(s.id),
+          topicId: Number(s.topic_id),
+          name: s.name,
+          slug: s.slug,
+          orderIndex: Number(s.order_index),
+          lessonCount: lessons.length,
+          vocabLevel: s.vocab_level || '',
+          lessons: lessons.map((l: any) => ({
+            id: Number(l.id),
+            sectionId: Number(l.section_id),
+            name: l.name,
+            partsCount: null,
+            vocabLevel: l.vocab_level || '',
+            hasAudio: !!l.audio_path,
+            hasTranscript: false,
+          })),
+        };
+      })
+    );
 
     res.json({
-      id:           Number(topic.id),
-      slug:         topic.slug,
-      name:         topic.name,
-      lessonCount:  Number(topic.lesson_count),
-      levels:       topic.levels || '',
-      description:  topic.description || '',
-      sections:     sectionsWithLessons,
+      id: Number(topic.id),
+      slug: topic.slug,
+      name: topic.name,
+      lessonCount: sectionsWithLessons.reduce((acc, s) => acc + s.lessons.length, 0),
+      levels: '',
+      description: topic.description || '',
+      sections: sectionsWithLessons,
+      color: topic.color || '#35375B',
     });
   } catch (err) {
     console.error('Error fetching topic:', err);
@@ -155,25 +192,25 @@ app.get('/api/listening/topics/:slug', (req: Request, res: Response) => {
 });
 
 // ─── GET /api/listening/sections/:id/lessons ──────────────────────────────────
-app.get('/api/listening/sections/:id/lessons', (req: Request, res: Response) => {
+app.get('/api/listening/sections/:id/lessons', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const lessons = db.prepare(`
-      SELECT id, section_id, name, lesson_name, parts_count, vocab_level,
-             audio_src, audio_downloaded, transcript
-      FROM lessons WHERE section_id = ?
-      ORDER BY id ASC
-    `).all(id);
+    const lessons = await query(
+      `SELECT id, section_id, name, vocab_level, duration, audio_path
+       FROM lessons WHERE section_id = $1 AND deleted_at IS NULL
+       ORDER BY order_index ASC`,
+      [id]
+    );
 
     res.json({
       lessons: lessons.map((l: any) => ({
-        id:           Number(l.id),
-        sectionId:    Number(l.section_id),
-        name:         l.lesson_name || l.name,
-        partsCount:   Number(l.parts_count),
-        vocabLevel:   l.vocab_level || '',
-        hasAudio:     !!l.audio_src,
-        hasTranscript: !!l.transcript,
+        id: Number(l.id),
+        sectionId: Number(l.section_id),
+        name: l.name,
+        partsCount: null,
+        vocabLevel: l.vocab_level || '',
+        hasAudio: !!l.audio_path,
+        hasTranscript: false,
       })),
     });
   } catch (err) {
@@ -182,67 +219,87 @@ app.get('/api/listening/sections/:id/lessons', (req: Request, res: Response) => 
   }
 });
 
-// ─── GET /api/listening/lessons/:id ─────────────────────────────────────────
-app.get('/api/listening/lessons/:id', (req: Request, res: Response) => {
+// ─── GET /api/listening/lessons/:id ──────────────────────────────────────────
+app.get('/api/listening/lessons/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const lesson = db.prepare(`
-      SELECT id, section_id, name, lesson_name, parts_count, vocab_level,
-             audio_src, local_audio_path, audio_downloaded, transcript
-      FROM lessons WHERE id = ? LIMIT 1
-    `).get(id) as any;
+
+    const lesson = await queryOne(
+      `SELECT l.id, l.section_id, l.topic_id, l.name, l.vocab_level, l.audio_path, l.duration
+       FROM lessons l WHERE l.id = $1 AND l.deleted_at IS NULL LIMIT 1`,
+      [id]
+    );
 
     if (!lesson) {
       res.status(404).json({ error: 'Lesson not found' });
       return;
     }
 
-    const challenges = db.prepare(`
-      SELECT id, lesson_id, position, content, solution, audio_src,
-             time_start, time_end, hints, nb_comments, discussion_url, local_clip_path
-      FROM challenges WHERE lesson_id = ?
-      ORDER BY position ASC
-    `).all(id);
+    const clips = await query(
+      `SELECT id, transcript, audio_path, duration, order_index
+       FROM lesson_clips WHERE lesson_id = $1 AND deleted_at IS NULL
+       ORDER BY order_index ASC`,
+      [id]
+    );
 
     // Get topic info
-    const topicInfo = getTopicInfoForLesson(parseInt(id));
-    const section = lesson.section_id
-      ? db.prepare(`SELECT id, name, vocab_level FROM sections WHERE id = ?`).get(lesson.section_id)
-      : null;
+    let topicInfo = null;
+    if (lesson.topic_id) {
+      const topic = await queryOne(
+        `SELECT id, name, slug, color FROM topics WHERE id = $1 AND deleted_at IS NULL LIMIT 1`,
+        [lesson.topic_id]
+      );
+      if (topic) {
+        topicInfo = {
+          id: Number(topic.id),
+          name: topic.name,
+          slug: topic.slug,
+          levels: '',
+          lessonCount: 0,
+          color: topic.color || '#35375B',
+        };
+      }
+    }
+
+    // Get section info
+    let sectionInfo = null;
+    if (lesson.section_id) {
+      const section = await queryOne(
+        `SELECT id, name, vocab_level FROM sections WHERE id = $1 AND deleted_at IS NULL LIMIT 1`,
+        [lesson.section_id]
+      );
+      if (section) {
+        sectionInfo = {
+          id: Number(section.id),
+          name: section.name,
+          vocabLevel: section.vocab_level || '',
+        };
+      }
+    }
 
     res.json({
-      id:            Number(lesson.id),
-      sectionId:     Number(lesson.section_id),
-      name:          lesson.lesson_name || lesson.name,
-      partsCount:    Number(lesson.parts_count),
-      vocabLevel:    lesson.vocab_level || '',
-      audioSrc:      lesson.audio_src || '',
-      localAudioPath: lesson.local_audio_path || '',
-      transcript:    lesson.transcript || '',
-      section: section ? {
-        id:        Number((section as any).id),
-        name:      (section as any).name,
-        vocabLevel: (section as any).vocab_level || '',
-      } : null,
-      topic: topicInfo ? {
-        id:         Number(topicInfo.id),
-        name:       topicInfo.name,
-        slug:       topicInfo.slug,
-        levels:     topicInfo.levels || '',
-        lessonCount: Number(topicInfo.lesson_count),
-      } : null,
-      challenges: challenges.map((c: any) => ({
-        id:           Number(c.id),
-        position:     Number(c.position),
-        content:      c.content,
-        solution:     c.solution ? JSON.parse(c.solution) : [],
-        audioSrc:     c.audio_src || '',
-        localClipPath: c.local_clip_path || '',
-        timeStart:    c.time_start || '',
-        timeEnd:      c.time_end || '',
-        hints:        c.hints ? JSON.parse(c.hints) : [],
-        nbComments:   Number(c.nb_comments || 0),
-        discussionUrl: c.discussion_url || '',
+      id: Number(lesson.id),
+      sectionId: lesson.section_id ? Number(lesson.section_id) : null,
+      name: lesson.name,
+      partsCount: clips.length,
+      vocabLevel: lesson.vocab_level || '',
+      audioSrc: lesson.audio_path || '',
+      localAudioPath: '',
+      transcript: clips.map((c: any) => c.transcript).join(' '),
+      section: sectionInfo,
+      topic: topicInfo,
+      challenges: clips.map((c: any) => ({
+        id: Number(c.id),
+        position: Number(c.order_index),
+        content: c.transcript,
+        solution: [],
+        audioSrc: c.audio_path || '',
+        localClipPath: '',
+        timeStart: '',
+        timeEnd: '',
+        hints: [],
+        nbComments: 0,
+        discussionUrl: '',
       })),
     });
   } catch (err) {
@@ -252,37 +309,34 @@ app.get('/api/listening/lessons/:id', (req: Request, res: Response) => {
 });
 
 // ─── GET /api/listening/challenges/:id/audio ─────────────────────────────────
-app.get('/api/listening/challenges/:id/audio', (req: Request, res: Response) => {
+app.get('/api/listening/challenges/:id/audio', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const challenge = db.prepare(`
-      SELECT audio_src, time_start, time_end, local_clip_path, l.local_audio_path, l.id as lesson_id
-      FROM challenges c
-      JOIN lessons l ON l.id = c.lesson_id
-      WHERE c.id = ? LIMIT 1
-    `).get(id) as any;
+    const clip = await queryOne(
+      `SELECT lc.audio_path, lc.duration, lc.order_index, l.id as lesson_id
+       FROM lesson_clips lc
+       JOIN lessons l ON l.id = lc.lesson_id
+       WHERE lc.id = $1 AND lc.deleted_at IS NULL LIMIT 1`,
+      [id]
+    );
 
-    if (!challenge) {
+    if (!clip) {
       res.status(404).json({ error: 'Challenge not found' });
       return;
     }
 
-    // Priority 1: Local clip file
-    if (challenge.local_clip_path && fs.existsSync(challenge.local_clip_path)) {
-      res.json({ audioSrc: `/api/listening/clips/${id}`, timeStart: null, timeEnd: null, source: 'local_clip' });
-      return;
-    }
-
-    // Priority 2: CDN clip URL
-    if (challenge.audio_src) {
-      res.json({ audioSrc: challenge.audio_src, timeStart: challenge.time_start, timeEnd: challenge.time_end, source: 'cdn_clip' });
-      return;
-    }
-
-    // Priority 3: Local full audio
-    if (challenge.local_audio_path && fs.existsSync(challenge.local_audio_path)) {
-      res.json({ audioSrc: `/api/listening/audio/${challenge.lesson_id}`, timeStart: challenge.time_start, timeEnd: challenge.time_end, source: 'local_full' });
-      return;
+    // Priority 1: CDN audio_path
+    if (clip.audio_path) {
+      // If it's a URL, return it directly
+      if (clip.audio_path.startsWith('http')) {
+        res.json({
+          audioSrc: clip.audio_path,
+          timeStart: null,
+          timeEnd: null,
+          source: 'cdn_clip',
+        });
+        return;
+      }
     }
 
     res.status(404).json({ error: 'Audio not available for this sentence' });
@@ -293,16 +347,26 @@ app.get('/api/listening/challenges/:id/audio', (req: Request, res: Response) => 
 });
 
 // ─── Serve local clip files ───────────────────────────────────────────────────
-app.get('/api/listening/clips/:id', (req: Request, res: Response) => {
+app.get('/api/listening/clips/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const challenge = db.prepare(`SELECT local_clip_path FROM challenges WHERE id = ? LIMIT 1`).get(id) as any;
+    const clip = await queryOne(
+      `SELECT audio_path FROM lesson_clips WHERE id = $1 AND deleted_at IS NULL LIMIT 1`,
+      [id]
+    );
 
-    if (!challenge || !challenge.local_clip_path || !fs.existsSync(challenge.local_clip_path)) {
+    if (!clip || !clip.audio_path) {
       res.status(404).json({ error: 'Clip not found' });
       return;
     }
-    res.sendFile(challenge.local_clip_path);
+
+    if (fs.existsSync(clip.audio_path)) {
+      res.sendFile(clip.audio_path);
+    } else if (clip.audio_path.startsWith('http')) {
+      res.redirect(clip.audio_path);
+    } else {
+      res.status(404).json({ error: 'Clip file not found' });
+    }
   } catch (err) {
     console.error('Error serving clip:', err);
     res.status(500).json({ error: 'Failed to serve clip' });
@@ -310,20 +374,27 @@ app.get('/api/listening/clips/:id', (req: Request, res: Response) => {
 });
 
 // ─── Serve full lesson audio ─────────────────────────────────────────────────
-app.get('/api/listening/audio/:id', (req: Request, res: Response) => {
+app.get('/api/listening/audio/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const lesson = db.prepare(`SELECT local_audio_path, audio_src FROM lessons WHERE id = ? LIMIT 1`).get(id) as any;
+    const lesson = await queryOne(
+      `SELECT audio_path FROM lessons WHERE id = $1 AND deleted_at IS NULL LIMIT 1`,
+      [id]
+    );
 
     if (!lesson) {
       res.status(404).json({ error: 'Audio not available' });
       return;
     }
 
-    if (lesson.local_audio_path && fs.existsSync(lesson.local_audio_path)) {
-      res.sendFile(lesson.local_audio_path);
-    } else if (lesson.audio_src) {
-      res.redirect(lesson.audio_src);
+    if (lesson.audio_path) {
+      if (fs.existsSync(lesson.audio_path)) {
+        res.sendFile(lesson.audio_path);
+      } else if (lesson.audio_path.startsWith('http')) {
+        res.redirect(lesson.audio_path);
+      } else {
+        res.status(404).json({ error: 'Audio not available' });
+      }
     } else {
       res.status(404).json({ error: 'Audio not available' });
     }
@@ -339,9 +410,19 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
+// ─── Graceful shutdown ──────────────────────────────────────────────────────────
+async function shutdown() {
+  console.log('Closing PostgreSQL pool...');
+  await pool.end();
+  process.exit(0);
+}
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
+
 app.listen(PORT, () => {
   console.log(`Listening API server running on http://localhost:${PORT}`);
-  console.log(`DB: ${DB_PATH}`);
+  console.log(`Database: PostgreSQL (Supabase)`);
+  console.log(`Host: ${process.env.DB_HOST}`);
 });
 
 export default app;
