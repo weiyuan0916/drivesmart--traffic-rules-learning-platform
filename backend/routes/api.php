@@ -5,6 +5,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ListeningController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,14 @@ Route::get('/health', fn () => response()->json(['status' => 'ok', 'timestamp' =
 Route::prefix('v1/auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+
+    // OAuth — Redirect to provider
+    Route::get('/{provider}/redirect', [SocialAuthController::class, 'redirect'])
+        ->where('provider', 'google|github');
+
+    // OAuth — Callback from provider
+    Route::get('/{provider}/callback', [SocialAuthController::class, 'callback'])
+        ->where('provider', 'google|github');
 });
 
 // Protected routes (require Bearer token)

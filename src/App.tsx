@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import MainContent from './components/MainContent';
 import { Homepage } from './components/marketing/Homepage';
 import { LenisProvider } from './components/marketing/LenisProvider';
@@ -21,6 +22,18 @@ import { LayoutDashboard, Menu, X, Car, BookOpen, ArrowLeft, AlertTriangle } fro
 import type { ChapterStat, Question } from './types';
 import { loadExamQuestions } from './services/questionsService';
 import { generateExamQuestions, EXAM_CONFIGS, LicenseType } from './services/examGenerator';
+// Lazy-load auth pages for code splitting
+import { lazy, Suspense } from 'react';
+const AuthLoginPage = lazy(() => import('./features/listening/pages/auth/LoginPage'))
+const AuthRegisterPage = lazy(() => import('./features/listening/pages/auth/RegisterPage'))
+
+function PageLoader() {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-[var(--bg-primary)]">
+      <div className="w-8 h-8 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
+    </div>
+  )
+}
 
 type AppMode = 'none' | 'driving' | 'vocabulary' | 'opal' | 'marketing' | 'listening';
 type DrivingView = 'setup' | 'exam' | 'analyzer';
@@ -321,7 +334,29 @@ export default function App() {
     <ThemeProvider>
       <LanguageProvider>
         <GlobalAudioProvider>
-          <AppContent />
+          <BrowserRouter>
+            <Routes>
+              {/* Auth pages — full-screen, no app shell */}
+              <Route
+                path="/auth/login"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <AuthLoginPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/auth/register"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <AuthRegisterPage />
+                  </Suspense>
+                }
+              />
+              {/* Main app shell */}
+              <Route path="*" element={<AppContent />} />
+            </Routes>
+          </BrowserRouter>
         </GlobalAudioProvider>
       </LanguageProvider>
     </ThemeProvider>

@@ -6,8 +6,8 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -45,9 +45,10 @@ class AuthController extends Controller
 
     public function login(Request $request): JsonResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
+            'remember' => ['sometimes', 'boolean'],
         ]);
 
         $user = User::where('email', $request->email)->first();
@@ -55,11 +56,14 @@ class AuthController extends Controller
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json([
                 'code' => 'E_AUTH_001',
-                'message' => 'Thông tin đăng nhập không hợp lệ.',
+                'message' => $request->input('lang', 'vi') === 'en'
+                    ? 'Invalid email or password.'
+                    : 'Thông tin đăng nhập không hợp lệ.',
             ], 401);
         }
 
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $tokenName = $request->boolean('remember') ? 'auth-token-remember' : 'auth-token';
+        $token = $user->createToken($tokenName)->plainTextToken;
 
         return response()->json([
             'data' => [
@@ -104,3 +108,4 @@ class AuthController extends Controller
         ]);
     }
 }
+

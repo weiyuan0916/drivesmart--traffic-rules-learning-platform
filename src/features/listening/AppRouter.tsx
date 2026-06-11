@@ -1,12 +1,10 @@
 import { type ReactNode, lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ToastContainer } from './components/ui/Toast'
 import { ListeningLayout } from './components/ListeningLayout'
-import { AuthLayout } from './components/AuthLayout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Spinner } from './components/ui/Spinner'
-import { GlobalAudioProvider } from './hooks/useGlobalAudio.tsx'
 import { ExplanationProvider } from './contexts/ExplanationContext'
 
 // Lazy-loaded pages for code splitting
@@ -17,8 +15,6 @@ const DashboardPage = lazy(() => import('./pages/dashboard/DashboardPage'))
 const ProgressPage = lazy(() => import('./pages/progress/ProgressPage'))
 const HistoryPage = lazy(() => import('./pages/history/HistoryPage'))
 const OnboardingPage = lazy(() => import('./pages/onboarding/OnboardingPage'))
-const LoginPage = lazy(() => import('./pages/auth/LoginPage'))
-const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'))
 
 function PageLoader() {
   return (
@@ -46,37 +42,22 @@ interface AppRouterProps {
   children?: ReactNode
 }
 
+/**
+ * Listening Module Router.
+ *
+ * This component provides React Router v6 routing for the listening feature.
+ * It must be rendered INSIDE a <BrowserRouter> context (provided by the root App).
+ * It does NOT include its own BrowserRouter — that would create nested router conflicts.
+ */
 export function AppRouter({ children }: AppRouterProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ErrorBoundary>
-          {children}
-          <GlobalAudioProvider>
-            <ExplanationProvider>
-              <Routes>
-            {/* Public routes */}
+      <ErrorBoundary>
+        {children}
+        <ExplanationProvider>
+          <Routes>
+            {/* Root redirects to topics */}
             <Route path="/" element={<Navigate to="/topics" replace />} />
-
-            {/* Auth routes */}
-            <Route element={<AuthLayout />}>
-              <Route
-                path="/auth/login"
-                element={
-                  <Suspense fallback={<PageLoader />}>
-                    <LoginPage />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/auth/register"
-                element={
-                  <Suspense fallback={<PageLoader />}>
-                    <RegisterPage />
-                  </Suspense>
-                }
-              />
-            </Route>
 
             {/* Protected listening routes */}
             <Route element={<ListeningLayout />}>
@@ -142,10 +123,8 @@ export function AppRouter({ children }: AppRouterProps) {
             <Route path="*" element={<Navigate to="/topics" replace />} />
           </Routes>
           <ToastContainer />
-          </ExplanationProvider>
-        </GlobalAudioProvider>
-        </ErrorBoundary>
-      </BrowserRouter>
+        </ExplanationProvider>
+      </ErrorBoundary>
     </QueryClientProvider>
   )
 }

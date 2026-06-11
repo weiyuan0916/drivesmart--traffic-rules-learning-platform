@@ -4,7 +4,7 @@ import { setTimeout } from 'timers/promises';
 
 // Backend uses explicit IPv4, frontend uses localhost (Vite default)
 const API_BASE = 'http://127.0.0.1:8000/api';
-const FRONTEND_BASE = 'http://localhost:3003';
+const FRONTEND_BASE = 'http://localhost:3001';
 const TEST_EMAIL = `qa_e2e_${Date.now()}@example.com`;
 
 async function waitForServer(url: string, maxWait = 30000): Promise<void> {

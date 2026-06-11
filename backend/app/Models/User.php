@@ -17,6 +17,8 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar_url',
+        'google_id',
+        'github_id',
         'current_streak',
         'longest_streak',
         'streak_start_date',
