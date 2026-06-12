@@ -17,3 +17,4 @@ backend/vendor/
 backend/.env
 backend/.env.backup
 backend/storage/*.key
+pnpm-lock.yaml
