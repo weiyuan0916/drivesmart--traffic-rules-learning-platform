@@ -111,6 +111,18 @@
     scroll-behavior: smooth;
   }
 
+  /* Prevent iOS Safari from auto-zooming on input focus.
+     iOS triggers a zoom whenever a focused input has a computed
+     font-size below 16px. Force 16px on small viewports; component
+     classes can override on larger screens. */
+  @media (max-width: 639px) {
+    input,
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
+
   .scrollbar-visible {
     scrollbar-width: thin;
     scrollbar-color: #6366F1 var(--bg-tertiary);

@@ -392,7 +392,7 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
                     spellCheck={false}
                     enterKeyHint="next"
                     style={{ scrollMarginTop: '96px' }}
-                    className="w-full rounded-xl border-2 border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3.5 pr-12 text-sm font-bold uppercase tracking-wide text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--text-primary)]"
+                    className="w-full rounded-xl border-2 border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3.5 pr-12 text-base sm:text-sm font-bold uppercase tracking-wide text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--text-primary)]"
                     placeholder="NHẬP HỌ TÊN"
                   />
                   <AnimatePresence>
