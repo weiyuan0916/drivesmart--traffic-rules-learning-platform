@@ -1,0 +1,21 @@
+---
+alwaysApply: true
+---
+
+# Development Workflow
+
+Order:
+
+1. brainstorming
+2. using-git-worktrees
+3. writing-plans
+4. executing-plans
+5. test-driven-development
+6. requesting-code-review
+7. finishing-a-development-branch
+
+Rules:
+- Never code before design approval
+- Never merge if tests fail
+- Every business logic requires tests
+- Every feature must include review

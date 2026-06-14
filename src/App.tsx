@@ -76,8 +76,10 @@ function AppContent() {
     const path = location.pathname;
     if (path === '/' || path === '/home') {
       setSelectedMode('none');
-    } else if (path === '/listening' || path === '/vocabulary' || path === '/opal' || path === '/agri-vietnam' || path === '/driving-test') {
-      // These routes render inside the homepage as sections
+    } else if (path.startsWith('/listening')) {
+      // Any /listening/* route activates the listening mode
+      setSelectedMode('listening');
+    } else {
       setSelectedMode('none');
     }
   }, [location.pathname]);
@@ -141,7 +143,7 @@ function AppContent() {
     setDrivingView('setup');
   };
 
-  const isHomepage = selectedMode === 'none';
+  const isHomepage = location.pathname === '/' || location.pathname === '/home';
 
   return (
     <div
@@ -264,8 +266,8 @@ function AppContent() {
       {/* Lenis smooth scroll — must be placed at root level */}
       {isHomepage && <LenisProvider />}
 
-      {/* Marketing Homepage — scroll storytelling landing page */}
-      {selectedMode === 'none' && (
+      {/* Marketing Homepage — scroll storytelling landing page (only for / and /home) */}
+      {isHomepage && (
         <Homepage
           nav={{
             onNavigateDriving: () => setSelectedMode('driving'),

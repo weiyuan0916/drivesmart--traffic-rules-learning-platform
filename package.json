@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "dev:server": "node server/dist/listening_server.js",
+    "dev:server": "npx tsx server/listening_server.ts",
     "build:server": "tsc server/listening_server.ts --outDir server/dist --module ESNext --moduleResolution node --target ES2020 --esModuleInterop true --skipLibCheck",
-    "dev:all": "node server/dist/listening_server.js & vite --port=3000 --host=0.0.0.0",
+    "dev:all": "npx tsx server/listening_server.ts & vite --port=3000 --host=0.0.0.0",
     "start:all": "npm run dev:server & vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",

@@ -15,6 +15,10 @@ const DashboardPage = lazy(() => import('./pages/dashboard/DashboardPage'))
 const ProgressPage = lazy(() => import('./pages/progress/ProgressPage'))
 const HistoryPage = lazy(() => import('./pages/history/HistoryPage'))
 const OnboardingPage = lazy(() => import('./pages/onboarding/OnboardingPage'))
+const BbcLessonListPage = lazy(() => import('./pages/bbc/BbcLessonListPage'))
+const BbcLessonDetailPage = lazy(() => import('./pages/bbc/BbcLessonDetailPage'))
+const BbcWorkspacePage = lazy(() => import('./pages/bbc/BbcWorkspacePage'))
+const BbcMicroDictationPage = lazy(() => import('./pages/bbc/BbcMicroDictationPage'))
 
 function PageLoader() {
   return (
@@ -114,6 +118,38 @@ export function AppRouter({ children }: AppRouterProps) {
                 element={
                   <Suspense fallback={<PageLoader />}>
                     <OnboardingPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/bbc"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BbcLessonListPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/bbc/:slug"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BbcLessonDetailPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/bbc/:slug/practice"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BbcWorkspacePage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/bbc/:slug/dictation"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BbcMicroDictationPage />
                   </Suspense>
                 }
               />

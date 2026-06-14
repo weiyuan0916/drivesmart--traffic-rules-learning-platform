@@ -3,17 +3,31 @@
 // Base HTTP client for Laravel backend
 // ============================================================
 
+import { useAuthStore } from '../stores/authStore'
+
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? ''
 
 export class ApiClient {
-  private token: string | null = null
+  private _token: string | null = null
 
   setToken(token: string | null) {
-    this.token = token
+    this._token = token
   }
 
   getToken(): string | null {
-    return this.token
+    return this._token
+  }
+
+  private getEffectiveToken(): string | null {
+    // Always prefer the store's persisted token so the client picks up
+    // the token restored from localStorage on page load without needing
+    // setToken() to be called first.
+    try {
+      const storeToken = useAuthStore.getState().token
+      return storeToken ?? this._token
+    } catch {
+      return this._token
+    }
   }
 
   private async request<T>(
@@ -22,14 +36,15 @@ export class ApiClient {
     body?: unknown,
     options?: RequestInit,
   ): Promise<T> {
+    const token = this.getEffectiveToken()
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       ...(options?.headers as Record<string, string>),
     }
 
-    if (this.token) {
-      headers.Authorization = `Bearer ${this.token}`
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
     }
 
     const response = await fetch(`${API_BASE_URL}${path}`, {

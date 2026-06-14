@@ -62,6 +62,21 @@ class User extends Authenticatable
         return $this->hasMany(UserClipProgress::class);
     }
 
+    public function externalLessonProgress(): HasMany
+    {
+        return $this->hasMany(UserExternalLessonProgress::class);
+    }
+
+    public function externalLessonNotes(): HasMany
+    {
+        return $this->hasMany(UserExternalLessonNote::class);
+    }
+
+    public function externalLessonVocabulary(): HasMany
+    {
+        return $this->hasMany(UserExternalLessonVocabulary::class);
+    }
+
     public function toApiArray(): array
     {
         return [

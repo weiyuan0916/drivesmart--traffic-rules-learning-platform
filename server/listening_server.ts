@@ -8,6 +8,8 @@ const app = express();
 const PORT = parseInt(process.env.LISTENING_PORT || '3002');
 
 // PostgreSQL connection pool (Supabase)
+// NOTE: pool_size must not exceed the Supabase pooler's limit (default 15).
+// Going over causes "EMAXCONNSESSION max clients reached" errors.
 const pool = new Pool({
   host: process.env.DB_HOST || 'aws-1-ap-southeast-1.pooler.supabase.com',
   port: parseInt(process.env.DB_PORT || '5432'),
@@ -15,24 +17,54 @@ const pool = new Pool({
   user: process.env.DB_USERNAME || 'postgres.xcnhurrsrdjorfuzzjfz',
   password: process.env.DB_PASSWORD || 'iZMmkt4SebxMoXIR',
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
-  max: 20,
+  max: 15,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
+  connectionTimeoutMillis: 15000,
+  // Force IPv4 to avoid macOS IPv6 dual-stack timeouts hitting the Supabase pooler.
+  // The hostname resolves to both IPv4 (54.179.210.x) and IPv6; IPv6 tunnels/routings
+  // on consumer ISP connections are unreliable and cause premature connectionTimeoutMillis
+  // errors before the IPv4 path is attempted.
+  family: 4,
 });
 
-// Helper: query with params
-async function query(text: string, params?: any[]) {
-  const client = await pool.connect();
-  try {
-    const result = await client.query(text, params);
-    return result.rows;
-  } finally {
-    client.release();
+// Simple concurrency limiter to avoid overwhelming the pool.
+// Only this many DB queries run in parallel at any time.
+const MAX_CONCURRENT = 5;
+let active = 0;
+const waiting: Array<() => void> = [];
+
+async function withSlot<T>(fn: () => Promise<T>): Promise<T> {
+  if (active < MAX_CONCURRENT) {
+    active++;
+    try {
+      return await fn();
+    } finally {
+      active--;
+      const next = waiting.shift();
+      if (next) next();
+    }
   }
+  return new Promise<T>((resolve) => {
+    waiting.push(async () => {
+      active++;
+      try {
+        resolve(await fn());
+      } finally {
+        active--;
+        const n = waiting.shift();
+        if (n) n();
+      }
+    });
+  });
+}
+
+// Helper: query with params — uses pool.query (no manual connect/release needed)
+async function query(text: string, params?: unknown[]): Promise<any[]> {
+  return withSlot(() => pool.query(text, params).then((r) => r.rows as any[]));
 }
 
 // Helper: querySingle
-async function queryOne(text: string, params?: any[]) {
+async function queryOne(text: string, params?: unknown[]) {
   const rows = await query(text, params);
   return rows[0] ?? null;
 }

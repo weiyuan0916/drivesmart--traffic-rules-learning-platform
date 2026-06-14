@@ -8,7 +8,11 @@ export type ListeningView =
   | 'progress'
   | 'leaderboard'
   | 'bookmarks'
-  | 'history';
+  | 'history'
+  | 'bbc-list'
+  | 'bbc-detail'
+  | 'bbc-workspace'
+  | 'bbc-dictation';
 
 export interface ListeningTopic {
   id: number;

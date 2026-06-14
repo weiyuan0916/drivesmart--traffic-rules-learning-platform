@@ -1,11 +1,12 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { Home, BookOpen, BarChart3, User } from 'lucide-react'
+import { Home, BookOpen, BarChart3, Globe } from 'lucide-react'
 import { cn } from '../lib/utils'
 import { useAuthStore } from '../stores/authStore'
 
 const navItems = [
   { to: '/dashboard', icon: Home, label: 'Trang chủ' },
   { to: '/topics', icon: BookOpen, label: 'Bài học' },
+  { to: '/bbc', icon: Globe, label: 'BBC' },
   { to: '/progress', icon: BarChart3, label: 'Tiến độ' },
   { to: '/history', icon: BookOpen, label: 'Lịch sử' },
 ]

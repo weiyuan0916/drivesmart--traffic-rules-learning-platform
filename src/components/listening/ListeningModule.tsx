@@ -1,10 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   ArrowLeft, Headphones, BookOpen, BarChart2, Trophy,
-  Bookmark, Clock, Home, Menu, X, TrendingUp,
+  Bookmark, Clock, Home, Menu, X, TrendingUp, Globe,
 } from 'lucide-react';
-import type { ListeningLessonDetail, ListeningView } from '@/types/listening';
+import type { ListeningLessonDetail, ListeningView } from '@/types/listening'
+import type { BbcLesson } from '../../features/listening/types/bbc';
 import Overview from './Overview';
 import TopicsPage from './TopicsPage';
 import TopicDetailPage from './TopicDetailPage';
@@ -13,9 +16,33 @@ import ProgressPage from './ProgressPage';
 import LeaderboardPage from './LeaderboardPage';
 import BookmarksPage from './BookmarksPage';
 import HistoryPage from './HistoryPage';
+const BbcLessonListPage = React.lazy(() => import('../../features/listening/pages/bbc/BbcLessonListPage'));
+const BbcLessonDetailPage = React.lazy(() => import('../../features/listening/pages/bbc/BbcLessonDetailPage'));
+const BbcWorkspacePage = React.lazy(() => import('../../features/listening/pages/bbc/BbcWorkspacePage'));
+const BbcMicroDictationPage = React.lazy(() => import('../../features/listening/pages/bbc/BbcMicroDictationPage'));
+const Skeleton = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <div className="w-8 h-8 border-2 border-current border-t-transparent rounded-full animate-spin" />
+  </div>
+);
+
+const bbcQueryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+      gcTime: 5 * 60 * 1000,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+const isBbcView = (view: ListeningView) =>
+  view === 'bbc-list' || view === 'bbc-detail' || view === 'bbc-workspace' || view === 'bbc-dictation';
 
 interface ListeningModuleProps {
   onBack: () => void;
+  initialBbcSlug?: string;
 }
 
 interface NavigationState {
@@ -23,6 +50,7 @@ interface NavigationState {
   topicSlug?: string;
   topicName?: string;
   lesson?: ListeningLessonDetail;
+  dictationLesson?: BbcLesson;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -38,6 +66,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { view: 'overview', label: 'Home', icon: <Home size={20} />, iconFilled: <Home size={20} /> },
   { view: 'topics', label: 'Topics', icon: <BookOpen size={20} />, iconFilled: <BookOpen size={20} /> },
+  { view: 'bbc-list', label: 'BBC', icon: <Globe size={20} />, iconFilled: <Globe size={20} /> },
   { view: 'progress', label: 'Progress', icon: <TrendingUp size={20} />, iconFilled: <TrendingUp size={20} /> },
   { view: 'leaderboard', label: 'Ranks', icon: <Trophy size={20} />, iconFilled: <Trophy size={20} /> },
   { view: 'history', label: 'History', icon: <Clock size={20} />, iconFilled: <Clock size={20} /> },
@@ -144,8 +173,44 @@ function BottomNavItem({
 // Main ListeningModule component
 // ─────────────────────────────────────────────────────────────
 export default function ListeningModule({ onBack }: ListeningModuleProps) {
+  const { slug } = useParams<{ slug?: string }>()
+  const location = useLocation()
   const [nav, setNav] = useState<NavigationState>({ currentView: 'overview' });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Detect URL path to set initial view on mount
+  // Note: /listening/* routes all match the /listening route, so useParams() may not
+  // capture slug. We derive the slug from the pathname instead.
+  useEffect(() => {
+    const path = location.pathname;
+    // Extract slug from path manually: /listening/bbc/:slug[/dictation]
+    // Detect /listening/bbc/the-hidden-life-of-trees/dictation BEFORE /listening/bbc/:slug
+    const bbcDictationMatch = path.match(/^\/listening\/bbc\/([^/]+)\/dictation$/);
+    if (bbcDictationMatch) {
+      setNav({ currentView: 'bbc-dictation', topicSlug: bbcDictationMatch[1] });
+    } else {
+      const bbcMatch = path.match(/^\/listening\/bbc(?:\/([^/]+(?:\/dictation)?))?$/);
+      if (bbcMatch) {
+        if (bbcMatch[1]) {
+          setNav({ currentView: 'bbc-detail', topicSlug: bbcMatch[1] });
+        } else {
+          setNav({ currentView: 'bbc-list' });
+        }
+      } else if (path.startsWith('/listening/topics')) {
+        setNav({ currentView: 'topics' });
+      } else if (path.startsWith('/listening/progress')) {
+        setNav({ currentView: 'progress' });
+      } else if (path.startsWith('/listening/leaderboard')) {
+        setNav({ currentView: 'leaderboard' });
+      } else if (path.startsWith('/listening/bookmarks')) {
+        setNav({ currentView: 'bookmarks' });
+      } else if (path.startsWith('/listening/history')) {
+        setNav({ currentView: 'history' });
+      } else {
+        setNav({ currentView: 'overview' });
+      }
+    }
+  }, [location.pathname]);
 
   const navigate = useCallback(
     (view: ListeningView, extra?: Partial<NavigationState>) => {
@@ -168,12 +233,15 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
   const handleBack = () => {
     if (nav.currentView === 'topic-detail') navigate('topics');
     else if (nav.currentView === 'practice') navigate(nav.topicSlug ? 'topic-detail' : 'overview', { topicSlug: nav.topicSlug, topicName: nav.topicName });
+    else if (nav.currentView === 'bbc-detail') navigate('bbc-list');
+    else if (nav.currentView === 'bbc-workspace' || nav.currentView === 'bbc-dictation') navigate('bbc-detail');
+    else if (nav.currentView === 'bbc-list') navigate('overview');
     else if (nav.currentView === 'overview') onBack();
     else navigate('overview');
   };
 
   const showShellNav = nav.currentView !== 'practice';
-  const isTopLevel = nav.currentView === 'overview' || nav.currentView === 'topics' || nav.currentView === 'progress' || nav.currentView === 'leaderboard' || nav.currentView === 'history' || nav.currentView === 'bookmarks';
+  const isTopLevel = nav.currentView === 'overview' || nav.currentView === 'topics' || nav.currentView === 'bbc-list' || nav.currentView === 'progress' || nav.currentView === 'leaderboard' || nav.currentView === 'history' || nav.currentView === 'bookmarks';
 
   const renderPage = () => {
     switch (nav.currentView) {
@@ -205,6 +273,60 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
         return <BookmarksPage onStartPractice={goToPractice} />;
       case 'history':
         return <HistoryPage onStartPractice={goToPractice} />;
+      case 'bbc-list':
+        return (
+          <QueryClientProvider client={bbcQueryClient}>
+            <React.Suspense fallback={<Skeleton />}>
+              <BbcLessonListPage onNavigate={(view, extra) => {
+                setNav({ currentView: view as ListeningView, ...Object.fromEntries(Object.entries(extra ?? {}).map(([k, v]) => [k === 'slug' ? 'topicSlug' : k, v])) });
+                setSidebarOpen(false);
+              }} />
+            </React.Suspense>
+          </QueryClientProvider>
+        );
+      case 'bbc-detail':
+        return (
+          <QueryClientProvider client={bbcQueryClient}>
+            <React.Suspense fallback={<Skeleton />}>
+              <BbcLessonDetailPage
+                topicSlug={nav.topicSlug}
+                onNavigate={(view, extra) => {
+                  setNav((prev) => ({ ...prev, currentView: view as ListeningView, topicSlug: (extra?.slug as string) ?? undefined, dictationLesson: extra?.lesson as unknown as BbcLesson }));
+                  setSidebarOpen(false);
+                }}
+                onLessonLoaded={(lesson) => {
+                  setNav((prev) => ({ ...prev, dictationLesson: lesson }));
+                }}
+              />
+            </React.Suspense>
+          </QueryClientProvider>
+        );
+      case 'bbc-workspace':
+        return (
+          <QueryClientProvider client={bbcQueryClient}>
+            <React.Suspense fallback={<Skeleton />}>
+              <BbcWorkspacePage topicSlug={nav.topicSlug} onNavigate={(view, extra) => {
+                setNav({ currentView: view as ListeningView, topicSlug: extra?.slug });
+                setSidebarOpen(false);
+              }} />
+            </React.Suspense>
+          </QueryClientProvider>
+        );
+      case 'bbc-dictation':
+        return (
+          <QueryClientProvider client={bbcQueryClient}>
+            <React.Suspense fallback={<Skeleton />}>
+              <BbcMicroDictationPage
+                topicSlug={nav.topicSlug}
+                lesson={nav.dictationLesson}
+                onNavigate={(view, extra) => {
+                  setNav((prev) => ({ currentView: view as ListeningView, topicSlug: extra?.slug }));
+                  setSidebarOpen(false);
+                }}
+              />
+            </React.Suspense>
+          </QueryClientProvider>
+        );
       default:
         return null;
     }

@@ -1,0 +1,563 @@
+---
+alwaysApply: true
+---
+
+# T-B-003 — BBC Learning English Integration (Metadata + Learning Overlay)
+
+## Objective
+
+Integrate BBC Learning English into DriveSmart Listening without copying or storing BBC copyrighted audio/transcript content.
+
+DriveSmart will act as a learning layer on top of BBC content by providing:
+
+* Discovery
+* Bookmarking
+* Progress tracking
+* Learning notes
+* Vocabulary collection
+* Dictation workspace
+* Future AI features
+
+BBC remains the original content source.
+
+---
+
+# Business Goals
+
+1. Expand listening content quickly.
+2. Avoid content creation bottleneck.
+3. Avoid copyright risks.
+4. Improve SEO through topic discovery pages.
+5. Increase retention through progress tracking and learning tools.
+
+---
+
+# Non-Goals
+
+Do NOT:
+
+* Download BBC audio files
+* Rehost BBC audio
+* Store BBC transcripts
+* Republish BBC content
+* Clone BBC pages
+
+DriveSmart is a companion learning platform.
+
+---
+
+# User Experience
+
+## Landing Flow
+
+Listening
+→ BBC Learning English
+→ Lesson List
+→ Lesson Detail
+→ Open Learning Workspace
+
+---
+
+# BBC Lesson List
+
+Route:
+
+/listening/bbc
+
+Display:
+
+* Thumbnail
+* Title
+* Duration
+* Level
+* Published date
+
+Filters:
+
+* Beginner
+* Intermediate
+* Advanced
+
+Sorting:
+
+* Latest
+* Oldest
+
+Search:
+
+* Lesson title
+
+Pagination:
+
+* Infinite scroll
+
+---
+
+# BBC Lesson Detail
+
+Route:
+
+/listening/bbc/[slug]
+
+Display:
+
+* Lesson title
+* Thumbnail
+* Duration
+* Level
+* Publish date
+
+Source attribution:
+
+"Source: BBC Learning English"
+
+Button:
+
+Open Original Lesson
+
+Open in new tab.
+
+---
+
+# Learning Workspace
+
+Route:
+
+/listening/bbc/[slug]/practice
+
+Purpose:
+
+Provide study tools while user consumes BBC lesson.
+
+Layout:
+
+Desktop
+
+---
+
+## | BBC lesson information                        |
+
+## | Notes | Vocabulary | Dictation Workspace      |
+
+Mobile
+
+Tabs:
+
+* Notes
+* Vocabulary
+* Dictation
+
+---
+
+# Dictation Workspace
+
+Purpose:
+
+User types what they hear.
+
+No answer checking in V1.
+
+Features:
+
+* Large textarea
+* Autosave
+* Word count
+* Session persistence
+
+Storage:
+
+user_lesson_notes
+
+---
+
+# Vocabulary Notebook
+
+User can manually save vocabulary.
+
+Fields:
+
+* Word
+* Meaning
+* Example
+* Personal note
+
+CRUD supported.
+
+---
+
+# Learning Notes
+
+Rich text notes.
+
+Autosave every 5 seconds.
+
+Storage:
+
+user_lesson_notes
+
+---
+
+# Progress Tracking
+
+Status:
+
+not_started
+in_progress
+completed
+
+Rules:
+
+Visit lesson:
+→ in_progress
+
+Mark complete:
+→ completed
+
+Dashboard metrics:
+
+* Lessons started
+* Lessons completed
+* Completion rate
+
+---
+
+# Database Design
+
+## listening_sources
+
+id
+name
+slug
+
+Example:
+
+BBC Learning English
+bbc-learning-english
+
+---
+
+## listening_external_lessons
+
+id
+source_id
+title
+slug
+source_url
+thumbnail_url
+level
+duration_seconds
+published_at
+metadata_json
+created_at
+updated_at
+
+---
+
+## user_external_lesson_progress
+
+id
+user_id
+lesson_id
+status
+started_at
+completed_at
+last_accessed_at
+
+---
+
+## user_external_lesson_notes
+
+id
+user_id
+lesson_id
+content
+updated_at
+
+---
+
+## user_external_lesson_vocabulary
+
+id
+user_id
+lesson_id
+word
+meaning
+example
+note
+
+---
+
+# Crawler Design
+
+Command:
+
+php artisan crawl:bbc-lessons
+
+Schedule:
+
+Daily
+
+Frequency:
+
+02:00 AM
+
+---
+
+# Crawler Responsibilities
+
+Collect only:
+
+* Title
+* URL
+* Thumbnail
+* Duration
+* Level
+* Publish date
+
+Store metadata only.
+
+Do not store:
+
+* Audio files
+* Transcript content
+
+---
+
+# API Endpoints
+
+GET /api/v1/listening/bbc
+
+Response:
+
+{
+"data": []
+}
+
+---
+
+GET /api/v1/listening/bbc/{slug}
+
+Response:
+
+{
+"data": {}
+}
+
+---
+
+POST /api/v1/listening/bbc/{id}/progress
+
+---
+
+POST /api/v1/listening/bbc/{id}/complete
+
+---
+
+GET /api/v1/listening/bbc/{id}/notes
+
+---
+
+PUT /api/v1/listening/bbc/{id}/notes
+
+---
+
+GET /api/v1/listening/bbc/{id}/vocabulary
+
+---
+
+POST /api/v1/listening/bbc/{id}/vocabulary
+
+---
+
+DELETE /api/v1/listening/bbc/{id}/vocabulary/{wordId}
+
+---
+
+# SEO Requirements
+
+Create indexable pages.
+
+Examples:
+
+/listening/bbc
+
+/listening/bbc/how-to-make-small-talk
+
+SEO tags:
+
+* title
+* meta description
+* canonical
+
+JSON-LD:
+
+* EducationalCourse
+* LearningResource
+
+Generate sitemap entries.
+
+---
+
+# Frontend Stack
+
+React
+TypeScript
+TanStack Query
+Zustand
+Tailwind
+Framer Motion
+
+---
+
+# Accessibility
+
+WCAG AA
+
+Keyboard navigation
+
+Visible focus states
+
+Screen-reader labels
+
+---
+
+# Analytics
+
+Track:
+
+Lesson Viewed
+
+Lesson Started
+
+Lesson Completed
+
+Vocabulary Saved
+
+Notes Updated
+
+Open BBC Source
+
+---
+
+# Automated Testing
+
+## Unit Tests
+
+Backend
+
+Test:
+
+* BBC metadata parser
+* URL extraction
+* Duration extraction
+* Level extraction
+* Progress service
+* Vocabulary CRUD
+
+Coverage target:
+
+80%+
+
+---
+
+Frontend
+
+Test:
+
+* Lesson list rendering
+* Lesson detail rendering
+* Vocabulary CRUD
+* Notes autosave
+* Progress status updates
+
+Coverage target:
+
+80%+
+
+---
+
+# E2E Testing
+
+Use Playwright.
+
+Scenarios:
+
+1. Open lesson list
+2. Search lesson
+3. Open lesson detail
+4. Start lesson
+5. Add vocabulary
+6. Save note
+7. Mark complete
+8. Verify dashboard updated
+
+---
+
+# Cursor Browser QA
+
+Act as a real user.
+
+Test:
+
+Desktop:
+
+* Chrome
+* Edge
+
+Tablet:
+
+* iPad Air
+
+Mobile:
+
+* iPhone 15
+* Galaxy S24
+
+Evaluate:
+
+* UX
+* Accessibility
+* Loading speed
+* Layout consistency
+* Mobile usability
+
+Generate QA report.
+
+Include:
+
+* Screenshots
+* Lighthouse results
+* Accessibility findings
+* UX recommendations
+
+---
+
+# Acceptance Criteria
+
+✓ User can browse BBC lessons
+
+✓ User can open source lesson
+
+✓ User can save notes
+
+✓ User can save vocabulary
+
+✓ User progress tracked
+
+✓ SEO pages generated
+
+✓ Unit tests passing
+
+✓ Playwright tests passing
+
+✓ Mobile responsive
+
+✓ Lighthouse Performance > 90
+
+✓ Accessibility > 90
+
+✓ No BBC audio stored
+
+✓ No BBC transcript stored
+
+Production-ready implementation only.
