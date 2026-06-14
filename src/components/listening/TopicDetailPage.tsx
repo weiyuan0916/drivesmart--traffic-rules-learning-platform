@@ -57,9 +57,10 @@ export default function TopicDetailPage({
 
   const getLevelColor = (level?: string) => {
     if (!level) return '#9CA3AF';
-    if (level === 'A1' || level === 'A2') return '#00BE7C';
-    if (level === 'B1' || level === 'B2') return '#F97316';
-    if (level === 'C1') return '#FF5632';
+    const normalized = level.toLowerCase();
+    if (normalized === 'a1' || normalized === 'a2' || normalized === 'beginner') return '#00BE7C';
+    if (normalized === 'b1' || normalized === 'b2' || normalized === 'intermediate') return '#F97316';
+    if (normalized === 'c1' || normalized === 'c2' || normalized === 'advanced') return '#FF5632';
     return '#9CA3AF';
   };
 

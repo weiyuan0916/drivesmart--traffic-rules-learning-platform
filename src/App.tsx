@@ -144,13 +144,15 @@ function AppContent() {
   };
 
   const isHomepage = location.pathname === '/' || location.pathname === '/home';
+  const inMode = selectedMode !== 'none';
+  const fullscreenLayout = isHomepage && !inMode;
 
   return (
     <div
       className={`flex flex-col h-screen font-sans relative transition-colors duration-300 bg-[var(--bg-primary)] text-[var(--text-primary)] ${
-        isHomepage ? 'overflow-y-auto' : 'overflow-hidden'
+        fullscreenLayout ? 'overflow-y-auto' : 'overflow-hidden'
       }`}
-      data-lenis-scroll={isHomepage ? '' : undefined}
+      data-lenis-scroll={fullscreenLayout ? '' : undefined}
     >
       {/* Driving Mode Mobile Header (visible during exam on mobile) */}
       {drivingView === 'exam' && (
@@ -264,10 +266,13 @@ function AppContent() {
 
 
       {/* Lenis smooth scroll — must be placed at root level */}
-      {isHomepage && <LenisProvider />}
+      {fullscreenLayout && <LenisProvider />}
 
-      {/* Marketing Homepage — scroll storytelling landing page (only for / and /home) */}
-      {isHomepage && (
+      {/* Marketing Homepage — scroll storytelling landing page.
+          Mutually exclusive with the mode views: when the user activates any
+          mode (driving, vocabulary, opal, etc.), the homepage must unmount so
+          the inner page (e.g. ExamSetupScreen) is not stacked beneath it. */}
+      {isHomepage && selectedMode === 'none' && (
         <Homepage
           nav={{
             onNavigateDriving: () => setSelectedMode('driving'),

@@ -17,9 +17,9 @@ const LEVEL_LABELS: Record<string, string> = {
 }
 
 const LEVEL_COLORS: Record<string, string> = {
-  beginner: 'bg-green-100 text-green-700',
-  intermediate: 'bg-yellow-100 text-yellow-700',
-  advanced: 'bg-red-100 text-red-700',
+  beginner: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+  intermediate: 'bg-amber-50 text-amber-700 border border-amber-200',
+  advanced: 'bg-rose-50 text-rose-700 border border-rose-200',
 }
 
 function formatDuration(seconds: number | null): string {
