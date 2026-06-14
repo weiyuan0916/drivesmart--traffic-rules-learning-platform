@@ -325,7 +325,7 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
       </div>
 
       {/* RIGHT PANEL — Form */}
-      <div className="flex-1 flex flex-col overflow-y-auto modern-scrollbar scroll-smooth" style={{ scrollBehavior: 'smooth' }}>
+      <div className="flex-1 flex flex-col overflow-y-auto modern-scrollbar overscroll-contain">
         {/* Back button - fixed to viewport but contained in panel */}
         {onBack && (
           <div className="sticky top-0 z-10 px-4 sm:px-6 lg:px-10 pt-4">
@@ -338,7 +338,7 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
           </div>
         )}
 
-        <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-10 xl:px-14 max-w-lg mx-auto w-full py-6 lg:py-8">
+        <div className="flex-1 flex flex-col justify-start lg:justify-center px-4 sm:px-6 lg:px-10 xl:px-14 max-w-lg mx-auto w-full py-6 lg:py-8">
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
@@ -385,6 +385,13 @@ const ExamSetupScreen: React.FC<ExamSetupScreenProps> = ({ onStartExam, isStarti
                     type="text"
                     value={candidateName}
                     onChange={(e) => setCandidateName(e.target.value.toUpperCase())}
+                    inputMode="text"
+                    autoComplete="name"
+                    autoCorrect="off"
+                    autoCapitalize="characters"
+                    spellCheck={false}
+                    enterKeyHint="next"
+                    style={{ scrollMarginTop: '96px' }}
                     className="w-full rounded-xl border-2 border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-3.5 pr-12 text-sm font-bold uppercase tracking-wide text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--text-primary)]"
                     placeholder="NHẬP HỌ TÊN"
                   />
