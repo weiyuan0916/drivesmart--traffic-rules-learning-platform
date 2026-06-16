@@ -3,11 +3,16 @@ import type { Question, QuestionOption, RawQuestion } from '../types';
 let cachedRaw: RawQuestion[] | null = null;
 let cachedQuestions: Question[] | null = null;
 
-const LOCAL_QUESTION_IMAGES = import.meta.glob('../../images/cau_*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-}) as Record<string, string>;
+// Cloudinary is the primary source for question images.
+// Each public_id follows the pattern "cau-600/cau_XXX" where XXX is the zero-padded
+// 3-digit question id. Cloudinary auto-negotiates format (WebP/AVIF) and quality.
+const CLOUDINARY_CLOUD_NAME = 'depcpvfwg';
+const CLOUDINARY_FOLDER = 'cau-600';
+
+function buildCloudinaryImageUrl(id: number): string {
+  const three = String(id).padStart(3, '0');
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto,c_limit,w_800/${CLOUDINARY_FOLDER}/cau_${three}.jpg`;
+}
 
 function indexToOptionId(idx: number): string {
   const base = 'A'.charCodeAt(0);
@@ -30,23 +35,6 @@ export function chapterNumberFromQuestionId(id: number): number | null {
   if (id >= 264 && id <= 300) return 4;
   if (id >= 301 && id <= 485) return 5;
   if (id >= 486 && id <= 600) return 6;
-  return null;
-}
-
-function questionIdToLocalImageUrl(id: number): string | null {
-  const three = String(id).padStart(3, '0');
-  const candidates = [
-    `../../images/cau_${three}.jpg`,
-    `../../images/cau_${three}.jpeg`,
-    `../../images/cau_${three}.png`,
-    `../../images/cau_${three}.webp`,
-  ];
-
-  for (const key of candidates) {
-    const url = LOCAL_QUESTION_IMAGES[key];
-    if (typeof url === 'string' && url.length > 0) return url;
-  }
-
   return null;
 }
 
@@ -74,8 +62,9 @@ function mapRawToQuestion(raw: RawQuestion): Question | null {
   const correctAnswer = options[raw.answer]?.id;
   if (!correctAnswer) return null;
 
-  const localImage = questionIdToLocalImageUrl(raw.id);
-  const image = localImage ?? raw.image ?? null;
+  // Only attach an image URL if the question was authored with one in the source JSON.
+  // The 314 referenced images all live under Cloudinary's "cau-600/" folder.
+  const image = raw.image ? buildCloudinaryImageUrl(raw.id) : null;
 
   return {
     id: raw.id,
@@ -112,4 +101,3 @@ export async function loadExamQuestions(): Promise<Question[]> {
   cachedQuestions = mapped;
   return mapped;
 }
-

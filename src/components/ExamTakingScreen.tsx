@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import type { Question } from '../types';
 import ResultsAnalyticsModal from './ResultsAnalyticsModal';
+import { QuestionImage } from './QuestionImage';
 
 interface ExamTakingScreenProps {
   questions: Question[];
@@ -312,8 +313,8 @@ const ExamTakingScreen: React.FC<ExamTakingScreenProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 className="mt-4 rounded-2xl overflow-hidden"
               >
-                <img
-                  src={currentQuestion.image}
+                <QuestionImage
+                  questionId={currentQuestion.id}
                   alt="Hình minh họa"
                   className="w-full max-h-64 object-contain bg-[var(--bg-secondary)]"
                 />

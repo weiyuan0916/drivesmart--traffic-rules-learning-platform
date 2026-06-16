@@ -37,7 +37,7 @@ export function HeroSection({ onExplore, onContact }: HeroSectionProps) {
         animation: agri-scroll-hint 2s ease-in-out infinite;
       }
       .agri-hero-bg {
-        background: linear-gradient(135deg, #FAF8F3 0%, #F0EDE8 50%, #E8E4DC 100%);
+        background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 60%, #EFF1F4 100%);
       }
       .agri-hero-title {
         font-size: clamp(2.5rem, 6vw, 5rem);
@@ -47,7 +47,7 @@ export function HeroSection({ onExplore, onContact }: HeroSectionProps) {
       .agri-hero-sub {
         font-size: clamp(1rem, 2vw, 1.25rem);
         line-height: 1.6;
-        color: #6B6B6B;
+        color: #525252;
         max-width: 540px;
       }
       .agri-hero-cta {
@@ -65,35 +65,37 @@ export function HeroSection({ onExplore, onContact }: HeroSectionProps) {
         text-decoration: none;
       }
       .agri-hero-cta.primary {
-        background: #1E1E1E;
+        background: #1a1a1a;
         color: white;
       }
       .agri-hero-cta.primary:hover {
         background: #000;
         transform: translateY(-2px);
-        box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+        box-shadow: 0 16px 40px rgba(0,0,0,0.18);
       }
       .agri-hero-cta.secondary {
-        background: transparent;
-        color: #1E1E1E;
-        border: 1.5px solid #D0C9BE;
+        background: white;
+        color: #1a1a1a;
+        border: 1.5px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
       }
       .agri-hero-cta.secondary:hover {
-        border-color: #1E1E1E;
+        border-color: #1a1a1a;
         transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
       }
       .agri-hero-dot {
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background: #D0C9BE;
+        background: #d0d0d0;
         transition: all 0.3s ease;
         cursor: pointer;
       }
       .agri-hero-dot.active {
         width: 24px;
         border-radius: 3px;
-        background: #1E1E1E;
+        background: #1a1a1a;
       }
       .agri-hero-image-wrap {
         position: relative;
@@ -106,7 +108,7 @@ export function HeroSection({ onExplore, onContact }: HeroSectionProps) {
         height: 100%;
         border-radius: 32px;
         overflow: hidden;
-        box-shadow: 0 40px 80px rgba(0,0,0,0.12), 0 16px 32px rgba(0,0,0,0.08);
+        box-shadow: 0 40px 80px rgba(0,0,0,0.08), 0 16px 32px rgba(0,0,0,0.05);
       }
       .agri-hero-image-inner img {
         width: 100%;
@@ -117,8 +119,8 @@ export function HeroSection({ onExplore, onContact }: HeroSectionProps) {
       .agri-hero-accent {
         position: absolute;
         border-radius: 50%;
-        opacity: 0.15;
-        filter: blur(60px);
+        opacity: 0.08;
+        filter: blur(80px);
       }
     `;
     document.head.appendChild(style);
@@ -185,7 +187,7 @@ export function HeroSection({ onExplore, onContact }: HeroSectionProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
               className="agri-hero-title font-black mb-6"
-              style={{ color: '#1E1E1E' }}
+              style={{ color: '#0a0a0a' }}
             >
               Vietnam's Finest
               <br />

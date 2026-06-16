@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Play, Pause, RotateCcw, CheckCircle, XCircle, SkipForward, Bookmark,
-  ChevronRight, Volume2, Star, Trophy,
+  ChevronRight, Volume2, Star, Trophy, ChevronDown, Check,
 } from 'lucide-react';
 import type { ListeningLessonDetail, Challenge, DictationResult } from '@/types/listening';
 import { checkDictation, getWordStatusColor } from '@/services/dictationService';
@@ -37,10 +37,13 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
   const [sentenceResults, setSentenceResults] = useState<SentenceResult[]>([]);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [speed, setSpeed] = useState<typeof SPEEDS[number]>(1);
+  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioReady, setAudioReady] = useState(false);
   const [audioError, setAudioError] = useState(false);
   const [showHint, setShowHint] = useState(false);
+  const [audioProgress, setAudioProgress] = useState(0);
+  const [replayCount, setReplayCount] = useState(0);
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -48,6 +51,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
   const pendingPlayRef = useRef(false);
   const sentenceStateRef = useRef<SentenceState>('idle');
   const clipInfoRef = useRef<{ timeStart: number; timeEnd: number } | null>(null);
+  const replayCountRef = useRef(0);
 
   const { registerAudio, pauseAllOthers } = useGlobalAudio();
   const controllerRef = useRef<{ pause: () => void; play: () => Promise<void>; setSrc: (src: string) => void } | null>(null);
@@ -74,7 +78,9 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
     setAudioReady(false);
     setAudioError(false);
     setIsPlaying(false);
-    pendingPlayRef.current = false;
+    setAudioProgress(0);
+    replayCountRef.current = 0;
+    setReplayCount(0);
     clipInfoRef.current = null;
 
     const audio = audioRef.current;
@@ -174,7 +180,34 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
   const handleAudioEnded = useCallback(() => {
     setIsPlaying(false);
     setSentenceState((prev) => (prev === 'playing' ? 'idle' : prev));
-  }, []);
+
+    // Loop replay: if user requested repeated playback, replay again
+    if (replayCountRef.current > 1) {
+      replayCountRef.current -= 1;
+      setReplayCount(replayCountRef.current);
+      const audio = audioRef.current;
+      if (!audio) return;
+      const clipInfo = clipInfoRef.current;
+      if (clipInfo && clipInfo.timeStart > 0) {
+        audio.currentTime = clipInfo.timeStart;
+      } else {
+        audio.currentTime = 0;
+      }
+      audio.playbackRate = speed;
+      audio.play().catch((err) => {
+        console.warn('Replay loop failed:', err);
+        replayCountRef.current = 0;
+        setReplayCount(0);
+        setIsPlaying(false);
+        setSentenceState((prev) => (prev === 'playing' ? 'idle' : prev));
+      });
+      setIsPlaying(true);
+      setSentenceState('playing');
+    } else {
+      replayCountRef.current = 0;
+      setReplayCount(0);
+    }
+  }, [speed]);
 
   const handleAudioError = useCallback(() => {
     setAudioError(true);
@@ -186,6 +219,10 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
   const handlePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio || audioError) return;
+
+    // Reset replay loop when user manually starts playback
+    replayCountRef.current = 0;
+    setReplayCount(0);
 
     const clipInfo = clipInfoRef.current;
     if (clipInfo && clipInfo.timeStart > 0) {
@@ -224,6 +261,9 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
     audio.playbackRate = speed;
     // Pause all other audio before replaying
     pauseAllOthers(controllerRef.current ?? undefined);
+    // Set replay count: play the clip 3 times total, then stop
+    replayCountRef.current = 3;
+    setReplayCount(3);
     audio.play().catch((err) => {
       console.warn('Replay failed:', err);
       setIsPlaying(false);
@@ -277,6 +317,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
       setIsPlaying(false);
       setAudioError(false);
       setAudioReady(false);
+      pendingPlayRef.current = true;
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       // All sentences done
@@ -308,6 +349,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
     setUserInput('');
     setSentenceState('idle');
     setShowHint(false);
+    setAudioProgress(0);
     setTimeout(() => inputRef.current?.focus(), 100);
   }, []);
 
@@ -332,6 +374,8 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
       setIsPlaying(false);
       setAudioError(false);
       setAudioReady(false);
+      setAudioProgress(0);
+      pendingPlayRef.current = true;
       setTimeout(() => inputRef.current?.focus(), 100);
     } else {
       setSentenceState('completed');
@@ -507,13 +551,26 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
         onError={handleAudioError}
         onTimeUpdate={() => {
           const audio = audioRef.current;
+          if (!audio) return;
           const clipInfo = clipInfoRef.current;
-          if (!audio || !clipInfo || clipInfo.timeEnd <= 0) return;
-          if (audio.currentTime >= clipInfo.timeEnd) {
-            audio.pause();
-            setIsPlaying(false);
-            if (sentenceStateRef.current === 'playing') {
-              setSentenceState('idle');
+          if (clipInfo && clipInfo.timeEnd > 0) {
+            const start = clipInfo.timeStart;
+            const end = clipInfo.timeEnd;
+            const progress = Math.min(100, Math.max(0, ((audio.currentTime - start) / (end - start)) * 100));
+            setAudioProgress(progress);
+            if (audio.currentTime >= end) {
+              audio.pause();
+              setIsPlaying(false);
+              setAudioProgress(100);
+              if (sentenceStateRef.current === 'playing') {
+                setSentenceState('idle');
+              }
+            }
+          } else {
+            const duration = audio.duration;
+            if (duration > 0) {
+              const progress = Math.min(100, Math.max(0, (audio.currentTime / duration) * 100));
+              setAudioProgress(progress);
             }
           }
         }}
@@ -779,10 +836,10 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
                   style={{ background: 'var(--lm-border)' }}
                 >
                   <div
-                    className="h-full rounded-full transition-all duration-300"
+                    className="h-full rounded-full transition-all duration-100"
                     style={{
                       background: '#35375B',
-                      width: isPlaying ? '60%' : '0%',
+                      width: `${audioProgress}%`,
                     }}
                   />
                 </div>
@@ -801,32 +858,80 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
               </div>
 
               {/* Speed */}
-              <div className="flex gap-0.5">
-                {SPEEDS.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => handleSpeedChange(s)}
-                    className="px-1.5 py-1 rounded text-xs font-medium transition-all"
-                    style={{
-                      background: speed === s ? '#35375B' : 'var(--lm-surface-raised)',
-                      color: speed === s ? '#fff' : 'var(--lm-text-secondary)',
-                    }}
-                    aria-label={`Speed ${s}x`}
-                  >
-                    {s}x
-                  </button>
-                ))}
+              <div className="relative" data-speed-dropdown>
+                <button
+                  onClick={() => setShowSpeedMenu((v) => !v)}
+                  className="h-7 px-2.5 rounded-lg text-xs font-semibold outline-none cursor-pointer transition-all duration-150 flex items-center gap-1.5 min-w-[58px] justify-between"
+                  style={{
+                    background: speed === 1 ? '#35375B' : 'var(--lm-surface-raised)',
+                    color: speed === 1 ? '#fff' : 'var(--lm-text-secondary)',
+                    border: '1px solid var(--lm-border)',
+                  }}
+                  aria-label="Playback speed"
+                  aria-expanded={showSpeedMenu}
+                >
+                  <span>{speed}x</span>
+                  <ChevronDown
+                    size={12}
+                    className="transition-transform duration-200"
+                    style={{ transform: showSpeedMenu ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                  />
+                </button>
+                {showSpeedMenu && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setShowSpeedMenu(false)}
+                    />
+                    <div
+                      className="absolute right-0 top-full mt-1.5 z-20 rounded-lg overflow-hidden shadow-lg min-w-[80px]"
+                      style={{
+                        background: 'var(--lm-surface)',
+                        border: '1px solid var(--lm-border)',
+                      }}
+                    >
+                      {SPEEDS.map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => {
+                            handleSpeedChange(s);
+                            setShowSpeedMenu(false);
+                          }}
+                          className="w-full px-3 py-1.5 text-xs font-medium text-left transition-colors flex items-center justify-between"
+                          style={{
+                            background: speed === s ? 'var(--lm-surface-raised)' : 'transparent',
+                            color: speed === s ? '#35375B' : 'var(--lm-text-secondary)',
+                          }}
+                        >
+                          <span>{s}x</span>
+                          {speed === s && <Check size={12} />}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Replay */}
               <button
                 onClick={handleReplay}
                 disabled={audioError}
-                className="w-9 h-9 rounded-lg flex items-center justify-center transition-all hover:scale-105 disabled:opacity-40"
-                style={{ background: 'var(--lm-surface-raised)', color: 'var(--lm-text-secondary)' }}
+                className="relative w-9 h-9 rounded-lg flex items-center justify-center transition-all hover:scale-105 disabled:opacity-40"
+                style={{
+                  background: replayCount > 0 ? '#35375B' : 'var(--lm-surface-raised)',
+                  color: replayCount > 0 ? '#fff' : 'var(--lm-text-secondary)',
+                }}
                 aria-label="Replay"
               >
                 <RotateCcw size={14} />
+                {replayCount > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full text-[10px] font-bold flex items-center justify-center"
+                    style={{ background: '#FF5632', color: '#fff' }}
+                  >
+                    {replayCount}
+                  </span>
+                )}
               </button>
             </div>
 

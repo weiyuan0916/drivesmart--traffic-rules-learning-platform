@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import type { ChapterStat, Question } from '../types';
 import { EXAM_CHAPTERS_ORDERED } from '../services/examGenerator';
 import QuestionNav from './QuestionNav';
+import { QuestionImage } from './QuestionImage';
 
 interface MainContentProps {
   questions: Question[];
@@ -826,17 +827,20 @@ const MainContent: React.FC<MainContentProps> = ({
         >
           <AnimatePresence mode="wait">
             {question.image ? (
-              <motion.img
+              <motion.div
                 key={`img-${currentQuestionNumber}`}
-                src={question.image}
-                alt="Traffic Situation"
-                className="max-h-full max-w-full w-auto h-auto object-contain hover:scale-[1.02] transition-transform duration-300"
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                referrerPolicy="no-referrer"
-              />
+                className="max-h-full max-w-full w-auto h-auto"
+              >
+                <QuestionImage
+                  questionId={question.id}
+                  alt="Traffic Situation"
+                  className="max-h-full max-w-full w-auto h-auto object-contain hover:scale-[1.02] transition-transform duration-300"
+                />
+              </motion.div>
             ) : (
               <div className="hidden lg:flex w-full h-full items-center justify-center min-h-[200px]">
                 <span className="text-[var(--text-muted)] text-sm">Không có ảnh</span>
@@ -1151,11 +1155,10 @@ const MainContent: React.FC<MainContentProps> = ({
                 </p>
               </div>
               {/* Image */}
-              <img
-                src={question.image}
+              <QuestionImage
+                questionId={question.id}
                 alt="Traffic Situation"
                 className="max-w-full max-h-[70vh] w-auto h-auto object-contain rounded-xl shadow-2xl"
-                referrerPolicy="no-referrer"
               />
             </motion.div>
           </motion.div>
