@@ -18,12 +18,17 @@ export default defineConfig(({mode}) => {
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
       proxy: {
+        '/api/v1/listening/bbc': {
+          target: 'http://127.0.0.1:3002',
+          changeOrigin: true,
+          rewrite: (path: string) => path.replace(/^\/api\/v1/, '/api'),
+        },
         '/api/listening': {
-          target: 'http://localhost:3002',
+          target: 'http://127.0.0.1:3002',
           changeOrigin: true,
         },
         '/api': {
-          target: env.VITE_API_URL || 'http://vinalisten.test',
+          target: env.VITE_API_URL || 'http://127.0.0.1:8000',
           changeOrigin: true,
         },
       },

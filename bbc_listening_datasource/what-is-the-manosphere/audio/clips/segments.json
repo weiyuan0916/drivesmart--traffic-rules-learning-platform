@@ -1,0 +1,410 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 13.7,
+    "duration": 13.7,
+    "text": "Hello, this is 6 Minute English from BBC LearningEnglish.com Hello, this is 6 Minute English from BBC Learning English. I'm Phil and I'm Georgie.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 13.7,
+    "end": 21.7,
+    "duration": 8.0,
+    "text": "We hear a lot about the difficulties young men face growing up in the modern world and how many of them are looking online for answers.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 21.7,
+    "end": 26.7,
+    "duration": 5.0,
+    "text": "This is created a situation which has been given the name The Manosphere.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 26.7,
+    "end": 34.7,
+    "duration": 8.0,
+    "text": "What exactly is The Manosphere? Here's Anita Rani, presenter of BBC Radio 4's Women's Hour with one definition.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 34.7,
+    "end": 46.7,
+    "duration": 12.0,
+    "text": "The Manosphere consists of online communities and influencers that promote the idea that emotional control, material wealth, physical appearance and dominance especially over women are markers of male worth.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 46.7,
+    "end": 51.7,
+    "duration": 5.0,
+    "text": "The Manosphere describes attitudes expressed online that men are superior.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 51.7,
+    "end": 68.7,
+    "duration": 17.0,
+    "text": "You won't find any website named www.manosphere.com, but in social media posts, TikTok videos and other online content, ideas about how to be a man of finding a young male audience, sometimes with damaging results.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 68.7,
+    "end": 76.7,
+    "duration": 8.0,
+    "text": "In this episode we'll hear from Will Adolfi, a young British man who followed the Manosphere until in his mid-twenties he suffered a breakdown.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 76.7,
+    "end": 80.7,
+    "duration": 4.0,
+    "text": "And as usual, we'll learn some useful new words and phrases.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 80.7,
+    "end": 90.89,
+    "duration": 10.19,
+    "text": "And remember you'll find all the vocabulary from this episode on our website, www.bvclearningenglish.com But first I have a question for you Georgie.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 90.89,
+    "end": 99.89,
+    "duration": 9.0,
+    "text": "According to men's self-help group The Movenber Foundation, a majority of British young men regularly engage with masculinity influencers online.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 99.89,
+    "end": 109.89,
+    "duration": 10.0,
+    "text": "But how many exactly? Is it A, two thirds, B, three quarters or C, eight tenths?",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 109.89,
+    "end": 112.89,
+    "duration": 3.0,
+    "text": "I'm going to guess A, two thirds.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 112.89,
+    "end": 116.89,
+    "duration": 4.0,
+    "text": "Okay, well we'll find out the answer later in the programme.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 116.89,
+    "end": 121.89,
+    "duration": 5.0,
+    "text": "The Manosphere includes the idea that the world is biased against men.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 121.89,
+    "end": 131.89,
+    "duration": 10.0,
+    "text": "According to the social media influencers who promote these views, being a man means being strong, rich, and controlling others, especially women.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 131.89,
+    "end": 139.89,
+    "duration": 8.0,
+    "text": "As a young boy, Will Adolfi was unlike other boys at school, and as he grew into a teenager, he started engaging with some of these ideas.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 139.89,
+    "end": 144.89,
+    "duration": 5.0,
+    "text": "Here he tells BBC Radio 4 programme Women's Hour how it all started.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 144.89,
+    "end": 149.89,
+    "duration": 5.0,
+    "text": "I didn't quite fit in the box, you know I was doing ballet, I wanted to be an actor, I wrote poetry.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 149.89,
+    "end": 151.89,
+    "duration": 2.0,
+    "text": "And I was an easy target.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 151.89,
+    "end": 157.89,
+    "duration": 6.0,
+    "text": "By the time I got to 14 years old, if you look at pictures of me you can see Bravado, you can see a mask, I see it.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 157.89,
+    "end": 169.89,
+    "duration": 12.0,
+    "text": "I unknowingly did my best to adhere to what we call the man box, which is a kind of rigid set of ideals and rules that I may feel pressure as a boy to follow in order to be a quote unquote real man.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 169.89,
+    "end": 172.89,
+    "duration": 3.0,
+    "text": "The teenage years can be difficult for someone who's different.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 172.89,
+    "end": 180.89,
+    "duration": 8.0,
+    "text": "Will enjoyed poetry and ballet, and he says this made him an easy target, someone who's vulnerable and easily taken advantage of.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 180.89,
+    "end": 188.89,
+    "duration": 8.0,
+    "text": "Will responded with Bravado, a show of bravery to impress other people but which often hides someone's true feelings.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 188.89,
+    "end": 194.89,
+    "duration": 6.0,
+    "text": "He felt pressure to present himself as a quote unquote real man.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 194.89,
+    "end": 203.89,
+    "duration": 9.0,
+    "text": "The phrase quote unquote can be used to show you're repeating someone else's words, especially if you don't agree with them.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 203.89,
+    "end": 207.89,
+    "duration": 4.0,
+    "text": "But behind the Bravado, Will struggled to get a girlfriend or hold down a job.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 207.89,
+    "end": 216.89,
+    "duration": 9.0,
+    "text": "Offline, his life seemed to reflect messages he saw in the videos he was watching online that his problems were caused by women.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 216.89,
+    "end": 220.89,
+    "duration": 4.0,
+    "text": "His will again, sharing more with BBC Radio 4's Women's Hour.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 220.89,
+    "end": 238.89,
+    "duration": 18.0,
+    "text": "When I went online to search for answers, I had an influence at telling me the world hates men, which really felt true and it kind of distorted my world view where it got painted over this whole brush, where I started to feel that was really true that everyone hates men so it's an us versus them.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 238.89,
+    "end": 243.89,
+    "duration": 5.0,
+    "text": "Will's view of the world became distorted, twisted out of shape and unrealistic.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 243.89,
+    "end": 246.89,
+    "duration": 3.0,
+    "text": "He started seeing everyone as an enemy.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 246.89,
+    "end": 256.89,
+    "duration": 10.0,
+    "text": "Will says he painted everyone with the same brush, an idea meaning to unfairly think everyone has the same bad qualities as a certain person.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 256.89,
+    "end": 263.89,
+    "duration": 7.0,
+    "text": "Will saw the world as us versus them, a phrase which is used to show hostility between two opposing groups.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 263.89,
+    "end": 273.89,
+    "duration": 10.0,
+    "text": "In this case, the men in the manus fear and everyone else, especially women, progressives and the mainstream media, who he believed wanted to limit their power.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 273.89,
+    "end": 284.89,
+    "duration": 11.0,
+    "text": "Luckily for Will, his experiences in the online world of the manus fear ended, but not before his mental health had declined to the point of a breakdown.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 284.89,
+    "end": 293.89,
+    "duration": 9.0,
+    "text": "Now he visits schools around the UK telling his story to young people, reminding them always to question what they see and hear online.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 293.89,
+    "end": 297.89,
+    "duration": 4.0,
+    "text": "Okay Phil, I think it's time to reveal the answer to your question.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 297.89,
+    "end": 305.89,
+    "duration": 8.0,
+    "text": "Yes, I asked you how many British young men regularly engage with masculinity influences online.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 305.89,
+    "end": 307.89,
+    "duration": 2.0,
+    "text": "And I said A to thirds.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 307.89,
+    "end": 310.89,
+    "duration": 3.0,
+    "text": "Which was the correct answer, well done.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 310.89,
+    "end": 319.89,
+    "duration": 9.0,
+    "text": "Thank you. Okay, let's recap the vocabulary we've learned starting with an easy target, a vulnerable person who is easily taken advantage of.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 319.89,
+    "end": 324.89,
+    "duration": 5.0,
+    "text": "Bravado is a show of bravery or confidence to impress people.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 324.89,
+    "end": 331.89,
+    "duration": 7.0,
+    "text": "The phrase quote unquote can be used to show you are repeating someone else's words, especially if you do not agree.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 331.89,
+    "end": 338.89,
+    "duration": 7.0,
+    "text": "Something which is distorted has become misshapen so that it looks strange or unnatural.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 338.89,
+    "end": 343.89,
+    "duration": 5.0,
+    "text": "The phrase us versus them is used to show hostility between two opposing groups.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 343.89,
+    "end": 353.89,
+    "duration": 10.0,
+    "text": "And finally, if you paint everyone with the same brush, you won't fairly think everyone has the same bad qualities of one person.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 353.89,
+    "end": 364.98,
+    "duration": 11.09,
+    "text": "Once again, our six minutes are up, but if you enjoyed this episode, why not check out the worksheet and quiz both available now at BBCLearningEnglish.com.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 364.98,
+    "end": 365.98,
+    "duration": 1.0,
+    "text": "Goodbye for now.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 365.98,
+    "end": 372.98,
+    "duration": 7.0,
+    "text": "Goodbye. Six minutes English from BBCLearningEnglish.com",
+    "file": "audio_clips/50.mp3"
+  }
+]

@@ -4,10 +4,11 @@
 // ============================================================
 
 import { apiClient } from '../api/client'
+import { API_BASE } from './constants'
 import type { LessonWithClips, ResetProgressResponse } from '../types/lesson'
 import type { ApiResponse } from '../types'
 
-const BASE_PATH = '/api/v1'
+const BASE_PATH = API_BASE
 
 export const lessonApi = {
   getLesson: (lessonId: string): Promise<ApiResponse<LessonWithClips>> => {

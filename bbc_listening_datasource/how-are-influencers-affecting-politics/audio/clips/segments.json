@@ -1,0 +1,474 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 13.83,
+    "duration": 13.83,
+    "text": "Hello, this is 6 Minute English from BBC Learning English, I'm Beth.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 13.83,
+    "end": 15.35,
+    "duration": 1.52,
+    "text": "And I'm Pippa.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 15.35,
+    "end": 23.43,
+    "duration": 8.08,
+    "text": "Everywhere you look online from gaming and fashion to music, travel and culture, you'll find social media influences.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 23.43,
+    "end": 29.43,
+    "duration": 6.0,
+    "text": "These social media influences do what they're famous for, influencing and creating trends.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 29.43,
+    "end": 32.91,
+    "duration": 3.48,
+    "text": "Do you follow any social media influences, Beth?",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 32.91,
+    "end": 42.23,
+    "duration": 9.32,
+    "text": "I don't follow any specifically, I would say, but I do see influences on Facebook and Instagram, things like that.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 42.23,
+    "end": 53.91,
+    "duration": 11.68,
+    "text": "Well, the most successful influences have millions of followers, and not surprisingly, this has caught the attention of another group of people trying to get their message out to the public, politicians.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 53.91,
+    "end": 66.79,
+    "duration": 12.88,
+    "text": "Politicians using the media to win elections is nothing new, but in this episode we'll be finding out what happens when social media influences become politicians themselves.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 66.79,
+    "end": 75.83,
+    "duration": 9.04,
+    "text": "As usual, we'll be learning some useful new words and phrases, and remember there's a transcript of this episode to read along with while you listen.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 75.83,
+    "end": 80.55,
+    "duration": 4.72,
+    "text": "It's available now on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 80.55,
+    "end": 83.31,
+    "duration": 2.76,
+    "text": "But first, I have a question for you, Beth.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 83.31,
+    "end": 92.47,
+    "duration": 9.16,
+    "text": "The most followed Instagram account of 2025 belongs to Footballer Cristiano Ronaldo, but how many followers does he have?",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 92.47,
+    "end": 99.99,
+    "duration": 7.52,
+    "text": "A, 6.7 million, B, 67 million, or C, 667 million.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 99.99,
+    "end": 103.59,
+    "duration": 3.6,
+    "text": "Ooh, I'm going to go down the middle, 67 million.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 103.59,
+    "end": 107.03,
+    "duration": 3.44,
+    "text": "Well, we'll find out the answer later in the programme.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 107.03,
+    "end": 113.55,
+    "duration": 6.52,
+    "text": "On the world, politicians are realising that they can reach a lot of people through social media influences.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 113.55,
+    "end": 122.67,
+    "duration": 9.12,
+    "text": "There have even been allegations of politicians paying for the support of influencers in places like Columbia, Argentina, and Indonesia.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 122.67,
+    "end": 129.23,
+    "duration": 6.56,
+    "text": "And one place where politics has become a big topic on social media is Nigeria.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 129.23,
+    "end": 132.95,
+    "duration": 3.72,
+    "text": "Nigeria is a country with a huge, young population.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 132.95,
+    "end": 139.23,
+    "duration": 6.28,
+    "text": "There are around 200 million people in total, and 70% of them are under 30.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 139.23,
+    "end": 144.91,
+    "duration": 5.68,
+    "text": "Many of these young voters are turned off, meaning not interested, in traditional media.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 144.91,
+    "end": 147.79,
+    "duration": 2.88,
+    "text": "But they do follow social media influences.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 147.79,
+    "end": 153.23,
+    "duration": 5.44,
+    "text": "Adelina Carey is BBC E-Bone News Editor in Lagos, Nigeria.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 153.23,
+    "end": 158.63,
+    "duration": 5.4,
+    "text": "She spoke with BBC World Service programme, the 5th floor, about the situation there.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 158.63,
+    "end": 166.35,
+    "duration": 7.72,
+    "text": "The influencers are super important to shaping the narrative of these young people.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 166.35,
+    "end": 174.95,
+    "duration": 8.6,
+    "text": "Some of them started, you know, some of them started out with lifestyle and then branched into politics.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 174.95,
+    "end": 179.95,
+    "duration": 5.0,
+    "text": "Adelina thinks influencers are super important in Nigerian politics.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 179.95,
+    "end": 184.35,
+    "duration": 4.4,
+    "text": "She uses super to mean very extremely or more than usual.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 184.35,
+    "end": 189.31,
+    "duration": 4.96,
+    "text": "For example, if you say you're super happy about something, you mean you're very happy about it.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 189.31,
+    "end": 194.03,
+    "duration": 4.72,
+    "text": "In Nigeria, influencers are shaping the narrative of elections.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 194.03,
+    "end": 201.35,
+    "duration": 7.32,
+    "text": "If someone shapes a narrative, they have a strong influence over how something is presented or understood.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 201.35,
+    "end": 211.27,
+    "duration": 9.92,
+    "text": "Influencing things, of course, is exactly what influencers do, but now more and more social media personalities are branching out into politics.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 211.27,
+    "end": 218.55,
+    "duration": 7.28,
+    "text": "When you branch out, you start doing something different from what you usually do, such as a new activity or job.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 218.55,
+    "end": 223.23,
+    "duration": 4.68,
+    "text": "So what happens when influencers become politicians themselves?",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 223.23,
+    "end": 230.07,
+    "duration": 6.84,
+    "text": "Here Adelina Carey explains more to Faranaka Midi, presenter of BBC World Services, the 5th floor.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 230.07,
+    "end": 231.07,
+    "duration": 1.0,
+    "text": "What about in Nigeria?",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 231.07,
+    "end": 237.07,
+    "duration": 6.0,
+    "text": "Is there a pushback against these influencers who got involved in promoting political parties?",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 237.07,
+    "end": 240.07,
+    "duration": 3.0,
+    "text": "Absolutely. Huge pushback.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 240.07,
+    "end": 248.75,
+    "duration": 8.68,
+    "text": "They also go back and dig up information about these people from their personal lives and then publish them on social media.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 248.75,
+    "end": 254.59,
+    "duration": 5.84,
+    "text": "In Nigeria, there was a pushback against social media influencers turned politicians.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 254.59,
+    "end": 259.91,
+    "duration": 5.32,
+    "text": "A pushback is a negative reaction or rejection of something that has happened.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 259.91,
+    "end": 268.11,
+    "duration": 8.2,
+    "text": "In fact, the public reaction was so bad people started to dig up information about influencers who promote politicians.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 268.11,
+    "end": 272.83,
+    "duration": 4.72,
+    "text": "If you dig up information about someone, you try to find details about them.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 272.83,
+    "end": 280.75,
+    "duration": 7.92,
+    "text": "We have a similar phrase, dig up dirt on someone, which means trying to find information about someone which could damage their reputation.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 280.75,
+    "end": 291.07,
+    "duration": 10.32,
+    "text": "So social media can be a powerful tool for politicians, but getting involved in politics doesn't always go well for social media influencers.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 291.07,
+    "end": 295.55,
+    "duration": 4.48,
+    "text": "Okay, Pippa, isn't it time you revealed the answer to your question?",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 295.55,
+    "end": 307.83,
+    "duration": 12.28,
+    "text": "Yes, I asked how many followers does Cristiano Ronaldo, the footballer, have, and the answer was see $667 million at the time of recording.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 307.83,
+    "end": 309.47,
+    "duration": 1.64,
+    "text": "That's a lot more than I have, Beth.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 309.47,
+    "end": 311.47,
+    "duration": 2.0,
+    "text": "And me? Wow.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 311.47,
+    "end": 318.39,
+    "duration": 6.92,
+    "text": "Okay, let's recap the vocabulary we've learned starting with the phrasal verb turned off, meaning uninterested.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 318.39,
+    "end": 323.79,
+    "duration": 5.4,
+    "text": "When super is placed before an adjective, it means very or more than usual.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 323.79,
+    "end": 330.39,
+    "duration": 6.6,
+    "text": "Social media influencers who shape the narrative have a strong influence over how something is presented or understood.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 330.39,
+    "end": 337.51,
+    "duration": 7.12,
+    "text": "If you branch out into something new, you start doing an activity or job that is different from what you usually do.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 337.51,
+    "end": 342.11,
+    "duration": 4.6,
+    "text": "A pushback is a negative reaction to something new that has happened.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 342.11,
+    "end": 347.83,
+    "duration": 5.72,
+    "text": "And finally, the phrasal verb dig up means to try and find information.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 347.83,
+    "end": 354.67,
+    "duration": 6.84,
+    "text": "This is often about a person and their private life in order to try and damage their reputation.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 354.67,
+    "end": 364.43,
+    "duration": 9.76,
+    "text": "But again, our six minutes are up, but why not head over to our website, BBCLearningEnglish.com to try the quiz and work sheets for this episode.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 364.43,
+    "end": 366.43,
+    "duration": 2.0,
+    "text": "See you there soon, but for now, goodbye.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 366.43,
+    "end": 367.43,
+    "duration": 1.0,
+    "text": "Bye.",
+    "file": "audio_clips/58.mp3"
+  }
+]

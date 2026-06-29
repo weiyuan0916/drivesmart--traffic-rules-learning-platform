@@ -1,0 +1,578 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 11.93,
+    "duration": 11.93,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello and welcome to 6 Minute English from BBCLearningEnglish.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 11.93,
+    "end": 18.01,
+    "duration": 6.08,
+    "text": "I'm Phil and today we have Hannah joining us again from BBC Podcast What in the World.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 18.01,
+    "end": 22.01,
+    "duration": 4.0,
+    "text": "Welcome Hannah. Hey Phil, it is so great to be back here.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 22.01,
+    "end": 27.17,
+    "duration": 5.16,
+    "text": "So I'm wondering, do you do things that you think are good for the planet?",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 27.17,
+    "end": 39.17,
+    "duration": 12.0,
+    "text": "I try, but I don't think I do enough, so maybe I cycle more than I drive, and I try to recycle things, but I should be doing a lot more.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 39.17,
+    "end": 48.17,
+    "duration": 9.0,
+    "text": "But some people think that to deal with climate change we can't just rely on individuals. Phil, it's not up to you and me.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 48.17,
+    "end": 56.97,
+    "duration": 8.8,
+    "text": "We need to actually change the way our economy works, and this is an idea called degrowth, and we've been investigating it at What in the World.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 56.97,
+    "end": 58.97,
+    "duration": 2.0,
+    "text": "And we're going to learn a bit more about it today.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 58.97,
+    "end": 61.97,
+    "duration": 3.0,
+    "text": "But first, our quiz question.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 61.97,
+    "end": 66.97,
+    "duration": 5.0,
+    "text": "World leaders promised in 2015 to limit global temperature rises.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 66.97,
+    "end": 68.97,
+    "duration": 2.0,
+    "text": "But what was the limit they agreed to?",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 68.97,
+    "end": 79.97,
+    "duration": 11.0,
+    "text": "Was it a 1.5 degrees Celsius, b 2.5 degrees Celsius, or c 3.5 degrees Celsius?",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 79.97,
+    "end": 81.97,
+    "duration": 2.0,
+    "text": "I think I know this one, Phil.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 81.97,
+    "end": 85.97,
+    "duration": 4.0,
+    "text": "I think it's 1.5 degrees Celsius.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 85.97,
+    "end": 89.97,
+    "duration": 4.0,
+    "text": "OK, we'll find out the answer later in the program.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 89.97,
+    "end": 93.97,
+    "duration": 4.0,
+    "text": "So, Hannah, you've been researching degrowth.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 93.97,
+    "end": 96.0,
+    "duration": 2.03,
+    "text": "What does that mean?",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 96.0,
+    "end": 102.0,
+    "duration": 6.0,
+    "text": "Well, Phil, traditionally governments have always wanted to grow the economy.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 102.0,
+    "end": 105.0,
+    "duration": 3.0,
+    "text": "More money, more jobs, more stuff.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 105.0,
+    "end": 109.0,
+    "duration": 4.0,
+    "text": "But degrowth is a different way of thinking about things.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 109.0,
+    "end": 115.0,
+    "duration": 6.0,
+    "text": "Some people say that to tackle the climate crisis, we need to stop our economies from growing.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 115.0,
+    "end": 122.0,
+    "duration": 7.0,
+    "text": "We need to stop using and making more, and focus on using fewer of the earth's natural resources.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 122.0,
+    "end": 127.0,
+    "duration": 5.0,
+    "text": "The people who support the idea of degrowth are often called degrowthers.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 127.0,
+    "end": 133.0,
+    "duration": 6.0,
+    "text": "Right. OK, so degrowthers argue we should make and use less stuff.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 133.0,
+    "end": 137.0,
+    "duration": 4.0,
+    "text": "Yes, mostly. It's a little bit more complex than that.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 137.0,
+    "end": 142.0,
+    "duration": 5.0,
+    "text": "And I spoke to BBC journalist Alvaro Alvarez, who told me more about the idea.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 142.0,
+    "end": 146.0,
+    "duration": 4.0,
+    "text": "So, degrowth is not saying that we need to reduce everything.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 146.0,
+    "end": 152.0,
+    "duration": 6.0,
+    "text": "It's saying that we need to decrease some elements of our production that are not beneficial.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 152.0,
+    "end": 160.0,
+    "duration": 8.0,
+    "text": "An example of those elements would be fast fashion, private jets, the beef and meat industry.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 160.0,
+    "end": 163.0,
+    "duration": 3.0,
+    "text": "So, it's not about decreasing everything.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 163.0,
+    "end": 168.0,
+    "duration": 5.0,
+    "text": "Alvaro says that degrowthers believe we should reduce some elements of production.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 168.0,
+    "end": 171.0,
+    "duration": 3.0,
+    "text": "An element of something is a part of something.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 171.0,
+    "end": 178.0,
+    "duration": 7.0,
+    "text": "And according to Alvaro, these elements of production are not believed to be beneficial.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 178.0,
+    "end": 181.0,
+    "duration": 3.0,
+    "text": "If something's beneficial, it's useful or good.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 181.0,
+    "end": 187.0,
+    "duration": 6.0,
+    "text": "One example of a kind of production that degrowthers disagree with is fast fashion.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 187.0,
+    "end": 196.0,
+    "duration": 9.0,
+    "text": "Fast fashion refers to clothes that are made very cheaply and quickly, so that customers can afford to buy new outfits more often.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 196.0,
+    "end": 204.0,
+    "duration": 8.0,
+    "text": "Exactly. And before we go any further, many economists do not think that degrowth is a good idea.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 204.0,
+    "end": 207.0,
+    "duration": 3.0,
+    "text": "Some of them argue that it would create more poverty.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 207.0,
+    "end": 213.0,
+    "duration": 6.0,
+    "text": "And some economists believe degrowth would actually make it harder to solve the climate crisis.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 213.0,
+    "end": 226.13,
+    "duration": 13.13,
+    "text": "For example, Professor Sam Fankhauser, an economist at Cambridge University in the UK, spoke to you on what in the world, and he argues that degrowth could limit innovation.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 226.13,
+    "end": 231.13,
+    "duration": 5.0,
+    "text": "I think degrowth underestimates the power of innovation.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 231.13,
+    "end": 238.13,
+    "duration": 7.0,
+    "text": "Degrowth underestimates the need for investment that we need in new technology and in new solutions.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 238.13,
+    "end": 245.13,
+    "duration": 7.0,
+    "text": "And degrowth underestimates the social feasibility of what they propose.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 245.13,
+    "end": 252.51,
+    "duration": 7.38,
+    "text": "So, Professor Fankhauser thinks that degrowth underestimates many things, such as innovation.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 252.51,
+    "end": 257.51,
+    "duration": 5.0,
+    "text": "If you underestimate something, you don't understand the true importance or size of it.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 257.51,
+    "end": 266.51,
+    "duration": 9.0,
+    "text": "Another factor that Professor Fankhauser says is underestimated by degrowthers is the feasibility of social change.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 266.51,
+    "end": 271.51,
+    "duration": 5.0,
+    "text": "Feasibility means the possibility that something can be achieved.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 271.51,
+    "end": 274.51,
+    "duration": 3.0,
+    "text": "It comes from the adjective feasible.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 274.51,
+    "end": 280.51,
+    "duration": 6.0,
+    "text": "For example, I could say that I think it's feasible for us to finish this podcast in six minutes.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 280.51,
+    "end": 281.51,
+    "duration": 1.0,
+    "text": "I think we can do it.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 281.51,
+    "end": 284.51,
+    "duration": 3.0,
+    "text": "Well, Phil, we're going to have to get a move on.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 284.51,
+    "end": 287.51,
+    "duration": 3.0,
+    "text": "I think it's time to hear the answer to your quiz question.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 287.51,
+    "end": 292.51,
+    "duration": 5.0,
+    "text": "I asked how much world leaders agreed to limit global temperature rises to.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 292.51,
+    "end": 301.51,
+    "duration": 9.0,
+    "text": "The answer is 1.5 degrees Celsius, which scientists believe is needed to stop the worst impacts of climate change.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 301.51,
+    "end": 302.51,
+    "duration": 1.0,
+    "text": "I got it right.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 302.51,
+    "end": 313.51,
+    "duration": 11.0,
+    "text": "OK, so let's recap some of the vocabulary we've learned, starting with degrowth, which is the economic idea that we should use and make less stuff.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 313.51,
+    "end": 316.51,
+    "duration": 3.0,
+    "text": "An element of something means a part of something.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 316.51,
+    "end": 319.51,
+    "duration": 3.0,
+    "text": "Beneficial means useful or good.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 319.51,
+    "end": 325.51,
+    "duration": 6.0,
+    "text": "Fast fashion refers to clothes that are made cheaply and quickly so that people can buy them more often.",
+    "file": "audio_clips/58.mp3"
+  },
+  {
+    "id": 59,
+    "start": 325.51,
+    "end": 331.51,
+    "duration": 6.0,
+    "text": "And if you underestimate something, you don't understand the true importance or size of it.",
+    "file": "audio_clips/59.mp3"
+  },
+  {
+    "id": 60,
+    "start": 331.51,
+    "end": 336.51,
+    "duration": 5.0,
+    "text": "The feasibility of something is the likelihood that it can be achieved.",
+    "file": "audio_clips/60.mp3"
+  },
+  {
+    "id": 61,
+    "start": 336.51,
+    "end": 340.51,
+    "duration": 4.0,
+    "text": "We can also describe something as feasible or unfeasible.",
+    "file": "audio_clips/61.mp3"
+  },
+  {
+    "id": 62,
+    "start": 340.51,
+    "end": 343.51,
+    "duration": 3.0,
+    "text": "We can do it or we can't do it.",
+    "file": "audio_clips/62.mp3"
+  },
+  {
+    "id": 63,
+    "start": 343.51,
+    "end": 346.51,
+    "duration": 3.0,
+    "text": "Phil, once again, our six minutes are up.",
+    "file": "audio_clips/63.mp3"
+  },
+  {
+    "id": 64,
+    "start": 346.51,
+    "end": 351.51,
+    "duration": 5.0,
+    "text": "But there is just a little bit more time for me to tell you more about my podcast, What in the World.",
+    "file": "audio_clips/64.mp3"
+  },
+  {
+    "id": 65,
+    "start": 351.51,
+    "end": 358.51,
+    "duration": 7.0,
+    "text": "We have a new episode every single weekday and we talk about the news, trending topics.",
+    "file": "audio_clips/65.mp3"
+  },
+  {
+    "id": 66,
+    "start": 358.51,
+    "end": 364.51,
+    "duration": 6.0,
+    "text": "In fact, it's a great place to come and learn some new vocabulary about things that are happening in the world.",
+    "file": "audio_clips/66.mp3"
+  },
+  {
+    "id": 67,
+    "start": 364.51,
+    "end": 373.51,
+    "duration": 9.0,
+    "text": "Yes, if you've found this episode interesting, try watching What in the World on YouTube with subtitles to practice your English.",
+    "file": "audio_clips/67.mp3"
+  },
+  {
+    "id": 68,
+    "start": 373.51,
+    "end": 375.51,
+    "duration": 2.0,
+    "text": "There's a link in the notes for this episode.",
+    "file": "audio_clips/68.mp3"
+  },
+  {
+    "id": 69,
+    "start": 375.51,
+    "end": 380.51,
+    "duration": 5.0,
+    "text": "And don't forget to try the quiz and worksheet at BBCLearningEnglish.com.",
+    "file": "audio_clips/69.mp3"
+  },
+  {
+    "id": 70,
+    "start": 380.51,
+    "end": 384.51,
+    "duration": 4.0,
+    "text": "Phil, thank you so much for having me again on Six Minute English. Bye for now.",
+    "file": "audio_clips/70.mp3"
+  },
+  {
+    "id": 71,
+    "start": 384.51,
+    "end": 390.67,
+    "duration": 6.16,
+    "text": "Bye! Six Minute English from BBCLearningEnglish.com.",
+    "file": "audio_clips/71.mp3"
+  }
+]

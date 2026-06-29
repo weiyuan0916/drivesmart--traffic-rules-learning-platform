@@ -1,0 +1,144 @@
+# Are plant-based substitutes healthier than meat?
+
+**Episode code:** ep-250626
+**Published:** 2025-06-26
+**Level:** intermediate
+**Programme ID:** p0ljw6h2
+**Iframe:** https://www.bbc.co.uk/programmes/p0ljw6h2/player
+**Audio:** https://downloads.bbc.co.uk/learningenglish/features/6min/250626_6_minute_english_are_plant_based_substitutes_healthier_than_meat_download.mp3
+**Worksheet PDF:** https://downloads.bbc.co.uk/learningenglish/features/6min/250626_6_minute_english_are_plant_based_substitutes_healthier_than_meat_worksheet.pdf
+**Source:** https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-250626
+
+## Description
+
+Processed meat has been shown to be bad for our health, but are plant-based meat substitutes any healthier?
+
+## Video
+
+<iframe width="400" height="500" frameborder="0" src="https://www.bbc.co.uk/programmes/p0ljw6h2/player"></iframe>
+
+## Introduction
+
+Do you ever eat plant-based sausages or burgers? Perhaps you have chosen to reduce or eliminate meat from your diet, or perhaps you simply prefer the flavour! But are these plant-based substitutes any healthier than the meat options they have replaced? Neil and Georgie discuss this and teach you some new vocabulary.
+
+## Quiz
+
+- a) booze
+- b) banger
+- c) brunch
+
+_Listen to the programme to hear the answer._
+
+## Vocabulary
+
+| # | Word | Meaning |
+| --- | --- | --- |
+| 1 | banger | (slang) sausage gut reaction opinion which is based on your initial feelings or instinct and cannot be explained logically as far as I am concerned (phrase) used to indicate that you are giving your own opinion resemble look or be similar to something veggie (slang) a vegetarian – a person who doesn't eat meat long-time used to say that someone has been or done a particular thing for many years |
+
+## Transcript
+
+Neil
+Hello, this is 6 Minute English from BBC Learning English. I'm Neil.
+Georgie
+And I'm Georgie. If you've heard about Meat-Free Mondays or Veganuary, you probably know about a trend which an increasing number of people are trying – to reduce, or even stop, eating meat. This is often for health, animal welfare or environmental reasons.
+Neil
+Instead, people are getting their daily amount of protein through plant-based alternatives – meat-free sausages and burgers made using ingredients like soy, tofu or fungi, as well as tempeh, beans or nuts. Have you tried any of these plant-based meat alternatives, Georgie?
+Georgie
+Yes, I have. I have lots of vegetarian friends, so I've been to veggie barbecues, and have tried the plant-based sausages and burgers. I quite like them as long as they're covered in sauce. What about you?
+Neil
+Yeah, I think I agree. They're fine. There's a reason for them, but I'm not sure they're as good as the real thing. Now, with processed meat being linked to diseases like diabetes and cancer, most doctors agree that plant-based options are healthier. But some people are worried about how plant-based alternatives are made, including radio listener, Graham Glover, who asked this question to BBC Radio 4 programme, Sliced Bread:
+Graham Glover
+Well, my question is – looking at these vegetable sausages, how they are processed, full of additives and flavourings and colourings – are they any healthier than a pork sausage?
+Georgie
+In this episode, we'll be finding out whether plant-based foods really are a healthier alternative to meat. And as usual, we'll be learning some useful new words and phrases. Remember, you can find all the vocabulary, along with a quiz and a worksheet, on our website bbclearningenglish.com.
+Neil
+But now I have a question for you, Georgie. Listener Graham loves eating sausages, but do you know which of the following words means 'sausages' in British English slang? Is it:
+a)    booze,
+b)    banger, or
+c)    brunch?
+Georgie
+So, I actually know the answer to this question, so I'm not going to say. Otherwise, it will spoil it for our listeners.
+Neil
+OK. Well, we'll all find out at the end of the programme. Although most research agrees that plant-based foods are healthier than meat, it's also true that meat-free products are processed. To make meat-free sausages, for example, after the proteins are broken down, flavourings and colourings are added to reproduce the taste or texture of meat. Quorn, one of the best-known brands of meat-free products, uses mycoprotein, a fungi-based protein similar to the fungi used in the fermentation of yoghurt and bread.
+Georgie
+So, what does listener Graham think? Let's find out as he talks to Greg Foot, presenter of BBC Radio 4's Sliced Bread:
+Greg Foot
+Graham, listening to all this, you know, normally a fan of a meat sausage – you're plant-based, meat-alternative sausage curious, that we're exploring today – what do you think about hearing about the sources of where they come from? What's your
+gut reaction
+to hearing that Quorn comes from a fungus?
+Graham Glover
+I have no problems with that… it's just another form of protein,
+as far as I'm concerned
+– it's what's the healthiest.
+Greg Foot
+Yes, we will get to health. I think that's the big conversation for today.
+Neil
+Greg asks Graham for his
+gut reaction
+. Your
+gut reaction
+is your opinion based on your initial feeling or instinct about something. It can't be explained logically.
+Georgie
+Actually, Graham doesn't mind that his sausage protein is a fungus, as long as it's healthy. He uses the phrase,
+as far as I am concerned
+, to indicate that he is giving his own opinion on the subject.
+Neil
+Of course, healthy eating is important, but there are other factors influencing whether meat lovers like Graham could be persuaded to try plant-based alternatives. These include things like the taste, colour and texture of the sausage – in other words, whether a plant-based sausage looks and feels like real meat. Here's Greg discussing this point for BBC Radio 4 programme, Sliced Bread:
+Greg Foot
+It's interesting, isn't it? Because my mum is a
+long-time veggie
+, and we were talking about this, and she says, "I don't want my, you know, alternative proteins to
+resemble
+meat." That's one of the reasons she says she doesn't eat meat. But you, Graham, you said you do want your plant-based sausage to
+resemble
+a pork sausage.
+Graham Glover
+Yeah, I've always been a meat eater, but I do need a plant-based product to be similar in terms of flavour, texture, and appearance.
+Georgie
+Graham wants his plant-based sausages to
+resemble
+, meaning look similar to, meat. But that's not the case for Greg's mum, who's a
+long-time veggie
+. A
+veggie
+is slang for a vegetarian, a person who doesn't eat meat. And the adjective
+long-time
+describes someone who has been or done a particular thing for many years. So, a
+long-time veggie
+is someone who's been vegetarian for many years.
+Neil
+Whether you want your veggie sausages to look, taste and feel like meat, or you prefer your protein from a plant, now there's every chance you'll find what you're looking for…
+Georgie
+…and keep your body, and planet, healthy as well. Now, isn't it time you revealed the answer to your question, Neil?
+Neil
+Yes, I asked what the British English slang word for sausages is. And what is it, Georgie?
+Georgie
+The answer is
+banger
+. And we have a typical dish in the UK called bangers and mash, which is sausages and mash.
+Neil
+Mmm, love it – with gravy! OK. Let's recap the vocabulary we've learned, starting with
+banger
+, a word which is slang for sausage.
+Georgie
+Your
+gut reaction
+is your opinion about something, based on instinctive feelings, not logic or reason.
+Neil
+The phrase,
+as far as I am concerned
+, can be used to give your opinion about something.
+Georgie
+To
+resemble
+means to look or be similar to something.
+Neil
+A
+veggie
+is slang for a vegetarian – someone who doesn't eat meat.
+Georgie
+And finally, the adjective
+long-time
+can be used to say that someone has done a particular thing for many years. Once again, our six minutes are up, but remember you can find worksheets, quizzes and loads more resources to improve your English over on our website, bbclearningenglish.com. See you there soon, but for now, goodbye!
+Neil
+Goodbye!

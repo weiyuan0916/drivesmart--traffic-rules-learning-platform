@@ -5,9 +5,10 @@
 // ============================================================
 
 import { apiClient } from './client'
+import { API_BASE } from './constants'
 import type { LanguageCode, ExplanationContent, ExplanationApiResponse, VocabularyItem } from '../types/explanation'
 
-const BASE_PATH = '/api/v1'
+const BASE_PATH = API_BASE
 
 // Error codes thrown by apiClient (defined in client.ts)
 type ApiError = Error & { code: string; errors?: Record<string, string[]> }

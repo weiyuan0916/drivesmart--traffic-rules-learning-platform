@@ -11,6 +11,7 @@ import { ChevronLeft, Flame } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { useLessonStore } from '../../stores/lessonStore'
 import { useAuthStore } from '../../stores/authStore'
+import { useTheme } from '../../../../context/ThemeContext'
 import { lessonApi } from '../../api/lessonApi'
 import { listeningApi } from '../../api/listeningApi'
 import type { LessonPracticeState, ClipStatus, LessonCompleteStats, CheckData } from '../../types/lesson'
@@ -171,18 +172,47 @@ function InnerLesson({
 
   return (
     <div className="flex flex-col min-h-full">
-      {/* ── Desktop: 50/50 split ── */}
-      <div className="hidden lg:grid lg:grid-cols-2 gap-0 flex-1 min-h-[600px]">
-        {/* Left: Audio Player */}
-        <div className="flex flex-col gap-6 p-8 border-r border-border">
-          <div className="flex flex-col gap-1">
-            <p className="text-sm text-text-muted">
-              Clip {currentClipIndex + 1} of {totalClips}
-            </p>
-            <h2 className="text-xl font-semibold text-text-primary">{lessonName}</h2>
+      {/* ── Single Column Premium Layout ── */}
+      <div className="flex-1 min-h-[600px]">
+        <div className="max-w-3xl mx-auto px-4 py-6">
+          {/* Clip indicator + Streak */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              {topicSlug && (
+                <Link
+                  to={`/topics/${topicSlug}`}
+                  className="flex items-center gap-1.5 text-sm text-text-muted hover:text-primary dark:hover:text-white transition-colors"
+                >
+                  <ChevronLeft size={16} aria-hidden="true" />
+                  <span>Quay lại</span>
+                </Link>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              {streak > 0 && (
+                <span className="flex items-center gap-1.5 text-sm text-accent font-medium">
+                  <Flame size={16} className="streak-fire" aria-hidden="true" />
+                  Day {streak}
+                </span>
+              )}
+              <span className="text-sm font-medium text-text-secondary dark:text-text-secondary bg-bg-tertiary dark:bg-dark px-3 py-1.5 rounded-full">
+                Câu {currentClipIndex + 1} / {totalClips}
+              </span>
+            </div>
           </div>
 
-          <div className="mt-auto">
+          {/* Lesson name */}
+          <div className="mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-text-primary dark:text-white mb-2">
+              {lessonName}
+            </h1>
+            {topicName && (
+              <p className="text-sm text-text-muted">{topicName}</p>
+            )}
+          </div>
+
+          {/* Audio Player Card */}
+          <div className="bg-white dark:bg-dark-surface rounded-3xl shadow-lg border border-border dark:border-border-strong p-6 mb-6">
             <AudioPlayer
               isPlaying={audioPlayer.isPlaying}
               currentTime={audioPlayer.currentTime}
@@ -198,140 +228,55 @@ function InnerLesson({
             />
           </div>
 
-          {/* Progress dots at bottom of left panel */}
-          <ProgressDots
-            total={totalClips}
-            current={currentClipIndex}
-            statuses={clipStatuses}
-          />
-        </div>
-
-        {/* Right: Transcript Input + Result */}
-        <div className="flex flex-col gap-6 p-8">
-          {isShowingResult && currentResult ? (
-            <ResultPanel
-              result={currentResult}
-              onRetry={onRetry}
-              onNext={currentClipIndex < totalClips - 1 ? onNext : onLessonComplete}
-              hasNextClip={currentClipIndex < totalClips - 1}
-              onPrev={currentClipIndex > 0 ? onPrev : undefined}
-            />
-          ) : (
-            <div className="flex flex-col gap-4 mt-auto">
-              <TranscriptInput
-                value={transcriptInput}
-                onChange={handleTranscriptChange}
-                onSubmit={onSubmit}
-                disabled={isCheckingState || isPlaying}
-                error={inputError ?? undefined}
-                showResult={false}
+          {/* Transcript Input / Result Card */}
+          <div className="bg-white dark:bg-dark-surface rounded-3xl shadow-lg border border-border dark:border-border-strong p-6 mb-6">
+            {isShowingResult && currentResult ? (
+              <ResultPanel
+                result={currentResult}
+                onRetry={onRetry}
+                onNext={currentClipIndex < totalClips - 1 ? onNext : onLessonComplete}
+                hasNextClip={currentClipIndex < totalClips - 1}
+                onPrev={currentClipIndex > 0 ? onPrev : undefined}
               />
+            ) : (
+              <div className="flex flex-col gap-4">
+                <TranscriptInput
+                  value={transcriptInput}
+                  onChange={handleTranscriptChange}
+                  onSubmit={onSubmit}
+                  disabled={isCheckingState || isPlaying}
+                  error={inputError ?? undefined}
+                  showResult={false}
+                  isChecking={isCheckingState}
+                />
 
-              <Button
-                size="lg"
-                className="w-full"
-                onClick={onSubmit}
-                disabled={!canSubmit || isCheckingState}
-                isLoading={isCheckingState}
-              >
-                {isCheckingState ? 'Checking...' : 'Check Answer'}
-              </Button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ── Mobile / Tablet: Stacked ── */}
-      <div className="flex flex-col gap-6 p-4 lg:hidden min-h-full">
-        {/* Clip indicator */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {topicSlug && (
-              <Link
-                to={`/topics/${topicSlug}`}
-                className="flex items-center gap-1 text-sm text-text-muted hover:text-primary transition-colors"
-              >
-                <ChevronLeft size={16} aria-hidden="true" />
-                <span>Back</span>
-              </Link>
-            )}
-            {streak > 0 && (
-              <span className="flex items-center gap-1 text-sm text-accent font-medium">
-                <Flame size={14} aria-hidden="true" />
-                Day {streak}
-              </span>
+                <Button
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25"
+                  onClick={onSubmit}
+                  disabled={!canSubmit || isCheckingState}
+                  isLoading={isCheckingState}
+                >
+                  {isCheckingState ? 'Đang kiểm tra...' : 'Kiểm tra đáp án'}
+                </Button>
+              </div>
             )}
           </div>
-          <p className="text-sm text-text-muted">
-            {currentClipIndex + 1} / {totalClips}
-          </p>
-        </div>
 
-        {/* Lesson name */}
-        <div>
-          <h1 className="text-lg font-semibold text-text-primary">{lessonName}</h1>
-          {topicName && (
-            <p className="text-sm text-text-muted">{topicName}</p>
-          )}
-        </div>
-
-        {/* Audio player */}
-        <div className="bg-bg-secondary rounded-xl border border-border p-5">
-          <AudioPlayer
-            isPlaying={audioPlayer.isPlaying}
-            currentTime={audioPlayer.currentTime}
-            duration={audioPlayer.duration}
-            isLoaded={audioPlayer.isLoaded}
-            isError={audioPlayer.isError}
-            playbackRate={audioPlayer.playbackRate}
-            onTogglePlay={audioPlayer.togglePlayPause}
-            onReplay={audioPlayer.replay}
-            onSeek={audioPlayer.seek}
-            onPlaybackRateChange={audioPlayer.setPlaybackRate}
-            disabled={isShowingResult}
-          />
-        </div>
-
-        {/* Transcript input / Result */}
-        <div className="flex-1">
-          {isShowingResult && currentResult ? (
-            <ResultPanel
-              result={currentResult}
-              onRetry={onRetry}
-              onNext={currentClipIndex < totalClips - 1 ? onNext : onLessonComplete}
-              hasNextClip={currentClipIndex < totalClips - 1}
-              onPrev={currentClipIndex > 0 ? onPrev : undefined}
+          {/* Progress Timeline */}
+          <div className="bg-white dark:bg-dark-surface rounded-3xl shadow-lg border border-border dark:border-border-strong p-4 mb-6">
+            <ProgressDots
+              total={totalClips}
+              current={currentClipIndex}
+              statuses={clipStatuses}
+              onClipSelect={(index) => {
+                if (index !== currentClipIndex) {
+                  onClipChange(index)
+                }
+              }}
             />
-          ) : (
-            <div className="flex flex-col gap-3">
-              <TranscriptInput
-                value={transcriptInput}
-                onChange={handleTranscriptChange}
-                onSubmit={onSubmit}
-                disabled={isCheckingState || isPlaying}
-                error={inputError ?? undefined}
-                showResult={false}
-              />
-
-              <Button
-                size="lg"
-                className="w-full"
-                onClick={onSubmit}
-                disabled={!canSubmit || isCheckingState}
-                isLoading={isCheckingState}
-              >
-                {isCheckingState ? 'Checking...' : 'Check Answer'}
-              </Button>
-            </div>
-          )}
+          </div>
         </div>
-
-        {/* Progress dots (mobile) */}
-        <ProgressDots
-          total={totalClips}
-          current={currentClipIndex}
-          statuses={clipStatuses}
-        />
       </div>
 
       {/* Reset modal */}
@@ -361,6 +306,10 @@ export default function LessonPage() {
 
   // Auth
   const streak = useAuthStore((s) => s.user?.currentStreak ?? 0)
+
+  // Theme
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
 
   // State machine
   const { state: practiceState, transition, isInState } = useLessonStateMachine()
@@ -572,7 +521,20 @@ export default function LessonPage() {
   }
 
   return (
-      <div className="min-h-full flex flex-col">
+    <div className={cn("min-h-full flex flex-col", isDark && "vinalisten-dark-scope")}>
+      {isDark && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 0,
+            background: 'linear-gradient(rgba(9,9,11,0.6) 0%, rgba(9,9,11,0.7) 100%)',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+      <div style={isDark ? { position: 'relative', zIndex: 1 } : undefined}>
         {/* Page header */}
         <div className="hidden lg:flex items-center justify-between px-8 py-4 border-b border-border bg-bg-secondary">
           <div className="flex items-center gap-3">
@@ -626,6 +588,7 @@ export default function LessonPage() {
           currentResult={store.currentResult}
           wordCount={wordCount}
         />
+        </div>
       </div>
     </div>
   )

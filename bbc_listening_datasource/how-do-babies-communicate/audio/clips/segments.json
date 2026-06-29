@@ -1,0 +1,442 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 11.95,
+    "duration": 11.95,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Neil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 11.95,
+    "end": 17.15,
+    "duration": 5.2,
+    "text": "And I'm Beth. As an adult, when I need to tell somebody something, it's easy.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 17.15,
+    "end": 21.39,
+    "duration": 4.24,
+    "text": "I just open my mouth and speak. Neil, I'm hungry.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 21.39,
+    "end": 26.19,
+    "duration": 4.8,
+    "text": "You better get something to eat then. And when I want something, it's the same.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 26.19,
+    "end": 30.03,
+    "duration": 3.84,
+    "text": "I just ask, can you pass me that pen, please, Beth?",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 30.03,
+    "end": 33.87,
+    "duration": 3.84,
+    "text": "There you go. But imagine a situation where you can't speak.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 33.87,
+    "end": 36.59,
+    "duration": 2.72,
+    "text": "You can only communicate with your body.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 36.59,
+    "end": 41.87,
+    "duration": 5.28,
+    "text": "What's more, you're totally helpless and can't clothes, feed or wash yourself.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 41.87,
+    "end": 43.87,
+    "duration": 2.0,
+    "text": "It doesn't so much fun, does it, Neil?",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 43.87,
+    "end": 47.47,
+    "duration": 3.6,
+    "text": "But that's exactly what happened to us all as babies.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 47.47,
+    "end": 53.87,
+    "duration": 6.4,
+    "text": "We've all been one, but how do newborn babies tell mum and dad what's going on before they can speak?",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 53.87,
+    "end": 62.91,
+    "duration": 9.04,
+    "text": "That's what we'll be investigating in this episode, along with some useful new vocabulary, all of which you can find on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 62.91,
+    "end": 76.59,
+    "duration": 13.68,
+    "text": "Baby communication is a topic child-psychotherapist, Marie Derum, writes about in her new book what your baby wants you to know. So what do newborn babies want us to know?",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 76.59,
+    "end": 87.54,
+    "duration": 10.95,
+    "text": "Well, here's Marie's answer. I think the want us to know that they need us 100% because without us, they won't survive.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 87.54,
+    "end": 90.82,
+    "duration": 3.28,
+    "text": "Without someone caring for them, babies wouldn't survive.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 90.82,
+    "end": 94.9,
+    "duration": 4.08,
+    "text": "So, on a basic level, every baby is saying, take care of me.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 94.9,
+    "end": 98.02,
+    "duration": 3.12,
+    "text": "Marie says babies need us 100%.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 98.02,
+    "end": 103.46,
+    "duration": 5.44,
+    "text": "She uses the phrase 100% to emphasise that what she said is completely true.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 103.46,
+    "end": 107.7,
+    "duration": 4.24,
+    "text": "And we'll hear more soon, but first I have a question for you, Neil.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 107.78,
+    "end": 118.1,
+    "duration": 10.32,
+    "text": "Although they look small and helpless, babies are born with some amazing abilities, so which of the following statements about newborn babies is true?",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 118.9,
+    "end": 130.56,
+    "duration": 11.66,
+    "text": "A, babies are born with a full set of teeth, B, babies eyes change colour, or C, babies have the same number of bones as an adult.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 130.56,
+    "end": 138.32,
+    "duration": 7.76,
+    "text": "Oh, that's an interesting question. I think I know the answer, though, I'm going to go with B, baby's eyes change colour.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 138.32,
+    "end": 142.4,
+    "duration": 4.08,
+    "text": "Okay, well, we'll find out if that's right at the end of the programme.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 142.4,
+    "end": 149.04,
+    "duration": 6.64,
+    "text": "Now, if you've spent time with a baby, you've probably noticed how much they move their little arms and legs.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 149.04,
+    "end": 155.28,
+    "duration": 6.24,
+    "text": "Here, Marie Jerome explains the meaning of these movements to BBC Radio 4 programme, Woman's Hour.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 156.0,
+    "end": 162.48,
+    "duration": 6.48,
+    "text": "75% of their movement are intentional, synchronised.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 162.48,
+    "end": 180.24,
+    "duration": 17.76,
+    "text": "They're not jerky, we know, to the naked eyes, they appear very jerky, but they're not there to bring us in, the parents, you know, they need us, so all those movements are there to say, look, come, look at me.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 180.24,
+    "end": 183.44,
+    "duration": 3.2,
+    "text": "I need you, I want you, you know, to play with you.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 183.44,
+    "end": 187.28,
+    "duration": 3.84,
+    "text": "Babies move their arms and legs to create a bond with their parents.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 187.28,
+    "end": 194.32,
+    "duration": 7.04,
+    "text": "To the naked eye, these movements look jerky, an adjective meaning sudden and quick, not smooth flowing.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 194.32,
+    "end": 203.04,
+    "duration": 8.72,
+    "text": "The phrase to the naked eye means in a way that can be seen without special instruments like a microscope, or is seen in the way an ordinary person would.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 203.04,
+    "end": 214.24,
+    "duration": 11.2,
+    "text": "In reality, these jerky movements are intentional, meaning that they're planned and done for a particular purpose, to catch their parents' attention so they will be noticed and cared for.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 214.24,
+    "end": 227.76,
+    "duration": 13.52,
+    "text": "Marie's book is aimed at new parents who are learning to understand their baby's body language, but she also has advice for parents who are finding it difficult to bond with their newborn, as she explains here to BBC Radio 4 programme Women's Hour.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 227.76,
+    "end": 235.04,
+    "duration": 7.28,
+    "text": "Parenting is really hard, falling in love with this little baby is not, you know, this idea that love at first sight.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 235.04,
+    "end": 239.28,
+    "duration": 4.24,
+    "text": "I think it's such a, um, unhelpful cliché.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 239.28,
+    "end": 243.36,
+    "duration": 4.08,
+    "text": "It will take time to love that baby, to get to know that baby.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 244.0,
+    "end": 249.04,
+    "duration": 5.04,
+    "text": "Many new parents dream about falling in love with their baby at first sight.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 249.04,
+    "end": 255.52,
+    "duration": 6.48,
+    "text": "The idiom love at first sight means being in love with someone as soon as you see them for the first time.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 255.52,
+    "end": 259.36,
+    "duration": 3.84,
+    "text": "But Marie thinks this ideal dream can cause problems.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 259.36,
+    "end": 261.76,
+    "duration": 2.4,
+    "text": "She calls it an unhelpful cliché.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 261.76,
+    "end": 270.88,
+    "duration": 9.12,
+    "text": "A cliché is an overused phrase or comment that has been said so much that it's become unoriginal and uninteresting, and in some cases unhelpful.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 270.88,
+    "end": 277.68,
+    "duration": 6.8,
+    "text": "For example, by creating unrealistic expectations, or by making parents feel guilty, they're not doing enough.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 277.76,
+    "end": 282.96,
+    "duration": 5.2,
+    "text": "Marie says it takes time to get to know a newborn baby and to fall in love.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 282.96,
+    "end": 291.28,
+    "duration": 8.32,
+    "text": "But for most parents, all the misunderstandings, sleepless nights, and dirty nappies are worth it for their amazing baby.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 291.28,
+    "end": 295.92,
+    "duration": 4.64,
+    "text": "And speaking of amazing babies, what was the correct answer to your question, Beth?",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 295.92,
+    "end": 300.16,
+    "duration": 4.24,
+    "text": "Well, the correct statement was that baby's eyes changed colour.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 300.16,
+    "end": 301.52,
+    "duration": 1.36,
+    "text": "I think you got that right, Neil.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 301.52,
+    "end": 304.32,
+    "duration": 2.8,
+    "text": "I did, it's an amazing fact, but apparently true.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 304.32,
+    "end": 320.64,
+    "duration": 16.32,
+    "text": "Yes, indeed. OK, so let's recap the vocabulary we've learnt in this episode, starting with the phrase 100%, which can be used to emphasise that you completely agree with something or that you consider something to be completely right or wrong.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 320.64,
+    "end": 327.6,
+    "duration": 6.96,
+    "text": "If you describe a movement as jerky, you mean it moves suddenly and stops and starts rather than flowing smoothly.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 327.6,
+    "end": 331.2,
+    "duration": 3.6,
+    "text": "The adjective intentional means planned and purposeful.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 331.2,
+    "end": 338.48,
+    "duration": 7.28,
+    "text": "The phrase to the naked eye means in a way that can be seen without special instruments or to someone without special knowledge.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 338.48,
+    "end": 346.0,
+    "duration": 7.52,
+    "text": "The idiom love at first sight describes the experience of starting to love someone as soon as you see them for the first time.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 346.0,
+    "end": 356.24,
+    "duration": 10.24,
+    "text": "And finally, an unhelpful cliché is an overused phrase or comment, a cliché, which has the effect of creating unhelpful or unrealistic attitudes.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 356.24,
+    "end": 365.28,
+    "duration": 9.04,
+    "text": "Once again, our six minutes are up, but remember you can find many more episodes, plus a quiz and worksheet for this one on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/54.mp3"
+  }
+]

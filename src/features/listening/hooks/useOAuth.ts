@@ -101,9 +101,7 @@ export function useOAuth(): UseOAuthReturn {
                 lastLessonDate: event.data.user.last_lesson_date
                   ? String(event.data.user.last_lesson_date)
                   : null,
-                learningGoal:
-                  (event.data.user.learning_goal as 'daily' | 'weekly' | 'none') ??
-                  'daily',
+                learningGoal: 'daily',
                 timezone: String(event.data.user.timezone ?? 'Asia/Ho_Chi_Minh'),
                 dailyGoalMinutes: Number(event.data.user.daily_goal_minutes ?? 10),
                 onboardingCompleted: Boolean(event.data.user.onboarding_completed ?? false),

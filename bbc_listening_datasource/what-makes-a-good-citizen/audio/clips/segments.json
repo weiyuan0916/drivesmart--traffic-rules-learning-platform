@@ -1,0 +1,466 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.51,
+    "duration": 12.51,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Neil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.51,
+    "end": 13.79,
+    "duration": 1.28,
+    "text": "And I'm Georgie.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 13.79,
+    "end": 17.79,
+    "duration": 4.0,
+    "text": "Georgie, what do you think makes a good citizen?",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 17.79,
+    "end": 19.71,
+    "duration": 1.92,
+    "text": "Ooh, interesting question.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 19.71,
+    "end": 26.11,
+    "duration": 6.4,
+    "text": "I think a good citizen is someone who doesn't break the law and is generally kind to other people.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 26.11,
+    "end": 28.11,
+    "duration": 2.0,
+    "text": "What about you? Any ideas?",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 28.11,
+    "end": 31.95,
+    "duration": 3.84,
+    "text": "Yeah, I agree, but also maybe people who volunteer.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 31.95,
+    "end": 36.19,
+    "duration": 4.24,
+    "text": "So people who run clubs for children and that kind of thing.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 36.19,
+    "end": 37.47,
+    "duration": 1.28,
+    "text": "I think they're good citizens.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 38.27,
+    "end": 48.99,
+    "duration": 10.72,
+    "text": "Now, being a citizen, a member of society who enjoys certain rights in return for having certain responsibilities is an old idea that's been in the news a lot recently.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 48.99,
+    "end": 55.23,
+    "duration": 6.24,
+    "text": "It's something that interests Maira Enubi, presenter of BBC World Service Programme, people fixing the world.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 57.47,
+    "end": 59.63,
+    "duration": 2.16,
+    "text": "What do you think makes a good citizen?",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 59.63,
+    "end": 63.15,
+    "duration": 3.52,
+    "text": "Is it someone who follows the laws of the land and pays their taxes?",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 63.55,
+    "end": 66.43,
+    "duration": 2.88,
+    "text": "Well, some people might say it should go beyond that.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 66.43,
+    "end": 70.67,
+    "duration": 4.24,
+    "text": "And a good citizen is one who tries to improve the place where they live.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 70.67,
+    "end": 77.07,
+    "duration": 6.4,
+    "text": "A good citizen obeys the law of the land, a term for the set of rules and laws that exists in a country.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 77.07,
+    "end": 79.23,
+    "duration": 2.16,
+    "text": "But should there be more to it than that?",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 79.23,
+    "end": 83.23,
+    "duration": 4.0,
+    "text": "Around the world, young people today are less likely to vote.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 83.23,
+    "end": 88.59,
+    "duration": 5.36,
+    "text": "And many people aged 18 to 30 say they feel ignored by politicians.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 88.59,
+    "end": 97.15,
+    "duration": 8.56,
+    "text": "So in this program, we'll be hearing about my police, an exciting project helping young people in Portugal reengage with their citizenship.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 97.79,
+    "end": 105.23,
+    "duration": 7.44,
+    "text": "And as usual, we'll be learning some useful new words and phrases, all of which you'll find on our website, bbclearningenglish.com.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 105.79,
+    "end": 108.99,
+    "duration": 3.2,
+    "text": "But before that, I have a question for you, Neil.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 108.99,
+    "end": 117.07,
+    "duration": 8.08,
+    "text": "The project's name, my police, comes from the ancient Greek states such as Athens and Sparta, where the idea of citizenship was born.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 117.71,
+    "end": 126.75,
+    "duration": 9.04,
+    "text": "So, what is the meaning of the ancient Greek word, polis? Is it A, vote, B, people, or C, city?",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 25,
+    "start": 129.23,
+    "end": 131.87,
+    "duration": 2.64,
+    "text": "I'm going to guess B, people.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 132.43,
+    "end": 135.79,
+    "duration": 3.36,
+    "text": "Okay, well, I'll reveal the correct answer later in the program.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 136.51,
+    "end": 146.43,
+    "duration": 9.92,
+    "text": "My police runs council assemblies where children can propose improvements to their local school community, anything from fixing broken water fountains to changing the curriculum.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 146.99,
+    "end": 154.75,
+    "duration": 7.76,
+    "text": "Local politicians also attend, listening to the children's ideas, and responding by giving their support or explaining why not.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 154.99,
+    "end": 165.47,
+    "duration": 10.48,
+    "text": "The project was started by founder Bernardo Gonsalves when he was in his 20s, because he was disappointed by interactions between political parties and young people.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 165.47,
+    "end": 169.95,
+    "duration": 4.48,
+    "text": "Here's Bernardo telling more to BBC World Service program, people fixing the world.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 170.75,
+    "end": 181.95,
+    "duration": 11.2,
+    "text": "We have seen a quick erosion in the trusts of the population on the democratic institutions, such as the national parliament, such as the government in office.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 181.95,
+    "end": 186.99,
+    "duration": 5.04,
+    "text": "We need to find new ways to connect children and young citizens to democratic institutions.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 186.99,
+    "end": 190.59,
+    "duration": 3.6,
+    "text": "Otherwise, the gap will get bigger and bigger.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 191.15,
+    "end": 193.07,
+    "duration": 1.92,
+    "text": "This is very dangerous for democracy.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 193.86,
+    "end": 205.54,
+    "duration": 11.68,
+    "text": "Bernardo thinks Portugal has seen an erosion of trust, a term for the gradual weakening of people's confidence in political and economic institutions and the government in office.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 205.62,
+    "end": 209.46,
+    "duration": 3.84,
+    "text": "A government in office means the government in power at the present time.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 210.1,
+    "end": 218.34,
+    "duration": 8.24,
+    "text": "MyPolice mirrors the political activities that children will need as adult citizens, things like voting and holding politicians accountable.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 219.06,
+    "end": 231.38,
+    "duration": 12.32,
+    "text": "Reporter Alison Roberts visited schools around the Portuguese capital Lisbon and was impressed by what she saw, as she explains here to Myra and Ubi, presenter of BBC World Services, People Fixing the World.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 232.1,
+    "end": 239.62,
+    "duration": 7.52,
+    "text": "Another benefit is MyPolice has designed the programme so it can be included as part of the national curriculum rather than as an add-on.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 239.62,
+    "end": 253.86,
+    "duration": 14.24,
+    "text": "Well, it's good to know that this is happening in other places, but the thing that also really strikes me here is that politicians are actually listening to these kids and taking them seriously, giving them answers because politicians, as we know, can be hard to pin down.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 253.86,
+    "end": 264.42,
+    "duration": 10.56,
+    "text": "The MyPolice programme is designed as part of the whole school curriculum and not just an add-on, meaning something extra that is added later instead of being planned in from the start.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 264.98,
+    "end": 269.78,
+    "duration": 4.8,
+    "text": "Myra was impressed that local politicians take the school children seriously.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 269.78,
+    "end": 274.82,
+    "duration": 5.04,
+    "text": "If you take someone or something seriously, you think it's important and deserves attention.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 275.46,
+    "end": 280.58,
+    "duration": 5.12,
+    "text": "And that's good because as everyone knows, politicians can be hard to pin down.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 280.58,
+    "end": 286.1,
+    "duration": 5.52,
+    "text": "To pin someone down means to force them to explain their plans and intentions in detail.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 286.1,
+    "end": 291.54,
+    "duration": 5.44,
+    "text": "It sounds like the programme is really developing active citizens of the future in Portugal.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 291.54,
+    "end": 297.78,
+    "duration": 6.24,
+    "text": "In fact, it's been so successful that similar programmes have been started in Italy, Hungary and Mozambique.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 298.5,
+    "end": 302.02,
+    "duration": 3.52,
+    "text": "Okay, Neil, I think I should reveal the answer to my question.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 302.74,
+    "end": 312.26,
+    "duration": 9.52,
+    "text": "I asked you what is the meaning of the ancient Greek word, polis, and you said people, which was the wrong answer I'm afraid.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 312.26,
+    "end": 314.74,
+    "duration": 2.48,
+    "text": "The right answer was C, City.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 314.74,
+    "end": 324.98,
+    "duration": 10.24,
+    "text": "Oh, no. Right, it's time to recap the vocabulary we've learned starting with the law of the land, a term for the set of rules and laws that exists in a country.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 324.98,
+    "end": 331.3,
+    "duration": 6.32,
+    "text": "An erosion of trust happens when people gradually lose confidence in political and economic institutions.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 331.3,
+    "end": 335.06,
+    "duration": 3.76,
+    "text": "If a government is in office, it means they are currently in power.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 335.06,
+    "end": 340.66,
+    "duration": 5.6,
+    "text": "An add-on is an extra part that is added to something later, rather than being built in from the start.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 341.3,
+    "end": 346.26,
+    "duration": 4.96,
+    "text": "If you take someone seriously, you consider them important and worthy of your attention.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 346.26,
+    "end": 353.54,
+    "duration": 7.28,
+    "text": "And finally, if you find it hard to pin someone down, it's difficult to find out their specific plans and intentions.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 353.54,
+    "end": 362.74,
+    "duration": 9.2,
+    "text": "Once again, our six minutes are up, but remember, you'll find a quiz and worksheet for this episode over on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 362.74,
+    "end": 364.34,
+    "duration": 1.6,
+    "text": "See you there soon, bye.",
+    "file": "audio_clips/58.mp3"
+  }
+]

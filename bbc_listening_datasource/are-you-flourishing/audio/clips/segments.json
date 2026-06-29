@@ -1,0 +1,306 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.86,
+    "duration": 12.86,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBC Learning English. I'm Phil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.86,
+    "end": 16.62,
+    "duration": 3.76,
+    "text": "And I'm Georgie. Now you probably know the word well-being.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 16.62,
+    "end": 22.14,
+    "duration": 5.52,
+    "text": "It's a general feeling of health and happiness, but have you ever heard of flourishing?",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 22.14,
+    "end": 28.78,
+    "duration": 6.64,
+    "text": "It's an idea which Claudia Hammond has been investigating for BBC Radio 4 program all in the mind.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 28.78,
+    "end": 32.3,
+    "duration": 3.52,
+    "text": "I wonder if you all feel that you are flourishing in life.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 32.3,
+    "end": 36.62,
+    "duration": 4.32,
+    "text": "This is another psychological buzz word with added evidence.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 36.62,
+    "end": 42.06,
+    "duration": 5.44,
+    "text": "Now if you've not heard that term before, it's not just about well-being, it's about your whole life being good.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 42.06,
+    "end": 51.9,
+    "duration": 9.84,
+    "text": "Flourishing is a psychological buzz word, a word or phrase that has become fashionable and is being used a lot, especially on television and in newspapers.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 52.78,
+    "end": 61.74,
+    "duration": 8.96,
+    "text": "People who are flourishing feel good about all aspects of their life, including happiness, health, relationships, and financial security.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 62.3,
+    "end": 64.62,
+    "duration": 2.32,
+    "text": "Do you feel you're flourishing Georgie?",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 64.62,
+    "end": 68.38,
+    "duration": 3.76,
+    "text": "Yeah, I think I'm quite lucky actually. I really like my job.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 68.38,
+    "end": 70.54,
+    "duration": 2.16,
+    "text": "I have a good family and friends.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 71.42,
+    "end": 73.9,
+    "duration": 2.48,
+    "text": "Yeah, everything's going well. What about you Phil?",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 73.9,
+    "end": 77.18,
+    "duration": 3.28,
+    "text": "I think the same. I think I'm happy and I've got everything I need.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 77.82,
+    "end": 83.34,
+    "duration": 5.52,
+    "text": "Lovely. In this episode, we'll hear about the global flourishing study.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 83.42,
+    "end": 89.34,
+    "duration": 5.92,
+    "text": "A new survey into the lives of over 200,000 people in 22 countries.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 89.34,
+    "end": 98.86,
+    "duration": 9.52,
+    "text": "We'll learn some useful new words and phrases and remember, you'll find all this episodes for capillary on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 98.86,
+    "end": 104.14,
+    "duration": 5.28,
+    "text": "Yes, but first Phil, I have a question for you about the global flourishing study.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 104.14,
+    "end": 109.58,
+    "duration": 5.44,
+    "text": "In terms of overall flourishing, which country do you think came out on top?",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 109.66,
+    "end": 114.14,
+    "duration": 4.48,
+    "text": "Was it A, Indonesia, B, Denmark, or C, Brazil?",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 115.34,
+    "end": 118.78,
+    "duration": 3.44,
+    "text": "I'm going to guess B, Denmark, I think.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 118.78,
+    "end": 122.86,
+    "duration": 4.08,
+    "text": "Okay, Phil. Well, we'll find out the correct answer later in the programme.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 122.86,
+    "end": 138.46,
+    "duration": 15.6,
+    "text": "Now, the study investigated six areas of life, including health, finances, social relationships, and religion. Let's listen as Claudia Hammond discusses some of the findings with psychologists, Dr. Peter Olosaga, for BBC Radio 4s, all in the mind.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 139.33,
+    "end": 143.01,
+    "duration": 3.68,
+    "text": "What were the most interesting nuggets there you've been diving into it?",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 143.01,
+    "end": 162.29,
+    "duration": 19.28,
+    "text": "Some of the headlines were high-income countries, so Sweden, the USA, for example, scored higher on some of the more material aspects of flourishing, so things like finance, middle-income countries, so Mexico, for example, scored more highly on things like meaning of relationships and kindness and social cohesion.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 162.29,
+    "end": 172.69,
+    "duration": 10.4,
+    "text": "Claudia asks about the study's most interesting nuggets. A nugget means a small piece of something good, like wisdom or precious, like a nugget of gold.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 172.69,
+    "end": 180.45,
+    "duration": 7.76,
+    "text": "While richer countries scored higher on material happiness, middle-income countries did better in terms of kindness and social connection.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 180.45,
+    "end": 193.81,
+    "duration": 13.36,
+    "text": "They were interesting differences between men and women. For example, in Japan, women flourished more than men, while in Brazil the opposite was true, and across all countries flourishing increased after the age of 50.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 193.81,
+    "end": 211.41,
+    "duration": 17.6,
+    "text": "So does flourishing depend on your nationality, or are there things anyone can do to feel happier wherever they live? Let's find out, as Claudia Hammond talks more with Peter Olosaga for BBC Radio 4s, all in the mind. So what can any of us do to help ourselves to flourish?",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 211.41,
+    "end": 233.09,
+    "duration": 21.68,
+    "text": "That's the big question. Well, there's a few things that we can do, and they are supported by research as well, so things that are as simple as just practicing gratitude, being thankful for what we have is a way of increasing the amount of flourishing that we have in our lives, showing kindness which helps us to develop connection with other people, and just celebrating our own accomplishments. I think we've spoken on the programme before about savoring.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 233.09,
+    "end": 252.93,
+    "duration": 19.84,
+    "text": "Oh yeah, we have, yes, savoring those good moments. Exactly, just taking the time to really appreciate some of those small wins. Claudia asks the big question. In other words, the thing everyone would like to know, how do people flourish? There are simple things anyone can do, starting with gratitude, feeling thankful and appreciative for what you have.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 253.65,
+    "end": 258.21,
+    "duration": 4.56,
+    "text": "Being kind and connecting with others are also indicators of flourishing.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 258.85,
+    "end": 311.01,
+    "duration": 52.16,
+    "text": "The study also recommends savoring life. To saver means to fully enjoy something by experiencing it slowly and mindfully. It involves taking time out to enjoy good moments, to stop and smell the roses, as we say. This links to the phrase small wins. Minor achievements or successes which bring you a little closer to your long-term goals in life. There's an old saying, a journey of a thousand miles starts with a single step. And savoring each small winner along the way is vital to flourishing. Flourishing seems to be a big new idea in some countries at least which reminds me of your question, Georgie. Yes, Phil, I asked you in the global flourishing study which country came out on top and the options were Indonesia, Denmark or Brazil. And I said Denmark.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 311.01,
+    "end": 315.81,
+    "duration": 4.8,
+    "text": "Which, Phil, I'm afraid that is the wrong answer. The correct answer is Indonesia.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 316.61,
+    "end": 339.89,
+    "duration": 23.28,
+    "text": "Okay, let's recap the vocabulary we've learned, starting with buzzword. A word or expression on a certain topic that has become fashionable and much used. A nugget is a small piece of something good or precious, such as a nugget of gold or a nugget of wisdom. The big question is the thing everyone would like to know. Gratitude means being thankful for what you have.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 339.89,
+    "end": 345.73,
+    "duration": 5.84,
+    "text": "If you save or something, you enjoy something as much as possible by experiencing it slowly.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 345.73,
+    "end": 351.01,
+    "duration": 5.28,
+    "text": "And finally, small wins are minor successes which contribute to a larger life goal.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 351.73,
+    "end": 364.37,
+    "duration": 12.64,
+    "text": "Once again, our six minutes are up. But if you want ways to help your English flourish, try the quiz and worksheet for this episode available now on our website, BBCLearningEnglish.com. Goodbye for now. Bye bye.",
+    "file": "audio_clips/37.mp3"
+  }
+]

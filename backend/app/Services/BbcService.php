@@ -9,241 +9,137 @@ use App\Models\UserExternalLessonNote;
 use App\Models\UserExternalLessonProgress;
 use App\Models\UserExternalLessonSegment;
 use App\Models\UserExternalLessonVocabulary;
-use App\Services\DictationScoringService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
+/**
+ * BbcService — facade preserved for backward compatibility.
+ *
+ * After the 2026-06-16 content-policy audit (.cursor/rules/bbc-feature.mdc),
+ * BBC logic was split into two services:
+ *
+ *   BbcCatalogService     — listing, notes, vocabulary, progress, dashboard
+ *   BbcDictationService   — dictation session, scoring, summary, complete
+ *
+ * This facade still exposes the original method signatures so that
+ * BbcController, CrawlBbcLessons, CrawlBbc6MinLessons (deprecated), and
+ * the existing test suite continue to work without modification.
+ *
+ * New code should depend on the two split services directly so that
+ * service boundaries are explicit at the call site.
+ *
+ * @deprecated since 2026-06-16. Inject BbcCatalogService and
+ *             BbcDictationService directly in new code.
+ */
 class BbcService
 {
     public function __construct(
-        private readonly DictationScoringService $scoringService = new DictationScoringService()
+        private readonly BbcCatalogService $catalog = new BbcCatalogService(),
+        private readonly BbcDictationService $dictation = new BbcDictationService()
     ) {}
+
+    // ── Catalog pass-through ──────────────────────────────────
+
     public function getSource(): ListeningSource
     {
-        return ListeningSource::where('slug', 'bbc-learning-english')->firstOrFail();
+        return $this->catalog->getSource();
     }
 
     public function listLessons(array $filters = []): LengthAwarePaginator
     {
-        $source = $this->getSource();
-
-        $query = ListeningExternalLesson::where('source_id', $source->id);
-
-        if (! empty($filters['level'])) {
-            $query->where('level', $filters['level']);
-        }
-
-        if (! empty($filters['series']) && $filters['series'] === '6-minute-english') {
-            // Filter lessons that have dictation segments
-            // metadata_json is json/jsonb — cast to jsonb for operator compatibility
-            $query->whereNotNull('metadata_json')
-                ->whereRaw("(metadata_json::jsonb)->'segments' IS NOT NULL")
-                ->whereRaw("jsonb_array_length((metadata_json::jsonb)->'segments') > 0");
-        }
-
-        if (! empty($filters['search'])) {
-            $query->where('title', 'ILIKE', '%' . $filters['search'] . '%');
-        }
-
-        $sortBy = $filters['sort_by'] ?? 'latest';
-        if ($sortBy === 'oldest') {
-            $query->orderBy('published_at', 'asc');
-        } else {
-            $query->orderBy('published_at', 'desc');
-        }
-
-        $perPage = (int) ($filters['per_page'] ?? 20);
-        $page = (int) ($filters['page'] ?? 1);
-
-        return $query->paginate($perPage, ['*'], 'page', $page);
+        return $this->catalog->listLessons($filters);
     }
 
     public function getLesson(string $slug): ?ListeningExternalLesson
     {
-        $source = $this->getSource();
-
-        return ListeningExternalLesson::where('source_id', $source->id)
-            ->where('slug', $slug)
-            ->first();
+        return $this->catalog->getLesson($slug);
     }
 
     public function getLessonById(int $id): ?ListeningExternalLesson
     {
-        return ListeningExternalLesson::find($id);
+        return $this->catalog->getLessonById($id);
     }
 
     public function getProgress(User $user, int $lessonId): ?UserExternalLessonProgress
     {
-        return UserExternalLessonProgress::where('user_id', $user->id)
-            ->where('lesson_id', $lessonId)
-            ->first();
+        return $this->catalog->getProgress($user, $lessonId);
     }
 
     public function upsertProgress(User $user, int $lessonId, string $status): UserExternalLessonProgress
     {
-        return UserExternalLessonProgress::updateOrCreate(
-            ['user_id' => $user->id, 'lesson_id' => $lessonId],
-            [
-                'status' => $status,
-                'started_at' => $status !== 'not_started' ? now() : null,
-                'completed_at' => $status === 'completed' ? now() : null,
-                'last_accessed_at' => now(),
-            ]
-        );
+        return $this->catalog->upsertProgress($user, $lessonId, $status);
     }
 
     public function markInProgress(User $user, int $lessonId): UserExternalLessonProgress
     {
-        return $this->upsertProgress($user, $lessonId, 'in_progress');
+        return $this->catalog->markInProgress($user, $lessonId);
     }
 
     public function markCompleted(User $user, int $lessonId): UserExternalLessonProgress
     {
-        return $this->upsertProgress($user, $lessonId, 'completed');
+        return $this->catalog->markCompleted($user, $lessonId);
     }
 
     public function getNotes(User $user, int $lessonId): ?UserExternalLessonNote
     {
-        return UserExternalLessonNote::where('user_id', $user->id)
-            ->where('lesson_id', $lessonId)
-            ->first();
+        return $this->catalog->getNotes($user, $lessonId);
     }
 
     public function upsertNotes(User $user, int $lessonId, string $content): UserExternalLessonNote
     {
-        return UserExternalLessonNote::updateOrCreate(
-            ['user_id' => $user->id, 'lesson_id' => $lessonId],
-            ['content' => $content]
-        );
+        return $this->catalog->upsertNotes($user, $lessonId, $content);
     }
 
     public function getVocabulary(User $user, int $lessonId): Collection
     {
-        return UserExternalLessonVocabulary::where('user_id', $user->id)
-            ->where('lesson_id', $lessonId)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        return $this->catalog->getVocabulary($user, $lessonId);
     }
 
     public function saveVocabulary(User $user, int $lessonId, array $data): UserExternalLessonVocabulary
     {
-        return UserExternalLessonVocabulary::create([
-            'user_id' => $user->id,
-            'lesson_id' => $lessonId,
-            'word' => $data['word'],
-            'meaning' => $data['meaning'] ?? null,
-            'example' => $data['example'] ?? null,
-            'note' => $data['note'] ?? null,
-        ]);
+        return $this->catalog->saveVocabulary($user, $lessonId, $data);
     }
 
     public function updateVocabulary(User $user, int $vocabularyId, array $data): ?UserExternalLessonVocabulary
     {
-        $vocab = UserExternalLessonVocabulary::where('id', $vocabularyId)
-            ->where('user_id', $user->id)
-            ->first();
-
-        if (! $vocab) {
-            return null;
-        }
-
-        $vocab->update(array_filter([
-            'word' => $data['word'] ?? null,
-            'meaning' => $data['meaning'] ?? null,
-            'example' => $data['example'] ?? null,
-            'note' => $data['note'] ?? null,
-        ], fn ($v) => array_key_exists($v, $data) || $v !== null));
-
-        return $vocab->fresh();
+        return $this->catalog->updateVocabulary($user, $vocabularyId, $data);
     }
 
     public function deleteVocabulary(User $user, int $vocabularyId): bool
     {
-        return (bool) UserExternalLessonVocabulary::where('id', $vocabularyId)
-            ->where('user_id', $user->id)
-            ->delete();
+        return $this->catalog->deleteVocabulary($user, $vocabularyId);
     }
 
     public function getDashboardMetrics(User $user): array
     {
-        $progress = UserExternalLessonProgress::where('user_id', $user->id)->get();
-
-        return [
-            'lessons_started' => $progress->where('status', 'in_progress')->count(),
-            'lessons_completed' => $progress->where('status', 'completed')->count(),
-            'completion_rate' => $progress->count() > 0
-                ? round($progress->where('status', 'completed')->count() / $progress->count() * 100, 1)
-                : 0,
-        ];
+        return $this->catalog->getDashboardMetrics($user);
     }
 
     public function ensureSourceExists(): ListeningSource
     {
-        return ListeningSource::firstOrCreate(
-            ['slug' => 'bbc-learning-english'],
-            ['name' => 'BBC Learning English']
-        );
+        return $this->catalog->ensureSourceExists();
     }
 
     public function upsertLesson(array $data): ListeningExternalLesson
     {
-        $source = $this->ensureSourceExists();
-
-        return ListeningExternalLesson::updateOrCreate(
-            ['source_id' => $source->id, 'slug' => $data['slug']],
-            [
-                'title' => $data['title'],
-                'source_url' => $data['source_url'],
-                'thumbnail_url' => $data['thumbnail_url'] ?? null,
-                'level' => $data['level'] ?? null,
-                'duration_seconds' => $data['duration_seconds'] ?? null,
-                'published_at' => $data['published_at'] ?? null,
-                'metadata_json' => $data['metadata_json'] ?? null,
-            ]
-        );
+        return $this->catalog->upsertLesson($data);
     }
 
-    // ── Dictation Methods ─────────────────────────────────────
+    // ── Dictation pass-through ────────────────────────────────
 
     public function getDictation(int $lessonId): ?ListeningExternalLesson
     {
-        return ListeningExternalLesson::find($lessonId);
+        return $this->dictation->getDictation($lessonId);
     }
 
     public function hasDictationSegments(int $lessonId): bool
     {
-        $lesson = ListeningExternalLesson::find($lessonId);
-        if (! $lesson) {
-            return false;
-        }
-
-        $metadata = $lesson->metadata_json;
-        if (! is_array($metadata)) {
-            return false;
-        }
-
-        $segments = $metadata['segments'] ?? null;
-        return is_array($segments) && count($segments) > 0;
+        return $this->dictation->hasDictationSegments($lessonId);
     }
 
     public function getSegmentText(int $lessonId, int $segmentIndex): ?string
     {
-        $lesson = ListeningExternalLesson::find($lessonId);
-        if (! $lesson) {
-            return null;
-        }
-
-        $metadata = $lesson->metadata_json;
-        if (! is_array($metadata)) {
-            return null;
-        }
-
-        $segments = $metadata['segments'] ?? null;
-        if (! is_array($segments) || ! isset($segments[$segmentIndex])) {
-            return null;
-        }
-
-        return $segments[$segmentIndex]['text'] ?? null;
+        return $this->dictation->getSegmentText($lessonId, $segmentIndex);
     }
 
     public function scoreSegment(
@@ -253,70 +149,16 @@ class BbcService
         string $userInput,
         int $timeSpentMs
     ): ?array {
-        $segmentText = $this->getSegmentText($lessonId, $segmentIndex);
-        if ($segmentText === null) {
-            return null;
-        }
-
-        $score = $this->scoringService->scoreSegment($segmentText, $userInput);
-
-        UserExternalLessonSegment::updateOrCreate(
-            [
-                'user_id' => $userId,
-                'lesson_id' => $lessonId,
-                'segment_index' => $segmentIndex,
-            ],
-            [
-                'user_input' => $userInput,
-                'correct_words' => $score['correct_count'],
-                'wrong_words' => $score['wrong_count'],
-                'missing_words' => $score['missing_count'],
-                'extra_words' => $score['wrong_count'],
-                'accuracy' => $score['accuracy'],
-                'time_spent_ms' => $timeSpentMs,
-            ]
-        );
-
-        return $score;
+        return $this->dictation->scoreSegment($userId, $lessonId, $segmentIndex, $userInput, $timeSpentMs);
     }
 
     public function getDictationSummary(int $userId, int $lessonId): array
     {
-        $segments = UserExternalLessonSegment::where('user_id', $userId)
-            ->where('lesson_id', $lessonId)
-            ->orderBy('segment_index')
-            ->get();
-
-        if ($segments->isEmpty()) {
-            return [
-                'segments_completed' => 0,
-                'overall_accuracy' => 0.0,
-                'total_time_ms' => 0,
-                'segment_scores' => [],
-            ];
-        }
-
-        $totalAccuracy = $segments->avg('accuracy') ?? 0.0;
-        $totalTime = $segments->sum('time_spent_ms');
-
-        return [
-            'segments_completed' => $segments->count(),
-            'overall_accuracy' => round($totalAccuracy, 1),
-            'total_time_ms' => (int) $totalTime,
-            'segment_scores' => $segments->map(fn ($s) => [
-                'segment_index' => $s->segment_index,
-                'accuracy' => $s->accuracy,
-                'correct_count' => $s->correct_words,
-                'wrong_count' => $s->wrong_words,
-                'missing_count' => $s->missing_words,
-                'time_spent_ms' => $s->time_spent_ms,
-            ])->toArray(),
-        ];
+        return $this->dictation->getDictationSummary($userId, $lessonId);
     }
 
-    public function completeDictation(int $userId, int $lessonId): UserExternalLessonProgress
+    public function completeDictation(int $userId, int $lessonId): UserExternalLessonSegment
     {
-        $user = User::findOrFail($userId);
-        return $this->upsertProgress($user, $lessonId, 'completed');
+        return $this->dictation->completeDictation($userId, $lessonId);
     }
 }

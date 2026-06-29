@@ -69,9 +69,10 @@ function LessonCard({ lesson, onNavigate }: { lesson: BbcLesson; onNavigate?: Bb
 
   const handleClick = () => {
     if (onNavigate) {
-      onNavigate('bbc-detail', { slug: lesson.slug })
+      onNavigate('bbc-practice', { slug: lesson.slug })
     } else {
-      navigate(`/listening/bbc/${lesson.slug}`)
+      // Navigate directly to practice page, not detail page
+      navigate(`/listening/bbc/${lesson.slug}/learn`)
     }
   }
 

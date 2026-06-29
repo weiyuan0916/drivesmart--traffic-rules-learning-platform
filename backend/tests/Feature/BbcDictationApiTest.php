@@ -23,13 +23,14 @@ class BbcDictationApiTest extends TestCase
         $source = ListeningSource::factory()->create();
         $this->lesson = ListeningExternalLesson::factory()->create([
             'source_id' => $source->id,
+            'segments_source' => ListeningExternalLesson::SEGMENTS_SOURCE_USER_PROVIDED,
             'metadata_json' => [
                 'segments' => [
-                    ['id' => 0, 'text' => 'Hello, this is BBC Learning English.'],
-                    ['id' => 1, 'text' => "I'm Neil, and with me is Pippa."],
-                    ['id' => 2, 'text' => 'Today we are discussing advertising.'],
+                    ['id' => 0, 'text' => 'Hello, this is my transcript.'],
+                    ['id' => 1, 'text' => "It's a user-provided lesson."],
+                    ['id' => 2, 'text' => 'Today we are discussing dictation.'],
                 ],
-                'audio_url' => 'https://www.bbc.com/audio/play/test123',
+                'audio_url' => null,
             ],
         ]);
     }
@@ -88,13 +89,13 @@ class BbcDictationApiTest extends TestCase
 
         $response = $this->postJson("/api/v1/listening/bbc/{$this->lesson->id}/dictation/segments", [
             'segment_index' => 0,
-            'user_input' => 'Hello, this is BBC Learning English.',
+            'user_input' => 'Hello, this is my transcript.',
             'time_spent_ms' => 5000,
         ]);
 
         $response->assertStatus(200)
             ->assertJsonPath('accuracy', 100)
-            ->assertJsonPath('correct_count', 6);
+            ->assertJsonPath('correct_count', 5);
     }
 
     // ==========================================================
@@ -161,12 +162,12 @@ class BbcDictationApiTest extends TestCase
         // Submit two segments
         $this->postJson("/api/v1/listening/bbc/{$this->lesson->id}/dictation/segments", [
             'segment_index' => 0,
-            'user_input' => 'Hello, this is BBC Learning English.',
+            'user_input' => 'Hello, this is my transcript.',
             'time_spent_ms' => 3000,
         ]);
         $this->postJson("/api/v1/listening/bbc/{$this->lesson->id}/dictation/segments", [
             'segment_index' => 1,
-            'user_input' => "I'm Neil, and with me is Pippa.",
+            'user_input' => "It's a user-provided lesson.",
             'time_spent_ms' => 4000,
         ]);
 

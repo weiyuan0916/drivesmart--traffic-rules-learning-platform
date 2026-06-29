@@ -6,6 +6,7 @@ import { ListeningLayout } from './components/ListeningLayout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Spinner } from './components/ui/Spinner'
 import { ExplanationProvider } from './contexts/ExplanationContext'
+import { BbcDarkThemeShell } from './components/BbcDarkThemeShell'
 
 // Lazy-loaded pages for code splitting
 const TopicsPage = lazy(() => import('./pages/topics/TopicsPage'))
@@ -16,7 +17,7 @@ const ProgressPage = lazy(() => import('./pages/progress/ProgressPage'))
 const HistoryPage = lazy(() => import('./pages/history/HistoryPage'))
 const OnboardingPage = lazy(() => import('./pages/onboarding/OnboardingPage'))
 const BbcLessonListPage = lazy(() => import('./pages/bbc/BbcLessonListPage'))
-const BbcLessonDetailPage = lazy(() => import('./pages/bbc/BbcLessonDetailPage'))
+const BbcPracticePage = lazy(() => import('./pages/bbc/BbcPracticePage'))
 const BbcWorkspacePage = lazy(() => import('./pages/bbc/BbcWorkspacePage'))
 const BbcMicroDictationPage = lazy(() => import('./pages/bbc/BbcMicroDictationPage'))
 
@@ -125,15 +126,19 @@ export function AppRouter({ children }: AppRouterProps) {
                 path="/bbc"
                 element={
                   <Suspense fallback={<PageLoader />}>
-                    <BbcLessonListPage />
+                    <BbcDarkThemeShell>
+                      <BbcLessonListPage />
+                    </BbcDarkThemeShell>
                   </Suspense>
                 }
               />
               <Route
-                path="/bbc/:slug"
+                path="/bbc/:slug/learn"
                 element={
                   <Suspense fallback={<PageLoader />}>
-                    <BbcLessonDetailPage />
+                    <BbcDarkThemeShell>
+                      <BbcPracticePage />
+                    </BbcDarkThemeShell>
                   </Suspense>
                 }
               />
@@ -141,7 +146,9 @@ export function AppRouter({ children }: AppRouterProps) {
                 path="/bbc/:slug/practice"
                 element={
                   <Suspense fallback={<PageLoader />}>
-                    <BbcWorkspacePage />
+                    <BbcDarkThemeShell>
+                      <BbcWorkspacePage />
+                    </BbcDarkThemeShell>
                   </Suspense>
                 }
               />
@@ -149,7 +156,9 @@ export function AppRouter({ children }: AppRouterProps) {
                 path="/bbc/:slug/dictation"
                 element={
                   <Suspense fallback={<PageLoader />}>
-                    <BbcMicroDictationPage />
+                    <BbcDarkThemeShell>
+                      <BbcMicroDictationPage />
+                    </BbcDarkThemeShell>
                   </Suspense>
                 }
               />

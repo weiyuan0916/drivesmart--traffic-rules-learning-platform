@@ -1,0 +1,170 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 13.17,
+    "duration": 13.17,
+    "text": "Hello, this is 6 Minute English from BBC Learning English. I'm Pippa.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 13.17,
+    "end": 37.81,
+    "duration": 24.64,
+    "text": "And I'm Beth. Foraging is the activity of walking in the countryside, looking for plants you can eat that grow in the wild. That's anything from blackberries and chestnuts to mushrooms and wild garlic. It's something humans have always done. And recently, it's become fashionable among groups of young people. Pippa, have you ever been foraging?",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 37.81,
+    "end": 49.57,
+    "duration": 11.76,
+    "text": "Yes, we used to go and pick blackberries when I was younger, but I haven't really done it as an adult, and I would be a bit nervous to look for mushrooms or things like that.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 49.57,
+    "end": 50.57,
+    "duration": 1.0,
+    "text": "What about you?",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 50.57,
+    "end": 80.05,
+    "duration": 29.48,
+    "text": "I'm exactly the same. If I see a blackberry on a bush, I will eat it. But mushrooms, no, too scary. So in this episode, we'll meet two young women from different countries who are passionate about foraging wild food. They're both self-taught, having learned to forage by studying the natural world around them. And it's important to say that they only eat what they can identify with 100% certainty, sticking to the rule. If in doubt, leave it out.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 80.05,
+    "end": 92.37,
+    "duration": 12.32,
+    "text": "We'll also be learning some useful new words and phrases, all of which you'll find on our website, BBCLearningEnglish.com. But before that, I have a question for you, Pippa.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 92.37,
+    "end": 119.29,
+    "duration": 26.92,
+    "text": "As mentioned, when foraging, you must know for certain what is safe to eat. Something definitely not safe to eat is the mushroom deathcap. As the name suggests, it's one of the world's deadliest mushrooms, and it's common across the British Isles. But what color is it? Are deathcap mushrooms A, brown, B, white, or C, red?",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 119.29,
+    "end": 123.93,
+    "duration": 4.64,
+    "text": "I'm going to say if it's dangerous, maybe it's red.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 123.93,
+    "end": 134.13,
+    "duration": 10.2,
+    "text": "Okay, well, we'll find out later in the programme. First, let's meet Roshanna Gray, a wild food forager living in Cape Point, South Africa.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 134.13,
+    "end": 141.69,
+    "duration": 7.56,
+    "text": "Roshanna learned how to forage from her mother-in-law, as she explains here to BBC World Service programme, the conversation.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 141.69,
+    "end": 164.77,
+    "duration": 23.08,
+    "text": "So, she is a horticulturist, she has a deep knowledge of plants, and so I would be kind of scanning the landscape and learning about these new plants, or new to me, and wondering if you could eat them. Something that's incredibly important and foraging is to know 110% if you can eat it, positive identification of the plant, and so she was my plant person.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 164.77,
+    "end": 185.05,
+    "duration": 20.28,
+    "text": "Roshanna's mother-in-law is a horticulturalist, a person who studies or grows plants, such as flowers, fruits, and vegetables. She has a deep knowledge of the wild plants growing in nature. A deep knowledge means a thorough understanding of a subject gained from experience and study, not just knowing the basic facts.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 185.05,
+    "end": 196.93,
+    "duration": 11.88,
+    "text": "One skill forager's need is scanning the landscape. Scanning means searching a wide area with your eyes to find some particular thing, in this case edible plants and herbs.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 196.93,
+    "end": 217.81,
+    "duration": 20.88,
+    "text": "And of course, Roshanna only eats plants that she can positively identify, plants that she knows 110% are safe to eat. Here the idiom 110% means Roshanna is completely sure, she has no doubt. And that's important as the consequences of eating poisonous plants are serious, sickness or even death.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 217.81,
+    "end": 251.85,
+    "duration": 34.04,
+    "text": "Our second female forager, Emily Smith, moved to rural Japan to work on a project cataloging and collecting wild mushrooms. With around 5000 varieties, 300 of which are edible, mushrooms are an important part of traditional Japanese cooking. But with names like Deathcap and a reputation for being poisonous, mushrooms are what many wild foragers worry about the most. Emily discussed these worries with BBC World Service Programme, the conversation.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 251.85,
+    "end": 273.05,
+    "duration": 21.2,
+    "text": "That stigma is a bit misplaced, I think, because plants can be just as dangerous, if not more dangerous than mushrooms, and I think that mushrooms have been much maligned. I mean, you've got to exercise caution, as Roshanna said, in anything that you pick, you need to know what it is before you consume it, and if in doubt throw it out, is a very good phrase to say.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 273.05,
+    "end": 285.45,
+    "duration": 12.4,
+    "text": "Emily thinks there's a stigma around mushrooms. A stigma is a negative belief about something, which is not necessarily true or fair. In fact, many plants are just as poisonous as mushrooms.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 285.45,
+    "end": 295.09,
+    "duration": 9.64,
+    "text": "The main thing is to exercise caution, to act with care and attention so as to avoid possible dangers. In other words, to be careful.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 295.09,
+    "end": 302.97,
+    "duration": 7.88,
+    "text": "And the best way of doing that is learning the difference between what's safety and what's not. Speaking of which, what was the answer to your question, Beth?",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 302.97,
+    "end": 345.37,
+    "duration": 42.4,
+    "text": "Ah, I asked you, what colour are Deathcap mushrooms? You said red, which I also thought was the answer, but actually, they are white. Right, it's time to recap the vocabulary we've learnt about foraging, starting with horticulturalist, a person who studies or grows plants. If you have a deep knowledge of a subject, you have a thorough understanding of it gained from experience and study. Scanning involves searching a wide area with your eyes to find some particular thing. If you're 110% sure about something, you're absolutely certain you have no doubt. A stigma is an unfair negative belief about something.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 345.37,
+    "end": 367.41,
+    "duration": 22.04,
+    "text": "And finally, to exercise caution is a more formal way of saying to be careful. Something you should definitely remember if you go wild foraging yourself. Once again, our six minutes are up. If you enjoyed this episode, you'll find a quiz and worksheet to practise the vocabulary on our website, bbclearningenglish.com. See you again soon. Bye for now. Goodbye!",
+    "file": "audio_clips/20.mp3"
+  }
+]

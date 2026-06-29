@@ -1,0 +1,474 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.88,
+    "duration": 12.88,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.88,
+    "end": 14.64,
+    "duration": 1.76,
+    "text": "I'm Beth and I'm Phil.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 14.64,
+    "end": 17.68,
+    "duration": 3.04,
+    "text": "Phil, do you believe there's life on other planets?",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 17.68,
+    "end": 22.32,
+    "duration": 4.64,
+    "text": "Well, there's a lot of other planets, so yeah, I think there must be.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 22.32,
+    "end": 23.68,
+    "duration": 1.36,
+    "text": "Yeah, I agree.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 23.68,
+    "end": 36.08,
+    "duration": 12.4,
+    "text": "Well, it's a question that interests American astrophysicist Adam Frank, who discussed it with his colleague Gavin Schmidt, director of NASA's Institute for Space Studies.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 36.08,
+    "end": 41.52,
+    "duration": 5.44,
+    "text": "Here, Adam recalls their conversation for BBC World Service Programme Crowdscience.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 41.52,
+    "end": 47.28,
+    "duration": 5.76,
+    "text": "We know that there's been no other civilization on Earth, and he stopped me and said, how do you know that?",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 47.28,
+    "end": 49.6,
+    "duration": 2.32,
+    "text": "And my jaw just dropped down to the floor.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 49.6,
+    "end": 51.92,
+    "duration": 2.32,
+    "text": "Adam's jaw dropped.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 51.92,
+    "end": 55.12,
+    "duration": 3.2,
+    "text": "An idiom for when someone looked shocked and surprised.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 55.68,
+    "end": 61.2,
+    "duration": 5.52,
+    "text": "Could there have been a technologically advanced civilization before us here on Earth?",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 61.2,
+    "end": 65.76,
+    "duration": 4.56,
+    "text": "It may sound weird, but this idea has a scientific name.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 65.76,
+    "end": 71.52,
+    "duration": 5.76,
+    "text": "Here is Caroline Steele, presenter of BBC's Crowdscience to explain.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 71.52,
+    "end": 82.16,
+    "duration": 10.64,
+    "text": "The Cylurian hypothesis proposes that if there was a technologically advanced civilization hundreds of millions of years ago, we wouldn't be able to find traces of it.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 82.16,
+    "end": 89.2,
+    "duration": 7.04,
+    "text": "A hypothesis is an idea which explains how something happens and can be tested to find out if it's correct.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 89.84,
+    "end": 94.56,
+    "duration": 4.72,
+    "text": "In this episode, we'll be discussing the Cylurian hypothesis.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 94.56,
+    "end": 104.0,
+    "duration": 9.44,
+    "text": "The idea that a technologically advanced civilization existed before us on Earth, but vanished without leaving a trace.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 104.0,
+    "end": 113.92,
+    "duration": 9.92,
+    "text": "As usual, we'll be learning some useful new words and idioms and remember, you'll find all the vocabulary on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 113.92,
+    "end": 117.28,
+    "duration": 3.36,
+    "text": "But first, I have a question for you, Phil.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 117.28,
+    "end": 123.6,
+    "duration": 6.32,
+    "text": "Human civilization is thousands of years old, but the planet itself is much older.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 123.6,
+    "end": 127.28,
+    "duration": 3.68,
+    "text": "So how old does scientists think the Earth is?",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 127.28,
+    "end": 135.84,
+    "duration": 8.56,
+    "text": "Is it a three and a half billion years, b four and a half billion years, or c five and a half billion years?",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 135.84,
+    "end": 139.44,
+    "duration": 3.6,
+    "text": "I'm going to guess c five and a half billion years.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 139.44,
+    "end": 142.8,
+    "duration": 3.36,
+    "text": "Okay, well, we will find the answer out later in the programme.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 143.52,
+    "end": 153.2,
+    "duration": 9.68,
+    "text": "To believe a technologically advanced civilization existed on Earth hundreds of millions of years ago, most people would probably want evidence.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 153.92,
+    "end": 160.0,
+    "duration": 6.08,
+    "text": "We have evidence about other species from the past, such as the dinosaurs, from fossils.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 160.0,
+    "end": 166.0,
+    "duration": 6.0,
+    "text": "The remains of prehistoric plants or animals that have been preserved in rock for a very long time.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 166.0,
+    "end": 176.24,
+    "duration": 10.24,
+    "text": "But according to Adam Frank, fossils won't help prove the Cylurian hypothesis, as he explains here to BBC World Service programme, crowd science.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 176.24,
+    "end": 177.68,
+    "duration": 1.44,
+    "text": "Most things are not fossilised.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 177.68,
+    "end": 183.6,
+    "duration": 5.92,
+    "text": "It's only a tiny fraction of Earth's life that has ever become fossilised.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 183.6,
+    "end": 192.48,
+    "duration": 8.88,
+    "text": "So imagine that you have a 10,000-year-long civilization, which is a blink of the eye for geology.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 192.48,
+    "end": 196.08,
+    "duration": 3.6,
+    "text": "That's too short to really create a lot of fossils.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 196.08,
+    "end": 204.0,
+    "duration": 7.92,
+    "text": "Adam argues that only a tiny fraction, meaning a very small amount of life on Earth, has turned into fossil.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 204.0,
+    "end": 213.76,
+    "duration": 9.76,
+    "text": "In geological time, even a 10,000-year-old civilization is the blink of an eye, an idea meaning a very short period of time.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 214.4,
+    "end": 222.48,
+    "duration": 8.08,
+    "text": "In other words, older civilizations might have existed on Earth, but not for long enough to leave fossilised evidence.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 222.48,
+    "end": 227.12,
+    "duration": 4.64,
+    "text": "However, not everyone is convinced by Adam's ideas.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 227.2,
+    "end": 239.2,
+    "duration": 12.0,
+    "text": "Evidence of our own civilisation, including plastics and man-made materials like concrete, is already being layered into the Earth's crust, and these are going to last a very long time.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 239.76,
+    "end": 246.16,
+    "duration": 6.4,
+    "text": "So surely a technologically advanced civilisation from prehistory would have left similar marks.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 246.8,
+    "end": 254.72,
+    "duration": 7.92,
+    "text": "Well, here's Adam Frank again, answering these objections on BBC World Service programme, crowd science.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 255.28,
+    "end": 268.0,
+    "duration": 12.72,
+    "text": "What happens is, somebody else will pick up on their work, either affirming it and showing new evidence for it, or pushing back on it, and once you get to like 20, 30, 40 papers, then you have a consensus.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 268.0,
+    "end": 271.28,
+    "duration": 3.28,
+    "text": "You're like, okay, we've really, really looked at this, and now we know.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 271.92,
+    "end": 282.4,
+    "duration": 10.48,
+    "text": "Adam welcomes new evidence, even evidence which contradicts his ideas, as part of the scientific method needed to prove a hypothesis right or wrong.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 282.48,
+    "end": 287.36,
+    "duration": 4.88,
+    "text": "It's how scientists form a consensus, meaning a general agreement about the issue.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 287.84,
+    "end": 296.72,
+    "duration": 8.88,
+    "text": "Personally, I think the idea of prehistoric civilisations on Earth is so mysterious, it's okay to keep an open mind.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 296.72,
+    "end": 300.72,
+    "duration": 4.0,
+    "text": "Now, isn't it time you revealed the answer to your question, Beth?",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 301.28,
+    "end": 302.32,
+    "duration": 1.04,
+    "text": "I think it is.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 302.32,
+    "end": 306.56,
+    "duration": 4.24,
+    "text": "I asked you how old do scientists think the Earth is.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 307.2,
+    "end": 311.68,
+    "duration": 4.48,
+    "text": "You said five and a half billion years, and I'm afraid you were wrong, Phil.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 311.68,
+    "end": 313.84,
+    "duration": 2.16,
+    "text": "It's four and a half billion years.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 314.56,
+    "end": 324.72,
+    "duration": 10.16,
+    "text": "Okay, let's recap the vocabulary we've learnt, starting with the idiom, my jaw dropped, which is used to say someone looks very shocked and surprised.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 324.72,
+    "end": 331.44,
+    "duration": 6.72,
+    "text": "A hypothesis is a suggestion that's proposed to explain something, which can then be tested to see if it's true.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 331.44,
+    "end": 338.24,
+    "duration": 6.8,
+    "text": "Fossils are the remains of prehistoric plants or animals that have been preserved in rock for a very long time.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 338.24,
+    "end": 342.64,
+    "duration": 4.4,
+    "text": "A tiny fraction of something is a very small amount of it.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 342.64,
+    "end": 347.04,
+    "duration": 4.4,
+    "text": "The idiom, the blink of an eye, means a very short period of time.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 347.04,
+    "end": 351.04,
+    "duration": 4.0,
+    "text": "And finally, a consensus is a general agreement.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 351.6,
+    "end": 362.24,
+    "duration": 10.64,
+    "text": "Once again, our six minutes are up, but if you're keen for more, then head over to our website, bbclearningenglish.com, where you'll find a worksheet and a quiz for this episode.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 362.8,
+    "end": 365.44,
+    "duration": 2.64,
+    "text": "See you again soon, but for now, it's goodbye.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 365.44,
+    "end": 371.76,
+    "duration": 6.32,
+    "text": "Goodbye. From bbclearningenglish.com",
+    "file": "audio_clips/58.mp3"
+  }
+]

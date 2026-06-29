@@ -1,0 +1,298 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 13.85,
+    "duration": 13.85,
+    "text": "Hello, this is 6 Minute English from BBC Learning English. I'm Neil and I'm Beth.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 13.85,
+    "end": 33.45,
+    "duration": 19.6,
+    "text": "One area of technology which has been in the news a lot recently is robotics, the design and building of robots. Humanoid robots, meaning robots which appear and behave like humans, are being built to help us do everything from washing the dishes to babysitting the kids.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 33.45,
+    "end": 44.33,
+    "duration": 10.88,
+    "text": "But not everyone feels comfortable with the idea of inviting a human-like robot into their home. Neil, how would you feel about living with a robot?",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 44.33,
+    "end": 49.17,
+    "duration": 4.84,
+    "text": "I really don't want to live with a robot. I have enough people in my house.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 49.17,
+    "end": 73.89,
+    "duration": 24.72,
+    "text": "With advances in AI, robots are becoming smart enough to develop meaningful relationships with humans. There are reports of people telling their secrets to robot therapists and even falling in love with their robot friend. In this episode, we'll meet a home companion robot called Abby, who's making friends with the elderly residents of Melbourne in Australia.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 73.89,
+    "end": 82.21,
+    "duration": 8.32,
+    "text": "And as usual, we'll learn some useful new vocabulary, all of which you'll find over on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 82.21,
+    "end": 112.17,
+    "duration": 29.96,
+    "text": "First, I have a question for you, Beth. Because it's important, people feel safe around robots, engineers design them to look like the friendly characters seen in animated movies by studios like Pixar and Dreamworks. So, what is the name of Pixar's friendly robot who picks up garbage on an uninhabited planet Earth in the year 28-05? Is it A, Ross, B, Wally or C, R2-D2?",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 112.17,
+    "end": 116.25,
+    "duration": 4.08,
+    "text": "I am pretty certain that the answer is B, Wally.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 116.25,
+    "end": 119.41,
+    "duration": 3.16,
+    "text": "Well, we'll find out the answer later in the programme.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 119.41,
+    "end": 126.29,
+    "duration": 6.88,
+    "text": "For five months during the Covid pandemic, Australian engineer Grace Brown had no human contact.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 126.29,
+    "end": 151.68,
+    "duration": 25.39,
+    "text": "She used this time to build a home companion robot, Abby, with the idea it would provide companionship to other people suffering loneliness. Now, Grace runs her own company, Andromeda, building robots specially designed as company for elderly residents in care homes who don't get many visitors. Here, she explains more about Abby to BBC World Service programme, the conversation.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 151.68,
+    "end": 168.68,
+    "duration": 17.0,
+    "text": "Abby, who's the humanoid robot that we build at Andromeda, people don't expect humanoid robots to have, like, so much personality. She's very, very sassy. She's very inquisitive and curious. And I think when people meet her, they're always kind of taken back by, oh, do you like, got a mind of her own?",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 168.68,
+    "end": 178.6,
+    "duration": 9.92,
+    "text": "When people meet Abby, they are surprised by her sassy personality. The adjective sassy means bold, confident and cheeky.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 178.6,
+    "end": 184.48,
+    "duration": 5.88,
+    "text": "Some people are taken aback, meaning they are shocked or surprised by the things Abby says.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 184.48,
+    "end": 203.0,
+    "duration": 18.52,
+    "text": "She really seems to be interested and to take care of the people she meets. Abby can also express opinions. And Grace says she has a mind of her own, a phrase used when a non-living object, like a robot, seems to be behaving or acting independently of human control.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 203.0,
+    "end": 216.84,
+    "duration": 13.84,
+    "text": "Unlike the unpredictable and violent robots, which are sometimes portrayed in sci-fi movies, Abby is much more approachable and friendly, even funny. She can blow bubbles from her hand.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 216.84,
+    "end": 230.0,
+    "duration": 13.16,
+    "text": "Her softer design was a conscious decision by Grace, who wanted children and elderly people to interact with Abby naturally and without fear. As she explained to BBC World Services, the conversation.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 230.0,
+    "end": 239.32,
+    "duration": 9.32,
+    "text": "I originally modeled her off the size of like a young child, so like a six, seven-year-old child, so she's about 110 centimeters tall. She's got a whole splash of different colors.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 239.32,
+    "end": 251.56,
+    "duration": 12.24,
+    "text": "She's got, you know, large expressive eyes, so that was, I was very much trying to replicate the kind of approachableness and the endearingness of, like, these different, like, Pixar characters that you'd watch in all of these films.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 251.56,
+    "end": 265.98,
+    "duration": 14.42,
+    "text": "Abby looks like a friendly character from a Pixar film. She's the size of a six or seven-year-old child and decorated with a splash of color. A phrase used when a bit of color is added to brighten up something which is dull or unexciting.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 265.98,
+    "end": 275.91,
+    "duration": 9.93,
+    "text": "Abby also has large expressive eyes. If you describe something as expressive, you mean it shows what someone thinks or feels.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 275.91,
+    "end": 282.71,
+    "duration": 6.8,
+    "text": "Elderly residents who regularly chat with Abby say the robot companion brings them joy and a sense of community.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 282.71,
+    "end": 293.63,
+    "duration": 10.92,
+    "text": "Ah, well, it is good to hear the positive side of technology, which can still seem a bit strange or frightening, and I would like to see Abby blowing bubbles from her hand.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 293.63,
+    "end": 297.47,
+    "duration": 3.84,
+    "text": "Now, isn't it time you revealed the answer to your question, Neil?",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 297.47,
+    "end": 308.19,
+    "duration": 10.72,
+    "text": "I asked you for the name of Pixar's friendly robot who picks up garbage on an un-inhabited planet Earth in the year 1805, and I said it was Wally.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 308.19,
+    "end": 310.19,
+    "duration": 2.0,
+    "text": "And you were? Correct.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 310.19,
+    "end": 312.19,
+    "duration": 2.0,
+    "text": "Yes. That is the right answer.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 312.19,
+    "end": 321.43,
+    "duration": 9.24,
+    "text": "Okay, let's recap the vocabulary we've learned starting with humanoid, an adjective meaning to have the appearance and behaviour of a human.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 321.43,
+    "end": 325.55,
+    "duration": 4.12,
+    "text": "Someone who is sassy is bold, confident, and cheeky.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 325.55,
+    "end": 330.07,
+    "duration": 4.52,
+    "text": "If you are taken aback by something you are shocked or surprised by it.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 330.07,
+    "end": 337.91,
+    "duration": 7.84,
+    "text": "If you say an object has a mind of its own, you mean that it seems to be acting independently without human control.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 337.91,
+    "end": 345.35,
+    "duration": 7.44,
+    "text": "The phrase a splash of colour is used when a bit of colour is added to brighten something which is dull or unexciting.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 345.35,
+    "end": 351.23,
+    "duration": 5.88,
+    "text": "And finally, the adjective expressive means showing what someone thinks or feels.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 351.23,
+    "end": 353.43,
+    "duration": 2.2,
+    "text": "Once again, our six minutes are up.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 353.43,
+    "end": 363.99,
+    "duration": 10.56,
+    "text": "If you've enjoyed this episode, then head over to our website, BBCLearningEnglish.com, where you'll find a quiz and worksheet to practice the vocabulary you've learnt.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 363.99,
+    "end": 366.87,
+    "duration": 2.88,
+    "text": "See you again soon, but for now, it's goodbye.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 366.87,
+    "end": 372.87,
+    "duration": 6.0,
+    "text": "Six minutes English from BBCLearningEnglish.com",
+    "file": "audio_clips/36.mp3"
+  }
+]

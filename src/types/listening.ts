@@ -10,7 +10,7 @@ export type ListeningView =
   | 'bookmarks'
   | 'history'
   | 'bbc-list'
-  | 'bbc-detail'
+  | 'bbc-practice'
   | 'bbc-workspace'
   | 'bbc-dictation';
 

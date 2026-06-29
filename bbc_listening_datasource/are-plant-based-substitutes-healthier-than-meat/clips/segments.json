@@ -1,0 +1,530 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 11.56,
+    "duration": 11.56,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 11.56,
+    "end": 13.56,
+    "duration": 2.0,
+    "text": "I'm Neil. And I'm Georgie.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 13.56,
+    "end": 24.36,
+    "duration": 10.8,
+    "text": "If you've heard about meat-free Mondays or veganery, you probably know about a trend which an increasing number of people are trying to reduce or even stop eating meat.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 24.36,
+    "end": 28.48,
+    "duration": 4.12,
+    "text": "This is often for health, animal welfare, or environmental reasons.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 28.48,
+    "end": 33.8,
+    "duration": 5.32,
+    "text": "Instead, people are getting their daily amount of protein through plant-based alternatives.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 33.8,
+    "end": 41.76,
+    "duration": 7.96,
+    "text": "Meat-free sausages and burgers made using ingredients like soy, tofu, or fungi, as well as temper, beans or nuts.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 41.76,
+    "end": 44.88,
+    "duration": 3.12,
+    "text": "Have you tried any of these plant-based meat alternatives Georgie?",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 44.88,
+    "end": 45.88,
+    "duration": 1.0,
+    "text": "Yes, I have.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 45.88,
+    "end": 53.68,
+    "duration": 7.8,
+    "text": "I have lots of vegetarian friends, so I've been to veggie barbecues and have tried the plant-based sausages and burgers.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 53.68,
+    "end": 56.32,
+    "duration": 2.64,
+    "text": "I quite like them, as long as they're covered in sauce.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 56.32,
+    "end": 57.32,
+    "duration": 1.0,
+    "text": "What about you?",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 57.44,
+    "end": 58.96,
+    "duration": 1.52,
+    "text": "Yeah, I think I agree.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 58.96,
+    "end": 64.32,
+    "duration": 5.36,
+    "text": "They're fine. There's a reason for them, but I'm not sure they're as good as the real thing.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 64.32,
+    "end": 83.32,
+    "duration": 19.0,
+    "text": "Now, with processed meat being linked to diseases like diabetes and cancer, most doctors agree that plant-based options are healthier, but some people are worried about how plant-based alternatives are made, including radio listener Graham Glover, who asked this question to BBC Radio 4 program sliced bread.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 83.32,
+    "end": 94.24,
+    "duration": 10.92,
+    "text": "Well, my question is, looking at these vegetable sausages, how they are processed, full of additives and flare rings and callarings, are they any healthier than a pork sausage?",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 94.24,
+    "end": 104.08,
+    "duration": 9.84,
+    "text": "In this episode, we'll be finding out whether plant-based foods really are a healthier alternative to meat, and as usual, we'll be learning some useful new words and phrases.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 104.08,
+    "end": 111.4,
+    "duration": 7.32,
+    "text": "Remember, you can find all the vocabulary along with a quiz and a worksheet on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 111.44,
+    "end": 116.28,
+    "duration": 4.84,
+    "text": "But now I have a question for you, Georgie, listener Graham loves eating sausages.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 116.28,
+    "end": 121.4,
+    "duration": 5.12,
+    "text": "But do you know which of the following words means sausages in British English slang?",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 121.4,
+    "end": 125.52,
+    "duration": 4.12,
+    "text": "Is it A, booze, B, banger or C, brunch?",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 125.52,
+    "end": 129.28,
+    "duration": 3.76,
+    "text": "So I actually know the answer to this question, so I'm not going to say.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 129.28,
+    "end": 131.28,
+    "duration": 2.0,
+    "text": "Otherwise, it will spoil it for our listeners.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 131.28,
+    "end": 134.96,
+    "duration": 3.68,
+    "text": "Okay, well, we'll all find out at the end of the program.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 134.96,
+    "end": 143.04,
+    "duration": 8.08,
+    "text": "Although most research agrees that plant-based foods are healthier than meat, it's also true that meat-free products are processed.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 143.04,
+    "end": 152.24,
+    "duration": 9.2,
+    "text": "To make meat-free sausages, for example, after the proteins are broken down, flavorings and callarings are added to reproduce the taste or texture of meat.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 152.24,
+    "end": 162.24,
+    "duration": 10.0,
+    "text": "Corn, one of the best known brands of meat-free products, uses microprotein, a fungi-based protein similar to the fungi used in the fermentation of yogurt and bread.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 162.24,
+    "end": 164.68,
+    "duration": 2.44,
+    "text": "So, what does listener Graham think?",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 164.68,
+    "end": 170.44,
+    "duration": 5.76,
+    "text": "Let's find out as he talks to Greg Furt, presenter of BBC Radio 4's Sliced Bread.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 170.44,
+    "end": 182.0,
+    "duration": 11.56,
+    "text": "Graham, listening to all this, normally a fan of a meat sausage, your plant-based meat alternative sausage curious that we're exploring today, what do you think about hearing about the sources of where they come from?",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 182.0,
+    "end": 185.76,
+    "duration": 3.76,
+    "text": "What's your gut reaction to hearing that corn comes from a fungus?",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 185.76,
+    "end": 187.52,
+    "duration": 1.76,
+    "text": "I have no problems with that.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 187.52,
+    "end": 191.16,
+    "duration": 3.64,
+    "text": "It's just another form of protein, as far as I'm concerned.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 191.16,
+    "end": 192.64,
+    "duration": 1.48,
+    "text": "It's what's the healthiest.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 192.64,
+    "end": 194.16,
+    "duration": 1.52,
+    "text": "Yes, we will get to health.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 194.16,
+    "end": 196.68,
+    "duration": 2.52,
+    "text": "I think that's the big conversation for today.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 196.68,
+    "end": 199.68,
+    "duration": 3.0,
+    "text": "Greg asked Graham for his gut reaction.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 199.68,
+    "end": 205.2,
+    "duration": 5.52,
+    "text": "Your gut reaction is your opinion based on your initial feeling or instinct about something.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 205.2,
+    "end": 207.48,
+    "duration": 2.28,
+    "text": "It can't be explained logically.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 207.48,
+    "end": 212.68,
+    "duration": 5.2,
+    "text": "Actually, Graham doesn't mind that his sausage protein is a fungus, as long as it's healthy.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 212.68,
+    "end": 218.84,
+    "duration": 6.16,
+    "text": "He uses the phrase, as far as I'm concerned, to indicate that he is giving his own opinion on the subject.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 218.84,
+    "end": 227.72,
+    "duration": 8.88,
+    "text": "Of course, healthy eating is important, but there are other factors influencing whether meat lovers like Graham could be persuaded to try plant-based alternatives.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 227.72,
+    "end": 231.6,
+    "duration": 3.88,
+    "text": "These include things like the taste, color, and texture of the sausage.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 231.6,
+    "end": 236.48,
+    "duration": 4.88,
+    "text": "In other words, whether a plant-based sausage looks and feels like real meat.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 236.48,
+    "end": 241.08,
+    "duration": 4.6,
+    "text": "Here's Greg discussing this point for BBC Radio 4 program sliced bread.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 241.08,
+    "end": 250.2,
+    "duration": 9.12,
+    "text": "It's interesting, isn't it, because my mum is a long-time veggie, and we were talking about this, and she says, I don't want my alternative proteins to resemble meat.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 250.2,
+    "end": 252.76,
+    "duration": 2.56,
+    "text": "It's one of the reasons she says she doesn't eat meat.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 252.76,
+    "end": 256.96,
+    "duration": 4.2,
+    "text": "But you, Graham, you said you do want your plant-based sausage to resemble a pork sausage?",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 256.96,
+    "end": 265.96,
+    "duration": 9.0,
+    "text": "Yeah, I'm obviously in the meat eater, but I do need a plant-based product to be similar in terms of flavor, texture, and appearance.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 265.96,
+    "end": 274.56,
+    "duration": 8.6,
+    "text": "Graham wants his plant-based sausages to resemble, meaning looks similar to meat, but that's not the case for Greg's mum, who's a long-time veggie.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 274.56,
+    "end": 285.0,
+    "duration": 10.44,
+    "text": "A veggie is slang for a vegetarian, a person who doesn't eat meat, and the adjective long-time describes someone who has been or done a particular thing for many years.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 285.0,
+    "end": 289.64,
+    "duration": 4.64,
+    "text": "So a long-time veggie is someone who's been vegetarian for many years.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 289.64,
+    "end": 298.64,
+    "duration": 9.0,
+    "text": "Whether you want your veggie sausages to look, taste, and feel like meat, or you prefer your protein from a plant, now there's every chance you'll find what you're looking for.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 298.64,
+    "end": 302.08,
+    "duration": 3.44,
+    "text": "And keep your body and planet healthy as well.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 302.08,
+    "end": 305.16,
+    "duration": 3.08,
+    "text": "Now, isn't it time you revealed the answer to your question, Neil?",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 305.2,
+    "end": 312.04,
+    "duration": 6.84,
+    "text": "Yes, I asked what the British English slang word for sausages is, and what is it, Georgie?",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 312.04,
+    "end": 319.36,
+    "duration": 7.32,
+    "text": "The answer is banger, and we have a typical dish in the UK called bangers and mash, which is sausages and mash.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 319.36,
+    "end": 321.2,
+    "duration": 1.84,
+    "text": "Love it, with gravy.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 321.2,
+    "end": 327.08,
+    "duration": 5.88,
+    "text": "Okay, let's recap the vocabulary we've learned starting with banger, a word which is slang for sausage.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 327.08,
+    "end": 333.08,
+    "duration": 6.0,
+    "text": "Your gut reaction is your opinion about something based on instinctive feelings, not logic or reason.",
+    "file": "audio_clips/58.mp3"
+  },
+  {
+    "id": 59,
+    "start": 333.12,
+    "end": 337.76,
+    "duration": 4.64,
+    "text": "The phrase as far as I'm concerned can be used to give your opinion about something.",
+    "file": "audio_clips/59.mp3"
+  },
+  {
+    "id": 60,
+    "start": 337.76,
+    "end": 340.92,
+    "duration": 3.16,
+    "text": "To resemble means to look or be similar to something.",
+    "file": "audio_clips/60.mp3"
+  },
+  {
+    "id": 61,
+    "start": 340.92,
+    "end": 345.04,
+    "duration": 4.12,
+    "text": "A veggie is slang for a vegetarian, someone who doesn't eat meat.",
+    "file": "audio_clips/61.mp3"
+  },
+  {
+    "id": 62,
+    "start": 345.04,
+    "end": 351.8,
+    "duration": 6.76,
+    "text": "And finally, the adjective long-time can be used to say that someone has done a particular thing for many years.",
+    "file": "audio_clips/62.mp3"
+  },
+  {
+    "id": 63,
+    "start": 351.8,
+    "end": 362.32,
+    "duration": 10.52,
+    "text": "Once again, our six minutes are up, but remember you can find worksheets, quizzes, and loads more resources to improve your English over on our website, bbclearningenglish.com.",
+    "file": "audio_clips/63.mp3"
+  },
+  {
+    "id": 64,
+    "start": 362.32,
+    "end": 364.72,
+    "duration": 2.4,
+    "text": "See you there soon, but for now, goodbye.",
+    "file": "audio_clips/64.mp3"
+  },
+  {
+    "id": 65,
+    "start": 364.72,
+    "end": 365.72,
+    "duration": 1.0,
+    "text": "Goodbye.",
+    "file": "audio_clips/65.mp3"
+  }
+]

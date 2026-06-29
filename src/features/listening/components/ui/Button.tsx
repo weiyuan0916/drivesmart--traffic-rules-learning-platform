@@ -14,19 +14,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-primary text-white hover:bg-primary-dark active:scale-[0.98] disabled:bg-primary/50',
+    'bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-lg hover:shadow-primary/25 active:scale-[0.98] disabled:bg-primary/50 disabled:shadow-none',
   secondary:
-    'bg-light text-dark border border-border hover:bg-cream active:scale-[0.98] disabled:opacity-50',
+    'bg-bg-tertiary dark:bg-dark text-text-primary dark:text-white border border-border dark:border-border-strong hover:bg-bg-hover dark:hover:bg-dark-surface active:scale-[0.98] disabled:opacity-50',
   ghost:
-    'bg-transparent text-primary hover:bg-light active:scale-[0.98] disabled:opacity-50',
+    'bg-transparent text-primary dark:text-primary hover:bg-bg-tertiary dark:hover:bg-dark active:scale-[0.98] disabled:opacity-50',
   destructive:
-    'bg-error text-white hover:bg-error/90 active:scale-[0.98] disabled:bg-error/50',
+    'bg-error dark:bg-error text-white hover:bg-error/90 active:scale-[0.98] disabled:bg-error/50',
 }
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'h-9 px-3 text-sm gap-1.5 rounded-md min-w-[44px]',
-  md: 'h-11 px-5 text-base gap-2 rounded-lg min-w-[44px]',
-  lg: 'h-13 px-7 text-lg gap-2.5 rounded-lg min-w-[44px]',
+  sm: 'h-9 px-3 text-sm gap-1.5 rounded-lg min-w-[44px]',
+  md: 'h-11 px-5 text-base gap-2 rounded-xl min-w-[44px]',
+  lg: 'h-13 px-7 text-lg gap-2.5 rounded-xl min-w-[44px]',
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -50,7 +50,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || isLoading}
         className={cn(
           'inline-flex items-center justify-center font-semibold',
-          'transition-colors duration-150',
+          'transition-all duration-150',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
           'disabled:cursor-not-allowed',
           variantStyles[variant],

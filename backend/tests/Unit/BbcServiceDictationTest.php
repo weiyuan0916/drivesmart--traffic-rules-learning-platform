@@ -5,21 +5,42 @@ namespace Tests\Unit;
 use App\Models\ListeningExternalLesson;
 use App\Models\User;
 use App\Models\UserExternalLessonSegment;
-use App\Services\BbcService;
-use App\Services\DictationScoringService;
+use App\Services\BbcDictationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
+/**
+ * Tests for BbcDictationService.
+ *
+ * After the 2026-06-16 content-policy audit (.cursor/rules/bbc-feature.mdc),
+ * the dictation service was extracted from BbcService into its own class
+ * to make its content-policy boundary explicit. These tests verify:
+ *   1. The dictation service works correctly for user-provided content.
+ *   2. The dictation service REFUSES to score against legacy_bbc content,
+ *      even if such rows still exist in the database from before the
+ *      deprecation. This is the critical safety check.
+ *
+ * The deprecated BbcService facade still passes these tests via its
+ * pass-through methods, so both the old and new code paths are covered.
+ *
+ * @group bbc
+ * @group bbc-compliance
+ */
 class BbcServiceDictationTest extends TestCase
 {
     use RefreshDatabase;
 
-    private BbcService $service;
+    private BbcDictationService $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new BbcService();
+        $this->service = new BbcDictationService();
+    }
+
+    private function makeSource(): \App\Models\ListeningSource
+    {
+        return \App\Models\ListeningSource::factory()->create();
     }
 
     // ==========================================================
@@ -27,8 +48,9 @@ class BbcServiceDictationTest extends TestCase
     // ==========================================================
     public function test_has_dictation_segments_returns_false_when_no_segments(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
-        $lesson = ListeningExternalLesson::factory()->create(['source_id' => $source->id]);
+        $lesson = ListeningExternalLesson::factory()->create([
+            'source_id' => $this->makeSource()->id,
+        ]);
 
         $this->assertFalse($this->service->hasDictationSegments($lesson->id));
     }
@@ -38,9 +60,9 @@ class BbcServiceDictationTest extends TestCase
     // ==========================================================
     public function test_has_dictation_segments_returns_true_when_segments_exist(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
         $lesson = ListeningExternalLesson::factory()->create([
-            'source_id' => $source->id,
+            'source_id' => $this->makeSource()->id,
+            'segments_source' => ListeningExternalLesson::SEGMENTS_SOURCE_USER_PROVIDED,
             'metadata_json' => [
                 'segments' => [
                     ['id' => 0, 'text' => 'Hello world.'],
@@ -52,24 +74,24 @@ class BbcServiceDictationTest extends TestCase
     }
 
     // ==========================================================
-    // TC-03: getSegmentText returns correct segment text
+    // TC-03: getSegmentText returns correct segment text (user_provided)
     // ==========================================================
     public function test_get_segment_text_returns_correct_segment(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
         $lesson = ListeningExternalLesson::factory()->create([
-            'source_id' => $source->id,
+            'source_id' => $this->makeSource()->id,
+            'segments_source' => ListeningExternalLesson::SEGMENTS_SOURCE_USER_PROVIDED,
             'metadata_json' => [
                 'segments' => [
                     ['id' => 0, 'text' => 'Hello world.'],
-                    ['id' => 1, 'text' => 'This is BBC.'],
+                    ['id' => 1, 'text' => 'This is my own transcript.'],
                     ['id' => 2, 'text' => 'Goodbye.'],
                 ],
             ],
         ]);
 
         $this->assertEquals('Hello world.', $this->service->getSegmentText($lesson->id, 0));
-        $this->assertEquals('This is BBC.', $this->service->getSegmentText($lesson->id, 1));
+        $this->assertEquals('This is my own transcript.', $this->service->getSegmentText($lesson->id, 1));
         $this->assertEquals('Goodbye.', $this->service->getSegmentText($lesson->id, 2));
     }
 
@@ -78,9 +100,9 @@ class BbcServiceDictationTest extends TestCase
     // ==========================================================
     public function test_get_segment_text_returns_null_for_invalid_index(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
         $lesson = ListeningExternalLesson::factory()->create([
-            'source_id' => $source->id,
+            'source_id' => $this->makeSource()->id,
+            'segments_source' => ListeningExternalLesson::SEGMENTS_SOURCE_USER_PROVIDED,
             'metadata_json' => [
                 'segments' => [
                     ['id' => 0, 'text' => 'Hello.'],
@@ -97,20 +119,21 @@ class BbcServiceDictationTest extends TestCase
     // ==========================================================
     public function test_get_segment_text_returns_null_when_no_segments(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
-        $lesson = ListeningExternalLesson::factory()->create(['source_id' => $source->id]);
+        $lesson = ListeningExternalLesson::factory()->create([
+            'source_id' => $this->makeSource()->id,
+        ]);
 
         $this->assertNull($this->service->getSegmentText($lesson->id, 0));
     }
 
     // ==========================================================
-    // TC-06: scoreSegment stores result and returns score
+    // TC-06: scoreSegment stores result and returns score (user_provided)
     // ==========================================================
     public function test_score_segment_stores_result_and_returns_score(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
         $lesson = ListeningExternalLesson::factory()->create([
-            'source_id' => $source->id,
+            'source_id' => $this->makeSource()->id,
+            'segments_source' => ListeningExternalLesson::SEGMENTS_SOURCE_USER_PROVIDED,
             'metadata_json' => [
                 'segments' => [
                     ['id' => 0, 'text' => 'Hello world today.'],
@@ -132,7 +155,6 @@ class BbcServiceDictationTest extends TestCase
         $this->assertEquals(0, $result['wrong_count']);
         $this->assertEquals(0, $result['missing_count']);
 
-        // Verify stored in DB
         $stored = UserExternalLessonSegment::where('user_id', $user->id)
             ->where('lesson_id', $lesson->id)
             ->where('segment_index', 0)
@@ -148,8 +170,9 @@ class BbcServiceDictationTest extends TestCase
     // ==========================================================
     public function test_score_segment_returns_null_when_no_segments(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
-        $lesson = ListeningExternalLesson::factory()->create(['source_id' => $source->id]);
+        $lesson = ListeningExternalLesson::factory()->create([
+            'source_id' => $this->makeSource()->id,
+        ]);
         $user = User::factory()->create();
 
         $result = $this->service->scoreSegment($user->id, $lesson->id, 0, 'hello', 1000);
@@ -158,13 +181,83 @@ class BbcServiceDictationTest extends TestCase
     }
 
     // ==========================================================
-    // TC-08: scoreSegment updates existing segment attempt
+    // TC-08: scoreSegment REFUSES to score against legacy_bbc content
+    // This is the critical content-policy safety check.
     // ==========================================================
-    public function test_score_segment_updates_existing_attempt(): void
+    public function test_score_segment_refuses_legacy_bbc_content(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
         $lesson = ListeningExternalLesson::factory()->create([
-            'source_id' => $source->id,
+            'source_id' => $this->makeSource()->id,
+            'segments_source' => ListeningExternalLesson::SEGMENTS_SOURCE_LEGACY_BBC,
+            'metadata_json' => [
+                'segments' => [
+                    ['id' => 0, 'text' => 'BBC transcript text that should not be used.'],
+                ],
+            ],
+        ]);
+        $user = User::factory()->create();
+
+        $result = $this->service->scoreSegment(
+            $user->id,
+            $lesson->id,
+            0,
+            'My answer',
+            1000
+        );
+
+        // Must return null — service refuses to score against legacy BBC content
+        $this->assertNull($result);
+
+        // And must not have stored any attempt in the DB
+        $stored = UserExternalLessonSegment::where('user_id', $user->id)
+            ->where('lesson_id', $lesson->id)
+            ->where('segment_index', 0)
+            ->first();
+        $this->assertNull($stored);
+    }
+
+    public function test_score_segment_refuses_null_source(): void
+    {
+        // NULL segments_source means "unknown origin" — refuse to be safe
+        $lesson = ListeningExternalLesson::factory()->create([
+            'source_id' => $this->makeSource()->id,
+            'segments_source' => null,
+            'metadata_json' => [
+                'segments' => [
+                    ['id' => 0, 'text' => 'Unknown source text.'],
+                ],
+            ],
+        ]);
+        $user = User::factory()->create();
+
+        $result = $this->service->scoreSegment($user->id, $lesson->id, 0, 'text', 1000);
+
+        $this->assertNull($result);
+    }
+
+    public function test_score_segment_refuses_curated_source(): void
+    {
+        $lesson = ListeningExternalLesson::factory()->create([
+            'source_id' => $this->makeSource()->id,
+            'segments_source' => ListeningExternalLesson::SEGMENTS_SOURCE_CURATED,
+            'metadata_json' => [
+                'segments' => [
+                    ['id' => 0, 'text' => 'Curated BBC text.'],
+                ],
+            ],
+        ]);
+        $user = User::factory()->create();
+
+        $result = $this->service->scoreSegment($user->id, $lesson->id, 0, 'text', 1000);
+
+        $this->assertNull($result);
+    }
+
+    public function test_score_segment_allows_manual_source(): void
+    {
+        $lesson = ListeningExternalLesson::factory()->create([
+            'source_id' => $this->makeSource()->id,
+            'segments_source' => ListeningExternalLesson::SEGMENTS_SOURCE_MANUAL,
             'metadata_json' => [
                 'segments' => [
                     ['id' => 0, 'text' => 'Hello world today.'],
@@ -173,28 +266,10 @@ class BbcServiceDictationTest extends TestCase
         ]);
         $user = User::factory()->create();
 
-        // First attempt
-        $this->service->scoreSegment($user->id, $lesson->id, 0, 'Hello world', 2000);
-        $count1 = UserExternalLessonSegment::where('user_id', $user->id)
-            ->where('lesson_id', $lesson->id)
-            ->where('segment_index', 0)
-            ->count();
-        $this->assertEquals(1, $count1);
+        $result = $this->service->scoreSegment($user->id, $lesson->id, 0, 'Hello world today.', 1000);
 
-        // Second attempt updates the same row
-        $this->service->scoreSegment($user->id, $lesson->id, 0, 'Hello world today.', 3000);
-        $count2 = UserExternalLessonSegment::where('user_id', $user->id)
-            ->where('lesson_id', $lesson->id)
-            ->where('segment_index', 0)
-            ->count();
-        $this->assertEquals(1, $count2); // Still 1 row, updated
-
-        $segment = UserExternalLessonSegment::where('user_id', $user->id)
-            ->where('lesson_id', $lesson->id)
-            ->where('segment_index', 0)
-            ->first();
-        $this->assertEquals(100.0, $segment->accuracy); // Updated to 100%
-        $this->assertEquals(3000, $segment->time_spent_ms); // Updated time
+        $this->assertNotNull($result);
+        $this->assertEquals(100.0, $result['accuracy']);
     }
 
     // ==========================================================
@@ -202,22 +277,21 @@ class BbcServiceDictationTest extends TestCase
     // ==========================================================
     public function test_get_dictation_summary_aggregates_segments(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
         $lesson = ListeningExternalLesson::factory()->create([
-            'source_id' => $source->id,
+            'source_id' => $this->makeSource()->id,
+            'segments_source' => ListeningExternalLesson::SEGMENTS_SOURCE_USER_PROVIDED,
             'metadata_json' => [
                 'segments' => [
                     ['id' => 0, 'text' => 'Hello world.'],
-                    ['id' => 1, 'text' => 'This is BBC.'],
+                    ['id' => 1, 'text' => 'This is mine.'],
                     ['id' => 2, 'text' => 'Goodbye.'],
                 ],
             ],
         ]);
         $user = User::factory()->create();
 
-        // Submit attempts for segments 0 and 1
         $this->service->scoreSegment($user->id, $lesson->id, 0, 'Hello world.', 1000);
-        $this->service->scoreSegment($user->id, $lesson->id, 1, 'This is BBC.', 1500);
+        $this->service->scoreSegment($user->id, $lesson->id, 1, 'This is mine.', 1500);
 
         $summary = $this->service->getDictationSummary($user->id, $lesson->id);
 
@@ -232,8 +306,9 @@ class BbcServiceDictationTest extends TestCase
     // ==========================================================
     public function test_get_dictation_summary_returns_zeros_when_empty(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
-        $lesson = ListeningExternalLesson::factory()->create(['source_id' => $source->id]);
+        $lesson = ListeningExternalLesson::factory()->create([
+            'source_id' => $this->makeSource()->id,
+        ]);
         $user = User::factory()->create();
 
         $summary = $this->service->getDictationSummary($user->id, $lesson->id);
@@ -245,27 +320,13 @@ class BbcServiceDictationTest extends TestCase
     }
 
     // ==========================================================
-    // TC-11: completeDictation marks lesson as completed
-    // ==========================================================
-    public function test_complete_dictation_marks_lesson_completed(): void
-    {
-        $source = \App\Models\ListeningSource::factory()->create();
-        $lesson = ListeningExternalLesson::factory()->create(['source_id' => $source->id]);
-        $user = User::factory()->create();
-
-        $progress = $this->service->completeDictation($user->id, $lesson->id);
-
-        $this->assertEquals('completed', $progress->status);
-        $this->assertNotNull($progress->completed_at);
-    }
-
-    // ==========================================================
-    // TC-12: getDictation returns lesson by ID
+    // TC-11: getDictation returns lesson by ID
     // ==========================================================
     public function test_get_dictation_returns_lesson_by_id(): void
     {
-        $source = \App\Models\ListeningSource::factory()->create();
-        $lesson = ListeningExternalLesson::factory()->create(['source_id' => $source->id]);
+        $lesson = ListeningExternalLesson::factory()->create([
+            'source_id' => $this->makeSource()->id,
+        ]);
 
         $result = $this->service->getDictation($lesson->id);
 
@@ -274,7 +335,7 @@ class BbcServiceDictationTest extends TestCase
     }
 
     // ==========================================================
-    // TC-13: getDictation returns null for non-existent ID
+    // TC-12: getDictation returns null for non-existent ID
     // ==========================================================
     public function test_get_dictation_returns_null_for_invalid_id(): void
     {

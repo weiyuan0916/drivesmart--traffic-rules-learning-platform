@@ -25,6 +25,8 @@ const MOCK_SESSION = {
   ],
   audioUrl: 'https://www.bbc.com/audio/play/test123',
   episodeCode: 'ep-test-001',
+  segmentsSource: 'legacy_bbc' as const,
+  requiresUserTranscript: true,
 }
 
 const MOCK_ATTEMPT_0 = {

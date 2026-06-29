@@ -17,6 +17,7 @@ import { MicroSettings } from './components/MicroSettings'
 import { SegmentResults } from './components/SegmentResults'
 import { DictationInput } from './components/DictationInput'
 import { LessonResultsSummary } from './components/LessonResultsSummary'
+import { BbcDictationEmptyState } from './components/BbcDictationEmptyState'
 import { bbcApi } from '../../api/bbcApi'
 import { bbcDictationApi } from '../../api/bbcDictationApi'
 import { useBbcMicroDictationStore } from '../../stores/bbcMicroDictationStore'
@@ -245,6 +246,36 @@ export default function BbcMicroDictationPage({ topicSlug, lesson: lessonProp, o
   const currentSegment = session.segments[store.currentIndex]
   const isLastSegment = store.currentIndex >= session.segments.length - 1
   const attempts = Object.values(store.attempts)
+
+  // Compliance: .cursor/rules/bbc-feature.mdc
+  // If the lesson has no usable segments (legacy_bbc, or never had
+  // segments), render the user-provided dictation workspace instead
+  // of the BBC-content-driven flow.
+  if (!session.hasSegments || session.requiresUserTranscript) {
+    return (
+      <div className="max-w-2xl mx-auto p-4 sm:p-6 flex flex-col gap-4">
+        <MicroSEO
+          title={session.lesson.title}
+          slug={session.lesson.slug}
+          level={session.lesson.level}
+        />
+
+        {/* Top bar */}
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" onClick={goBack} className="gap-1.5">
+            <ArrowLeft size={16} />
+            Quay lại
+          </Button>
+        </div>
+
+        <BbcDictationEmptyState
+          lessonTitle={session.lesson.title}
+          lessonSourceUrl={session.lesson.sourceUrl}
+          segmentsSource={session.segmentsSource}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-4 sm:p-6 flex flex-col gap-4">

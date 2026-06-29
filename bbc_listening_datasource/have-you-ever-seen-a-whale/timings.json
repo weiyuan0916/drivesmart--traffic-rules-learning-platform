@@ -1,0 +1,169 @@
+{
+  "slug": "have-you-ever-seen-a-whale",
+  "intro_skip_sec": 5.0,
+  "source": "estimate",
+  "segments": [
+    {
+      "id": 567,
+      "position": 0,
+      "start": 5.0,
+      "end": 9.231
+    },
+    {
+      "id": 568,
+      "position": 1,
+      "start": 9.231,
+      "end": 11.231
+    },
+    {
+      "id": 569,
+      "position": 2,
+      "start": 11.231,
+      "end": 19.308
+    },
+    {
+      "id": 570,
+      "position": 3,
+      "start": 19.308,
+      "end": 30.462
+    },
+    {
+      "id": 571,
+      "position": 4,
+      "start": 30.462,
+      "end": 41.231
+    },
+    {
+      "id": 572,
+      "position": 5,
+      "start": 41.231,
+      "end": 60.077
+    },
+    {
+      "id": 573,
+      "position": 6,
+      "start": 60.077,
+      "end": 87.769
+    },
+    {
+      "id": 574,
+      "position": 7,
+      "start": 87.769,
+      "end": 95.461
+    },
+    {
+      "id": 575,
+      "position": 8,
+      "start": 95.461,
+      "end": 114.307
+    },
+    {
+      "id": 576,
+      "position": 9,
+      "start": 114.307,
+      "end": 121.23
+    },
+    {
+      "id": 577,
+      "position": 10,
+      "start": 121.23,
+      "end": 166.999
+    },
+    {
+      "id": 578,
+      "position": 11,
+      "start": 166.999,
+      "end": 186.614
+    },
+    {
+      "id": 579,
+      "position": 12,
+      "start": 186.614,
+      "end": 206.999
+    },
+    {
+      "id": 580,
+      "position": 13,
+      "start": 206.999,
+      "end": 229.307
+    },
+    {
+      "id": 581,
+      "position": 14,
+      "start": 229.307,
+      "end": 254.307
+    },
+    {
+      "id": 582,
+      "position": 15,
+      "start": 254.307,
+      "end": 263.538
+    },
+    {
+      "id": 583,
+      "position": 16,
+      "start": 263.538,
+      "end": 277.0
+    },
+    {
+      "id": 584,
+      "position": 17,
+      "start": 277.0,
+      "end": 297.385
+    },
+    {
+      "id": 585,
+      "position": 18,
+      "start": 297.385,
+      "end": 301.616
+    },
+    {
+      "id": 586,
+      "position": 19,
+      "start": 301.616,
+      "end": 305.078
+    },
+    {
+      "id": 587,
+      "position": 20,
+      "start": 305.078,
+      "end": 310.847
+    },
+    {
+      "id": 588,
+      "position": 21,
+      "start": 310.847,
+      "end": 319.309
+    },
+    {
+      "id": 589,
+      "position": 22,
+      "start": 319.309,
+      "end": 324.694
+    },
+    {
+      "id": 590,
+      "position": 23,
+      "start": 324.694,
+      "end": 329.309
+    },
+    {
+      "id": 591,
+      "position": 24,
+      "start": 329.309,
+      "end": 333.54
+    },
+    {
+      "id": 592,
+      "position": 25,
+      "start": 333.54,
+      "end": 355.463
+    },
+    {
+      "id": 593,
+      "position": 26,
+      "start": 355.463,
+      "end": 357.463
+    }
+  ]
+}

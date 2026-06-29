@@ -1,0 +1,250 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 11.98,
+    "duration": 11.98,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Georgie.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 11.98,
+    "end": 15.34,
+    "duration": 3.36,
+    "text": "And I'm Phil. Did you have any breakfast today Georgie?",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 15.34,
+    "end": 18.54,
+    "duration": 3.2,
+    "text": "Or did you skip it? I did have some breakfast.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 18.54,
+    "end": 23.82,
+    "duration": 5.28,
+    "text": "On the way to the office I got myself a pastry and a coffee. What about you?",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 23.82,
+    "end": 29.98,
+    "duration": 6.16,
+    "text": "I had a big bowl of porridge but it was at six o'clock this morning so I'm hungry again now.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 30.62,
+    "end": 35.58,
+    "duration": 4.96,
+    "text": "And you might soon be hungry as well because we're going to talk about breakfast.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 36.14,
+    "end": 48.22,
+    "duration": 12.08,
+    "text": "How important is it? Let's start by hearing from Professor Alexandra Johnston, a nutrition scientist who spoke to Ruth Alexander, host of BBC World Service programme The Food Jane.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 49.18,
+    "end": 54.54,
+    "duration": 5.36,
+    "text": "I am supporting the meme breakfast like a king and down like a pauper.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 54.54,
+    "end": 57.74,
+    "duration": 3.2,
+    "text": "For you then breakfast is the most important meal of the day.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 58.3,
+    "end": 67.9,
+    "duration": 9.6,
+    "text": "I agree. So it's really important particularly for people who are trying to maintain a healthy weight and people who are trying to lose weight.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 67.9,
+    "end": 72.78,
+    "duration": 4.88,
+    "text": "Alexandra says that you should breakfast like a king and dine like a pauper.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 73.34,
+    "end": 77.1,
+    "duration": 3.76,
+    "text": "pauper is an old fashioned word for a very poor person.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 77.1,
+    "end": 81.18,
+    "duration": 4.08,
+    "text": "The expression means have a big breakfast and a small dinner.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 81.18,
+    "end": 86.54,
+    "duration": 5.36,
+    "text": "We're going to find out some of the reasons that Alexandra and other experts recommend doing this.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 86.54,
+    "end": 90.38,
+    "duration": 3.84,
+    "text": "And as usual we'll learn some useful new words and phrases.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 90.38,
+    "end": 98.06,
+    "duration": 7.68,
+    "text": "And remember you'll find all the vocabulary and a quiz on our website bbclearningenglish.com.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 98.06,
+    "end": 101.58,
+    "duration": 3.52,
+    "text": "Okay but first I have a question for you Phil.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 101.58,
+    "end": 107.66,
+    "duration": 6.08,
+    "text": "According to a recent survey which of the following is the most popular breakfast in the UK?",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 107.66,
+    "end": 113.02,
+    "duration": 5.36,
+    "text": "Is it A, X, B, toast or C serial?",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 113.02,
+    "end": 118.06,
+    "duration": 5.04,
+    "text": "Well I think people like to keep it simple so I'm going to say toast.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 118.06,
+    "end": 121.58,
+    "duration": 3.52,
+    "text": "Okay well we'll find out the answer later in the programme.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 121.58,
+    "end": 125.66,
+    "duration": 4.08,
+    "text": "Let's hear some reasons for why we should breakfast like a king or queen.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 125.66,
+    "end": 135.34,
+    "duration": 9.68,
+    "text": "Courtney Peterson who researchers eating behaviours explains how the time of day affects how our bodies process food on BBC World's service programme the food chain.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 136.21,
+    "end": 186.85,
+    "duration": 50.64,
+    "text": "And so if you can eat a large breakfast in the morning and or I would even say a large lunch in the morning your body's going to be better at metabolising that food. And what that means is your body's going to actually your blood sugar levels won't spike as high. You'll you might burn slightly more fat you might burn slightly more calories from eating earlier in the day. Whereas if you had if you eat most of your food later in the day your metabolism's actually slower later in the day so for instance if you ate the same I don't know bowl of ice cream in the morning the afternoon in the evening your blood sugar levels will spike significantly higher in the afternoon in the evening. We heard the noun metabolism this is a word that refers to the chemical processes in your body and we most often use it to talk about those that convert food into energy. And we also heard the verb form metabolise.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 187.33,
+    "end": 192.93,
+    "duration": 5.6,
+    "text": "Courtney talked about blood sugar levels spiking. A spike is a sharp pointed shape.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 192.93,
+    "end": 197.25,
+    "duration": 4.32,
+    "text": "If you see it on a line graph it means that something has increased very rapidly.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 197.25,
+    "end": 202.53,
+    "duration": 5.28,
+    "text": "We often use the noun spike to mean a sudden increase in a value that is being measured.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 202.53,
+    "end": 267.47,
+    "duration": 64.94,
+    "text": "The verb spike means to suddenly increase. We've heard that eating earlier in the day can be healthier for us. Now people often don't eat breakfast sometimes because they don't have time sometimes because they're trying to save money. Let's hear again from Professor Alexandra Johnston talking to BBC World Services the food chain. Now breakfast skipping is interesting because my own work would tend to suggest and that sort of observational, large-scale epidemiological studies would also support this, that that people who have a regular breakfast are actually leaner and my own work would tend to suggest that having your largest meal of the day in the morning period gives you a much better appetite control which then means it's much easier control food intake later in the day. Alexandra starts by mentioning breakfast skipping.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 267.47,
+    "end": 342.43,
+    "duration": 74.96,
+    "text": "If you skip something then you don't do it. Bad students might skip lessons. They don't go to them. If you skip a meal it means that you don't eat it. We also heard that people who have a regular breakfast are leaner. If someone is lean then they're not fat. And one of the reasons given why people might be leaner is that they have better appetite control. Appetite control is where your brain decides how much you should eat. Thanks Georgie. Now I think it's time that we heard the answer to your question. Yes, it is. Okay, I asked, according to a recent survey what is the most popular breakfast in the UK? And I said toast. Which was the most popular in London but the most popular in the country as a whole was cereal and that's according to a survey by a cereal manufacturer. So I'm afraid you got it wrong. Okay, let's recap the vocabulary we've learned starting with pauper which is an old fashioned word for a very poor person. When we're talking about data it spikes when it increases suddenly. Metabolism refers to the chemical processes inside your body especially those which process food. If you skip something you miss it you don't do it.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 342.43,
+    "end": 362.51,
+    "duration": 20.08,
+    "text": "If someone is lean then they are not fat. And finally appetite control is how your brain decides how much you should eat. Once again, our six minutes are up but why not head over to our website BBCLearningEnglish.com to try the quiz and worksheet for this episode. See you again soon.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 362.51,
+    "end": 369.74,
+    "duration": 7.23,
+    "text": "Goodbye. Bye.",
+    "file": "audio_clips/30.mp3"
+  }
+]

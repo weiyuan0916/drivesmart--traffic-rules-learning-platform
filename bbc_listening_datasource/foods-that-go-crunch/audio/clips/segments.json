@@ -1,0 +1,498 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 13.79,
+    "duration": 13.79,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Georgie and I'm Beth.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 13.79,
+    "end": 26.59,
+    "duration": 12.8,
+    "text": "Georgie, what do apples, carrots and celery have in common with insects like beetles, crickets and grasshoppers? That's a tough one, Beth. I'm going to say I can fit them all in my backpack.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 26.59,
+    "end": 32.59,
+    "duration": 6.0,
+    "text": "Okay, well the answer is actually, there are all examples of foods that crunch.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 32.59,
+    "end": 42.59,
+    "duration": 10.0,
+    "text": "There's something very satisfying about the crunch when you bite into a fresh apple, a stick of celery or even a roasted beetle. Yes, that's right.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 42.59,
+    "end": 46.59,
+    "duration": 4.0,
+    "text": "In some parts of the world, edible insects are crunched too.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 46.59,
+    "end": 53.59,
+    "duration": 7.0,
+    "text": "Scientists Daniel Reid has been exploring our love of crunchy food for BBC World Service programme, the Food Chain.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 53.59,
+    "end": 58.59,
+    "duration": 5.0,
+    "text": "A crunch of a fresh apple is nothing better in the world, honestly to me.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 58.59,
+    "end": 64.59,
+    "duration": 6.0,
+    "text": "I grew up as a small child in an apple orchard and so we could pick them fresh off the tree.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 64.59,
+    "end": 71.59,
+    "duration": 7.0,
+    "text": "And so I have a very nuanced understanding of the different crunches of apples and the different types of apples.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 71.59,
+    "end": 75.59,
+    "duration": 4.0,
+    "text": "And so yes, I really find that to be one of life's real true pleasures.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 75.59,
+    "end": 80.59,
+    "duration": 5.0,
+    "text": "Danielle says there's nothing better in the world than the crunch of a fresh apple.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 80.59,
+    "end": 85.59,
+    "duration": 5.0,
+    "text": "She uses the phrase, nothing better in the world to emphasise how much she loves it.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 85.59,
+    "end": 90.59,
+    "duration": 5.0,
+    "text": "Danielle thinks eating crunchy apples is one of life's true pleasures.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 90.59,
+    "end": 95.59,
+    "duration": 5.0,
+    "text": "An experience she finds enjoyable. But why are we so attracted to crunchy food?",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 95.59,
+    "end": 104.59,
+    "duration": 9.0,
+    "text": "That's what we'll be investigating in this programme, along with some useful new vocabulary, all of which you can find on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 104.59,
+    "end": 107.59,
+    "duration": 3.0,
+    "text": "But first, I have a question for you, Georgie.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 107.59,
+    "end": 111.59,
+    "duration": 4.0,
+    "text": "Like Danielle, many British people enjoy the crunch of an apple.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 111.59,
+    "end": 118.59,
+    "duration": 7.0,
+    "text": "But according to a 2024 you give study, which is the most popular type of apple in the UK?",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 118.59,
+    "end": 124.59,
+    "duration": 6.0,
+    "text": "Is it A, pink lady, B, gala or C, red delicious?",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 124.59,
+    "end": 128.59,
+    "duration": 4.0,
+    "text": "I'm going to say A, pink lady because that's my favourite.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 128.59,
+    "end": 130.59,
+    "duration": 2.0,
+    "text": "Ah, and me.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 130.59,
+    "end": 133.59,
+    "duration": 3.0,
+    "text": "Okay, we'll find out the answer later in the programme.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 133.59,
+    "end": 140.66,
+    "duration": 7.07,
+    "text": "As well as the satisfying sound of a loud crunch, the texture of crunchy food is important too.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 140.66,
+    "end": 147.66,
+    "duration": 7.0,
+    "text": "It tells our bodies to get ready for the raw and rough fibre needed to develop our chewing muscles and teeth.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 147.66,
+    "end": 155.78,
+    "duration": 8.12,
+    "text": "And there are other ways in which crunchy food keeps us healthy, as Danielle explains to BBC World Services the food chain.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 155.78,
+    "end": 166.78,
+    "duration": 11.0,
+    "text": "The first bite of crunch is the most essential bite, because really when we put something in our mouth, we don't think about it this way, but we have to decide whether we're going to swallow, right?",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 166.78,
+    "end": 169.78,
+    "duration": 3.0,
+    "text": "So that first bite gives us a ton of information.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 169.78,
+    "end": 176.78,
+    "duration": 7.0,
+    "text": "I mean, everybody I think has had the experience of biting into a mushy apple and saying, no, thank you.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 176.78,
+    "end": 182.88,
+    "duration": 6.1,
+    "text": "So the crunch is telling us about the quality of food, specifically the high quality of the food.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 182.88,
+    "end": 184.88,
+    "duration": 2.0,
+    "text": "Yes, or not.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 184.88,
+    "end": 193.88,
+    "duration": 9.0,
+    "text": "You know, we've also had cases where we've bitten into something that has a crunch and found an egg shell in our scrambled eggs. That's no good.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 193.88,
+    "end": 197.88,
+    "duration": 4.0,
+    "text": "When we put food in our mouths, we need to know it's safe.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 197.88,
+    "end": 201.88,
+    "duration": 4.0,
+    "text": "A loud crunch means this food is fresh and okay to eat.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 201.88,
+    "end": 207.88,
+    "duration": 6.0,
+    "text": "The crunching sound gives us a ton of information, meaning a lot of information about the food's freshness.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 207.88,
+    "end": 216.88,
+    "duration": 9.0,
+    "text": "Nobody likes biting into an apple which is mushy, an adjective meaning soft, because we understand that that means it's bad to eat.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 216.88,
+    "end": 222.88,
+    "duration": 6.0,
+    "text": "So crunchy food sounds healthy, feels good, and tells our body it's safe to eat.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 222.88,
+    "end": 229.88,
+    "duration": 7.0,
+    "text": "No wonder that when astronauts on the International Space Station were asked what they missed most, crunchy food topped their list.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 229.88,
+    "end": 231.88,
+    "duration": 2.0,
+    "text": "But apples and carrots are one thing, Beth.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 231.88,
+    "end": 234.88,
+    "duration": 3.0,
+    "text": "It's something else to crunch down on insects, isn't it?",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 234.88,
+    "end": 250.88,
+    "duration": 16.0,
+    "text": "Well, not in some countries, Georgie, a Zimbabwe for one, where celebrity chef Delcy Medecua uses the crunchy texture of beetles, termites and locusts to convince people to try insect protein as a cheap alternative to meat.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 250.88,
+    "end": 261.88,
+    "duration": 11.0,
+    "text": "And if you think you could never eat insects, listen as Delcy explains how she changed her mind to Ruth Alexander, presenter of BBC World Service Program, The Food Chain.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 261.88,
+    "end": 264.88,
+    "duration": 3.0,
+    "text": "So, are you an insect converter?",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 264.88,
+    "end": 266.88,
+    "duration": 2.0,
+    "text": "Well, no I am.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 266.88,
+    "end": 269.88,
+    "duration": 3.0,
+    "text": "I love them as small snacks just rusted with salt.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 270.88,
+    "end": 276.88,
+    "duration": 6.0,
+    "text": "Or what I did with most of them is turn them into flowers and meals so I make them into cakes biscuits.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 276.88,
+    "end": 283.88,
+    "duration": 7.0,
+    "text": "I grind them together with chicken or beef, and then turn them into beautiful sausages, and then that's how I love them.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 283.88,
+    "end": 295.88,
+    "duration": 12.0,
+    "text": "Ruth asked Delcy if she's an insect convert, a person who has changed their ideas all way of living, and Delcy replies, yes, she didn't before, but now she loves eating roast insects as snacks.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 295.88,
+    "end": 298.88,
+    "duration": 3.0,
+    "text": "Small bits of food you eat between meals.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 298.88,
+    "end": 302.88,
+    "duration": 4.0,
+    "text": "They do sound crunchy, but I think I'll stick to apples.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 302.88,
+    "end": 307.88,
+    "duration": 5.0,
+    "text": "Thanks, Georgie. Well, speaking of apples, it's time you revealed the answer to your question.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 307.88,
+    "end": 314.88,
+    "duration": 7.0,
+    "text": "Yes, I asked you, which was the most popular apple, according to a survey of people in the UK?",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 314.88,
+    "end": 316.88,
+    "duration": 2.0,
+    "text": "I said pink lady, didn't I?",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 316.88,
+    "end": 319.88,
+    "duration": 3.0,
+    "text": "You did. And it was the correct answer, well done.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 319.88,
+    "end": 324.88,
+    "duration": 5.0,
+    "text": "Okay, let's recap the vocabulary we've learned starting with two positive phrases.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 324.88,
+    "end": 336.88,
+    "duration": 12.0,
+    "text": "Nothing better in the world, used to emphasise how much someone enjoys something, and one of life's true pleasures, which describes a particular experience or activity that someone finds enjoyable.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 336.88,
+    "end": 339.88,
+    "duration": 3.0,
+    "text": "A turn of something means a lot of something.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 339.88,
+    "end": 344.88,
+    "duration": 5.0,
+    "text": "If you describe food as mushy, you mean it's soft, the opposite of crunchy.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 344.88,
+    "end": 348.88,
+    "duration": 4.0,
+    "text": "A convert is a person who has changed their beliefs all way of living.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 348.88,
+    "end": 354.88,
+    "duration": 6.0,
+    "text": "And finally, a snack is a small bit of food you eat between meals, for example, crisps or a chocolate bar.",
+    "file": "audio_clips/58.mp3"
+  },
+  {
+    "id": 59,
+    "start": 354.88,
+    "end": 356.88,
+    "duration": 2.0,
+    "text": "And once again, our six minutes are up.",
+    "file": "audio_clips/59.mp3"
+  },
+  {
+    "id": 60,
+    "start": 356.88,
+    "end": 364.88,
+    "duration": 8.0,
+    "text": "But if you're ready for more, just head over to our website, BBCLearningEnglish.com for a quiz and worksheet for this programme.",
+    "file": "audio_clips/60.mp3"
+  },
+  {
+    "id": 61,
+    "start": 364.88,
+    "end": 366.88,
+    "duration": 2.0,
+    "text": "See you there soon, bye, bye!",
+    "file": "audio_clips/61.mp3"
+  }
+]

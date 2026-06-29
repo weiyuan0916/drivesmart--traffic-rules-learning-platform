@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\BbcService;
+use App\Services\BbcCatalogService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -14,7 +14,7 @@ class CrawlBbcLessons extends Command
 
     protected $description = 'Crawl lesson metadata from BBC Learning English';
 
-    private BbcService $bbcService;
+    private BbcCatalogService $catalog;
 
     private array $levelMap = [
         'A1' => 'beginner',
@@ -25,17 +25,17 @@ class CrawlBbcLessons extends Command
         'C2' => 'advanced',
     ];
 
-    public function __construct(BbcService $bbcService)
+    public function __construct(BbcCatalogService $catalog)
     {
         parent::__construct();
-        $this->bbcService = $bbcService;
+        $this->catalog = $catalog;
     }
 
     public function handle(): int
     {
-        $this->info('Starting BBC Learning English crawl...');
+        $this->info('Starting BBC Learning English metadata crawl...');
 
-        $this->bbcService->ensureSourceExists();
+        $this->catalog->ensureSourceExists();
         $limit = (int) $this->option('limit');
 
         $lessons = $this->fetchLessonList();
@@ -55,7 +55,11 @@ class CrawlBbcLessons extends Command
 
         foreach ($lessons['items'] as $lessonData) {
             try {
-                $existing = $this->bbcService->upsertLesson($lessonData);
+                // Compliance: never set segments_source = 'legacy_bbc' from this command.
+                // This crawler only stores public metadata, so segments_source
+                // remains NULL by default. Only the deprecated CrawlBbc6MinLessons
+                // command could set legacy_bbc, and it is now disabled.
+                $existing = $this->catalog->upsertLesson($lessonData);
 
                 if ($existing->wasRecentlyCreated) {
                     $created++;

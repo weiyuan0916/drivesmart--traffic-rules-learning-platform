@@ -28,7 +28,7 @@
   --color-brown: #B15224;
   --color-cream: #F0E7DF;
   --color-muted: #6B7280;
-  --color-muted-foreground: #6B7280;
+  --color-muted-foreground: #9CA3AF;
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
@@ -65,7 +65,7 @@
     --brown: #B15224;
     --cream: #F0E7DF;
     --muted: #6B7280;
-    --muted-foreground: #6B7280;
+    --muted-foreground: #9CA3AF;
   }
 
   .dark {
@@ -73,9 +73,11 @@
     --bg-secondary: #16181F;
     --bg-tertiary: #1C1F28;
     --bg-hover: #242730;
-    --text-primary: #F3F4F6;
+    --text-primary: #FFFFFF;
     --text-secondary: #9CA3AF;
-    --text-muted: #6B7280;
+    --text-muted: #9CA3AF;
+    --text-muted-foreground: #fff;
+    --muted-foreground: #fff;
     --border: #2D303B;
     --border-strong: #3D424F;
 
@@ -93,7 +95,7 @@
     --brown: #C4734A;
     --cream: #1C1F28;
     --muted: #9CA3AF;
-    --muted-foreground: #9CA3AF;
+    --muted-foreground: #fff;
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -225,6 +227,13 @@
 @keyframes fadeInRight {
   from { opacity: 0; transform: translateX(20px); }
   to { opacity: 1; transform: translateX(0); }
+}
+
+/* Dark-mode background pan animation for BBC pages (Suha template pattern) */
+@keyframes darkModeBGMove {
+  0%   { transform: scale(1)   translate(0, 0); }
+  50%  { transform: scale(1.1) translate(-2%, -2%); }
+  100% { transform: scale(1)   translate(0, 0); }
 }
 
 /* Global scrollbar hide */
@@ -412,10 +421,393 @@
     --lm-surface: #16181F;
     --lm-surface-raised: #1C1F28;
     --lm-border: #2D303B;
-    --lm-text-primary: #F3F4F6;
-    --lm-text-secondary: #9CA3AF;
-    --lm-text-muted: #6B7280;
+    --lm-text-primary: #FFFFFF;
+    --lm-text-secondary: #E5E7EB;
+    --lm-text-muted: #9CA3AF;
   }
+}
+
+/* ============================================================
+   BBC PRACTICE PAGE — transparent bg inside dark scope
+   Lets the animated background show through
+   ============================================================ */
+.bbc-dark-scope .min-h-screen,
+.bbc-dark-scope [class*="min-h-screen"] {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+.bbc-dark-scope .bg-\\[var\\(--bg-primary\\)\\] {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* BBC Practice page text colors in dark mode */
+.bbc-dark-scope .text-\\[\\#1F2937\\] {
+  color: #FFFFFF !important;
+}
+.bbc-dark-scope .text-\\[\\#6B7280\\] {
+  color: #B0B8C4 !important;
+}
+.bbc-dark-scope .text-\\[\\#9CA3AF\\] {
+  color: #9CA3AF !important;
+}
+.bbc-dark-scope .bg-white {
+  background-color: #1C1F28 !important;
+  background: #1C1F28 !important;
+}
+
+/* BBC dark scope shadow overrides */
+.bbc-dark-scope .shadow-\[\#4F46E5\]\/5,
+.bbc-dark-scope .shadow-lg {
+  --tw-shadow-color: #1C1F28 !important;
+}
+
+/* BBC dark scope badge colors */
+.bbc-dark-scope .bg-amber-50 {
+  background-color: #3D2A1A !important;
+}
+.bbc-dark-scope .text-amber-700 {
+  color: #FCD34D !important;
+}
+.bbc-dark-scope .border-amber-200 {
+  border-color: #78350F !important;
+}
+.bbc-dark-scope .bg-green-50 {
+  background-color: #052e16 !important;
+}
+.bbc-dark-scope .text-green-700 {
+  color: #86efac !important;
+}
+.bbc-dark-scope .border-green-200 {
+  border-color: #14532d !important;
+}
+.bbc-dark-scope .bg-red-50 {
+  background-color: #450a0a !important;
+}
+.bbc-dark-scope .text-red-700 {
+  color: #fca5a5 !important;
+}
+.bbc-dark-scope .border-red-200 {
+  border-color: #7f1d1d !important;
+}
+.bbc-dark-scope .bg-blue-50 {
+  background-color: #172554 !important;
+}
+.bbc-dark-scope .text-blue-700 {
+  color: #93c5fd !important;
+}
+.bbc-dark-scope .border-blue-200 {
+  border-color: #1e3a8a !important;
+}
+.bbc-dark-scope .bg-gray-100 {
+  background-color: #374151 !important;
+}
+.bbc-dark-scope .text-gray-600 {
+  color: #D1D5DB !important;
+}
+.bbc-dark-scope .border-gray-200 {
+  border-color: #4B5563 !important;
+}
+.bbc-dark-scope .bg-\\[\\#FAFAFA\\],
+.bbc-dark-scope .bg-\\[\\#F9FAFB\\] {
+  background-color: #16181F !important;
+}
+.bbc-dark-scope .border-\\[\\#E5E7EB\\] {
+  border-color: #2D303B !important;
+}
+.bbc-dark-scope .placeholder\\:text-\\[\\#9CA3AF\\]::placeholder {
+  color: #9CA3AF !important;
+}
+
+/* BBC dark scope text-primary should be white */
+.bbc-dark-scope .text-text-primary {
+  color: #FFFFFF !important;
+}
+.bbc-dark-scope .text-\[var\(--text-primary\)\] {
+  color: #FFFFFF !important;
+}
+
+/* BBC dark scope p and span should be white */
+.bbc-dark-scope p,
+.bbc-dark-scope span {
+  color: #FFFFFF !important;
+}
+.bbc-dark-scope .text-text-secondary,
+.bbc-dark-scope .text-[var(--text-secondary)] {
+  color: #B0B8C4 !important;
+}
+
+/* ============================================================
+   VINALISTEN DARK SCOPE — Premium dark mode overrides
+   Used by VinaListen lesson pages in dark mode
+   ============================================================ */
+
+.vinalisten-dark-scope {
+  /* Card backgrounds */
+  --vinalisten-bg: #09090B;
+  --vinalisten-surface: #111827;
+  --vinalisten-card: #18181B;
+  --vinalisten-border: #2D303B;
+  --vinalisten-text: #F8FAFC;
+  --vinalisten-text-secondary: #B0B8C4;
+  --vinalisten-primary: #5B5BF6;
+}
+
+.vinalisten-dark-scope .bg-white,
+.vinalisten-dark-scope .bg-\[\#FFFFFF\] {
+  background-color: #18181B !important;
+}
+
+.vinalisten-dark-scope .bg-\[\#FAFAFA\],
+.vinalisten-dark-scope .bg-\[\#F9FAFB\],
+.vinalisten-dark-scope .bg-gray-50 {
+  background-color: #111827 !important;
+}
+
+.vinalisten-dark-scope .bg-\[\#F3F4F6\],
+.vinalisten-dark-scope .bg-gray-100 {
+  background-color: #1F2937 !important;
+}
+
+.vinalisten-dark-scope .bg-\[\#E5E7EB\],
+.vinalisten-dark-scope .bg-gray-200 {
+  background-color: #374151 !important;
+}
+
+.vinalisten-dark-scope .bg-\[\#ECFDF5\],
+.vinalisten-dark-scope .bg-green-50 {
+  background-color: #052e16 !important;
+}
+
+.vinalisten-dark-scope .bg-\[\#FEF3C7\],
+.vinalisten-dark-scope .bg-amber-50 {
+  background-color: #451a03 !important;
+}
+
+.vinalisten-dark-scope .bg-\[\#FEE2E2\],
+.vinalisten-dark-scope .bg-red-50 {
+  background-color: #450a0a !important;
+}
+
+.vinalisten-dark-scope .bg-\[\#EEF2FF\],
+.vinalisten-dark-scope .bg-indigo-50 {
+  background-color: #1e1b4b !important;
+}
+
+/* Border colors */
+.vinalisten-dark-scope .border-\[\#E5E7EB\],
+.vinalisten-dark-scope .border-gray-200 {
+  border-color: #374151 !important;
+}
+
+.vinalisten-dark-scope .border-\[\#D1D5DB\],
+.vinalisten-dark-scope .border-gray-300 {
+  border-color: #4B5563 !important;
+}
+
+.vinalisten-dark-scope .border-\[\#22C55E\],
+.vinalisten-dark-scope .border-green-500 {
+  border-color: #22C55E !important;
+}
+
+.vinalisten-dark-scope .border-\[\#FF3257\],
+.vinalisten-dark-scope .border-red-500 {
+  border-color: #EF4444 !important;
+}
+
+.vinalisten-dark-scope .border-\[\#FFAB00\],
+.vinalisten-dark-scope .border-amber-500 {
+  border-color: #F59E0B !important;
+}
+
+.vinalisten-dark-scope .border-\[\#4F46E5\],
+.vinalisten-dark-scope .border-indigo-600 {
+  border-color: #5B5BF6 !important;
+}
+
+/* Text colors */
+.vinalisten-dark-scope .text-\[\#111827\],
+.vinalisten-dark-scope .text-gray-900 {
+  color: #F8FAFC !important;
+}
+
+.vinalisten-dark-scope .text-\[\#1F2937\],
+.vinalisten-dark-scope .text-gray-800 {
+  color: #F3F4F6 !important;
+}
+
+.vinalisten-dark-scope .text-\[\#374151\],
+.vinalisten-dark-scope .text-gray-700 {
+  color: #D1D5DB !important;
+}
+
+.vinalisten-dark-scope .text-\[\#6B7280\],
+.vinalisten-dark-scope .text-gray-500 {
+  color: #9CA3AF !important;
+}
+
+.vinalisten-dark-scope .text-\[\#9CA3AF\],
+.vinalisten-dark-scope .text-gray-400 {
+  color: #6B7280 !important;
+}
+
+.vinalisten-dark-scope .text-\[\#22C55E\],
+.vinalisten-dark-scope .text-green-600 {
+  color: #22C55E !important;
+}
+
+.vinalisten-dark-scope .text-\[\#10B981\],
+.vinalisten-dark-scope .text-green-500 {
+  color: #34D399 !important;
+}
+
+.vinalisten-dark-scope .text-\[\#FF3257\],
+.vinalisten-dark-scope .text-red-600 {
+  color: #EF4444 !important;
+}
+
+.vinalisten-dark-scope .text-\[\#EF4444\],
+.vinalisten-dark-scope .text-red-500 {
+  color: #F87171 !important;
+}
+
+.vinalisten-dark-scope .text-\[\#FFAB00\],
+.vinalisten-dark-scope .text-amber-600 {
+  color: #F59E0B !important;
+}
+
+.vinalisten-dark-scope .text-\[\#F59E0B\],
+.vinalisten-dark-scope .text-amber-500 {
+  color: #FBBF24 !important;
+}
+
+.vinalisten-dark-scope .text-\[\#4F46E5\],
+.vinalisten-dark-scope .text-indigo-600 {
+  color: #5B5BF6 !important;
+}
+
+.vinalisten-dark-scope .text-\[\#7C3AED\],
+.vinalisten-dark-scope .text-violet-600 {
+  color: #818CF8 !important;
+}
+
+.vinalisten-dark-scope .text-\[\#059669\],
+.vinalisten-dark-scope .text-emerald-600 {
+  color: #10B981 !important;
+}
+
+/* Green badge colors */
+.vinalisten-dark-scope .bg-green-100 {
+  background-color: #052e16 !important;
+}
+
+.vinalisten-dark-scope .text-green-700 {
+  color: #86efac !important;
+}
+
+.vinalisten-dark-scope .text-green-800 {
+  color: #6EE7B7 !important;
+}
+
+.vinalisten-dark-scope .border-green-200 {
+  border-color: #14532d !important;
+}
+
+/* Amber badge colors */
+.vinalisten-dark-scope .bg-amber-100 {
+  background-color: #451a03 !important;
+}
+
+.vinalisten-dark-scope .text-amber-700 {
+  color: #FCD34D !important;
+}
+
+.vinalisten-dark-scope .text-amber-800 {
+  color: #FBBF24 !important;
+}
+
+.vinalisten-dark-scope .border-amber-200 {
+  border-color: #78350F !important;
+}
+
+/* Red badge colors */
+.vinalisten-dark-scope .bg-red-100 {
+  background-color: #450a0a !important;
+}
+
+.vinalisten-dark-scope .text-red-700 {
+  color: #FCA5A5 !important;
+}
+
+.vinalisten-dark-scope .text-red-800 {
+  color: #F87171 !important;
+}
+
+.vinalisten-dark-scope .border-red-200 {
+  border-color: #7f1d1d !important;
+}
+
+/* Indigo badge colors */
+.vinalisten-dark-scope .bg-indigo-100 {
+  background-color: #1e1b4b !important;
+}
+
+.vinalisten-dark-scope .text-indigo-700 {
+  color: #A5B4FC !important;
+}
+
+.vinalisten-dark-scope .text-indigo-800 {
+  color: #C7D2FE !important;
+}
+
+.vinalisten-dark-scope .border-indigo-200 {
+  border-color: #3730A3 !important;
+}
+
+/* Placeholder */
+.vinalisten-dark-scope .placeholder\:text-\[\#9CA3AF\]::placeholder {
+  color: #6B7280 !important;
+}
+
+.vinalisten-dark-scope input::placeholder,
+.vinalisten-dark-scope textarea::placeholder {
+  color: #6B7280 !important;
+}
+
+/* Focus ring colors */
+.vinalisten-dark-scope .focus-visible\:ring-\[\#4F46E5\]:focus-visible {
+  --tw-ring-color: #5B5BF6 !important;
+}
+
+/* Shadow colors */
+.vinalisten-dark-scope .shadow-\[\#4F46E5\]\/5,
+.vinalisten-dark-scope .shadow-\[\#4F46E5\]\/10,
+.vinalisten-dark-scope .shadow-\[\#4F46E5\]\/20 {
+  --tw-shadow-color: #1e1b4b !important;
+}
+
+.vinalisten-dark-scope .shadow-lg {
+  --tw-shadow-color: #000 !important;
+}
+
+/* Scrollbar dark */
+.vinalisten-dark-scope ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.vinalisten-dark-scope ::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+.vinalisten-dark-scope ::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 3px;
+}
+
+.vinalisten-dark-scope ::-webkit-scrollbar-thumb:hover {
+  background: #4B5563;
 }
 
 /* ============================================================
@@ -453,7 +845,7 @@
     --brown: #B15224;
     --cream: #F0E7DF;
     --muted: #6B7280;
-    --muted-foreground: #6B7280;
+    --muted-foreground: #fff;
 
     /* Border radius */
     --radius-sm: 6px;

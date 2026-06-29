@@ -1,0 +1,337 @@
+[
+  {
+    "status": "success",
+    "audio": "bbc_listening/_qa_slice.mp3",
+    "segments": 1,
+    "output": "bbc_listening/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/are-we-too-fixated-on-protein/audio/are-we-too-fixated-on-protein.mp3",
+    "segments": 29,
+    "output": "bbc_listening/are-we-too-fixated-on-protein/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/are-plant-based-substitutes-healthier-than-meat/audio/are-plant-based-substitutes-healthier-than-meat.mp3",
+    "segments": 66,
+    "output": "bbc_listening/are-plant-based-substitutes-healthier-than-meat/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/can-climate-change-affect-our-mental-health/audio/can-climate-change-affect-our-mental-health.mp3",
+    "segments": 13,
+    "output": "bbc_listening/can-climate-change-affect-our-mental-health/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/are-you-flourishing/audio/are-you-flourishing.mp3",
+    "segments": 38,
+    "output": "bbc_listening/are-you-flourishing/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/did-a-civilisation-exist-on-earth-before-humans-2/audio/did-a-civilisation-exist-on-earth-before-humans.mp3",
+    "segments": 59,
+    "output": "bbc_listening/did-a-civilisation-exist-on-earth-before-humans-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/did-a-civilisation-exist-on-earth-before-humans-3/audio/did-a-civilisation-exist-on-earth-before-humans.mp3",
+    "segments": 59,
+    "output": "bbc_listening/did-a-civilisation-exist-on-earth-before-humans-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/did-a-civilisation-exist-on-earth-before-humans/audio/did-a-civilisation-exist-on-earth-before-humans.mp3",
+    "segments": 59,
+    "output": "bbc_listening/did-a-civilisation-exist-on-earth-before-humans/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/do-you-have-good-dining-etiquette-2/audio/do-you-have-good-dining-etiquette.mp3",
+    "segments": 57,
+    "output": "bbc_listening/do-you-have-good-dining-etiquette-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/do-you-have-good-dining-etiquette-3/audio/do-you-have-good-dining-etiquette.mp3",
+    "segments": 57,
+    "output": "bbc_listening/do-you-have-good-dining-etiquette-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/do-you-have-good-dining-etiquette/audio/do-you-have-good-dining-etiquette.mp3",
+    "segments": 57,
+    "output": "bbc_listening/do-you-have-good-dining-etiquette/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/do-you-like-garlic-2/audio/do-you-like-garlic.mp3",
+    "segments": 27,
+    "output": "bbc_listening/do-you-like-garlic-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/do-you-like-garlic-3/audio/do-you-like-garlic.mp3",
+    "segments": 27,
+    "output": "bbc_listening/do-you-like-garlic-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/do-you-like-garlic/audio/do-you-like-garlic.mp3",
+    "segments": 27,
+    "output": "bbc_listening/do-you-like-garlic/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/do-you-need-to-declutter-your-home/audio/do-you-need-to-declutter-your-home.mp3",
+    "segments": 82,
+    "output": "bbc_listening/do-you-need-to-declutter-your-home/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/finding-and-eating-wild-food-2/audio/finding-and-eating-wild-food.mp3",
+    "segments": 21,
+    "output": "bbc_listening/finding-and-eating-wild-food-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/finding-and-eating-wild-food-3/audio/finding-and-eating-wild-food.mp3",
+    "segments": 21,
+    "output": "bbc_listening/finding-and-eating-wild-food-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/finding-and-eating-wild-food-4/audio/finding-and-eating-wild-food.mp3",
+    "segments": 21,
+    "output": "bbc_listening/finding-and-eating-wild-food-4/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/finding-and-eating-wild-food/audio/finding-and-eating-wild-food.mp3",
+    "segments": 21,
+    "output": "bbc_listening/finding-and-eating-wild-food/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/foods-that-go-crunch/audio/foods-that-go-crunch.mp3",
+    "segments": 62,
+    "output": "bbc_listening/foods-that-go-crunch/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/grown-ups-buying-kids-toys/audio/grown-ups-buying-kids-toys.mp3",
+    "segments": 56,
+    "output": "bbc_listening/grown-ups-buying-kids-toys/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/have-you-ever-seen-a-whale/audio/have-you-ever-seen-a-whale.mp3",
+    "segments": 42,
+    "output": "bbc_listening/have-you-ever-seen-a-whale/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-are-horses-helping-to-heal-humans-2/audio/how-are-horses-helping-to-heal-humans.mp3",
+    "segments": 25,
+    "output": "bbc_listening/how-are-horses-helping-to-heal-humans-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-are-horses-helping-to-heal-humans-3/audio/how-are-horses-helping-to-heal-humans.mp3",
+    "segments": 25,
+    "output": "bbc_listening/how-are-horses-helping-to-heal-humans-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-are-horses-helping-to-heal-humans/audio/how-are-horses-helping-to-heal-humans.mp3",
+    "segments": 25,
+    "output": "bbc_listening/how-are-horses-helping-to-heal-humans/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-are-influencers-affecting-politics-2/audio/how-are-influencers-affecting-politics.mp3",
+    "segments": 59,
+    "output": "bbc_listening/how-are-influencers-affecting-politics-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-are-influencers-affecting-politics-3/audio/how-are-influencers-affecting-politics.mp3",
+    "segments": 59,
+    "output": "bbc_listening/how-are-influencers-affecting-politics-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-are-influencers-affecting-politics/audio/how-are-influencers-affecting-politics.mp3",
+    "segments": 59,
+    "output": "bbc_listening/how-are-influencers-affecting-politics/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-can-we-help-wild-bees/audio/how-can-we-help-wild-bees.mp3",
+    "segments": 51,
+    "output": "bbc_listening/how-can-we-help-wild-bees/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-do-babies-communicate/audio/how-do-babies-communicate.mp3",
+    "segments": 55,
+    "output": "bbc_listening/how-do-babies-communicate/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-do-you-say-sorry/audio/how-do-you-say-sorry.mp3",
+    "segments": 66,
+    "output": "bbc_listening/how-do-you-say-sorry/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-important-is-play-2/audio/how-important-is-play.mp3",
+    "segments": 40,
+    "output": "bbc_listening/how-important-is-play-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-important-is-play-3/audio/how-important-is-play.mp3",
+    "segments": 40,
+    "output": "bbc_listening/how-important-is-play-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-important-is-play/audio/how-important-is-play.mp3",
+    "segments": 40,
+    "output": "bbc_listening/how-important-is-play/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/how-important-is-politeness/audio/how-important-is-politeness.mp3",
+    "segments": 69,
+    "output": "bbc_listening/how-important-is-politeness/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/is-breakfast-the-most-important-meal-of-the-day-2/audio/is-breakfast-the-most-important-meal-of-the-day.mp3",
+    "segments": 31,
+    "output": "bbc_listening/is-breakfast-the-most-important-meal-of-the-day-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/is-breakfast-the-most-important-meal-of-the-day-3/audio/is-breakfast-the-most-important-meal-of-the-day.mp3",
+    "segments": 31,
+    "output": "bbc_listening/is-breakfast-the-most-important-meal-of-the-day-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/is-breakfast-the-most-important-meal-of-the-day/audio/is-breakfast-the-most-important-meal-of-the-day.mp3",
+    "segments": 31,
+    "output": "bbc_listening/is-breakfast-the-most-important-meal-of-the-day/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/the-criminal-trade-in-ancient-objects/audio/the-criminal-trade-in-ancient-objects.mp3",
+    "segments": 63,
+    "output": "bbc_listening/the-criminal-trade-in-ancient-objects/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/the-joys-of-writing-lists/audio/the-joys-of-writing-lists.mp3",
+    "segments": 61,
+    "output": "bbc_listening/the-joys-of-writing-lists/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/was-christmas-better-in-the-past-2/audio/was-christmas-better-in-the-past.mp3",
+    "segments": 36,
+    "output": "bbc_listening/was-christmas-better-in-the-past-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/was-christmas-better-in-the-past-3/audio/was-christmas-better-in-the-past.mp3",
+    "segments": 36,
+    "output": "bbc_listening/was-christmas-better-in-the-past-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/was-christmas-better-in-the-past-4/audio/was-christmas-better-in-the-past.mp3",
+    "segments": 36,
+    "output": "bbc_listening/was-christmas-better-in-the-past-4/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/was-christmas-better-in-the-past/audio/was-christmas-better-in-the-past.mp3",
+    "segments": 36,
+    "output": "bbc_listening/was-christmas-better-in-the-past/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-causes-hearing-loss/audio/what-causes-hearing-loss.mp3",
+    "segments": 5,
+    "output": "bbc_listening/what-causes-hearing-loss/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-is-degrowth/audio/what-is-degrowth.mp3",
+    "segments": 72,
+    "output": "bbc_listening/what-is-degrowth/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-is-the-manosphere/audio/what-is-the-manosphere.mp3",
+    "segments": 51,
+    "output": "bbc_listening/what-is-the-manosphere/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-makes-a-good-citizen/audio/what-makes-a-good-citizen.mp3",
+    "segments": 58,
+    "output": "bbc_listening/what-makes-a-good-citizen/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-s-it-like-to-be-a-twin/audio/what-s-it-like-to-be-a-twin.mp3",
+    "segments": 61,
+    "output": "bbc_listening/what-s-it-like-to-be-a-twin/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-s-your-favourite-flavour-of-crisp-2/audio/what-s-your-favourite-flavour-of-crisp.mp3",
+    "segments": 59,
+    "output": "bbc_listening/what-s-your-favourite-flavour-of-crisp-2/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-s-your-favourite-flavour-of-crisp-3/audio/what-s-your-favourite-flavour-of-crisp.mp3",
+    "segments": 59,
+    "output": "bbc_listening/what-s-your-favourite-flavour-of-crisp-3/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-s-your-favourite-flavour-of-crisp/audio/what-s-your-favourite-flavour-of-crisp.mp3",
+    "segments": 59,
+    "output": "bbc_listening/what-s-your-favourite-flavour-of-crisp/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-s-your-favourite-kind-of-noodle/audio/what-s-your-favourite-kind-of-noodle.mp3",
+    "segments": 55,
+    "output": "bbc_listening/what-s-your-favourite-kind-of-noodle/audio/clips/segments.json"
+  },
+  {
+    "status": "error",
+    "audio": "bbc_listening/which-cooking-oil-is-the-best/audio/which-cooking-oil-is-the-best.mp3",
+    "error": "[Errno 1094995529] Invalid data found when processing input: 'bbc_listening/which-cooking-oil-is-the-best/audio/which-cooking-oil-is-the-best.mp3'"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/what-s-your-favourite-snack/audio/what-s-your-favourite-snack.mp3",
+    "segments": 21,
+    "output": "bbc_listening/what-s-your-favourite-snack/audio/clips/segments.json"
+  },
+  {
+    "status": "success",
+    "audio": "bbc_listening/would-you-like-a-robot-companion/audio/would-you-like-a-robot-companion.mp3",
+    "segments": 37,
+    "output": "bbc_listening/would-you-like-a-robot-companion/audio/clips/segments.json"
+  }
+]

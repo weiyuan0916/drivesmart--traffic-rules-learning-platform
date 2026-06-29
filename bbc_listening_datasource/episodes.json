@@ -1,0 +1,58 @@
+{
+  "crawled_at": "2026-06-17T07:39:27.614568+00:00",
+  "source": "BBC Learning English - 6 Minute English",
+  "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english",
+  "total_episodes": 10,
+  "episodes": [
+    {
+      "title": "Was Christmas better in the past?",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251225",
+      "created_in_db": true
+    },
+    {
+      "title": "Finding and eating wild food",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251218",
+      "created_in_db": true
+    },
+    {
+      "title": "How are horses helping to heal humans?",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251211",
+      "created_in_db": true
+    },
+    {
+      "title": "What’s your favourite flavour of crisp?",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251204",
+      "created_in_db": true
+    },
+    {
+      "title": "How are influencers affecting politics?",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251127",
+      "created_in_db": true
+    },
+    {
+      "title": "Do you have good dining etiquette?",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251120",
+      "created_in_db": true
+    },
+    {
+      "title": "How important is play?",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251113",
+      "created_in_db": true
+    },
+    {
+      "title": "Do you like garlic?",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251106",
+      "created_in_db": true
+    },
+    {
+      "title": "Is breakfast the most important meal of the day?",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251030",
+      "created_in_db": true
+    },
+    {
+      "title": "Did a civilisation exist on Earth before humans?",
+      "source_url": "https://www.bbc.co.uk/learningenglish/english/features/6-minute-english_2025/ep-251023",
+      "created_in_db": true
+    }
+  ]
+}

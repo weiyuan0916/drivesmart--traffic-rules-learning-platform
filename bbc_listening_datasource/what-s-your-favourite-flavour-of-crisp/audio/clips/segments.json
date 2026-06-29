@@ -1,0 +1,474 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.19,
+    "duration": 12.19,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Neil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.19,
+    "end": 25.23,
+    "duration": 13.04,
+    "text": "And I'm Beth. In Britain, we call them crisps, and you might know them as potato chips, but whatever you call them, these fried potato slices are probably the world's favorite snack.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 25.23,
+    "end": 28.67,
+    "duration": 3.44,
+    "text": "Neil, are you a big crisp eater and what's your favourite flavour?",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 28.67,
+    "end": 32.51,
+    "duration": 3.84,
+    "text": "I love crisps, Beth. They are my favourite snack.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 32.51,
+    "end": 38.99,
+    "duration": 6.48,
+    "text": "My favourite flavour is prawn cocktail, which is controversial because a lot of people don't like that flavour.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 38.99,
+    "end": 41.55,
+    "duration": 2.56,
+    "text": "I think my favourite is salt and vinegar.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 41.55,
+    "end": 43.23,
+    "duration": 1.68,
+    "text": "Yummy. You're making me hungry.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 43.23,
+    "end": 48.75,
+    "duration": 5.52,
+    "text": "Well, crisps might be popular, but with lots of oil and salt, they're not the healthiest food.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 48.75,
+    "end": 55.55,
+    "duration": 6.8,
+    "text": "So why do we love them so much? That's what BBC World Service programme the food chain wanted to find out.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 55.55,
+    "end": 65.87,
+    "duration": 10.32,
+    "text": "Here, presenter Ruth Alexander, talks to Mitchell Dingwell, a food executive responsible for developing new crisp flavours. Why do we love crisps so much?",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 67.26,
+    "end": 75.9,
+    "duration": 8.64,
+    "text": "I think it's just that crunch, right? You can't beat the crunch in the delicious salty feeling in your mouth, and it just becomes a snowball effect. You just want more of it.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 75.9,
+    "end": 82.38,
+    "duration": 6.48,
+    "text": "For Mitchell, the best thing about crisps is the loud crunch. He says, you can't beat it.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 82.38,
+    "end": 88.06,
+    "duration": 5.68,
+    "text": "An idiom meaning something like, that's the best thing and you won't find anything better.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 88.06,
+    "end": 96.3,
+    "duration": 8.24,
+    "text": "Mitchell says once you've started eating crisps, it's hard to stop, and you just want to eat more and more. He calls this a snowball effect.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 96.3,
+    "end": 100.86,
+    "duration": 4.56,
+    "text": "A situation we're doing something causes other similar things to happen.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 100.86,
+    "end": 104.62,
+    "duration": 3.76,
+    "text": "You eat one crisp and before you know it, the whole packet's gone.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 104.62,
+    "end": 109.34,
+    "duration": 4.72,
+    "text": "In this episode, we'll be visiting two countries in love with crisps.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 109.34,
+    "end": 118.78,
+    "duration": 9.44,
+    "text": "And as usual, we'll be learning some useful new words and phrases, all of which you can find on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 118.78,
+    "end": 120.86,
+    "duration": 2.08,
+    "text": "But first, I have a question for you, Beth.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 121.5,
+    "end": 137.42,
+    "duration": 15.92,
+    "text": "The record for the world's largest packet of crisps was recently broken in Saudi Arabia, but how much did the packet weigh? Was it A about 1.5 tonnes, B about 2.5 tonnes, or C about 3.5 tonnes?",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 137.42,
+    "end": 142.94,
+    "duration": 5.52,
+    "text": "Okay, wow, they are all huge. I'm going to guess about 3.5 tonnes.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 143.97,
+    "end": 146.37,
+    "duration": 2.4,
+    "text": "Okay, we'll find out the answer later.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 146.37,
+    "end": 154.29,
+    "duration": 7.92,
+    "text": "Let's travel first to Singapore, home of Jolene Ng, a market research analyst who specialises in salty snacks.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 154.29,
+    "end": 158.85,
+    "duration": 4.56,
+    "text": "Here's Jolene talking with Ruth Alexander for BBC programme The Food Chain.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 158.85,
+    "end": 163.25,
+    "duration": 4.4,
+    "text": "Here's the potato chip, the most popular of all salty snacks.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 163.97,
+    "end": 175.41,
+    "duration": 11.44,
+    "text": "It's very, very much dependent on personal preference, but if I were to look at certain countries, you could see like in the UK, it's very much part and parcel of life. You don't have it only during snack times.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 175.41,
+    "end": 181.09,
+    "duration": 5.68,
+    "text": "You have it with lunch as well, or you put it, my husband's from UK, and he kind of put it in his sandwich as well.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 181.09,
+    "end": 185.09,
+    "duration": 4.0,
+    "text": "Oh yeah, a cheese sandwich with a crisp inside. Oh yeah, that's great.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 185.09,
+    "end": 191.97,
+    "duration": 6.88,
+    "text": "Exactly. Jolene says the popularity of different snacks depends on personal preference.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 191.97,
+    "end": 196.85,
+    "duration": 4.88,
+    "text": "Someone's subjective liking or disliking for something based on their personal opinion.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 197.49,
+    "end": 201.17,
+    "duration": 3.68,
+    "text": "In some places, crisps are part and parcel of everyday life.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 201.81,
+    "end": 205.65,
+    "duration": 3.84,
+    "text": "Part and parcel means to be an essential element or feature of something.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 206.21,
+    "end": 210.77,
+    "duration": 4.56,
+    "text": "In Britain, crisps are so essential that people even eat crisps sandwiches.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 210.77,
+    "end": 214.29,
+    "duration": 3.52,
+    "text": "But not everywhere is so in love with potato chips.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 215.01,
+    "end": 218.77,
+    "duration": 3.76,
+    "text": "Let's meet Jenny Martinez, a food blogger from Mexico.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 219.41,
+    "end": 229.97,
+    "duration": 10.56,
+    "text": "In Mexico, tortilla corn chips are eaten instead of potato chips, and it's common to see street vendors selling bags of corn tortillas filled with different sources.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 230.69,
+    "end": 236.45,
+    "duration": 5.76,
+    "text": "Here, Jenny tells Ruth Alexander more for BBC World Service programme, The Food Chain.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 236.45,
+    "end": 241.01,
+    "duration": 4.56,
+    "text": "For you, which is your go-to snack, the tortilla chip or the potato chip?",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 241.01,
+    "end": 242.45,
+    "duration": 1.44,
+    "text": "Definitely the tortilla chip.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 242.45,
+    "end": 256.93,
+    "duration": 14.48,
+    "text": "Why? Because you could do so many things, dip it in almost everything adding some guacamole, spicy salsa, or just sour cream with a mixture of chipotle sauce.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 257.41,
+    "end": 261.49,
+    "duration": 4.08,
+    "text": "Ruth asks if tortillas are Jenny's go-to snack.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 261.49,
+    "end": 268.93,
+    "duration": 7.44,
+    "text": "You can use the phrase go-to to describe something which is relied upon to be the best thing for a particular purpose.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 268.93,
+    "end": 274.53,
+    "duration": 5.6,
+    "text": "For example, for a lot of people Wikipedia is the go-to website for online information.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 274.53,
+    "end": 287.33,
+    "duration": 12.8,
+    "text": "And Jenny thinks corn tortillas are especially good with guacamole, a paste made of mashed avocado, which sounds delicious, and maybe a little healthier than a British crisps sandwich.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 287.97,
+    "end": 291.09,
+    "duration": 3.12,
+    "text": "Speaking of which, what was the answer to your question, Neil?",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 291.09,
+    "end": 295.09,
+    "duration": 4.0,
+    "text": "I asked you how heavy the world's largest bag of crisps was.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 295.09,
+    "end": 298.85,
+    "duration": 3.76,
+    "text": "And I said very heavy over three and a half tons.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 298.85,
+    "end": 304.29,
+    "duration": 5.44,
+    "text": "Well, it's not that big, but the real answer is still enormous, about 1.5 tons.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 304.53,
+    "end": 308.05,
+    "duration": 3.52,
+    "text": "The bag, made in Riyadh, was 9 meters tall.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 308.05,
+    "end": 314.53,
+    "duration": 6.48,
+    "text": "Yeah. OK, let's recap the vocabulary we've learned, starting with the phrase, you can't beat that.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 314.53,
+    "end": 318.13,
+    "duration": 3.6,
+    "text": "Meaning that something is the best, and you won't find anything better.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 318.13,
+    "end": 324.37,
+    "duration": 6.24,
+    "text": "A snowball effect is a situation where one action causes other similar actions to happen.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 324.37,
+    "end": 331.41,
+    "duration": 7.04,
+    "text": "Someone's personal preference is their subjective liking or disliking for something based on their own opinion.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 331.49,
+    "end": 337.25,
+    "duration": 5.76,
+    "text": "To be part and parcel of something, means to be an essential or integral feature of it.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 337.25,
+    "end": 344.21,
+    "duration": 6.96,
+    "text": "And something which is described as the go-to can be relied upon as the best thing for a particular situation.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 344.21,
+    "end": 351.17,
+    "duration": 6.96,
+    "text": "And finally, guacamole is a paste made of mashed avocado, lime juice and salt, delicious.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 351.17,
+    "end": 353.33,
+    "duration": 2.16,
+    "text": "Once again, our six minutes are up.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 353.33,
+    "end": 363.01,
+    "duration": 9.68,
+    "text": "But if you're hungry for more, then head over to our website, BBCLearningEnglish.com, where you'll find a worksheet and quiz for this episode.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 363.01,
+    "end": 365.41,
+    "duration": 2.4,
+    "text": "See you again soon, but for now, goodbye.",
+    "file": "audio_clips/58.mp3"
+  }
+]

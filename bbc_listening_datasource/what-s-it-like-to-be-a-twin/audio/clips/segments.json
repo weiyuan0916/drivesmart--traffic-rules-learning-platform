@@ -1,0 +1,490 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 11.98,
+    "duration": 11.98,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Neil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 11.98,
+    "end": 13.18,
+    "duration": 1.2,
+    "text": "And I'm Beth.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 13.18,
+    "end": 15.98,
+    "duration": 2.8,
+    "text": "In this episode, we're talking about twins.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 15.98,
+    "end": 21.98,
+    "duration": 6.0,
+    "text": "Non-identical or fraternal twins come from two separate eggs and share half their genes.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 21.98,
+    "end": 29.98,
+    "duration": 8.0,
+    "text": "More uncommon are identical twins who come from a single fertilised egg and share 100% of their genes.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 29.98,
+    "end": 37.98,
+    "duration": 8.0,
+    "text": "As humans, we're fascinated by twins. When people discover that someone's a twin, they start asking all kinds of questions.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 37.98,
+    "end": 40.98,
+    "duration": 3.0,
+    "text": "What question would you ask a twin, Neil?",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 40.98,
+    "end": 45.98,
+    "duration": 5.0,
+    "text": "Oh, probably quite an annoying one. Maybe do you share each other's thoughts?",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 45.98,
+    "end": 51.98,
+    "duration": 6.0,
+    "text": "Ooh, I might ask, if one of you is hurt, does the other one feel pain?",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 51.98,
+    "end": 57.98,
+    "duration": 6.0,
+    "text": "Interesting. Well, some common questions for twins include, do you have psychic powers?",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 57.98,
+    "end": 62.98,
+    "duration": 5.0,
+    "text": "Have you ever swapped boyfriends and do have the same dreams?",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 62.98,
+    "end": 71.98,
+    "duration": 9.0,
+    "text": "But according to a Nan Jagatien who presented a recent episode of BBC World Services crowd science all about twins?",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 71.98,
+    "end": 77.98,
+    "duration": 6.0,
+    "text": "If you meet a twin and you ask them one of these questions, don't be surprised if they roll their eyes at you.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 77.98,
+    "end": 84.98,
+    "duration": 7.0,
+    "text": "Ask a twin about psychic powers and they might roll their eyes, a way of showing boredom or irritation.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 84.98,
+    "end": 93.98,
+    "duration": 9.0,
+    "text": "But nevertheless, twins continue to capture our imagination, and in this episode we'll be finding out why using some useful new words and phrases.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 93.98,
+    "end": 108.98,
+    "duration": 15.0,
+    "text": "And remember, you'll find all the vocabulary for this episode along with a quiz and a worksheet on our website, BBCLearningEnglish.com First, I have a question for you Beth. These days, twins are more common than you might think.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 108.98,
+    "end": 116.98,
+    "duration": 8.0,
+    "text": "In fact, one in every 42 babies is born a twin. But do you know which famous Hollywood star is a twin?",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 116.98,
+    "end": 122.98,
+    "duration": 6.0,
+    "text": "Is it A, Jennifer Lawrence, B, Angelina Jolie or C, Scarlett Johansson?",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 122.98,
+    "end": 126.98,
+    "duration": 4.0,
+    "text": "Ooh, I don't know. I'm going to guess Scarlett Johansson.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 126.98,
+    "end": 129.98,
+    "duration": 3.0,
+    "text": "Well, we'll find out the answer at the end of the programme.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 129.98,
+    "end": 135.98,
+    "duration": 6.0,
+    "text": "Professor Karen Dylan is the author of a book on twins in American literature and a twin herself.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 135.98,
+    "end": 143.98,
+    "duration": 8.0,
+    "text": "Here, she discusses the good and bad sides of twinship with a man Jagatier for BBC World Service programme, Crowd Science.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 143.98,
+    "end": 146.98,
+    "duration": 3.0,
+    "text": "Being a twin isn't always plain sailing.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 146.98,
+    "end": 153.98,
+    "duration": 7.0,
+    "text": "Yeah, it is nice. There's never that fear because you're going through school together. You're sometimes in the same class together.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 153.98,
+    "end": 160.98,
+    "duration": 7.0,
+    "text": "You're making friends together. So all of those milestones of childhood in some ways are made easier for twins.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 160.98,
+    "end": 168.98,
+    "duration": 8.0,
+    "text": "And the older you get, the more you realise how much people really think of you as a twin, rather than as an individual.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 168.98,
+    "end": 172.98,
+    "duration": 4.0,
+    "text": "Twins go through many childhood milestones together.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 172.98,
+    "end": 180.98,
+    "duration": 8.0,
+    "text": "A milestone is an important stage of development, so a childhood milestone could be something like your first day at school.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 180.98,
+    "end": 185.98,
+    "duration": 5.0,
+    "text": "But being a twin isn't always plain sailing, an idiom meaning easy and problem-free.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 185.98,
+    "end": 191.98,
+    "duration": 6.0,
+    "text": "Many twins find it hard to establish their own identity as a separate and unique individual.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 191.98,
+    "end": 197.98,
+    "duration": 6.0,
+    "text": "Our fascination with twins also comes from the age old nature versus nurture debate.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 197.98,
+    "end": 206.98,
+    "duration": 9.0,
+    "text": "How much of our lives is determined by nature, the genetics were born with, and how much by nurture the environment we grow up in.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 206.98,
+    "end": 212.98,
+    "duration": 6.0,
+    "text": "Because twins are so genetically similar, differences between them tell scientists a lot.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 212.98,
+    "end": 222.98,
+    "duration": 10.0,
+    "text": "Here's presenter of BBC World Service Programme Crowdscience and Anne Jagatier discussing this with Helena DeBress, a philosopher at Wellesley College, Massachusetts.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 222.98,
+    "end": 224.98,
+    "duration": 2.0,
+    "text": "And that's right, another twin.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 224.98,
+    "end": 232.98,
+    "duration": 8.0,
+    "text": "Yeah, you hear about twins that were separated at birth, grew up in different parts of the world, and they kind of have these eerily similar life courses.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 232.98,
+    "end": 237.98,
+    "duration": 5.0,
+    "text": "And you think, gosh, how much choice have I had over the way that my life's turned out?",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 237.98,
+    "end": 247.98,
+    "duration": 10.0,
+    "text": "Absolutely, yeah, there's that really famous case of the gym twins who were reunited at age 39 after being separated at birth, and they just had so many similarities. It was crazy.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 247.98,
+    "end": 251.98,
+    "duration": 4.0,
+    "text": "They both married someone called Linda and then divorced her for someone called Betty.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 251.98,
+    "end": 255.98,
+    "duration": 4.0,
+    "text": "They both named their dog Toy. It was ridiculous.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 255.98,
+    "end": 260.98,
+    "duration": 5.0,
+    "text": "The twins Jim Lewis and Jim Springer were separated at birth.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 260.98,
+    "end": 267.98,
+    "duration": 7.0,
+    "text": "The phrase separated at birth can be used to describe two people with strong similarities.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 267.98,
+    "end": 274.98,
+    "duration": 7.0,
+    "text": "Although in this case, the twins were literally separated and adopted by different parents at birth.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 274.98,
+    "end": 281.98,
+    "duration": 7.0,
+    "text": "When the gyms were reunited in the 1970s, everyone was amazed at how similar their lives were.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 281.98,
+    "end": 286.98,
+    "duration": 5.0,
+    "text": "And Anne used the adjective eerie, meaning strange in a frightening, mysterious way.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 286.98,
+    "end": 291.98,
+    "duration": 5.0,
+    "text": "And Helena says it was crazy, using crazy to mean strange and fantastic.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 291.98,
+    "end": 298.98,
+    "duration": 7.0,
+    "text": "Yes, I think strange, mysterious and fantastic describe it being a twin quite well.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 298.98,
+    "end": 302.98,
+    "duration": 4.0,
+    "text": "Okay, Neil, it's time to reveal the answer to your question.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 302.98,
+    "end": 308.98,
+    "duration": 6.0,
+    "text": "I asked which Hollywood star is its twin and you said, see Scarlett Johansson?",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 308.98,
+    "end": 310.98,
+    "duration": 2.0,
+    "text": "I did. Which was the right answer?",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 310.98,
+    "end": 319.98,
+    "duration": 9.0,
+    "text": "Yay! Let's recap the vocabulary we've learned starting with roll your eyes to move your eyes upwards to show you are bored or annoyed.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 319.98,
+    "end": 323.98,
+    "duration": 4.0,
+    "text": "A milestone is a significant stage in the development of something.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 323.98,
+    "end": 329.98,
+    "duration": 6.0,
+    "text": "The idiom, it's not plain sailing, describes difficult and problematic situations.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 329.98,
+    "end": 334.98,
+    "duration": 5.0,
+    "text": "The phrase separated at birth can describe two people who are unusually similar.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 334.98,
+    "end": 339.98,
+    "duration": 5.0,
+    "text": "It also refers to siblings who were adopted by different parents at birth.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 339.98,
+    "end": 344.98,
+    "duration": 5.0,
+    "text": "And the adjective eerie means strange in a frightening and mysterious way.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 344.98,
+    "end": 350.98,
+    "duration": 6.0,
+    "text": "And finally, if someone says it was crazy, they mean it was strange and fantastic.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 350.98,
+    "end": 353.98,
+    "duration": 3.0,
+    "text": "Once again, our six minutes are up.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 353.98,
+    "end": 362.98,
+    "duration": 9.0,
+    "text": "But remember, you can find worksheets, quizzes and loads more resources to improve your English on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/58.mp3"
+  },
+  {
+    "id": 59,
+    "start": 362.98,
+    "end": 365.98,
+    "duration": 3.0,
+    "text": "See you there soon, but for now, goodbye.",
+    "file": "audio_clips/59.mp3"
+  },
+  {
+    "id": 60,
+    "start": 365.98,
+    "end": 371.78,
+    "duration": 5.8,
+    "text": "Goodbye. From BBCLearningEnglish.com",
+    "file": "audio_clips/60.mp3"
+  }
+]

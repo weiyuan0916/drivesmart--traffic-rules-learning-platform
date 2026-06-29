@@ -9,10 +9,10 @@ export function Card({ variant = 'default', className, children, ...props }: Car
   return (
     <div
       className={cn(
-        'rounded-xl',
-        variant === 'default' && 'bg-white border border-border shadow-sm',
-        variant === 'outlined' && 'bg-white border border-border',
-        variant === 'elevated' && 'bg-white shadow-md',
+        'rounded-2xl',
+        variant === 'default' && 'bg-white dark:bg-dark-surface border border-border dark:border-border-strong shadow-sm',
+        variant === 'outlined' && 'bg-white dark:bg-dark-surface border border-border dark:border-border-strong',
+        variant === 'elevated' && 'bg-white dark:bg-dark-surface shadow-lg',
         className,
       )}
       {...props}
@@ -24,7 +24,7 @@ export function Card({ variant = 'default', className, children, ...props }: Car
 
 export function CardHeader({ className, children, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('p-5 pb-3', className)} {...props}>
+    <div className={cn('p-6 pb-3', className)} {...props}>
       {children}
     </div>
   )
@@ -32,7 +32,7 @@ export function CardHeader({ className, children, ...props }: HTMLAttributes<HTM
 
 export function CardContent({ className, children, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('p-5 pt-3', className)} {...props}>
+    <div className={cn('p-6 pt-3', className)} {...props}>
       {children}
     </div>
   )
@@ -40,7 +40,7 @@ export function CardContent({ className, children, ...props }: HTMLAttributes<HT
 
 export function CardFooter({ className, children, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn('p-5 pt-3 flex items-center gap-3', className)} {...props}>
+    <div className={cn('p-6 pt-3 flex items-center gap-3', className)} {...props}>
       {children}
     </div>
   )

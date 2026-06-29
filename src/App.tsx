@@ -150,7 +150,7 @@ function AppContent() {
   return (
     <div
       className={`flex flex-col h-screen font-sans relative transition-colors duration-300 bg-[var(--bg-primary)] text-[var(--text-primary)] ${
-        fullscreenLayout ? 'overflow-y-auto' : 'overflow-hidden'
+        fullscreenLayout || inMode ? 'overflow-y-auto' : 'overflow-hidden'
       }`}
       data-lenis-scroll={fullscreenLayout ? '' : undefined}
     >

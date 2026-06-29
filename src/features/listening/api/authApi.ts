@@ -4,6 +4,7 @@
 // ============================================================
 
 import { apiClient } from './client'
+import { API_BASE } from './constants'
 import type { User } from '../types'
 
 // ── Response Transformers ────────────────────────────────────
@@ -58,7 +59,7 @@ export interface ApiError {
 export async function login(payload: LoginPayload): Promise<{ user: User; token: string }> {
   const response = await apiClient.post<{
     data: { user: Record<string, unknown>; token: string; token_type: string }
-  }>('/api/v1/auth/login', payload)
+  }>(`${API_BASE}/auth/login`, payload)
   return {
     user: transformUser(response.data.user),
     token: response.data.token,
@@ -68,7 +69,7 @@ export async function login(payload: LoginPayload): Promise<{ user: User; token:
 export async function register(payload: RegisterPayload): Promise<{ user: User; token: string }> {
   const response = await apiClient.post<{
     data: { user: Record<string, unknown>; token: string; token_type: string }
-  }>('/api/v1/auth/register', payload)
+  }>(`${API_BASE}/auth/register`, payload)
   return {
     user: transformUser(response.data.user),
     token: response.data.token,
@@ -76,11 +77,11 @@ export async function register(payload: RegisterPayload): Promise<{ user: User; 
 }
 
 export async function logout(): Promise<void> {
-  await apiClient.post('/api/v1/auth/logout')
+  await apiClient.post(`${API_BASE}/auth/logout`)
 }
 
 export async function getMe(): Promise<User> {
-  const response = await apiClient.get<{ data: Record<string, unknown> }>('/api/v1/auth/me')
+  const response = await apiClient.get<{ data: Record<string, unknown> }>(`${API_BASE}/auth/me`)
   return transformUser(response.data)
 }
 
@@ -91,7 +92,7 @@ export async function getMe(): Promise<User> {
  */
 export async function getOAuthRedirectUrl(provider: 'google' | 'github'): Promise<string> {
   const response = await apiClient.get<{ data: { redirect_url: string } }>(
-    `/api/v1/auth/${provider}/redirect`
+    `${API_BASE}/auth/${provider}/redirect`
   )
   return response.data.redirect_url
 }

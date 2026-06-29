@@ -1,0 +1,506 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.48,
+    "duration": 12.48,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Neil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.48,
+    "end": 17.04,
+    "duration": 4.56,
+    "text": "And I'm Beth. Neil, what is the oldest thing you have at home?",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 17.04,
+    "end": 21.92,
+    "duration": 4.88,
+    "text": "Oh, well, I do have some books from when I was a child.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 21.92,
+    "end": 26.08,
+    "duration": 4.16,
+    "text": "I have a rocking horse that was my dad's, so that is quite old.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 26.16,
+    "end": 37.6,
+    "duration": 11.44,
+    "text": "But neither of these are anywhere near as old as the 1800-year-old Roman coin, which BBC reporter Ryan Keane recently bought in London.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 37.6,
+    "end": 45.92,
+    "duration": 8.32,
+    "text": "But soon afterwards, Ryan discovered there was more to the story, as he explains here on BBC World Service programme Business Daily.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 45.92,
+    "end": 50.0,
+    "duration": 4.08,
+    "text": "But as I researched into other kinds of engine artifacts, I could acquire.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 50.0,
+    "end": 55.28,
+    "duration": 5.28,
+    "text": "I came across reports of expansive criminal networks related to antiquities.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 55.28,
+    "end": 60.56,
+    "duration": 5.28,
+    "text": "Some engine artifacts being sold online and in stores have been looted and trafficked.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 61.12,
+    "end": 65.28,
+    "duration": 4.16,
+    "text": "Ryan got interested in artifacts from Egypt, Greece and Rome.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 65.28,
+    "end": 71.6,
+    "duration": 6.32,
+    "text": "An artifact is any object made by humans, usually very old, which is historically interesting.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 71.6,
+    "end": 73.68,
+    "duration": 2.08,
+    "text": "For example, a coin or statue.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 73.68,
+    "end": 79.12,
+    "duration": 5.44,
+    "text": "In the past, many artifacts have been looted or stolen by force.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 79.12,
+    "end": 89.6,
+    "duration": 10.48,
+    "text": "Movies like Indiana Jones and Tomb Raider have made the subject popular, but the theft of ancient objects is a serious problem in some parts of the world.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 89.6,
+    "end": 91.68,
+    "duration": 2.08,
+    "text": "So what can be done about it?",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 91.68,
+    "end": 96.88,
+    "duration": 5.2,
+    "text": "That's what we'll be discussing in this episode using some useful new words and phrases.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 96.88,
+    "end": 102.8,
+    "duration": 5.92,
+    "text": "And remember you'll find all the vocabulary from this episode on our website, bbclearningenglish.com.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 103.44,
+    "end": 105.68,
+    "duration": 2.24,
+    "text": "Now I have a question for you, Beth.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 105.68,
+    "end": 115.52,
+    "duration": 9.84,
+    "text": "One of the most famous ancient artifacts was discovered by Egyptologist Howard Carter in the Valley of the Kings in 1922, but what was it?",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 116.24,
+    "end": 122.56,
+    "duration": 6.32,
+    "text": "Was it a, the Rosetta Stone, b, the Mask of Tutankhamun, or c, the Ark of the Covenant?",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 123.2,
+    "end": 126.4,
+    "duration": 3.2,
+    "text": "Oh, I think it's b, the Mask of Tutankhamun.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 126.4,
+    "end": 129.12,
+    "duration": 2.72,
+    "text": "Okay, let's find out later in the program.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 129.92,
+    "end": 132.64,
+    "duration": 2.72,
+    "text": "Stealing ancient objects is nothing new.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 132.64,
+    "end": 140.56,
+    "duration": 7.92,
+    "text": "During colonial times, it was common for artifacts to be taken from their original home, and moved museums and private collections abroad.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 141.44,
+    "end": 146.0,
+    "duration": 4.56,
+    "text": "In the modern era, technology, especially social media, has increased the problem.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 146.64,
+    "end": 153.92,
+    "duration": 7.28,
+    "text": "Here's Emma Al-Azam, a researcher from Shawnee State University in the US, explaining more to bbc's business daily.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 154.72,
+    "end": 158.32,
+    "duration": 3.6,
+    "text": "Social media is the game changer here.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 158.32,
+    "end": 168.56,
+    "duration": 10.24,
+    "text": "The bottleneck, if you will, was how does someone who has an item then communicate with someone on the demand side? It used to slow the process. You had to go through intermediaries.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 168.56,
+    "end": 172.08,
+    "duration": 3.52,
+    "text": "Social media changes all that because it just opens it up.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 172.08,
+    "end": 180.88,
+    "duration": 8.8,
+    "text": "Emma calls social media a game changer, something new that is introduced into a situation and completely changes how it works.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 180.88,
+    "end": 185.44,
+    "duration": 4.56,
+    "text": "For example, the internet has been a game changer in how we communicate.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 185.44,
+    "end": 193.2,
+    "duration": 7.76,
+    "text": "The reason is simple. For someone with illegally stolen artifacts to sell, finding a buyer used to be difficult.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 193.2,
+    "end": 198.96,
+    "duration": 5.76,
+    "text": "Emma thinks that now, because of social media, this problem or bottleneck is gone.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 198.96,
+    "end": 203.52,
+    "duration": 4.56,
+    "text": "A bottleneck is a problem that delays a process or stops it from progressing.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 204.08,
+    "end": 208.88,
+    "duration": 4.8,
+    "text": "So what can be done to stop the illegal buying and selling of ancient artifacts?",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 209.52,
+    "end": 216.16,
+    "duration": 6.64,
+    "text": "Well, as the final destination for much eluded treasure, museums have an important role to play.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 216.88,
+    "end": 226.24,
+    "duration": 9.36,
+    "text": "Accusations of knowingly or unknowingly buying stolen objects have been made against several museums, including the Louvre in Paris.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 226.24,
+    "end": 231.28,
+    "duration": 5.04,
+    "text": "Victoria Reid is senior curator at the Museum of Fine Arts in Boston.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 231.28,
+    "end": 239.36,
+    "duration": 8.08,
+    "text": "In 2024, she helped her museum return an ancient necklace, which had been taken illegally from Turkey in the 1970s.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 239.36,
+    "end": 249.84,
+    "duration": 10.48,
+    "text": "But the idea of returning artifacts to their country of origin, something known as repatriation, is controversial, as Victoria told BBC programme Business Daily.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 250.4,
+    "end": 258.48,
+    "duration": 8.08,
+    "text": "Outside of the museum world, of course, there are many opinions, and I personally try to maintain a relatively middle of the road approach.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 258.48,
+    "end": 265.76,
+    "duration": 7.28,
+    "text": "I believe in museums, I believe in responsible collecting, and I believe in judicious repatriation decisions.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 266.32,
+    "end": 274.48,
+    "duration": 8.16,
+    "text": "There are arguments both for and against repatriating artifacts, and Victoria takes a middle of the road approach.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 274.48,
+    "end": 280.8,
+    "duration": 6.32,
+    "text": "If you describe something as middle of the road, you mean it's not extreme and is acceptable to most people.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 281.36,
+    "end": 288.56,
+    "duration": 7.2,
+    "text": "Whether ancient artifacts find their way back to their original homes, or are displayed in museums, remains an ongoing debate.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 288.56,
+    "end": 294.48,
+    "duration": 5.92,
+    "text": "But either way, it's good to know that objects of culture and beauty are being preserved for future generations.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 295.12,
+    "end": 298.4,
+    "duration": 3.28,
+    "text": "Okay, I think it's time to reveal the answer to my question.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 298.4,
+    "end": 305.28,
+    "duration": 6.88,
+    "text": "I asked what the Egyptologist Howard Carter discovered in the Valley of the Kings in 1922.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 305.36,
+    "end": 311.36,
+    "duration": 6.0,
+    "text": "Was it A, the Rosetta Stone, B, the Mask of Tutankhamun, or C, the Ark of the Covenant?",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 311.36,
+    "end": 314.0,
+    "duration": 2.64,
+    "text": "And I said the Mask of Tutankhamun.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 314.0,
+    "end": 315.76,
+    "duration": 1.76,
+    "text": "And you, Beth, were right.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 315.76,
+    "end": 321.68,
+    "duration": 5.92,
+    "text": "Yes! Okay, let's recap the vocabulary we've learnt, starting with artifact.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 321.68,
+    "end": 326.0,
+    "duration": 4.32,
+    "text": "Any object made by humans, which is of historical interest.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 326.0,
+    "end": 329.36,
+    "duration": 3.36,
+    "text": "If something is looted, it's stolen by force.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 329.36,
+    "end": 335.28,
+    "duration": 5.92,
+    "text": "A game changer is a new element, which, when introduced into a situation, completely changes it.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 335.76,
+    "end": 340.96,
+    "duration": 5.2,
+    "text": "A bottleneck is a problem that delays a process or stops it from progressing.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 340.96,
+    "end": 345.04,
+    "duration": 4.08,
+    "text": "To repatriate something means to return it to the country it came from.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 345.04,
+    "end": 352.96,
+    "duration": 7.92,
+    "text": "And finally, the adjective middle of the road describes things which are not extreme and are acceptable to most people.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 352.96,
+    "end": 355.36,
+    "duration": 2.4,
+    "text": "Once again, our six minutes are up.",
+    "file": "audio_clips/58.mp3"
+  },
+  {
+    "id": 59,
+    "start": 355.36,
+    "end": 360.24,
+    "duration": 4.88,
+    "text": "If you enjoyed this programme, why not check out the accompanying worksheet and quiz.",
+    "file": "audio_clips/59.mp3"
+  },
+  {
+    "id": 60,
+    "start": 360.24,
+    "end": 364.4,
+    "duration": 4.16,
+    "text": "They're both available now at BBCLearningEnglish.com.",
+    "file": "audio_clips/60.mp3"
+  },
+  {
+    "id": 61,
+    "start": 364.4,
+    "end": 366.16,
+    "duration": 1.76,
+    "text": "See you there soon and goodbye.",
+    "file": "audio_clips/61.mp3"
+  },
+  {
+    "id": 62,
+    "start": 366.16,
+    "end": 372.72,
+    "duration": 6.56,
+    "text": "Goodbye. Six minutes English from BBCLearningEnglish.com.",
+    "file": "audio_clips/62.mp3"
+  }
+]

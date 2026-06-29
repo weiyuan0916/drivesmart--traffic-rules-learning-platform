@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\BbcService;
+use App\Models\ListeningExternalLesson;
+use App\Services\BbcCatalogService;
+use App\Services\BbcDictationService;
+use App\Services\BbcVocabularyCacheService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -10,7 +13,9 @@ use Illuminate\Validation\Rule;
 class BbcController extends Controller
 {
     public function __construct(
-        private readonly BbcService $bbcService
+        private readonly BbcCatalogService $catalog,
+        private readonly BbcDictationService $dictation,
+        private readonly BbcVocabularyCacheService $vocabCache
     ) {}
 
     public function index(Request $request): JsonResponse
@@ -36,7 +41,7 @@ class BbcController extends Controller
             $filters['sort_by'] = 'latest';
         }
 
-        $paginated = $this->bbcService->listLessons($filters);
+        $paginated = $this->catalog->listLessons($filters);
 
         $user = $request->user();
 
@@ -62,7 +67,7 @@ class BbcController extends Controller
 
         return response()->json([
             'data' => $data,
-            'source' => $this->bbcService->getSource()->toApiArray(),
+            'source' => $this->catalog->getSource()->toApiArray(),
             'pagination' => [
                 'current_page' => $paginated->currentPage(),
                 'last_page' => $paginated->lastPage(),
@@ -74,14 +79,14 @@ class BbcController extends Controller
 
     public function show(string $slug): JsonResponse
     {
-        $lesson = $this->bbcService->getLesson($slug);
+        $lesson = $this->catalog->getLesson($slug);
 
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
 
         $user = request()->user();
-        $progress = $user ? $this->bbcService->getProgress($user, $lesson->id)?->toApiArray() : null;
+        $progress = $user ? $this->catalog->getProgress($user, $lesson->id)?->toApiArray() : null;
 
         $arr = $lesson->toApiArray();
         $arr['progress'] = $progress;
@@ -96,7 +101,7 @@ class BbcController extends Controller
             'status' => ['required', Rule::in(['not_started', 'in_progress', 'completed'])],
         ]);
 
-        $lesson = $this->bbcService->getLessonById($id);
+        $lesson = $this->catalog->getLessonById($id);
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
@@ -105,11 +110,11 @@ class BbcController extends Controller
         $status = $request->input('status');
 
         if ($status === 'in_progress') {
-            $progress = $this->bbcService->markInProgress($user, $id);
+            $progress = $this->catalog->markInProgress($user, $id);
         } elseif ($status === 'completed') {
-            $progress = $this->bbcService->markCompleted($user, $id);
+            $progress = $this->catalog->markCompleted($user, $id);
         } else {
-            $progress = $this->bbcService->upsertProgress($user, $id, $status);
+            $progress = $this->catalog->upsertProgress($user, $id, $status);
         }
 
         return response()->json(['data' => $progress->toApiArray()]);
@@ -117,24 +122,24 @@ class BbcController extends Controller
 
     public function complete(Request $request, int $id): JsonResponse
     {
-        $lesson = $this->bbcService->getLessonById($id);
+        $lesson = $this->catalog->getLessonById($id);
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
 
-        $progress = $this->bbcService->markCompleted($request->user(), $id);
+        $progress = $this->catalog->markCompleted($request->user(), $id);
 
         return response()->json(['data' => $progress->toApiArray()]);
     }
 
     public function getNotes(Request $request, int $id): JsonResponse
     {
-        $lesson = $this->bbcService->getLessonById($id);
+        $lesson = $this->catalog->getLessonById($id);
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
 
-        $notes = $this->bbcService->getNotes($request->user(), $id);
+        $notes = $this->catalog->getNotes($request->user(), $id);
 
         return response()->json([
             'data' => $notes?->toApiArray() ?? ['lesson_id' => $id, 'content' => ''],
@@ -147,24 +152,24 @@ class BbcController extends Controller
             'content' => 'nullable|string',
         ]);
 
-        $lesson = $this->bbcService->getLessonById($id);
+        $lesson = $this->catalog->getLessonById($id);
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
 
-        $notes = $this->bbcService->upsertNotes($request->user(), $id, $request->input('content', ''));
+        $notes = $this->catalog->upsertNotes($request->user(), $id, $request->input('content', ''));
 
         return response()->json(['data' => $notes->toApiArray()]);
     }
 
     public function getVocabulary(Request $request, int $id): JsonResponse
     {
-        $lesson = $this->bbcService->getLessonById($id);
+        $lesson = $this->catalog->getLessonById($id);
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
 
-        $vocab = $this->bbcService->getVocabulary($request->user(), $id);
+        $vocab = $this->catalog->getVocabulary($request->user(), $id);
 
         return response()->json([
             'data' => $vocab->map(fn ($v) => $v->toApiArray()),
@@ -180,12 +185,12 @@ class BbcController extends Controller
             'note' => 'nullable|string|max:2000',
         ]);
 
-        $lesson = $this->bbcService->getLessonById($id);
+        $lesson = $this->catalog->getLessonById($id);
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
 
-        $vocab = $this->bbcService->saveVocabulary($request->user(), $id, $request->only(['word', 'meaning', 'example', 'note']));
+        $vocab = $this->catalog->saveVocabulary($request->user(), $id, $request->only(['word', 'meaning', 'example', 'note']));
 
         return response()->json(['data' => $vocab->toApiArray()], 201);
     }
@@ -199,7 +204,7 @@ class BbcController extends Controller
             'note' => 'nullable|string|max:2000',
         ]);
 
-        $vocab = $this->bbcService->updateVocabulary(
+        $vocab = $this->catalog->updateVocabulary(
             $request->user(),
             $vocabularyId,
             $request->only(['word', 'meaning', 'example', 'note'])
@@ -214,7 +219,7 @@ class BbcController extends Controller
 
     public function deleteVocabulary(Request $request, int $id, int $vocabularyId): JsonResponse
     {
-        $deleted = $this->bbcService->deleteVocabulary($request->user(), $vocabularyId);
+        $deleted = $this->catalog->deleteVocabulary($request->user(), $vocabularyId);
 
         if (! $deleted) {
             return response()->json(['error' => 'Vocabulary not found'], 404);
@@ -225,7 +230,7 @@ class BbcController extends Controller
 
     public function dashboard(Request $request): JsonResponse
     {
-        $metrics = $this->bbcService->getDashboardMetrics($request->user());
+        $metrics = $this->catalog->getDashboardMetrics($request->user());
 
         return response()->json(['data' => $metrics]);
     }
@@ -234,7 +239,7 @@ class BbcController extends Controller
 
     public function getDictation(Request $request, int $id): JsonResponse
     {
-        $lesson = $this->bbcService->getDictation($id);
+        $lesson = $this->dictation->getDictation($id);
 
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
@@ -244,15 +249,19 @@ class BbcController extends Controller
         $segments = $metadata['segments'] ?? [];
         $hasSegments = is_array($segments) && count($segments) > 0;
 
-        return response()->json([
+        $response = [
             'data' => [
                 'lesson' => $lesson->toApiArray(),
                 'has_segments' => $hasSegments,
                 'segments' => $hasSegments ? $segments : [],
                 'audio_url' => $metadata['audio_url'] ?? null,
                 'episode_code' => $metadata['episode_code'] ?? null,
+                'segments_source' => $lesson->segments_source,
+                'requires_user_transcript' => $lesson->segments_source === ListeningExternalLesson::SEGMENTS_SOURCE_LEGACY_BBC,
             ],
-        ]);
+        ];
+
+        return response()->json($response);
     }
 
     public function submitSegment(Request $request, int $id): JsonResponse
@@ -263,16 +272,23 @@ class BbcController extends Controller
             'time_spent_ms' => 'required|integer|min:0',
         ]);
 
-        $lesson = $this->bbcService->getDictation($id);
+        $lesson = $this->dictation->getDictation($id);
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
 
-        if (! $this->bbcService->hasDictationSegments($id)) {
+        if (! $this->dictation->hasDictationSegments($id)) {
             return response()->json(['error' => 'Dictation not available for this lesson'], 400);
         }
 
-        $result = $this->bbcService->scoreSegment(
+        if ($lesson->segments_source === ListeningExternalLesson::SEGMENTS_SOURCE_LEGACY_BBC) {
+            return response()->json([
+                'error' => 'Legacy BBC content has been retired for content-policy reasons. Please provide your own audio and transcript.',
+                'code' => 'BBC_CONTENT_RETIRED',
+            ], 410);
+        }
+
+        $result = $this->dictation->scoreSegment(
             $request->user()->id,
             $id,
             (int) $request->input('segment_index'),
@@ -289,25 +305,66 @@ class BbcController extends Controller
 
     public function getDictationSummary(Request $request, int $id): JsonResponse
     {
-        $lesson = $this->bbcService->getDictation($id);
+        $lesson = $this->dictation->getDictation($id);
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
 
-        $summary = $this->bbcService->getDictationSummary($request->user()->id, $id);
+        $summary = $this->dictation->getDictationSummary($request->user()->id, $id);
 
         return response()->json(['data' => $summary]);
     }
 
     public function completeDictation(Request $request, int $id): JsonResponse
     {
-        $lesson = $this->bbcService->getDictation($id);
+        $lesson = $this->dictation->getDictation($id);
         if (! $lesson) {
             return response()->json(['error' => 'Lesson not found'], 404);
         }
 
-        $progress = $this->bbcService->completeDictation($request->user()->id, $id);
+        $progress = $this->dictation->completeDictation($request->user()->id, $id);
 
         return response()->json(['data' => $progress->toApiArray()]);
+    }
+
+    // ── Vocabulary Cache Endpoints ───────────────────────────
+
+    public function getVocabularyCache(int $id): JsonResponse
+    {
+        $lesson = $this->catalog->getLessonById($id);
+        if (! $lesson) {
+            return response()->json(['error' => 'Lesson not found'], 404);
+        }
+
+        $vocab = $this->vocabCache->getVocabulary($id);
+
+        return response()->json([
+            'data' => $vocab->map(fn ($v) => $v->toApiArray()),
+        ]);
+    }
+
+    public function syncVocabularyCache(Request $request, int $id): JsonResponse
+    {
+        $request->validate([
+            'items' => 'required|array|max:200',
+            'items.*.word' => 'required|string|max:100',
+            'items.*.brief_meaning' => 'nullable|string|max:500',
+            'items.*.position' => 'nullable|integer|min:0',
+        ]);
+
+        $lesson = $this->catalog->getLessonById($id);
+        if (! $lesson) {
+            return response()->json(['error' => 'Lesson not found'], 404);
+        }
+
+        // Atomic replace: clear and re-insert. Vocabulary cache is small
+        // (max ~50 entries per lesson) so this is cheap and avoids
+        // subtle "did this term get removed?" reconciliation logic.
+        $this->vocabCache->clearForLesson($id);
+        $created = $this->vocabCache->addBulk($id, $request->input('items'));
+
+        return response()->json([
+            'data' => $created->map(fn ($v) => $v->toApiArray()),
+        ]);
     }
 }

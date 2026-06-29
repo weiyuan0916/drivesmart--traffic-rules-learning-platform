@@ -1,0 +1,85 @@
+{
+  "slug": "do-you-have-good-dining-etiquette",
+  "intro_skip_sec": 5.0,
+  "source": "estimate",
+  "segments": [
+    {
+      "id": 405,
+      "position": 0,
+      "start": 5.0,
+      "end": 27.308
+    },
+    {
+      "id": 406,
+      "position": 1,
+      "start": 27.308,
+      "end": 63.462
+    },
+    {
+      "id": 407,
+      "position": 2,
+      "start": 63.462,
+      "end": 106.154
+    },
+    {
+      "id": 408,
+      "position": 3,
+      "start": 106.154,
+      "end": 160.769
+    },
+    {
+      "id": 409,
+      "position": 4,
+      "start": 160.769,
+      "end": 186.923
+    },
+    {
+      "id": 410,
+      "position": 5,
+      "start": 186.923,
+      "end": 218.846
+    },
+    {
+      "id": 411,
+      "position": 6,
+      "start": 218.846,
+      "end": 257.308
+    },
+    {
+      "id": 412,
+      "position": 7,
+      "start": 257.308,
+      "end": 264.231
+    },
+    {
+      "id": 413,
+      "position": 8,
+      "start": 264.231,
+      "end": 295.385
+    },
+    {
+      "id": 414,
+      "position": 9,
+      "start": 295.385,
+      "end": 321.923
+    },
+    {
+      "id": 415,
+      "position": 10,
+      "start": 321.923,
+      "end": 352.692
+    },
+    {
+      "id": 416,
+      "position": 11,
+      "start": 352.692,
+      "end": 371.154
+    },
+    {
+      "id": 417,
+      "position": 12,
+      "start": 371.154,
+      "end": 394.231
+    }
+  ]
+}

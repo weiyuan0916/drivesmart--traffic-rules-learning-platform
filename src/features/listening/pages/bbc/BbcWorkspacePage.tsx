@@ -237,8 +237,8 @@ export default function BbcWorkspacePage({ topicSlug, onNavigate }: BbcWorkspace
   useEffect(() => () => reset(), [reset])
 
   const goBack = () => {
-    if (onNavigate) onNavigate('bbc-detail', { slug: lessonSlug })
-    else navigate(`/listening/bbc/${lessonSlug}`)
+    if (onNavigate) onNavigate('bbc-list')
+    else navigate('/listening/bbc')
   }
 
   if (isLoading) {

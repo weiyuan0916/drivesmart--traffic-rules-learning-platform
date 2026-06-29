@@ -1,0 +1,458 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 11.73,
+    "duration": 11.73,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 11.73,
+    "end": 13.97,
+    "duration": 2.24,
+    "text": "I'm Phil. And I'm Pippa.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 13.97,
+    "end": 24.97,
+    "duration": 11.0,
+    "text": "In this episode, we're discussing etiquette, the rules about what makes polite behaviour, and in particular, the do's and don'ts about what you should and shouldn't do when eating.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 24.97,
+    "end": 29.37,
+    "duration": 4.4,
+    "text": "So Phil, what's the worst thing someone can do while eating, in your opinion?",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 29.37,
+    "end": 34.33,
+    "duration": 4.96,
+    "text": "For me, it's being very noisy when you do it, I can't stand it.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 34.33,
+    "end": 46.85,
+    "duration": 12.52,
+    "text": "Hmm, okay. I don't have too many rules about eating, but I was always told growing up that you shouldn't have your elbows on the table, and I never really understood why, but I always remember that one.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 46.85,
+    "end": 60.97,
+    "duration": 14.12,
+    "text": "So we'll be hearing more about multi-managers from some college students and an expert on British etiquette, and as usual, we'll be learning some useful new words and phrases, all of which you can find on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 60.97,
+    "end": 64.29,
+    "duration": 3.32,
+    "text": "But first, I have a question for you, Pippa.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 64.29,
+    "end": 68.21,
+    "duration": 3.92,
+    "text": "Ideas about polite behaviour change a lot from country to country.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 68.21,
+    "end": 79.21,
+    "duration": 11.0,
+    "text": "So when BBC program The Food Chain asked listeners from around the world about eating manners in their country, what do you think was the most common complaint?",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 79.21,
+    "end": 89.77,
+    "duration": 10.56,
+    "text": "Was it A, people eating with their hands, B, people eating noisily, or C, people burping at the table?",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 89.77,
+    "end": 97.97,
+    "duration": 8.2,
+    "text": "Hmm, I don't think it's people eating with their hands, because lots of people around the world do that as kind of their normal way of eating.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 97.97,
+    "end": 103.69,
+    "duration": 5.72,
+    "text": "But maybe it's B, people eating noisily, I think, like you mentioned Phil, that's quite annoying.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 103.69,
+    "end": 106.57,
+    "duration": 2.88,
+    "text": "Well, we'll find out the answer later in the program.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 106.57,
+    "end": 113.81,
+    "duration": 7.24,
+    "text": "The Food Chain also interviewed students at London City of Westminster College about family dinner times.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 113.81,
+    "end": 120.41,
+    "duration": 6.6,
+    "text": "Samuel is 19, and from Sierra Leone, and Ia is 18, and British, but her family are from Iraq.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 120.41,
+    "end": 125.01,
+    "duration": 4.6,
+    "text": "Let's listen as they chat with BBC World Services, The Food Chain.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 125.01,
+    "end": 133.57,
+    "duration": 8.56,
+    "text": "Yeah, I would say first impressions really do matter because it's also, it's really important how you portray yourself, how you present yourself to the person.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 133.57,
+    "end": 140.37,
+    "duration": 6.8,
+    "text": "What I don't want to see is any loud chewing or with your mouth open, please, and thank you.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 140.37,
+    "end": 154.01,
+    "duration": 13.64,
+    "text": "I would like to see though, I contact having a conversation using your cutlery, sometimes and I thought this could be like picky for everyone else, but having a tissue or napkin on your lap, just in case you spill anything.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 154.01,
+    "end": 157.05,
+    "duration": 3.04,
+    "text": "The students think etiquette is important.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 157.05,
+    "end": 160.65,
+    "duration": 3.6,
+    "text": "Samuel says it's about making a good first impression.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 160.65,
+    "end": 165.77,
+    "duration": 5.12,
+    "text": "Your first impression is the opinion you form about someone when you meet them for the first time.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 165.77,
+    "end": 169.61,
+    "duration": 3.84,
+    "text": "For Ia, eating with your mouth open is definitely rude.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 169.61,
+    "end": 174.77,
+    "duration": 5.16,
+    "text": "She also thinks people should use a napkin, although that could be seen as picky.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 174.77,
+    "end": 177.93,
+    "duration": 3.16,
+    "text": "Picky here means being too strict about the rules.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 177.93,
+    "end": 188.21,
+    "duration": 10.28,
+    "text": "For this group of students, showing respect and appreciation for the meal is very important, and this idea is common across most, if not all, cultures throughout history.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 188.21,
+    "end": 197.57,
+    "duration": 9.36,
+    "text": "So imagine a scene from a TV show like Game of Thrones, two enemy forces have stopped fighting made peace and now gather for a meal.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 197.57,
+    "end": 202.69,
+    "duration": 5.12,
+    "text": "The leaders clink glasses, meaning they lift up and touch drinks, and make a toast.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 202.69,
+    "end": 206.25,
+    "duration": 3.56,
+    "text": "They hold up a glass of alcohol and drink it to show respect.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 206.25,
+    "end": 216.69,
+    "duration": 10.44,
+    "text": "Now keep that image in mind, because we're going to hear British etiquette coach Rupert Wesson explaining why people clink glasses.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 216.69,
+    "end": 223.09,
+    "duration": 6.4,
+    "text": "Here he is talking to Ruth Alexander, presenter of BBC World Service Programme, The Food Chain.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 223.09,
+    "end": 227.61,
+    "duration": 4.52,
+    "text": "Perhaps the simplest example is, is why do we clink glasses when we have a toast?",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 227.61,
+    "end": 234.53,
+    "duration": 6.92,
+    "text": "If you clink glasses, you're slopping a bit of your drink into his cup and he's slopping a bit of drink into your cup.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 234.53,
+    "end": 241.97,
+    "duration": 7.44,
+    "text": "And therefore by having that toast, you are showing, look, I trust you, you trust me, and that's why we do it.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 241.97,
+    "end": 245.73,
+    "duration": 3.76,
+    "text": "If you've poisoned my drink that's now slopped into your cup, you won't drink it.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 245.73,
+    "end": 252.61,
+    "duration": 6.88,
+    "text": "Correct. Hats at the table, we're hearing from BBC World Service listeners that that is a no-no, is that right?",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 252.61,
+    "end": 254.09,
+    "duration": 1.48,
+    "text": "It's not something I would do.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 254.09,
+    "end": 258.74,
+    "duration": 4.65,
+    "text": "In fact, I would not be wearing a hat inside, anyway.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 258.74,
+    "end": 267.62,
+    "duration": 8.88,
+    "text": "So Phil, when we clink glasses in a toast, some of my drink might spill into your glass and some of your drink might spill into mine.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 267.62,
+    "end": 272.06,
+    "duration": 4.44,
+    "text": "Historically, this mixing of drinks was a way of proving the drinks were not poisoned.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 272.34,
+    "end": 278.42,
+    "duration": 6.08,
+    "text": "Ruth also asked about wearing hats at the table, and Rupert calls this a no-no.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 278.42,
+    "end": 284.06,
+    "duration": 5.64,
+    "text": "A no-no is an informal phrase for something that is considered socially unacceptable.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 284.06,
+    "end": 292.78,
+    "duration": 8.72,
+    "text": "Etiquette varies a lot over time and culture, but the essential point is always to show appreciation by doing some things and avoiding others.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 292.78,
+    "end": 296.34,
+    "duration": 3.56,
+    "text": "And speaking of things to avoid, what was the answer to your question, Phil?",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 296.34,
+    "end": 303.98,
+    "duration": 7.64,
+    "text": "OK, well, I asked you what listeners of the food chain thought was the biggest Etiquette problem when people were eating?",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 303.98,
+    "end": 309.1,
+    "duration": 5.12,
+    "text": "You said that it was people eating noisily, and I can reveal, that's the right answer.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 309.1,
+    "end": 311.26,
+    "duration": 2.16,
+    "text": "It was people eating noisily.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 311.26,
+    "end": 317.26,
+    "duration": 6.0,
+    "text": "OK, let's recap the vocabulary we've learnt about meal time, dos, and don'ts.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 317.26,
+    "end": 320.82,
+    "duration": 3.56,
+    "text": "Rules about how you should and shouldn't behave.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 320.82,
+    "end": 326.02,
+    "duration": 5.2,
+    "text": "Your first impression of someone is the opinion you form when meeting them for the first time.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 326.02,
+    "end": 331.26,
+    "duration": 5.24,
+    "text": "The word picky is used to describe someone who is too strict about rules.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 331.26,
+    "end": 342.06,
+    "duration": 10.8,
+    "text": "If you clink glasses, you touch two drinking glasses together as a gesture of friendship, probably because you're making a toast, a show of respect that involves drinking from a glass of alcohol.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 342.06,
+    "end": 349.1,
+    "duration": 7.04,
+    "text": "And finally, a no-no is an informal word for something considered socially unacceptable.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 349.1,
+    "end": 361.66,
+    "duration": 12.56,
+    "text": "Once again, our six minutes are up, but if you'd like to find out more about dining Etiquette, then head over to our website, bbclearningenglish.com, to download a program worksheet and try the quiz.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 361.66,
+    "end": 364.86,
+    "duration": 3.2,
+    "text": "See you again soon, but for now, it's goodbye.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 364.86,
+    "end": 365.86,
+    "duration": 1.0,
+    "text": "Bye.",
+    "file": "audio_clips/56.mp3"
+  }
+]

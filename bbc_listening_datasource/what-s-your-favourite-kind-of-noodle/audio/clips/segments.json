@@ -1,0 +1,442 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.0,
+    "duration": 12.0,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Neil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.0,
+    "end": 16.16,
+    "duration": 4.16,
+    "text": "And I'm Beth. Do you enjoy eating noodles, Beth?",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 16.16,
+    "end": 21.92,
+    "duration": 5.76,
+    "text": "I love noodles, yes. I think my favourite are udon, the big thick ones.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 21.92,
+    "end": 33.52,
+    "duration": 11.6,
+    "text": "Mmm, they're so good. Well, some people buy them dried in a packet. Others make them fresh from wheat or rice, but there is little douts that noodles are popular around the world.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 33.52,
+    "end": 49.92,
+    "duration": 16.4,
+    "text": "From their origins, probably somewhere in China, noodle recipes were spread by traders on the ancient Silk Road. At each destination, along the road, people gave noodles a twist adding different flavours and ingredients to create a new dish.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 49.92,
+    "end": 72.0,
+    "duration": 22.08,
+    "text": "In this programme, we'll visit the United States and Japan, two countries which have taken noodles and created exciting new varieties. As usual, we'll learn some useful new vocabulary and remember, you can read along with the transcript of this programme available now on our website, BBCLearningEnglish.com. But first Neil, I have a question for you.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 72.0,
+    "end": 77.68,
+    "duration": 5.68,
+    "text": "As well as different shapes and ingredients, noodles come in many different flavours.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 77.68,
+    "end": 82.72,
+    "duration": 5.04,
+    "text": "So which region of China is famous for its spicy flavours?",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 82.96,
+    "end": 89.02,
+    "duration": 6.06,
+    "text": "It's A, Shanghai, B, Sichuan or C, Guangzhou.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 90.08,
+    "end": 99.28,
+    "duration": 9.2,
+    "text": "Well, I think actually Beth, I know the answer to this, who I've been lucky enough to have been to this place. I think it's B, Sichuan.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 99.28,
+    "end": 103.84,
+    "duration": 4.56,
+    "text": "Okay, well, you sound confident. I will reveal the answer later in the programme.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 104.4,
+    "end": 121.84,
+    "duration": 17.44,
+    "text": "BBC World Service programme, the food chain, investigated how noodles spread from Asia through Europe to America. They uncovered a surprising story that pasta comes from noodles brought back to Italy by Marco Polo in the 13th century.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 121.84,
+    "end": 127.76,
+    "duration": 5.92,
+    "text": "Jen Lin Liu, author of the book on the noodle road, doesn't believe this story.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 127.76,
+    "end": 134.0,
+    "duration": 6.24,
+    "text": "So noodles were very exotic in the 1920s and 30s in the United States.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 134.0,
+    "end": 153.04,
+    "duration": 19.04,
+    "text": "And there was a new post-association in America that wanted to promote the manufacturing of dried pasta. And so they came up with a story about how Marco Polo went to China and found the noodle there and brought it all the way to Italy.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 153.04,
+    "end": 169.12,
+    "duration": 16.08,
+    "text": "In the 1920s, noodles were popular because they were exotic, meaning foreign, unusual and exciting. At that time, pasta companies were promoting a new invention, dried pasta, so they came up with a story about Marco Polo to sell more pasta.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 169.76,
+    "end": 173.68,
+    "duration": 3.92,
+    "text": "If you come up with something, you suggest or think up an idea.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 173.68,
+    "end": 177.12,
+    "duration": 3.44,
+    "text": "And it worked. Sales of pasta jumped as a result.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 177.12,
+    "end": 182.88,
+    "duration": 5.76,
+    "text": "Now our second destination, Japan, also has a history of eating noodles.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 182.88,
+    "end": 186.88,
+    "duration": 4.0,
+    "text": "One of the most famous Japanese noodle dishes is ramen.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 186.88,
+    "end": 191.6,
+    "duration": 4.72,
+    "text": "And Frank Stregel, a blogger living in Tokyo, knows all about it.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 191.6,
+    "end": 195.76,
+    "duration": 4.16,
+    "text": "He eats over 300 bowls of ramen a year.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 195.76,
+    "end": 205.2,
+    "duration": 9.44,
+    "text": "He explained to BBC World Services the food chain, how Chinese immigrants to Japan in the late 1800s influenced this Japanese dish.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 205.76,
+    "end": 211.12,
+    "duration": 5.36,
+    "text": "And at one point or another, different chefs decided to localize these dishes.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 211.12,
+    "end": 215.12,
+    "duration": 4.0,
+    "text": "They said, we love these Chinese noodle dishes. However, why don't we tweak them?",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 215.12,
+    "end": 217.68,
+    "duration": 2.56,
+    "text": "Why don't we make them a little bit more Japanese?",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 217.68,
+    "end": 223.44,
+    "duration": 5.76,
+    "text": "Frank says that at one point or another, chefs started to make noodle dishes more Japanese.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 223.44,
+    "end": 229.68,
+    "duration": 6.24,
+    "text": "Here, the phrase at one point or another, means at some unspecified time in the past.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 229.68,
+    "end": 232.64,
+    "duration": 2.96,
+    "text": "They did this by tweaking Chinese noodles.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 232.64,
+    "end": 236.32,
+    "duration": 3.68,
+    "text": "In other words, by changing them slightly to make them better.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 236.32,
+    "end": 239.52,
+    "duration": 3.2,
+    "text": "Different or, in this case, more Japanese.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 239.52,
+    "end": 246.96,
+    "duration": 7.44,
+    "text": "By making these tweaks, adding new toppings and slices of beef or chicken, Japanese chefs created the noodle dish we know today as ramen.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 247.52,
+    "end": 252.08,
+    "duration": 4.56,
+    "text": "Here's Frank Striegel again, talking with BBC World Services the food chain.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 252.08,
+    "end": 259.76,
+    "duration": 7.68,
+    "text": "And what I find fascinating about ramen, compared to perhaps other wonderful noodle dishes around the world, is that ramen continues to evolve.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 259.76,
+    "end": 263.76,
+    "duration": 4.0,
+    "text": "Unlike other Japanese foods, it's okay to push the boundaries.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 263.76,
+    "end": 272.56,
+    "duration": 8.8,
+    "text": "Frank thinks that Japanese ramen continues to evolve, to develop and change gradually in response to new developments and ideas.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 272.64,
+    "end": 278.88,
+    "duration": 6.24,
+    "text": "Unlike other traditional foods such as sushi, modern versions of ramen push the boundaries.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 278.88,
+    "end": 284.48,
+    "duration": 5.6,
+    "text": "If you push the boundaries, you act in a way which challenges normal, acceptable behaviour.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 284.48,
+    "end": 292.0,
+    "duration": 7.52,
+    "text": "Yes, noodles have changed so much since ancient times that today, you can buy them dried in a packet and simply add hot water.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 292.0,
+    "end": 296.08,
+    "duration": 4.08,
+    "text": "But the flavours and the noodles themselves maintain a link to the past.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 296.08,
+    "end": 299.76,
+    "duration": 3.68,
+    "text": "Now, speaking of flavours, what was the answer to your question, bet?",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 299.76,
+    "end": 304.56,
+    "duration": 4.8,
+    "text": "Well, I asked you which region of China is famous for its spicy flavours.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 305.2,
+    "end": 310.48,
+    "duration": 5.28,
+    "text": "You were very confident with saying Sichuan and that is the correct answer.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 310.48,
+    "end": 316.88,
+    "duration": 6.4,
+    "text": "Sichuan is a place that is famous for spicy food such as the Sichuan pepper and Sichuan hot pot.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 317.52,
+    "end": 320.88,
+    "duration": 3.36,
+    "text": "Okay, it's time to recap the vocabulary we've learnt.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 320.88,
+    "end": 327.68,
+    "duration": 6.8,
+    "text": "If you give something a twist, you change it in some small way to create something new and exciting.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 327.68,
+    "end": 333.2,
+    "duration": 5.52,
+    "text": "The adjective exotic means unusual and exciting because of coming from far away.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 333.2,
+    "end": 338.56,
+    "duration": 5.36,
+    "text": "The phrase at one point or another means at some unspecified time in the past.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 338.56,
+    "end": 342.64,
+    "duration": 4.08,
+    "text": "If you tweak something, you alter it slightly in order to improve it.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 342.64,
+    "end": 346.4,
+    "duration": 3.76,
+    "text": "Something which evolves develops and changes gradually.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 346.4,
+    "end": 352.72,
+    "duration": 6.32,
+    "text": "And finally, the idiom to push the boundaries means to do things which challenge normal, acceptable behaviour.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 353.52,
+    "end": 355.44,
+    "duration": 1.92,
+    "text": "Once again, our six minutes are up.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 355.44,
+    "end": 363.2,
+    "duration": 7.76,
+    "text": "If you enjoyed the programme, why not visit our website and check out all of the different podcasts that we have at BBC Learning English.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 363.2,
+    "end": 364.96,
+    "duration": 1.76,
+    "text": "There's something there for everyone.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 364.96,
+    "end": 366.88,
+    "duration": 1.92,
+    "text": "Thanks for joining us and goodbye. Bye!",
+    "file": "audio_clips/54.mp3"
+  }
+]

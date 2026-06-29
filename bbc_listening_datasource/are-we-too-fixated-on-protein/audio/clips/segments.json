@@ -1,0 +1,234 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.08,
+    "duration": 12.08,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Neil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.08,
+    "end": 18.8,
+    "duration": 6.72,
+    "text": "And I'm Georgie. Neil, we're talking about protein today. What type of protein do you usually eat?",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 18.8,
+    "end": 26.0,
+    "duration": 7.2,
+    "text": "Well, I like all kinds of proteins, fish, bit of chicken, but I think I really like an egg.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 26.0,
+    "end": 28.32,
+    "duration": 2.32,
+    "text": "An egg is my favourite kind of protein.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 28.4,
+    "end": 33.76,
+    "duration": 5.36,
+    "text": "I was going to say that too. I'm a big fan of breakfast foods and eggs are my favourite.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 33.76,
+    "end": 52.16,
+    "duration": 18.4,
+    "text": "Well, you can't beat a good breakfast. Of all the main food groups, such as carbohydrate, fat and fibre, it's protein that seems to be most in the news. In shops and on social media, you'll find all kinds of high-protein foods being advertised, from shakes and yoggots to chocolate.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 52.16,
+    "end": 56.72,
+    "duration": 4.56,
+    "text": "Here's Ruth Alexander, presenter of BBC World Service programme, The Food Chain.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 58.32,
+    "end": 70.24,
+    "duration": 11.92,
+    "text": "Over most dials in the supermarkets now, and you'll see high-protein products in abundance, pasta made with lentils and chickpeas rather than wheat flour, bread fortified with beans and pulses.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 70.24,
+    "end": 96.0,
+    "duration": 25.76,
+    "text": "Ruth casts her eye over the supermarket shelves. If you cast your eye over something, you take a quick look at it. What she sees are protein products in abundance, in other words, in large quantities. Products which already contain protein, like yogurt, are repackaged as high protein. While other items have extra protein added, often in the form of beans and pulses. Protein is big business.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 96.0,
+    "end": 125.28,
+    "duration": 29.28,
+    "text": "Our bodies need protein for health and to build muscle. But with all this focus on protein, are we forgetting about other important nutrients such as fibre? That's what we'll be discussing in this programme, hearing some useful new words and phrases. But first, I have a question for you, Georgie. The popularity of protein started with bodybuilders and people working out in gyms who add extra protein to gain muscle. Irishman Patrick Callahan is a big name in the protein muscle world.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 125.28,
+    "end": 131.44,
+    "duration": 6.16,
+    "text": "But do you know who he is? Is he A, the owner of a company which makes protein shakes?",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 131.44,
+    "end": 151.12,
+    "duration": 19.68,
+    "text": "B, the winner of the 2024 Mr. Universe bodybuilding contest? Or C, the scientist who discovered a new protein in outer space. Oh, I'm going to say Patrick Callahan is the winner of the 2024 Mr. Universe bodybuilding contest. Okay, we'll find out if you're right at the end.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 151.92,
+    "end": 156.96,
+    "duration": 5.04,
+    "text": "Marketing campaigns that promote sales of high protein food are certainly working.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 156.96,
+    "end": 169.28,
+    "duration": 12.32,
+    "text": "Sales of protein products make around £7 billion globally. Here's Scott Dicker from Spins, a market research company in Chicago, talking with BBC programme The Food Chain.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 169.92,
+    "end": 180.64,
+    "duration": 10.72,
+    "text": "So sometimes carbs are good, sometimes they're bad for consumers, sometimes fat is good, sometimes it's bad for consumers. But protein seems to have this continuous health halo on it.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 180.64,
+    "end": 187.6,
+    "duration": 6.96,
+    "text": "Unlike carbs, that's carbohydrates and fat. Consumers don't see any downside to eating protein.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 187.6,
+    "end": 200.32,
+    "duration": 12.72,
+    "text": "Scott says protein has a health halo. A marketing term which describes perceiving a food to be healthy based on a single feature, such as being organic, gluten free or in this case, high protein.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 200.32,
+    "end": 211.28,
+    "duration": 10.96,
+    "text": "Even if it's overall nutritional value is poor. Yes, food which used to be considered unhealthy is now called healthy, just because a spoonful of protein powder has been added.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 211.84,
+    "end": 218.48,
+    "duration": 6.64,
+    "text": "So could our modern obsession with protein mean that we ignore other important food groups like fiber?",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 218.48,
+    "end": 241.52,
+    "duration": 23.04,
+    "text": "NHS surgeon and blogger Dr Karen Rajan thinks so and explains why here to Ruth Alexander on BBC World Service programme The Food Chain. And do you think we're paying enough attention to fiber? Historically, probably not. I think the tide is turning and there's more people interested in fiber and optimizing their fiber intake and fiber maxing even to trend on TikTok.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 241.52,
+    "end": 308.64,
+    "duration": 67.12,
+    "text": "What is fiber maxing? Fiber maxing is, as it suggests, similar to the protein maxing trend where people are trying to maximise their fiber intake with little hacks or tricks or tips that they could do, whether it's adding certain seeds or nuts to snacks. Many people pay more attention to protein than fiber in their diet. But Dr Karen thinks the tide is turning, an idiom which means that things are changing. In part, this is thanks to a new trend from America called fiber maxing, consuming lots of fiber by eating fiber rich foods and supplements for their health benefits. Dr Karen also gives some hacks, good solutions or pieces of advice to help boost your fiber intake, for example adding seeds and nuts to meals. In fact, the healthiest diet is probably a balanced diet, one containing items from all the major food groups. But I'm still intrigued by your question, Neil, isn't it time you revealed the answer? I asked you who the Irishman Patrick Callahan was. And I said he was the winner of the Mr. Universe contest.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 308.64,
+    "end": 314.32,
+    "duration": 5.68,
+    "text": "And you were? Correct. Yay! Okay, let's recap the vocabulary we've learned in this episode.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 314.96,
+    "end": 318.88,
+    "duration": 3.92,
+    "text": "If you cast your eye over something, you have a quick look at it.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 318.88,
+    "end": 322.88,
+    "duration": 4.0,
+    "text": "If something is in abundance, there's a lot or more than enough of it.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 322.88,
+    "end": 333.68,
+    "duration": 10.8,
+    "text": "A health halo refers to overestimating how healthy an item is based on a single feature, such as being low in calories, gluten free, or high in protein.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 333.68,
+    "end": 337.6,
+    "duration": 3.92,
+    "text": "The idiom the tide is turning means that things are changing.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 337.6,
+    "end": 350.8,
+    "duration": 13.2,
+    "text": "The trend fiber maxing means people intentionally consume lots of fiber by eating fiber rich foods and supplements for their health benefits. And finally, a hack is a good solution or piece of advice.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 350.8,
+    "end": 361.44,
+    "duration": 10.64,
+    "text": "Once again, our six minutes are up. But here's another hack for you. Remember, you can find worksheets, quizzes, and loads more resources to improve your English over on our website.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 361.44,
+    "end": 366.16,
+    "duration": 4.72,
+    "text": "BBCLearningEnglish.com. See you there soon, but for now, it's goodbye.",
+    "file": "audio_clips/28.mp3"
+  }
+]

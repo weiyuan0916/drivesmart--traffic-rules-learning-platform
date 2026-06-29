@@ -1,7 +1,6 @@
 // ============================================================
 // AudioPlayer — VinaListen
-// HTMLAudioElement-based player (MVP — no waveform)
-// Phase 2: Canvas waveform visualization
+// Premium audio player with glass morphism design
 // ============================================================
 
 import { useCallback, useId, memo } from 'react'
@@ -52,12 +51,12 @@ export const AudioPlayer = memo(function AudioPlayer({
 
   return (
     <div
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-5"
       role="region"
       aria-label="Audio player"
     >
       {/* Progress bar */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         {/* Play / Pause */}
         <button
           type="button"
@@ -65,22 +64,25 @@ export const AudioPlayer = memo(function AudioPlayer({
           disabled={disabled || !isLoaded || isError}
           aria-label={isPlaying ? 'Pause' : 'Play'}
           className={cn(
-            'shrink-0 w-12 h-12 rounded-full flex items-center justify-center',
-            'bg-primary text-white transition-colors duration-150',
-            'hover:bg-primary-dark active:scale-95',
-            'disabled:opacity-40 disabled:cursor-not-allowed',
+            'shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center',
+            'bg-gradient-to-br from-primary to-primary-dark text-white',
+            'shadow-lg shadow-primary/25',
+            'hover:shadow-xl hover:shadow-primary/30 hover:scale-105',
+            'active:scale-95',
+            'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100',
+            'transition-all duration-200',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
           )}
         >
           {isPlaying ? (
-            <Pause size={20} aria-hidden="true" />
+            <Pause size={22} className="md:w-6 md:h-6" aria-hidden="true" />
           ) : (
-            <Play size={20} className="ml-0.5" aria-hidden="true" />
+            <Play size={22} className="ml-0.5 md:w-6 md:h-6" aria-hidden="true" />
           )}
         </button>
 
         {/* Progress track */}
-        <div className="flex-1 flex flex-col gap-1.5">
+        <div className="flex-1 flex flex-col gap-2">
           <input
             id={progressId}
             type="range"
@@ -91,26 +93,27 @@ export const AudioPlayer = memo(function AudioPlayer({
             disabled={disabled || !isLoaded}
             aria-label="Seek audio position"
             className={cn(
-              'w-full h-1.5 rounded-full appearance-none cursor-pointer',
-              'bg-light accent-primary',
+              'w-full h-2 md:h-2.5 rounded-full appearance-none cursor-pointer',
+              'bg-light/50 dark:bg-dark',
               'disabled:opacity-40 disabled:cursor-not-allowed',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
               // Track
-              '[&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:rounded-full',
-              '[&::-webkit-slider-runnable-track]:bg-light',
+              '[&::-webkit-slider-runnable-track]:h-2 md:[&::-webkit-slider-runnable-track]:h-2.5 [&::-webkit-slider-runnable-track]:rounded-full',
+              '[&::-webkit-slider-runnable-track]:bg-gradient-to-r [&::-webkit-slider-runnable-track]:from-primary/20 [&::-webkit-slider-runnable-track]:to-primary/20',
+              '[&::-moz-range-track]:h-2 md:[&::-moz-range-track]:h-2.5 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-dark/30',
               // Thumb
-              '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5',
-              '[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary',
-              '[&::-webkit-slider-thumb]:-mt-[5px] [&::-webkit-slider-thumb]:cursor-pointer',
+              '[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 md:[&::-webkit-slider-thumb]:w-5 md:[&::-webkit-slider-thumb]:h-5',
+              '[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white',
+              '[&::-webkit-slider-thumb]:-mt-[6px] md:[&::-webkit-slider-thumb]:-mt-[8px]',
+              '[&::-webkit-slider-thumb]:cursor-pointer',
               '[&::-webkit-slider-thumb]:transition-transform [&::-webkit-slider-thumb]:duration-100',
               '[&::-webkit-slider-thumb]:hover:scale-125',
-              '[&::-moz-range-thumb]:w-3.5 [&::-moz-range-thumb]:h-3.5',
-              '[&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary',
-              '[&::-moz-range-thumb]:border-0',
+              '[&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 md:[&::-moz-range-thumb]:w-5 md:[&::-moz-range-thumb]:h-5',
+              '[&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white',
             )}
           />
           {/* Time display */}
-          <div className="flex justify-between text-xs text-muted-foreground tabular-nums">
+          <div className="flex justify-between text-sm text-text-muted tabular-nums px-1">
             <span aria-label="Current time">{formatTime(Math.floor(currentTime))}</span>
             <span aria-label="Duration">
               {isLoaded ? formatTime(Math.floor(duration)) : '--:--'}
@@ -125,14 +128,19 @@ export const AudioPlayer = memo(function AudioPlayer({
           disabled={disabled || !isLoaded || isError}
           aria-label="Replay clip"
           className={cn(
-            'shrink-0 w-10 h-10 rounded-full flex items-center justify-center',
-            'border border-border text-primary transition-colors duration-150',
-            'hover:bg-light active:scale-95',
+            'shrink-0 w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center',
+            'bg-bg-tertiary dark:bg-dark-surface',
+            'border border-border dark:border-border-strong',
+            'text-text-secondary dark:text-text-secondary',
+            'hover:bg-bg-hover dark:hover:bg-dark',
+            'hover:border-primary dark:hover:border-primary',
+            'active:scale-95',
             'disabled:opacity-40 disabled:cursor-not-allowed',
+            'transition-all duration-150',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
           )}
         >
-          <RotateCcw size={18} aria-hidden="true" />
+          <RotateCcw size={20} className="md:w-5 md:h-5" aria-hidden="true" />
         </button>
       </div>
 
@@ -140,10 +148,10 @@ export const AudioPlayer = memo(function AudioPlayer({
       <div
         role="group"
         aria-labelledby={speedGroupId}
-        className="flex items-center gap-1.5"
+        className="flex items-center justify-center gap-1.5"
       >
-        <span id={speedGroupId} className="text-xs text-muted-foreground mr-1">
-          Speed:
+        <span id={speedGroupId} className="text-sm text-text-muted mr-2">
+          Tốc độ:
         </span>
         {PLAYBACK_SPEEDS.map((speed) => (
           <button
@@ -153,11 +161,11 @@ export const AudioPlayer = memo(function AudioPlayer({
             aria-label={`Playback speed ${speed}x`}
             aria-pressed={playbackRate === speed}
             className={cn(
-              'px-3 py-1.5 rounded-md text-xs font-medium transition-colors duration-150',
-              'min-w-[44px] min-h-[36px] flex items-center justify-center',
+              'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150',
+              'min-w-[48px] min-h-[44px] flex items-center justify-center',
               playbackRate === speed
-                ? 'bg-primary text-white'
-                : 'bg-light text-text-secondary hover:bg-hover',
+                ? 'bg-gradient-to-br from-primary to-primary-dark text-white shadow-md shadow-primary/20'
+                : 'bg-bg-tertiary dark:bg-dark-surface text-text-secondary hover:bg-bg-hover dark:hover:bg-dark border border-border dark:border-border-strong',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
             )}
           >
@@ -168,14 +176,14 @@ export const AudioPlayer = memo(function AudioPlayer({
 
       {/* Error state */}
       {isError && (
-        <p className="text-sm text-error" role="alert">
-          Failed to load audio. Please check your connection.
+        <p className="text-sm text-error text-center" role="alert">
+          Không thể tải audio. Vui lòng kiểm tra kết nối.
         </p>
       )}
 
       {/* Loading state */}
       {!isLoaded && !isError && (
-        <p className="text-sm text-muted-foreground">Loading audio...</p>
+        <p className="text-sm text-text-muted text-center">Đang tải audio...</p>
       )}
     </div>
   )

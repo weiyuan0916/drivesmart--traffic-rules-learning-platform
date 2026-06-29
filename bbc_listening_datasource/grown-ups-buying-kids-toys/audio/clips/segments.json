@@ -1,0 +1,450 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 11.46,
+    "duration": 11.46,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Phil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 11.46,
+    "end": 16.98,
+    "duration": 5.52,
+    "text": "And I'm Beth. Action figures, building bricks, stuffed cuddly animals.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 16.98,
+    "end": 22.26,
+    "duration": 5.28,
+    "text": "There's a whole world of toys that many of us have forgotten since we were children.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 22.26,
+    "end": 25.7,
+    "duration": 3.44,
+    "text": "Do you still have any toys from when you were a boy, Phil?",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 25.7,
+    "end": 28.34,
+    "duration": 2.64,
+    "text": "Erm, a couple, but I gave them to my kids.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 28.34,
+    "end": 33.06,
+    "duration": 4.72,
+    "text": "Well, nowadays grown ups playing with toys is more common than you might think.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 33.78,
+    "end": 43.54,
+    "duration": 9.76,
+    "text": "Recent estimates suggest that adults buying kids toys for themselves account for between 30 and 40% of the entire toy market.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 43.54,
+    "end": 52.26,
+    "duration": 8.72,
+    "text": "So many that advertisers have come up with a term for them, kittles. Adults who are interested in toys and games intended for children.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 52.9,
+    "end": 61.14,
+    "duration": 8.24,
+    "text": "Between last October and December alone, American kittles spent over $1.5 billion on toys for themselves.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 61.78,
+    "end": 65.54,
+    "duration": 3.76,
+    "text": "Among the most popular were plush toys or plushies for short.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 65.54,
+    "end": 69.7,
+    "duration": 4.16,
+    "text": "Toy dolls or animals made from cloth and filled with soft material.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 69.7,
+    "end": 75.62,
+    "duration": 5.92,
+    "text": "And like other recent trends, the toy trend is being driven by online shoppers and social media.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 75.62,
+    "end": 80.82,
+    "duration": 5.2,
+    "text": "In this episode, we'll meet a children's toy maker and an online influencer.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 80.9,
+    "end": 85.94,
+    "duration": 5.04,
+    "text": "He were both involved in the increasing trend of adults interested in kids toys.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 85.94,
+    "end": 95.38,
+    "duration": 9.44,
+    "text": "We'll also learn some useful new vocabulary and remember, you'll find a transcript for this episode, along with all the new words and phrases on our website.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 95.38,
+    "end": 100.34,
+    "duration": 4.96,
+    "text": "BBCLearningEnglish.com But first, I have a question for you, Beth.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 100.34,
+    "end": 105.22,
+    "duration": 4.88,
+    "text": "Lego remains one of the most popular and expensive children's toys.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 105.3,
+    "end": 111.7,
+    "duration": 6.4,
+    "text": "So, according to MSN News, what was the most expensive Lego set ever made?",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 111.7,
+    "end": 120.82,
+    "duration": 9.12,
+    "text": "Was it A, the Lego Harry Potter Hogwarts School, B, the Lego Star Wars Millennium Falcon, or C, the Lego Eiffel Tower?",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 121.46,
+    "end": 125.54,
+    "duration": 4.08,
+    "text": "I'm going to guess Hogwarts because I like Harry Potter.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 125.54,
+    "end": 128.9,
+    "duration": 3.36,
+    "text": "Okay, well, we'll find out the answer later in the program.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 129.86,
+    "end": 138.34,
+    "duration": 8.48,
+    "text": "Lisa Lee is a toy maker based in Vancouver and the owner of Leather Monsters, a brand of leather plushies, which he advertises online.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 138.34,
+    "end": 145.7,
+    "duration": 7.36,
+    "text": "Here, Lisa tells BBC World Service Program Business Daily how she reconnected with her love of toys as an adult.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 146.34,
+    "end": 153.78,
+    "duration": 7.44,
+    "text": "Once I kind of had a stable job with disposable income, I kind of rediscovered my love for soft toys.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 153.78,
+    "end": 161.06,
+    "duration": 7.28,
+    "text": "And I started buying them again because I've always loved collecting things because, you know, they bring me happiness, they bring me joy.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 161.06,
+    "end": 169.22,
+    "duration": 8.16,
+    "text": "And I think also a big pillar of my channel and my content is reconnecting with my childhood and healing that inner child.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 169.22,
+    "end": 172.26,
+    "duration": 3.04,
+    "text": "And I think the toys also play a part in that.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 172.82,
+    "end": 177.78,
+    "duration": 4.96,
+    "text": "Lisa started collecting toys as an adult with a job and disposable income.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 178.26,
+    "end": 183.46,
+    "duration": 5.2,
+    "text": "Disposable income is the money you have left over after paying all your expenses.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 183.46,
+    "end": 185.46,
+    "duration": 2.0,
+    "text": "You can use it to buy whatever you like.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 186.34,
+    "end": 190.9,
+    "duration": 4.56,
+    "text": "Soft, cuddly toys make Lisa happy and help her reconnect with her inner child.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 191.38,
+    "end": 198.66,
+    "duration": 7.28,
+    "text": "A term from psychology which describes the part of your adult personality that still feels and reacts like a child.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 198.66,
+    "end": 203.22,
+    "duration": 4.56,
+    "text": "Besides the adults who sell kids toys are the adults who buy them.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 203.86,
+    "end": 212.02,
+    "duration": 8.16,
+    "text": "Jay Glattfelter is an enthusiastic toy collector and influencer who makes YouTube videos under the name Geek Dad Life.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 212.58,
+    "end": 220.98,
+    "duration": 8.4,
+    "text": "Here's Jay talking about the link between COVID lockdowns and the rise in adults toy collecting to BBC World Services Business Daily.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 221.22,
+    "end": 227.14,
+    "duration": 5.92,
+    "text": "And then what happened was a whole bunch of new collectors kind of jumped into toy collecting.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 227.14,
+    "end": 233.46,
+    "duration": 6.32,
+    "text": "And for those of us that were into it before, we saw the prices, the secondary market prices, like explode.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 233.46,
+    "end": 237.78,
+    "duration": 4.32,
+    "text": "Once the pandemic happened because you had people that had time on their hands.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 237.78,
+    "end": 243.3,
+    "duration": 5.52,
+    "text": "Maybe they had extra money because they're not spinning it by going out and now they're putting it into collecting toys.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 243.3,
+    "end": 252.02,
+    "duration": 8.72,
+    "text": "During the pandemic, people had time on their hands and India meaning to have a lot of free time and nothing to do with it.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 252.02,
+    "end": 256.66,
+    "duration": 4.64,
+    "text": "Many adults went online hoping to find the toys they remembered from childhood.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 256.66,
+    "end": 266.74,
+    "duration": 10.08,
+    "text": "As a result, a whole bunch, meaning a large number of people started collecting toys and slowly but surely demand increased and prices went up.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 267.54,
+    "end": 282.5,
+    "duration": 14.96,
+    "text": "Yes, it seems that the feeling of rediscovering your childhood reported by many adult toy collectors comes at a price with the cost of collectible items like Pokemon cards and Jelly Cat plushies increasing dramatically during the pandemic.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 282.5,
+    "end": 288.18,
+    "duration": 5.68,
+    "text": "And speaking of expensive toys, Phil, isn't it time you reveal the answer to your question?",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 288.18,
+    "end": 292.34,
+    "duration": 4.16,
+    "text": "Ah, yes, I asked you what was the most expensive Lego set ever made.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 292.98,
+    "end": 295.46,
+    "duration": 2.48,
+    "text": "You said it was the Lego Hogwarts school.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 296.02,
+    "end": 309.14,
+    "duration": 13.12,
+    "text": "Well, I'm afraid the answer is actually the Lego Star Wars Millennium Falcon which had a UK retail price of 734 pounds, 99, according to FSN News.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 309.14,
+    "end": 318.82,
+    "duration": 9.68,
+    "text": "That's crazy. Okay, it's time to recap the vocabulary we've learned, starting with Kidult, an adult who likes playing with toys and games intended for children.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 318.82,
+    "end": 324.98,
+    "duration": 6.16,
+    "text": "Plushie is short for plush toy, a toy doll or animal stuffed with a soft cloth filling.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 325.46,
+    "end": 331.86,
+    "duration": 6.4,
+    "text": "Your disposable income is the amount of money you have left to buy whatever you want after paying your expenses.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 331.86,
+    "end": 339.3,
+    "duration": 7.44,
+    "text": "Someone's inner child refers to the part of their adult personality that still feels and reacts like a child.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 339.3,
+    "end": 343.38,
+    "duration": 4.08,
+    "text": "A bunch is a number of things, often a large number of things.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 344.1,
+    "end": 351.54,
+    "duration": 7.44,
+    "text": "And finally, the idiom to have time on your hands means having free time and nothing much to do with it.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 351.54,
+    "end": 354.02,
+    "duration": 2.48,
+    "text": "Once again, our six minutes are up.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 354.02,
+    "end": 364.66,
+    "duration": 10.64,
+    "text": "But remember, you'll find episodes about plenty more trending topics along with a quiz and worksheet for this episode on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 364.66,
+    "end": 366.9,
+    "duration": 2.24,
+    "text": "See you there soon, but for now, it's goodbye.",
+    "file": "audio_clips/55.mp3"
+  }
+]

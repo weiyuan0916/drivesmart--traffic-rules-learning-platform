@@ -1,0 +1,490 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.3,
+    "duration": 12.3,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Phil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.3,
+    "end": 13.74,
+    "duration": 1.44,
+    "text": "And I'm Beth.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 13.74,
+    "end": 27.98,
+    "duration": 14.24,
+    "text": "A list is a collection of items with a single item written on each line, and they're everywhere. Shopping lists, to-do lists, even bucket lists, a list of all the things a person would like to do before they die.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 27.98,
+    "end": 31.5,
+    "duration": 3.52,
+    "text": "In fact, there's an episode of 6 Minute English all about them.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 31.5,
+    "end": 35.9,
+    "duration": 4.4,
+    "text": "Imagine you're at the supermarket and find someone's shopping list.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 35.9,
+    "end": 43.34,
+    "duration": 7.44,
+    "text": "This happens a lot to Joe Nolan, a linguistics researcher, whose new book explores our love of lists.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 43.34,
+    "end": 48.7,
+    "duration": 5.36,
+    "text": "Here's Joe reading her shopping list on BBC Radio 4 programme Word of Mouth.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 49.66,
+    "end": 57.55,
+    "duration": 7.89,
+    "text": "I only list the first four items, but the list read Nana's, AI, Pukesrooms.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 58.64,
+    "end": 62.48,
+    "duration": 3.84,
+    "text": "Nana's, AI, Pukesrooms.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 63.92,
+    "end": 67.36,
+    "duration": 3.44,
+    "text": "Can you work out what Joe was buying at the supermarket, Phil?",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 67.36,
+    "end": 72.72,
+    "duration": 5.36,
+    "text": "OK, well, I'm going to guess that Nana's are bananas and shrooms.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 72.72,
+    "end": 74.64,
+    "duration": 1.92,
+    "text": "They've got to be mushrooms, right?",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 74.64,
+    "end": 79.2,
+    "duration": 4.56,
+    "text": "OK, but what about AI and Pukes? What could they mean?",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 79.2,
+    "end": 86.4,
+    "duration": 7.2,
+    "text": "Well, here's Joe's explanation to Michael Rosen, presenter of BBC Radio 4's Word of Mouth.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 87.2,
+    "end": 89.6,
+    "duration": 2.4,
+    "text": "And let's just come back to Pukes.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 89.6,
+    "end": 92.8,
+    "duration": 3.2,
+    "text": "I mean, were you instructing yourself to be sick in the supermarket?",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 92.8,
+    "end": 94.08,
+    "duration": 1.28,
+    "text": "I just a bit lost there.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 94.08,
+    "end": 96.24,
+    "duration": 2.16,
+    "text": "No, it's slightly great to ask.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 96.24,
+    "end": 103.12,
+    "duration": 6.88,
+    "text": "My husband doesn't like cucumber, and the abbreviation for cucumber would be cucumber, so he has always referred to it as puke.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 103.12,
+    "end": 113.28,
+    "duration": 10.16,
+    "text": "Aha, cucumbers make Joe Anna's husband puke, a slang word for vomit, and puke rhymes with puke.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 113.28,
+    "end": 117.04,
+    "duration": 3.76,
+    "text": "So it's a way of reminding her to buy cucumbers.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 117.04,
+    "end": 120.32,
+    "duration": 3.28,
+    "text": "Wow, sometimes lists are like secret codes.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 120.32,
+    "end": 127.44,
+    "duration": 7.12,
+    "text": "In this episode, we'll find out why people love lists and learn some useful new words and phrases.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 127.44,
+    "end": 135.28,
+    "duration": 7.84,
+    "text": "And remember, you'll find another list of all the vocabulary used on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 135.28,
+    "end": 137.92,
+    "duration": 2.64,
+    "text": "But first, a question for you, Beth.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 137.92,
+    "end": 146.24,
+    "duration": 8.32,
+    "text": "According to the list on the internet movie database website, which movie has made the most money ever?",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 146.24,
+    "end": 155.47,
+    "duration": 9.23,
+    "text": "Is it a Titanic, b, Avengers Endgame, or c, Avatar?",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 155.47,
+    "end": 161.07,
+    "duration": 5.6,
+    "text": "I think it might be Avatar, although that might have been the most expensive to make.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 29,
+    "start": 161.95,
+    "end": 165.86,
+    "duration": 3.91,
+    "text": "Okay, well, we'll find out at the end of the program.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 165.86,
+    "end": 174.5,
+    "duration": 8.64,
+    "text": "Popular songs are full of lists, and one of the most famous is my favourite things, sung by Judy Andrews in the film, The Sound of Music.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 174.5,
+    "end": 182.58,
+    "duration": 8.08,
+    "text": "The song lists all her favourite things, from raindrops on roses to whiskers on kittens.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 182.58,
+    "end": 190.02,
+    "duration": 7.44,
+    "text": "Here, Joe Nolan and Michael Rosen discuss the song on BBC Radio 4 program Word of Mouth.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 190.02,
+    "end": 193.22,
+    "duration": 3.2,
+    "text": "I feel like you get a lot, you get a big bang for your back in that song.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 193.22,
+    "end": 197.54,
+    "duration": 4.32,
+    "text": "Maybe it's the positivity, it's a bit saccharine, maybe that's also part of the issue.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 197.54,
+    "end": 203.38,
+    "duration": 5.84,
+    "text": "The list encourages you to think really efficiently, and economically.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 203.38,
+    "end": 210.66,
+    "duration": 7.28,
+    "text": "So I think you don't waste a lot of time and effort making a nice sentence or using long words.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 210.66,
+    "end": 214.1,
+    "duration": 3.44,
+    "text": "You just get to the nub of things quite quickly.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 214.1,
+    "end": 228.98,
+    "duration": 14.88,
+    "text": "The song's list of favourite things is long, and Joe says you get a big bang for your buck, an idiom meaning that you gain a lot in return for the money or effort you spend on something, but not everyone likes the song.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 228.98,
+    "end": 236.42,
+    "duration": 7.44,
+    "text": "Some call it saccharine, an adjective meaning excessively sweet, sentimental or insincere.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 236.42,
+    "end": 242.66,
+    "duration": 6.24,
+    "text": "Lists often abbreviate the items they contain, so you get to the nub of things quickly.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 242.66,
+    "end": 247.1,
+    "duration": 4.44,
+    "text": "The nub of something means the most important or essential point about it.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 247.1,
+    "end": 249.7,
+    "duration": 2.6,
+    "text": "Lists can be useful as well.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 249.7,
+    "end": 256.5,
+    "duration": 6.8,
+    "text": "Here's Joe Nolan giving an example of a useful list to BBC Radio 4's Word of Mouth.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 256.54,
+    "end": 261.94,
+    "duration": 5.4,
+    "text": "A friend of mine who makes pros and cons lists finds that it really helps her resolve a situation.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 261.94,
+    "end": 267.86,
+    "duration": 5.92,
+    "text": "She halves her page, pros, cons, and she said by the end of it, she knows what she's doing.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 267.86,
+    "end": 274.06,
+    "duration": 6.2,
+    "text": "Lists help us make decisions by writing down all the pros and cons of a situation.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 274.06,
+    "end": 282.98,
+    "duration": 8.92,
+    "text": "The pros and cons is another way of saying the advantages and disadvantages of something, especially when you're trying to choose between them.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 282.98,
+    "end": 290.38,
+    "duration": 7.4,
+    "text": "The more you think about it, the more you see lists everywhere in menus and bank statements, for example.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 290.38,
+    "end": 299.82,
+    "duration": 9.44,
+    "text": "And therapists even recommend listing all the good things in your life to feel happier, not bad for a few words on a scrap of paper.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 299.82,
+    "end": 304.1,
+    "duration": 4.28,
+    "text": "Okay, it's time to reveal the answer to my question.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 304.1,
+    "end": 316.9,
+    "duration": 12.8,
+    "text": "Beth, I asked you which movie had made the most money ever and you said Avatar, and now according to the internet movie database, that's exactly right.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 316.9,
+    "end": 323.54,
+    "duration": 6.64,
+    "text": "Yay. Okay, let's recap the vocabulary we've learned starting with bucket list.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 323.54,
+    "end": 326.78,
+    "duration": 3.24,
+    "text": "All the things you would like to do before you die.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 326.78,
+    "end": 329.98,
+    "duration": 3.2,
+    "text": "Puke is slang for vomit or sick.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 329.98,
+    "end": 337.26,
+    "duration": 7.28,
+    "text": "If something gives bang for your buck, you gain a lot of extra value in return for the money or effort you put into it.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 337.26,
+    "end": 342.74,
+    "duration": 5.48,
+    "text": "If you call something saccharine, you criticise it for being too sweet or sentimental.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 342.74,
+    "end": 348.58,
+    "duration": 5.84,
+    "text": "The nub of a problem or situation is the most important or essential thing about it.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 348.58,
+    "end": 354.86,
+    "duration": 6.28,
+    "text": "And finally, some things pros and cons are its advantages and disadvantages.",
+    "file": "audio_clips/58.mp3"
+  },
+  {
+    "id": 59,
+    "start": 354.86,
+    "end": 365.22,
+    "duration": 10.36,
+    "text": "Once again, our six minutes are up, but remember you'll find a quiz and worksheet for this episode over on our website, bbclearningenglish.com.",
+    "file": "audio_clips/59.mp3"
+  },
+  {
+    "id": 60,
+    "start": 365.22,
+    "end": 366.34,
+    "duration": 1.12,
+    "text": "Goodbye for now.",
+    "file": "audio_clips/60.mp3"
+  },
+  {
+    "id": 61,
+    "start": 366.34,
+    "end": 373.02,
+    "duration": 6.68,
+    "text": "Bye. Six minutes English from bbclearningenglish.com.",
+    "file": "audio_clips/61.mp3"
+  }
+]

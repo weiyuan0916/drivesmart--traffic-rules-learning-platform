@@ -4,6 +4,7 @@
 // ============================================================
 
 import { apiClient } from '../api/client'
+import { API_BASE } from './constants'
 import type {
   BbcLesson,
   BbcLessonResponse,
@@ -16,7 +17,7 @@ import type {
   BbcSortBy,
 } from '../types/bbc'
 
-const BASE_PATH = '/api/v1/listening/bbc'
+const BASE_PATH = `${API_BASE}/listening/bbc`
 
 // ── Response Transformers ────────────────────────────────────
 

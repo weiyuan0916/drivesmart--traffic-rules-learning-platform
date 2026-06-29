@@ -1,0 +1,410 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 11.74,
+    "duration": 11.74,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 11.74,
+    "end": 14.06,
+    "duration": 2.32,
+    "text": "I'm Phil. And I'm Beth.",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 14.06,
+    "end": 16.18,
+    "duration": 2.12,
+    "text": "Do you like honey, Phil?",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 16.18,
+    "end": 18.58,
+    "duration": 2.4,
+    "text": "I use it a lot in cooking, so, yes.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 18.58,
+    "end": 33.06,
+    "duration": 14.48,
+    "text": "Well, the relationship between humans, honey and the bees which make it goes back thousands of years, prized for its taste and medicinal properties in ancient times honey was known as liquid gold.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 33.06,
+    "end": 40.7,
+    "duration": 7.64,
+    "text": "But now, thanks to modern farming methods, population of many insects, including bees, are in decline.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 40.7,
+    "end": 47.82,
+    "duration": 7.12,
+    "text": "Sursher, a worried listener from London, calls BBC World Service Programme Crowdscience about the problem.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 47.82,
+    "end": 53.9,
+    "duration": 6.08,
+    "text": "I'm Sursher from the UK, and my question is, can honey help save bees?",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 53.9,
+    "end": 65.66,
+    "duration": 11.76,
+    "text": "I've been vegan for about nine years, and I don't eat honey myself, but I still have a question mark around it, because I know there are bee populations of declining.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 65.66,
+    "end": 75.58,
+    "duration": 9.92,
+    "text": "Sursher is a vegan, someone who doesn't eat anything which comes from animals, not just meat, but things like milk, eggs, and honey, too.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 75.58,
+    "end": 82.38,
+    "duration": 6.8,
+    "text": "Although Sursher doesn't eat honey herself, she says there's a question mark around eating honey.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 82.38,
+    "end": 94.9,
+    "duration": 12.52,
+    "text": "The phrase a question mark around something means there's doubt or uncertainty about something, and what Sursher is uncertain about is whether eating honey might actually save bees.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 94.9,
+    "end": 101.34,
+    "duration": 6.44,
+    "text": "So would it be better for declining bee populations if more people ate honey?",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 101.34,
+    "end": 105.26,
+    "duration": 3.92,
+    "text": "That's what we'll be discussing using some useful new words and phrases.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 105.26,
+    "end": 112.7,
+    "duration": 7.44,
+    "text": "Plus, you'll find all the vocabulary from this episode on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 112.7,
+    "end": 117.02,
+    "duration": 4.32,
+    "text": "But before that, I have a question for you, Phil.",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 117.02,
+    "end": 123.78,
+    "duration": 6.76,
+    "text": "The buzzing sound bees are famous for is made by flapping their four wings incredibly fast.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 123.78,
+    "end": 125.7,
+    "duration": 1.92,
+    "text": "But how fast?",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 125.7,
+    "end": 137.06,
+    "duration": 11.36,
+    "text": "Do honey bees flap their wings A, 90 times per second, B, 190 times per second, or C, 290 times per second?",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 137.26,
+    "end": 144.54,
+    "duration": 7.28,
+    "text": "Well, I have absolutely no idea, so I'm going to guess 190 times per second.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 144.54,
+    "end": 148.26,
+    "duration": 3.72,
+    "text": "OK, well, we'll find out the answer later in the programme.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 148.26,
+    "end": 156.74,
+    "duration": 8.48,
+    "text": "We've been talking about honey bees, but these are just one of the 20,000 species of bee which exist around the world.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 156.74,
+    "end": 163.14,
+    "duration": 6.4,
+    "text": "In fact, honey bees are one of the most widespread insects on the planet and not endangered at all.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 163.22,
+    "end": 168.82,
+    "duration": 5.6,
+    "text": "But the picture isn't so good for wild bees, including the bumblebee.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 168.82,
+    "end": 176.62,
+    "duration": 7.8,
+    "text": "As biologist Dave Goulson, from the University of Sussex, explained to BBC World Service programme, CrowdScience.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 176.62,
+    "end": 181.66,
+    "duration": 5.04,
+    "text": "In the UK, we have 26 bumblebee species, but three have gone extinct.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 181.66,
+    "end": 186.94,
+    "duration": 5.28,
+    "text": "Many of the others are now clinging on in little isolated pockets of good habitat.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 186.94,
+    "end": 191.86,
+    "duration": 4.92,
+    "text": "Honey bees have beekeepers to look after them, but nobody's looking out for the wild bees.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 191.86,
+    "end": 202.54,
+    "duration": 10.68,
+    "text": "Three of the 26 species of British bumblebee have gone extinct, and Dave says other species are clinging on, meaning barely continuing to survive with great effort.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 202.54,
+    "end": 210.58,
+    "duration": 8.04,
+    "text": "This happens in isolated pockets, small areas of habitat in which a particular insect or animal can survive.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 210.58,
+    "end": 222.9,
+    "duration": 12.32,
+    "text": "So while honey bees may not be endangered, lots of other bee species are, and this is bad news because we rely on insects to pollinate crops and to keep ecosystems functioning.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 222.9,
+    "end": 224.14,
+    "duration": 1.24,
+    "text": "That's right, Beth.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 224.14,
+    "end": 229.06,
+    "duration": 4.92,
+    "text": "87% of all plant species need insects for pollination.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 229.06,
+    "end": 235.46,
+    "duration": 6.4,
+    "text": "So without them, most plants on earth would disappear, which would obviously be catastrophic.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 235.46,
+    "end": 246.66,
+    "duration": 11.2,
+    "text": "But according to Dave Goulson, pollination is just one of the many things bees do for us, as he explained to BBC World Services crowd science.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 246.66,
+    "end": 267.58,
+    "duration": 20.92,
+    "text": "That isn't the only thing that insects are doing, and there are much less glamorous, less well-known things like recycling, caipoo, and helping to keep the soil healthy and helping to control crop pests and so on, all of which are also really important, and we kind of take them for granted or are just oblivious that they're even happening.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 267.58,
+    "end": 275.46,
+    "duration": 7.88,
+    "text": "Recycling, caipoo, and keeping the soil healthy are two important jobs bees do, which we take for granted.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 275.46,
+    "end": 281.74,
+    "duration": 6.28,
+    "text": "If you take something for granted, you fail to value or appreciate something which benefits you.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 281.74,
+    "end": 290.38,
+    "duration": 8.64,
+    "text": "We humans are oblivious, meaning unaware or unmindful of the many things bees do to support life on earth.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 290.38,
+    "end": 300.94,
+    "duration": 10.56,
+    "text": "So while eating more honey probably won't do much to save wild bees, there are things you can do such as growing bee-friendly plants which flower in spring like lavender.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 300.94,
+    "end": 305.26,
+    "duration": 4.32,
+    "text": "Okay Phil, I think it's time to reveal the answer to my question.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 305.26,
+    "end": 310.62,
+    "duration": 5.36,
+    "text": "I asked you how many times bees flap their wings per second.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 310.62,
+    "end": 315.74,
+    "duration": 5.12,
+    "text": "You said 190, which was the correct answer, well done.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 315.74,
+    "end": 324.14,
+    "duration": 8.4,
+    "text": "Oh. Okay, let's recap the vocabulary we've learnt starting with vegan, someone who doesn't consume any animal products.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 324.14,
+    "end": 331.02,
+    "duration": 6.88,
+    "text": "If you say there's a question mark around something, you mean there's some doubt or uncertainty about it.",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 331.02,
+    "end": 337.26,
+    "duration": 6.24,
+    "text": "If an animal species is clinging on, it's holding onto existence with great effort.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 337.26,
+    "end": 344.06,
+    "duration": 6.8,
+    "text": "Isolated pockets refer to small areas of habitat in which a particular insect or animal can survive.",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 344.06,
+    "end": 350.46,
+    "duration": 6.4,
+    "text": "To take something for granted means to not appreciate or show gratitude for something which helps you.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 350.46,
+    "end": 354.94,
+    "duration": 4.48,
+    "text": "And finally, the adjective oblivious means unaware.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 354.94,
+    "end": 356.94,
+    "duration": 2.0,
+    "text": "Once again, our six minutes are up.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 356.94,
+    "end": 365.58,
+    "duration": 8.64,
+    "text": "But if you're keen for more, then head over to our website bbclearningenglish.com and download the worksheet and try the quiz on this episode.",
+    "file": "audio_clips/50.mp3"
+  }
+]

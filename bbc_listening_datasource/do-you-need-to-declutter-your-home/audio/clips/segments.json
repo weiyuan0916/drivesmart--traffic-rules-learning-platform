@@ -1,0 +1,658 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.59,
+    "duration": 12.59,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish, I'm Neil.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.59,
+    "end": 17.79,
+    "duration": 5.2,
+    "text": "And I'm Georgie, do you live in a neat and tidy home or is there stuff everywhere?",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 17.79,
+    "end": 28.51,
+    "duration": 10.72,
+    "text": "If your room is filled with heaps of clothes and piles of books, you may have a problem with clutter, things in your home which take up space in an untidy, disorganised way.",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 28.51,
+    "end": 30.51,
+    "duration": 2.0,
+    "text": "Clutter is a common problem.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 30.51,
+    "end": 36.27,
+    "duration": 5.76,
+    "text": "In fact, clutter was the topic of a recent episode of BBC Radio 4 program Woman's Hour.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 36.27,
+    "end": 40.35,
+    "duration": 4.08,
+    "text": "Here's presenter Nulam Agavan reading a message from one listener.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 40.35,
+    "end": 46.15,
+    "duration": 5.8,
+    "text": "Some of you have been in touch already to share your thoughts and experiences when it comes to clutter.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 46.15,
+    "end": 47.15,
+    "duration": 1.0,
+    "text": "Here is one.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 47.15,
+    "end": 50.63,
+    "duration": 3.48,
+    "text": "The clutter in my house is actually starting to affect my mental health.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 50.63,
+    "end": 53.31,
+    "duration": 2.68,
+    "text": "I can't think or work anymore.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 53.31,
+    "end": 58.07,
+    "duration": 4.76,
+    "text": "So much so, it woke me at 4am this morning and I felt a strong urge to tidy.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 58.07,
+    "end": 61.75,
+    "duration": 3.68,
+    "text": "I have given myself a week as I cannot take it anymore.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 61.75,
+    "end": 65.11,
+    "duration": 3.36,
+    "text": "So Neil, do you have a problem with clutter?",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 65.11,
+    "end": 73.43,
+    "duration": 8.32,
+    "text": "Well, I don't have a problem with clutter, but I live with children and there is clutter everywhere and it drives me mad.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 73.43,
+    "end": 75.43,
+    "duration": 2.0,
+    "text": "Ah, that's so annoying.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 75.43,
+    "end": 76.43,
+    "duration": 1.0,
+    "text": "How about you?",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 76.43,
+    "end": 78.27,
+    "duration": 1.84,
+    "text": "Yeah, I don't have a problem with clutter.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 78.27,
+    "end": 80.59,
+    "duration": 2.32,
+    "text": "I would describe myself as a minimalist.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 80.59,
+    "end": 82.23,
+    "duration": 1.64,
+    "text": "I don't have very much stuff.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 82.23,
+    "end": 83.87,
+    "duration": 1.64,
+    "text": "Ah, very efficient.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 83.87,
+    "end": 89.63,
+    "duration": 5.76,
+    "text": "Yes. So we don't have a problem with clutter, but if you do, there's a simple solution.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 89.63,
+    "end": 94.23,
+    "duration": 4.6,
+    "text": "Decluttering or throwing away some of the unused stuff filling our homes.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 94.23,
+    "end": 98.19,
+    "duration": 3.96,
+    "text": "But deciding what to keep and what to throw away is not so easy.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 98.19,
+    "end": 105.23,
+    "duration": 7.04,
+    "text": "So in this episode, we'll hear some advice on keeping your life clutter free along with some useful new words and phrases.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 105.23,
+    "end": 114.03,
+    "duration": 8.8,
+    "text": "And remember, you can find all the vocabulary for this program along with a quiz and worksheet on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 114.03,
+    "end": 116.83,
+    "duration": 2.8,
+    "text": "But first, I have a question for you, Georgie.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 116.83,
+    "end": 124.63,
+    "duration": 7.8,
+    "text": "Decluttering was popularized by Mary Condo's best-selling 2011 book, The Life Changing Magic of Tidying Up.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 124.63,
+    "end": 126.71,
+    "duration": 2.08,
+    "text": "And there's still lots of interest today.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 126.71,
+    "end": 132.87,
+    "duration": 6.16,
+    "text": "So how many Instagram posts can you currently find under the hashtag, Declutter?",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 132.87,
+    "end": 139.83,
+    "duration": 6.96,
+    "text": "Is it a, 2.6000, b, 2.6 million, or c, 26 million?",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 139.83,
+    "end": 144.39,
+    "duration": 4.56,
+    "text": "I'm going to go in the middle and say, b, 2.6 million.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 144.39,
+    "end": 148.22,
+    "duration": 3.83,
+    "text": "OK, we'll find out the answer at the end of the program.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 148.22,
+    "end": 156.06,
+    "duration": 7.84,
+    "text": "As well as social media, Decluttering has become popular with television shows, including the BBC's interior design masters.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 156.06,
+    "end": 164.5,
+    "duration": 8.44,
+    "text": "Here, one of the show's judges, Michelle Agunderhin, tells BBC Radio 4's Woman's Hour why she thinks clutter is such a problem.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 164.5,
+    "end": 167.86,
+    "duration": 3.36,
+    "text": "Visual clutter is more exhausting than we realize.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 167.86,
+    "end": 169.06,
+    "duration": 1.2,
+    "text": "It's not just stuff.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 169.06,
+    "end": 172.02,
+    "duration": 2.96,
+    "text": "Our brains are constantly processing our surroundings.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 172.02,
+    "end": 175.78,
+    "duration": 3.76,
+    "text": "So they have to work overtime if they're surrounded by chaos.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 175.78,
+    "end": 180.58,
+    "duration": 4.8,
+    "text": "So if you feel drained or exhausted at home, it could be your clutter.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 180.58,
+    "end": 183.78,
+    "duration": 3.2,
+    "text": "I mean, we know that homily, clear space, clear mind.",
+    "file": "audio_clips/39.mp3"
+  },
+  {
+    "id": 40,
+    "start": 183.78,
+    "end": 194.34,
+    "duration": 10.56,
+    "text": "And I promise you that when you clear away the stuff that has no purpose in your life, you will feel better, lighter, uplifted, energized.",
+    "file": "audio_clips/40.mp3"
+  },
+  {
+    "id": 41,
+    "start": 194.34,
+    "end": 202.66,
+    "duration": 8.32,
+    "text": "In a cluttered room, our brains work overtime, meaning they work extra hard to make sense at the disorder, leaving us exhausted.",
+    "file": "audio_clips/41.mp3"
+  },
+  {
+    "id": 42,
+    "start": 202.66,
+    "end": 207.14,
+    "duration": 4.48,
+    "text": "Work overtime also often means work longer than your set hours.",
+    "file": "audio_clips/42.mp3"
+  },
+  {
+    "id": 43,
+    "start": 207.14,
+    "end": 212.5,
+    "duration": 5.36,
+    "text": "Getting rid of clutter makes us feel uplifted, cheerful, happy, and more positive.",
+    "file": "audio_clips/43.mp3"
+  },
+  {
+    "id": 44,
+    "start": 212.5,
+    "end": 213.86,
+    "duration": 1.36,
+    "text": "It sounds simple, doesn't it?",
+    "file": "audio_clips/44.mp3"
+  },
+  {
+    "id": 45,
+    "start": 213.86,
+    "end": 218.14,
+    "duration": 4.28,
+    "text": "And there's even an expression in English, clear space, clear mind.",
+    "file": "audio_clips/45.mp3"
+  },
+  {
+    "id": 46,
+    "start": 218.14,
+    "end": 221.74,
+    "duration": 3.6,
+    "text": "So why do many of us find it hard to throw stuff away?",
+    "file": "audio_clips/46.mp3"
+  },
+  {
+    "id": 47,
+    "start": 221.74,
+    "end": 223.78,
+    "duration": 2.04,
+    "text": "Even things we rarely use.",
+    "file": "audio_clips/47.mp3"
+  },
+  {
+    "id": 48,
+    "start": 223.78,
+    "end": 227.62,
+    "duration": 3.84,
+    "text": "One reason people put off decluttering is the time it takes.",
+    "file": "audio_clips/48.mp3"
+  },
+  {
+    "id": 49,
+    "start": 227.62,
+    "end": 232.42,
+    "duration": 4.8,
+    "text": "Plus, it can be emotionally disturbing, deciding what to keep and what to throw away.",
+    "file": "audio_clips/49.mp3"
+  },
+  {
+    "id": 50,
+    "start": 232.42,
+    "end": 238.3,
+    "duration": 5.88,
+    "text": "But don't worry, says professional organizer and host of the declutter club podcast Ingrid Jansen.",
+    "file": "audio_clips/50.mp3"
+  },
+  {
+    "id": 51,
+    "start": 238.3,
+    "end": 244.3,
+    "duration": 6.0,
+    "text": "The answer is to go slow, as she explains here to BBC Radio 4's Women's Hour.",
+    "file": "audio_clips/51.mp3"
+  },
+  {
+    "id": 52,
+    "start": 244.3,
+    "end": 250.22,
+    "duration": 5.92,
+    "text": "You have to do decluttering slowly, but surely, one drawer, one cupboard at a time.",
+    "file": "audio_clips/52.mp3"
+  },
+  {
+    "id": 53,
+    "start": 250.22,
+    "end": 252.46,
+    "duration": 2.24,
+    "text": "You can't go in organs blazing.",
+    "file": "audio_clips/53.mp3"
+  },
+  {
+    "id": 54,
+    "start": 252.46,
+    "end": 253.46,
+    "duration": 1.0,
+    "text": "You can't go in.",
+    "file": "audio_clips/54.mp3"
+  },
+  {
+    "id": 55,
+    "start": 253.46,
+    "end": 254.9,
+    "duration": 1.44,
+    "text": "That's what we hear all the time.",
+    "file": "audio_clips/55.mp3"
+  },
+  {
+    "id": 56,
+    "start": 254.9,
+    "end": 256.9,
+    "duration": 2.0,
+    "text": "This weekend. Yes.",
+    "file": "audio_clips/56.mp3"
+  },
+  {
+    "id": 57,
+    "start": 256.9,
+    "end": 260.3,
+    "duration": 3.4,
+    "text": "I'm going to sort out my whole room of doom.",
+    "file": "audio_clips/57.mp3"
+  },
+  {
+    "id": 58,
+    "start": 260.3,
+    "end": 264.34,
+    "duration": 4.04,
+    "text": "And after two hours in, they will look around and go, what have I done?",
+    "file": "audio_clips/58.mp3"
+  },
+  {
+    "id": 59,
+    "start": 264.34,
+    "end": 270.74,
+    "duration": 6.4,
+    "text": "There's more chaos than there was before because they've bitten off too much that they can chew.",
+    "file": "audio_clips/59.mp3"
+  },
+  {
+    "id": 60,
+    "start": 270.74,
+    "end": 280.1,
+    "duration": 9.36,
+    "text": "When it comes to decluttering your home, it's best to do things slowly, but surely, in a gradual, but reliable way, which will achieve the result you want.",
+    "file": "audio_clips/60.mp3"
+  },
+  {
+    "id": 61,
+    "start": 280.1,
+    "end": 290.7,
+    "duration": 10.6,
+    "text": "It's a mistake to try to declutter everything all at once, with all guns blazing, an idiom meaning to do things dramatically with lots of energy and enthusiasm.",
+    "file": "audio_clips/61.mp3"
+  },
+  {
+    "id": 62,
+    "start": 290.7,
+    "end": 295.66,
+    "duration": 4.96,
+    "text": "After an hour or two of this, decluttering becomes physically and emotionally exhausting.",
+    "file": "audio_clips/62.mp3"
+  },
+  {
+    "id": 63,
+    "start": 295.66,
+    "end": 298.7,
+    "duration": 3.04,
+    "text": "You may have bitten off more than you can chew.",
+    "file": "audio_clips/63.mp3"
+  },
+  {
+    "id": 64,
+    "start": 298.7,
+    "end": 302.74,
+    "duration": 4.04,
+    "text": "Another idiom meaning to try doing something which is too difficult for you.",
+    "file": "audio_clips/64.mp3"
+  },
+  {
+    "id": 65,
+    "start": 302.74,
+    "end": 308.5,
+    "duration": 5.76,
+    "text": "So if you want a declutter without stress, remember break the job down and go slow.",
+    "file": "audio_clips/65.mp3"
+  },
+  {
+    "id": 66,
+    "start": 308.5,
+    "end": 311.98,
+    "duration": 3.48,
+    "text": "Right. Time to reveal the answer to my question, Georgie.",
+    "file": "audio_clips/66.mp3"
+  },
+  {
+    "id": 67,
+    "start": 311.98,
+    "end": 317.46,
+    "duration": 5.48,
+    "text": "I asked you how many Instagram posts you can currently find under the hashtag D-Clutter.",
+    "file": "audio_clips/67.mp3"
+  },
+  {
+    "id": 68,
+    "start": 317.46,
+    "end": 319.62,
+    "duration": 2.16,
+    "text": "I said B, 2.6 million.",
+    "file": "audio_clips/68.mp3"
+  },
+  {
+    "id": 69,
+    "start": 319.62,
+    "end": 320.82,
+    "duration": 1.2,
+    "text": "Well, you were correct.",
+    "file": "audio_clips/69.mp3"
+  },
+  {
+    "id": 70,
+    "start": 320.82,
+    "end": 322.82,
+    "duration": 2.0,
+    "text": "Well done. Yay!",
+    "file": "audio_clips/70.mp3"
+  },
+  {
+    "id": 71,
+    "start": 322.82,
+    "end": 327.14,
+    "duration": 4.32,
+    "text": "OK, let's recap the vocabulary we've learned in this episode about clutter.",
+    "file": "audio_clips/71.mp3"
+  },
+  {
+    "id": 72,
+    "start": 327.14,
+    "end": 331.46,
+    "duration": 4.32,
+    "text": "Things we buy which fill up our homes in an untidy, disorganised way.",
+    "file": "audio_clips/72.mp3"
+  },
+  {
+    "id": 73,
+    "start": 331.46,
+    "end": 336.46,
+    "duration": 5.0,
+    "text": "When something has to work overtime, it works extra hard using lots of energy.",
+    "file": "audio_clips/73.mp3"
+  },
+  {
+    "id": 74,
+    "start": 336.46,
+    "end": 340.38,
+    "duration": 3.92,
+    "text": "Work overtime also often means work longer than your set hours.",
+    "file": "audio_clips/74.mp3"
+  },
+  {
+    "id": 75,
+    "start": 340.38,
+    "end": 344.94,
+    "duration": 4.56,
+    "text": "The adjective uplifted means feeling cheerful, happy and optimistic.",
+    "file": "audio_clips/75.mp3"
+  },
+  {
+    "id": 76,
+    "start": 344.94,
+    "end": 352.06,
+    "duration": 7.12,
+    "text": "If you do something slowly but surely, you do it in a gradual but reliable way which will achieve the result you want.",
+    "file": "audio_clips/76.mp3"
+  },
+  {
+    "id": 77,
+    "start": 352.06,
+    "end": 357.78,
+    "duration": 5.72,
+    "text": "The idiom with all guns blazing describes doing things with lots of energy and enthusiasm.",
+    "file": "audio_clips/77.mp3"
+  },
+  {
+    "id": 78,
+    "start": 357.78,
+    "end": 363.86,
+    "duration": 6.08,
+    "text": "And finally, if you bite off more than you can chew, you try to do something which is too difficult for you.",
+    "file": "audio_clips/78.mp3"
+  },
+  {
+    "id": 79,
+    "start": 363.86,
+    "end": 371.54,
+    "duration": 7.68,
+    "text": "Once again, our six minutes are up, but why not head over to our website, BBCLearningEnglish.com to try the quiz for this episode.",
+    "file": "audio_clips/79.mp3"
+  },
+  {
+    "id": 80,
+    "start": 371.54,
+    "end": 373.74,
+    "duration": 2.2,
+    "text": "Good luck decluttering and see you again soon.",
+    "file": "audio_clips/80.mp3"
+  },
+  {
+    "id": 81,
+    "start": 373.74,
+    "end": 375.96,
+    "duration": 2.22,
+    "text": "Goodbye. Bye.",
+    "file": "audio_clips/81.mp3"
+  }
+]

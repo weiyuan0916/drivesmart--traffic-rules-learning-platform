@@ -4,6 +4,7 @@
 // ============================================================
 
 import { apiClient } from './client'
+import { API_BASE } from './constants'
 import type {
   BbcDictationSession,
   BbcLesson,
@@ -11,7 +12,7 @@ import type {
   BbcDictationSummary,
 } from '../types/bbc'
 
-const BASE_PATH = '/api/v1/listening/bbc'
+const BASE_PATH = `${API_BASE}/listening/bbc`
 
 function transformLesson(raw: Record<string, unknown>): BbcLesson {
   return {
@@ -71,6 +72,8 @@ export const bbcDictationApi = {
             : [],
           audioUrl: d.audio_url ? String(d.audio_url) : null,
           episodeCode: d.episode_code ? String(d.episode_code) : null,
+          segmentsSource: (d.segments_source ?? null) as BbcDictationSession['segmentsSource'],
+          requiresUserTranscript: Boolean(d.requires_user_transcript),
         }
       })
   },

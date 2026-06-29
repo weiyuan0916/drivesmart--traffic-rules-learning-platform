@@ -59,7 +59,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
   const currentChallenge = challenges[currentIdx];
   const totalSentences = challenges.length;
   const completedCount = sentenceResults.length;
-  const lessonCompleted = completedCount === totalSentences;
+  const lessonCompleted = completedCount === totalSentences && totalSentences > 0;
 
   const completedIds = useMemo(() => new Set(sentenceResults.map((r) => r.challengeId)), [sentenceResults]);
 
@@ -751,7 +751,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
                   Sentence {currentIdx + 1} of {totalSentences}
                 </span>
               </div>
-              {currentChallenge.hints.length > 0 && (
+              {currentChallenge?.hints && currentChallenge.hints.length > 0 && (
                 <button
                   onClick={() => setShowHint((h) => !h)}
                   className="text-xs px-3 py-1 rounded-lg font-medium transition-colors"
@@ -764,7 +764,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
                 </button>
               )}
             </div>
-            {showHint && currentChallenge.hints.length > 0 && (
+            {showHint && currentChallenge?.hints && currentChallenge.hints.length > 0 && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}

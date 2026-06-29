@@ -1,0 +1,322 @@
+[
+  {
+    "id": 0,
+    "start": 0.0,
+    "end": 12.43,
+    "duration": 12.43,
+    "text": "6 Minute English from BBCLearningEnglish.com Hello, this is 6 Minute English from BBCLearningEnglish. I'm Pippa.",
+    "file": "audio_clips/00.mp3"
+  },
+  {
+    "id": 1,
+    "start": 12.43,
+    "end": 16.35,
+    "duration": 3.92,
+    "text": "And I'm Phil. What was your favourite game when you were a child, Pippa?",
+    "file": "audio_clips/01.mp3"
+  },
+  {
+    "id": 2,
+    "start": 16.35,
+    "end": 21.68,
+    "duration": 5.33,
+    "text": "I think my favourite game was skipping with a skipping rope. How about you?",
+    "file": "audio_clips/02.mp3"
+  },
+  {
+    "id": 3,
+    "start": 21.68,
+    "end": 25.36,
+    "duration": 3.68,
+    "text": "Well, I could never skip, so I think I'd just prefer playing football.",
+    "file": "audio_clips/03.mp3"
+  },
+  {
+    "id": 4,
+    "start": 25.36,
+    "end": 28.0,
+    "duration": 2.64,
+    "text": "Ah, well, that's a good game to play in the playground.",
+    "file": "audio_clips/04.mp3"
+  },
+  {
+    "id": 5,
+    "start": 28.08,
+    "end": 33.92,
+    "duration": 5.84,
+    "text": "80 years ago, it was quite common for children in Britain cities to play in bomb sites.",
+    "file": "audio_clips/05.mp3"
+  },
+  {
+    "id": 6,
+    "start": 33.92,
+    "end": 37.6,
+    "duration": 3.68,
+    "text": "The ruins of houses which have been destroyed in World War II.",
+    "file": "audio_clips/06.mp3"
+  },
+  {
+    "id": 7,
+    "start": 38.24,
+    "end": 47.28,
+    "duration": 9.04,
+    "text": "Today, the idea is back in fashion, with kids playing not in bomb sites, but in junk playgrounds, also called adventure playgrounds.",
+    "file": "audio_clips/07.mp3"
+  },
+  {
+    "id": 8,
+    "start": 47.28,
+    "end": 57.68,
+    "duration": 10.4,
+    "text": "In contrast to pre-made playgrounds, where swings and slides are fixed in place, adventure playgrounds provide pieces of building materials for kids to build things themselves.",
+    "file": "audio_clips/08.mp3"
+  },
+  {
+    "id": 9,
+    "start": 57.76,
+    "end": 65.92,
+    "duration": 8.16,
+    "text": "Reporter William Kramer went to see one such playground in Wrexham, North Wales, for BBC World Service Programme, people fixing the world.",
+    "file": "audio_clips/09.mp3"
+  },
+  {
+    "id": 10,
+    "start": 66.56,
+    "end": 69.92,
+    "duration": 3.36,
+    "text": "At first glance, the land is little more than a junkyard.",
+    "file": "audio_clips/10.mp3"
+  },
+  {
+    "id": 11,
+    "start": 69.92,
+    "end": 73.84,
+    "duration": 3.92,
+    "text": "There are stacks of used wooden pallets and big reels for holding wires.",
+    "file": "audio_clips/11.mp3"
+  },
+  {
+    "id": 12,
+    "start": 74.48,
+    "end": 89.6,
+    "duration": 15.12,
+    "text": "But if you look a little bit closer, you'll see crooked homemade structures, hidey holes and turrets. Children run barefoot. They swing on ropes and throw themselves down and make shift water slide. At first glance, William sees only junk.",
+    "file": "audio_clips/12.mp3"
+  },
+  {
+    "id": 13,
+    "start": 89.6,
+    "end": 104.72,
+    "duration": 15.12,
+    "text": "The phrase at first glance means looking at something for the first time before having a chance to look more carefully. Adventure playgrounds are indeed full of junk, pieces of construction material like old tires, planks of wood and lengths of rope.",
+    "file": "audio_clips/13.mp3"
+  },
+  {
+    "id": 14,
+    "start": 105.44,
+    "end": 124.08,
+    "duration": 18.64,
+    "text": "But look closely and you'll see children using the junk to play, building dens and hidey holes. A hidey hole is a small place for hiding things, or in this case for children to hide themselves. In this episode, we'll be hearing how adventure playgrounds are giving kids the freedom and space to play.",
+    "file": "audio_clips/14.mp3"
+  },
+  {
+    "id": 15,
+    "start": 124.64,
+    "end": 149.92,
+    "duration": 25.28,
+    "text": "As usual, we'll be learning some useful new words and phrases, and remember, you can find all this episodes for a cablery along with a transcript on our website, BBCLearningEnglish.com. But now I have a question for you, Pipper. We know that adventure playgrounds started off after the Second World War, but in which country? Was it A, France, B, Germany, or C, Denmark?",
+    "file": "audio_clips/15.mp3"
+  },
+  {
+    "id": 16,
+    "start": 151.36,
+    "end": 155.76,
+    "duration": 4.4,
+    "text": "I think maybe France, I think French children maybe were very adventurous.",
+    "file": "audio_clips/16.mp3"
+  },
+  {
+    "id": 17,
+    "start": 156.4,
+    "end": 159.92,
+    "duration": 3.52,
+    "text": "Okay, but we'll find out the answer to that question later in the program.",
+    "file": "audio_clips/17.mp3"
+  },
+  {
+    "id": 18,
+    "start": 160.64,
+    "end": 164.56,
+    "duration": 3.92,
+    "text": "Adventure playgrounds give kids the freedom to choose how they play.",
+    "file": "audio_clips/18.mp3"
+  },
+  {
+    "id": 19,
+    "start": 165.12,
+    "end": 175.2,
+    "duration": 10.08,
+    "text": "According to child development expert Dr. Anna Hausley-Juster, this freedom is vital, as she explains here to BBC World Services people fixing the world.",
+    "file": "audio_clips/19.mp3"
+  },
+  {
+    "id": 20,
+    "start": 175.84,
+    "end": 191.92,
+    "duration": 16.08,
+    "text": "It's true. We do tend to minimize play in certain ways, but actually, after the most basic needs are met for children, so food, shelter, water, safe place to be, play is by far the most important factor for healthy child development.",
+    "file": "audio_clips/20.mp3"
+  },
+  {
+    "id": 21,
+    "start": 191.92,
+    "end": 201.52,
+    "duration": 9.6,
+    "text": "Anna thinks play is as important as a child's basic needs like food and safety, but unfortunately, the importance of play tends to be minimized.",
+    "file": "audio_clips/21.mp3"
+  },
+  {
+    "id": 22,
+    "start": 201.52,
+    "end": 205.76,
+    "duration": 4.24,
+    "text": "If something tends to happen, it happens often and is likely to happen again.",
+    "file": "audio_clips/22.mp3"
+  },
+  {
+    "id": 23,
+    "start": 206.24,
+    "end": 219.28,
+    "duration": 13.04,
+    "text": "Anna says that after a child's basic needs are met, plays by far the most important factor in a healthy childhood. She uses the phrase, by far, to mean by a greater amount.",
+    "file": "audio_clips/23.mp3"
+  },
+  {
+    "id": 24,
+    "start": 219.28,
+    "end": 223.6,
+    "duration": 4.32,
+    "text": "For example, your teacher might say, you're by far the best student in class.",
+    "file": "audio_clips/24.mp3"
+  },
+  {
+    "id": 25,
+    "start": 224.16,
+    "end": 229.68,
+    "duration": 5.52,
+    "text": "The freedom to take controlled risks in a safe environment is what Anna calls self-directed play.",
+    "file": "audio_clips/25.mp3"
+  },
+  {
+    "id": 26,
+    "start": 230.24,
+    "end": 235.6,
+    "duration": 5.36,
+    "text": "Here she explains more to Myra and Noobie, presenter of BBC programme People Fixing the World.",
+    "file": "audio_clips/26.mp3"
+  },
+  {
+    "id": 27,
+    "start": 236.24,
+    "end": 245.2,
+    "duration": 8.96,
+    "text": "So what you're seeing is letting kids play, free play actually your play on their own and kind of come up with your ideas. That's really crucial for their development.",
+    "file": "audio_clips/27.mp3"
+  },
+  {
+    "id": 28,
+    "start": 245.2,
+    "end": 256.88,
+    "duration": 11.68,
+    "text": "It's a 100% crucial for their development. In what I meant when I said that it's protective, is that kids build resiliency, confidence, coping strategies, regulation strategies.",
+    "file": "audio_clips/28.mp3"
+  },
+  {
+    "id": 29,
+    "start": 256.88,
+    "end": 262.8,
+    "duration": 5.92,
+    "text": "So many of the skills that we know lead to healthy human development are developed in play.",
+    "file": "audio_clips/29.mp3"
+  },
+  {
+    "id": 30,
+    "start": 263.52,
+    "end": 270.96,
+    "duration": 7.44,
+    "text": "Myra mentions the importance of free play and Anna says it's 100% crucial, meaning completely.",
+    "file": "audio_clips/30.mp3"
+  },
+  {
+    "id": 31,
+    "start": 272.1,
+    "end": 278.5,
+    "duration": 6.4,
+    "text": "You can also say 100% as an informal response to mean, yes, I agree with you completely.",
+    "file": "audio_clips/31.mp3"
+  },
+  {
+    "id": 32,
+    "start": 278.5,
+    "end": 284.74,
+    "duration": 6.24,
+    "text": "Adventure playgrounds have lots of small dangers, hard pieces of wood, sharp metal, nails.",
+    "file": "audio_clips/32.mp3"
+  },
+  {
+    "id": 33,
+    "start": 284.74,
+    "end": 299.7,
+    "duration": 14.96,
+    "text": "According to Anna, taking small risks when playing with these, makes kids more resilient and builds coping strategies. A term for the psychological ways children develop to manage challenging situations. And Phil, I think it's time for the answer to your quiz question.",
+    "file": "audio_clips/33.mp3"
+  },
+  {
+    "id": 34,
+    "start": 299.78,
+    "end": 303.7,
+    "duration": 3.92,
+    "text": "Yes, I asked you in which country adventure playgrounds started.",
+    "file": "audio_clips/34.mp3"
+  },
+  {
+    "id": 35,
+    "start": 304.74,
+    "end": 328.78,
+    "duration": 24.04,
+    "text": "You said France, but I'm afraid the correct answer was Denmark. They were introduced by Danish architect Karl Theodor Sorensen. Okay, let's recap the vocabulary we've learned. Starting with the phrase, at first glance, where you see something quickly without a chance to consider it more carefully. A hidey hole is a small place for hiding things in or hiding yourself in.",
+    "file": "audio_clips/35.mp3"
+  },
+  {
+    "id": 36,
+    "start": 328.78,
+    "end": 334.94,
+    "duration": 6.16,
+    "text": "If people tend to do something, they do it often and will probably continue to do it in the future.",
+    "file": "audio_clips/36.mp3"
+  },
+  {
+    "id": 37,
+    "start": 334.94,
+    "end": 346.46,
+    "duration": 11.52,
+    "text": "The phrase by far means by a greater amount. Saying 100% means completely, and can be used to emphasise a statement or show that you totally agree with it.",
+    "file": "audio_clips/37.mp3"
+  },
+  {
+    "id": 38,
+    "start": 346.46,
+    "end": 363.5,
+    "duration": 17.04,
+    "text": "And finally, coping strategies are psychological ways of managing your emotions in challenging situations. Once again, our six minutes are up, but remember, you can find many more trending topics, plus a quiz and worksheet for this episode on our website, BBCLearningEnglish.com.",
+    "file": "audio_clips/38.mp3"
+  },
+  {
+    "id": 39,
+    "start": 363.5,
+    "end": 366.78,
+    "duration": 3.28,
+    "text": "Hope to see you there soon, but for now, it's goodbye. Goodbye!",
+    "file": "audio_clips/39.mp3"
+  }
+]
