@@ -147,7 +147,7 @@ jobs:
 
       - name: Build and push frontend
         if: matrix.service == 'frontend'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: Dockerfile.frontend
@@ -161,7 +161,7 @@ jobs:
 
       - name: Build and push backend
         if: matrix.service == 'backend'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: Dockerfile.backend
