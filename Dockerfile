@@ -2,7 +2,7 @@
 # Dockerfile — Listening API Server
 # ============================================================
 
-FROM node:22-alpine AS builder
+FROM node:26-alpine AS builder
 
 WORKDIR /app
 
@@ -28,7 +28,7 @@ RUN tsc server/listening_server.ts \
   --types node
 
 # ============================================================
-FROM node:22-alpine AS runner
+FROM node:26-alpine AS runner
 
 WORKDIR /app
 
