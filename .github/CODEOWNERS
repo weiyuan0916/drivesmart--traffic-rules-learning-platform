@@ -1,0 +1,26 @@
+# ============================================================
+# .github/workflows/CODEOWNERS
+# Automatically request review from code owners
+# ============================================================
+
+# Default owner for all files
+* @drivesmart/maintainers
+
+# DevOps specific files
+.github/workflows/* @drivesmart/devops
+*.yml @drivesmart/devops
+*.yaml @drivesmart/devops
+Makefile @drivesmart/devops
+Dockerfile* @drivesmart/devops
+docker-compose* @drivesmart/devops
+
+# Backend code
+server/**/* @drivesmart/backend
+api/**/* @drivesmart/backend
+
+# Frontend code
+src/**/* @drivesmart/frontend
+
+# Infrastructure
+k8s/**/* @drivesmart/devops
+terraform/**/* @drivesmart/devops

@@ -1,0 +1,73 @@
+# ============================================================
+# Dockerfile — Backend (Node.js/Express API Server)
+# Multi-stage build for optimized production image
+# ============================================================
+
+# Stage 1: Builder
+FROM node:22-alpine AS builder
+
+ARG NODE_VERSION=22
+
+ENV NODE_ENV=production
+ENV NPM_CONFIG_LOGLEVEL=warn
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json package-lock.json* ./
+
+# Install all dependencies (including dev for build tools)
+RUN npm ci
+
+# Copy server source code
+COPY server/ ./server/
+COPY tsconfig.server.json ./
+
+# Build TypeScript
+RUN npx tsc server/listening_server.ts \
+    --outDir server/dist \
+    --module ESNext \
+    --moduleResolution node \
+    --target ES2020 \
+    --esModuleInterop true \
+    --skipLibCheck \
+    --declaration \
+    --types node
+
+# Prune production dependencies
+RUN npm prune --production
+
+# ============================================================
+# Stage 2: Production
+# ============================================================
+FROM node:22-alpine AS production
+
+ARG NODE_VERSION=22
+
+ENV NODE_ENV=production
+ENV PORT=3002
+ENV NPM_CONFIG_LOGLEVEL=warn
+
+WORKDIR /app
+
+# Security: Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 -G nodejs
+
+# Copy built artifacts
+COPY --from=builder --chown=nodejs:nodejs /app/server/dist ./dist
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/package.json ./
+
+# Set ownership
+USER nodejs
+
+# Expose port
+EXPOSE ${PORT}
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT}/api/v1/listening/health || exit 1
+
+# Start server
+CMD ["node", "dist/listening_server.js"]

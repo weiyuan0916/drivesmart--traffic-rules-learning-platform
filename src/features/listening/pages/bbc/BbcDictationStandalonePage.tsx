@@ -7,19 +7,21 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Headphones, ArrowLeft, Settings2 } from 'lucide-react'
+import { BbcDarkThemeShell } from '../../components/BbcDarkThemeShell'
 import BbcMicroDictationPage from './BbcMicroDictationPage'
 
 export default function BbcDictationStandalonePage() {
   const navigate = useNavigate()
 
   return (
-    <div
-      className="flex flex-col"
-      style={{
-        background: 'var(--lm-bg, #F5F6F8)',
-        minHeight: '100dvh',
-      }}
-    >
+    <BbcDarkThemeShell>
+      <div
+        className="flex flex-col"
+        style={{
+          background: 'var(--lm-bg, #F5F6F8)',
+          minHeight: '100dvh',
+        }}
+      >
       {/* Header */}
       <header
         className="sticky top-0 z-30 flex-shrink-0 border-b backdrop-blur-md"
@@ -78,5 +80,6 @@ export default function BbcDictationStandalonePage() {
         <BbcMicroDictationPage />
       </main>
     </div>
+    </BbcDarkThemeShell>
   )
 }

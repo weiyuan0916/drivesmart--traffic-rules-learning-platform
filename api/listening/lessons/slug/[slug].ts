@@ -1,15 +1,25 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { query, queryOne } from '../../_lib/db';
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
-    const { id } = req.query;
-    if (!id || isNaN(Number(id))) {
-      res.status(400).json({ error: 'Invalid lesson id' });
+    const { slug } = req.query;
+    if (!slug || typeof slug !== 'string') {
+      res.status(400).json({ error: 'Invalid lesson slug' });
       return;
     }
 
-    const lesson = await queryOne<{
+    // Get lesson by slug (slug is derived from lesson name)
+    const lessons = await query<{
       id: number;
       section_id: number | null;
       topic_id: number | null;
@@ -19,9 +29,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       duration: string | null;
     }>(
       `SELECT id, section_id, topic_id, name, vocab_level, audio_path, duration
-       FROM lessons WHERE id = $1 AND deleted_at IS NULL LIMIT 1`,
-      [id],
+       FROM lessons WHERE deleted_at IS NULL`,
     );
+
+    // Find lesson by matching slug
+    const lesson = lessons.find((l) => slugify(l.name) === slug);
 
     if (!lesson) {
       res.status(404).json({ error: 'Lesson not found' });
@@ -38,7 +50,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       `SELECT id, transcript, audio_path, duration, order_index
        FROM lesson_clips WHERE lesson_id = $1 AND deleted_at IS NULL
        ORDER BY order_index ASC`,
-      [id],
+      [lesson.id],
     );
 
     let topicInfo = null;
@@ -78,12 +90,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       id: Number(lesson.id),
       sectionId: lesson.section_id ? Number(lesson.section_id) : null,
       name: lesson.name,
-      slug: lesson.name
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, ''),
+      slug: slugify(lesson.name),
       partsCount: clips.length,
       vocabLevel: lesson.vocab_level || '',
       audioSrc: lesson.audio_path || '',
@@ -106,7 +113,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       })),
     });
   } catch (err) {
-    console.error('Error fetching lesson:', err);
+    console.error('Error fetching lesson by slug:', err);
     res.status(500).json({ error: 'Failed to fetch lesson' });
   }
 }

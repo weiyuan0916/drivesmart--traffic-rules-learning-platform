@@ -40,6 +40,7 @@ export interface ListeningLesson {
   id: number;
   sectionId: number;
   name: string;
+  slug: string;
   partsCount: number;
   vocabLevel: string;
   hasAudio: boolean;
@@ -64,6 +65,7 @@ export interface ListeningLessonDetail {
   id: number;
   sectionId: number;
   name: string;
+  slug: string;
   partsCount: number;
   vocabLevel: string;
   audioSrc: string;

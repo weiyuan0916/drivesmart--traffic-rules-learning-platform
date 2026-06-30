@@ -1,0 +1,93 @@
+# ============================================================
+# Docker Compose — Test Environment
+# Optimized for CI/CD E2E testing
+# ============================================================
+# Usage: docker compose -f docker-compose.test.yml up -d
+
+services:
+  # ============================================================
+  # Frontend — Production build for testing
+  # ============================================================
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      target: production
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=test
+      - VITE_API_URL=http://backend:3002
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # ============================================================
+  # Backend — Test API Server
+  # ============================================================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      target: production
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=test
+      - PORT=3002
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/drivesmart_test
+      - REDIS_URL=redis://redis:6379
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3002/api/v1/listening/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # ============================================================
+  # PostgreSQL — Test Database
+  # ============================================================
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: drivesmart_test
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d drivesmart_test"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    tmpfs:
+      - /var/lib/postgresql/data
+
+  # ============================================================
+  # Redis — Test Cache
+  # ============================================================
+  redis:
+    image: redis:7-alpine
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 3s
+
+# ============================================================
+# Networks
+# ============================================================
+networks:
+  test-network:
+    driver: bridge

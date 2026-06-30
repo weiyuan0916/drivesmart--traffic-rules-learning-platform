@@ -12,7 +12,7 @@
 // *behind* the body's background and is invisible.
 // ============================================================
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useTheme } from '../../../context/ThemeContext'
 
@@ -22,6 +22,7 @@ export function DarkModeBackground() {
   const { theme } = useTheme()
   const [reducedMotion, setReducedMotion] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const bgRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -36,11 +37,19 @@ export function DarkModeBackground() {
     return () => mql.removeEventListener('change', handleChange)
   }, [])
 
+  // Start animation after mount
+  useEffect(() => {
+    if (mounted && !reducedMotion && bgRef.current) {
+      bgRef.current.style.animation = 'darkModeBGMove 20s ease-in-out 0s infinite'
+    }
+  }, [mounted, reducedMotion])
+
   if (theme !== 'dark' || !mounted || typeof document === 'undefined') return null
 
   return createPortal(
     <>
       <div
+        ref={bgRef}
         aria-hidden="true"
         data-testid="dark-mode-background"
         style={{
@@ -51,14 +60,8 @@ export function DarkModeBackground() {
           backgroundImage: `url(${DARK_BG_URL})`,
           backgroundPosition: 'center center',
           backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
           opacity: 1,
-          animation: reducedMotion
-            ? undefined
-            : 'darkModeBGMove 16s linear 0s infinite',
-          WebkitAnimation: reducedMotion
-            ? undefined
-            : 'darkModeBGMove 16s linear 0s infinite',
-          willChange: reducedMotion ? undefined : 'transform',
         }}
       />
     </>,

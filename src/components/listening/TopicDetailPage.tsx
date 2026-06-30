@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import { ChevronDown, ChevronRight, BookOpen, Headphones, CheckCircle, Play } from 'lucide-react';
 import type { ListeningSection, ListeningLesson, ListeningLessonDetail } from '@/types/listening';
-import { fetchTopicDetail, fetchLessonDetail } from '@/services/listeningApi';
+import { fetchTopicDetail, fetchLessonDetail, fetchLessonDetailBySlug } from '@/services/listeningApi';
 
 interface TopicDetailPageProps {
   topicSlug: string;
-  topicName: string;
+  topicName?: string;
+  lessonSlug?: string;
   onBack: () => void;
   onStartPractice: (lesson: ListeningLessonDetail) => void;
 }
 
 export default function TopicDetailPage({
   topicSlug,
-  topicName,
+  topicName: topicNameProp,
+  lessonSlug,
   onBack,
   onStartPractice,
 }: TopicDetailPageProps) {
@@ -23,6 +25,43 @@ export default function TopicDetailPage({
   const [selectedLesson, setSelectedLesson] = useState<ListeningLesson | null>(null);
   const [lessonDetail, setLessonDetail] = useState<ListeningLessonDetail | null>(null);
   const [loadingLesson, setLoadingLesson] = useState(false);
+  const [topicName, setTopicName] = useState<string>(topicNameProp || '');
+
+  // Fetch topic name if not provided (direct URL access)
+  useEffect(() => {
+    if (topicNameProp) {
+      setTopicName(topicNameProp);
+      return;
+    }
+    // Fetch topic info from API
+    fetch(`${import.meta.env.VITE_LISTENING_API_URL || '/api/v1/listening'}/topics/${topicSlug}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.name) setTopicName(data.name);
+      })
+      .catch(console.error);
+  }, [topicSlug, topicNameProp]);
+
+  // Fetch lesson by slug if provided (for direct URL access)
+  useEffect(() => {
+    if (lessonSlug) {
+      setLoadingLesson(true);
+      fetchLessonDetailBySlug(lessonSlug)
+        .then(setLessonDetail)
+        .catch(console.error)
+        .finally(() => setLoadingLesson(false));
+    }
+  }, [lessonSlug]);
+
+  // Navigate to practice page once lesson is loaded
+  // Trigger when lessonDetail changes to a valid lesson
+  const hasNavigatedRef = useRef<string | number | null>(null);
+  useEffect(() => {
+    if (lessonDetail && hasNavigatedRef.current !== lessonDetail.id) {
+      hasNavigatedRef.current = lessonDetail.id;
+      onStartPractice(lessonDetail);
+    }
+  }, [lessonDetail, onStartPractice]);
 
   useEffect(() => {
     setLoading(true);
@@ -45,9 +84,12 @@ export default function TopicDetailPage({
     setSelectedLesson(lesson);
     setLoadingLesson(true);
     try {
-      const detail = await fetchLessonDetail(lesson.id);
+      // Use slug if available, fallback to ID
+      const detail = lesson.slug 
+        ? await fetchLessonDetailBySlug(lesson.slug)
+        : await fetchLessonDetail(lesson.id);
       setLessonDetail(detail);
-      onStartPractice(detail);
+      // Navigation will be triggered by useEffect when lessonDetail changes
     } catch (err) {
       console.error('Failed to load lesson:', err);
     } finally {

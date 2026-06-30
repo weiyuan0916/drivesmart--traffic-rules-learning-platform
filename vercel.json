@@ -6,13 +6,13 @@
   "framework": null,
   "rewrites": [
     {
-      "source": "/api/listening/(.*)",
-      "destination": "/api/listening/$1"
+      "source": "/api/v1/listening/(.*)",
+      "destination": "/api/v1/listening/$1"
     }
   ],
   "headers": [
     {
-      "source": "/api/listening/(.*)",
+      "source": "/api/v1/listening/(.*)",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",

@@ -87,7 +87,7 @@ interface DictationResult {
   correctText: string
 }
 
-const PASS_THRESHOLD = 70
+const PASS_THRESHOLD = 100
 
 /**
  * Compare user input against the correct text at the character level.

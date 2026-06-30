@@ -18,12 +18,7 @@ export default defineConfig(({mode}) => {
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
       proxy: {
-        '/api/v1/listening/bbc': {
-          target: 'http://127.0.0.1:3002',
-          changeOrigin: true,
-          rewrite: (path: string) => path.replace(/^\/api\/v1/, '/api'),
-        },
-        '/api/listening': {
+        '/api/v1/listening': {
           target: 'http://127.0.0.1:3002',
           changeOrigin: true,
         },

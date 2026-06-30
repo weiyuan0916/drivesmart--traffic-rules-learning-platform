@@ -1,0 +1,155 @@
+# ============================================================
+# Kubernetes — Backend Deployment (Production)
+# HPA enabled with auto-scaling
+# ============================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: drivesmart
+  labels:
+    app: backend
+    env: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: backend
+        env: production
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: backend
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: backend
+          image: ghcr.io/drivesmart-traffic-rules-learning-platform/backend:latest
+          ports:
+            - containerPort: 3002
+              name: http
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "3002"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: database-url
+            - name: REDIS_URL
+              value: redis://redis:6379
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: gemini-api-key
+            - name: CLOUDINARY_URL
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secrets
+                  key: cloudinary-url
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 2000m
+              memory: 2Gi
+          livenessProbe:
+            httpGet:
+              path: /api/v1/listening/health
+              port: 3002
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/v1/listening/health
+              port: 3002
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: drivesmart
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3002
+      targetPort: 3002
+      name: http
+  selector:
+    app: backend
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend
+  namespace: drivesmart
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+spec:
+  tls:
+    - hosts:
+        - api.drivesmart.app
+      secretName: backend-tls-prod
+  rules:
+    - host: api.drivesmart.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 3002
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend
+  namespace: drivesmart
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80

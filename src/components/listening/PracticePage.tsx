@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Play, Pause, RotateCcw, CheckCircle, XCircle, SkipForward, Bookmark,
-  ChevronRight, Volume2, Star, Trophy, ChevronDown, Check,
+  ChevronRight, Volume2, Star, Trophy, ChevronDown, Check, ArrowLeft,
 } from 'lucide-react';
 import type { ListeningLessonDetail, Challenge, DictationResult } from '@/types/listening';
 import { checkDictation, getWordStatusColor } from '@/services/dictationService';
@@ -125,7 +125,7 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
     }
 
     // Priority 3: Local full audio (no clip, frontend slices by time)
-    const fullSrc = `/api/listening/audio/${lesson.id}`;
+    const fullSrc = `/api/v1/listening/audio/${lesson.id}`;
     audio.src = fullSrc;
     audio.load();
     if (currentChallenge.timeStart && currentChallenge.timeEnd) {
@@ -581,6 +581,17 @@ export default function PracticePage({ lesson, onBack }: PracticePageProps) {
         className="flex items-center gap-3 px-4 py-3 rounded-xl"
         style={{ background: 'var(--lm-surface)', border: '1px solid var(--lm-border)' }}
       >
+        <button
+          onClick={onBack}
+          className="w-9 h-9 flex items-center justify-center rounded-xl transition-all hover:scale-105 active:scale-95 shrink-0"
+          style={{
+            background: 'var(--lm-surface-raised)',
+            color: 'var(--lm-text-primary)',
+          }}
+          aria-label="Go back"
+        >
+          <ArrowLeft size={20} />
+        </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <h2 className="font-bold text-sm truncate" style={{ color: 'var(--lm-text-primary)' }}>

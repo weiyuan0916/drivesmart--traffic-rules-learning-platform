@@ -56,7 +56,7 @@ app.use(cors());
 app.use(express.json());
 
 // ─── Health check ─────────────────────────────────────────────────────────────
-app.get('/api/listening/health', (_req: Request, res: Response) => {
+app.get('/api/v1/listening/health', (_req: Request, res: Response) => {
   try {
     const topics = query<{ c: number }>('SELECT COUNT(*) as c FROM topics');
     const sections = query<{ c: number }>('SELECT COUNT(*) as c FROM sections');
@@ -79,8 +79,8 @@ app.get('/api/listening/health', (_req: Request, res: Response) => {
   }
 });
 
-// ─── GET /api/listening/topics ────────────────────────────────────────────────
-app.get('/api/listening/topics', (_req: Request, res: Response) => {
+// ─── GET /api/v1/listening/topics ────────────────────────────────────────────────
+app.get('/api/v1/listening/topics', (_req: Request, res: Response) => {
   try {
     const topics = query<any>(`
       SELECT
@@ -117,8 +117,8 @@ app.get('/api/listening/topics', (_req: Request, res: Response) => {
   }
 });
 
-// ─── GET /api/listening/topics/:slug ─────────────────────────────────────────
-app.get('/api/listening/topics/:slug', (req: Request, res: Response) => {
+// ─── GET /api/v1/listening/topics/:slug ─────────────────────────────────────────
+app.get('/api/v1/listening/topics/:slug', (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
 
@@ -223,8 +223,8 @@ app.get('/api/listening/topics/:slug', (req: Request, res: Response) => {
   }
 });
 
-// ─── GET /api/listening/sections/:id/lessons ──────────────────────────────────
-app.get('/api/listening/sections/:id/lessons', (req: Request, res: Response) => {
+// ─── GET /api/v1/listening/sections/:id/lessons ──────────────────────────────────
+app.get('/api/v1/listening/sections/:id/lessons', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const lessons = query<any>(
@@ -251,8 +251,8 @@ app.get('/api/listening/sections/:id/lessons', (req: Request, res: Response) => 
   }
 });
 
-// ─── GET /api/listening/lessons/:id ──────────────────────────────────────────
-app.get('/api/listening/lessons/:id', (req: Request, res: Response) => {
+// ─── GET /api/v1/listening/lessons/:id ──────────────────────────────────────────
+app.get('/api/v1/listening/lessons/:id', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -338,8 +338,8 @@ app.get('/api/listening/lessons/:id', (req: Request, res: Response) => {
   }
 });
 
-// ─── GET /api/listening/challenges/:id/audio ─────────────────────────────────
-app.get('/api/listening/challenges/:id/audio', (req: Request, res: Response) => {
+// ─── GET /api/v1/listening/challenges/:id/audio ─────────────────────────────────
+app.get('/api/v1/listening/challenges/:id/audio', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const clip = queryOne<any>(
@@ -378,7 +378,7 @@ app.get('/api/listening/challenges/:id/audio', (req: Request, res: Response) => 
 });
 
 // ─── Serve local clip files ───────────────────────────────────────────────────
-app.get('/api/listening/clips/:id', (req: Request, res: Response) => {
+app.get('/api/v1/listening/clips/:id', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const clip = queryOne<any>(
@@ -405,7 +405,7 @@ app.get('/api/listening/clips/:id', (req: Request, res: Response) => {
 });
 
 // ─── Serve full lesson audio ─────────────────────────────────────────────────
-app.get('/api/listening/audio/:id', (req: Request, res: Response) => {
+app.get('/api/v1/listening/audio/:id', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const lesson = queryOne<any>(
@@ -450,7 +450,7 @@ app.get('/api/listening/audio/:id', (req: Request, res: Response) => {
 // present in the DB, the text field is stripped before being sent to the
 // client. Vocabulary entries are user-created only.
 
-app.get('/api/listening/bbc', (req: Request, res: Response) => {
+app.get('/api/v1/listening/bbc', (req: Request, res: Response) => {
   try {
     const level = typeof req.query.level === 'string' ? req.query.level : null;
     const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
@@ -546,7 +546,7 @@ app.get('/api/listening/bbc', (req: Request, res: Response) => {
   }
 });
 
-app.get('/api/listening/bbc/:slug', (req: Request, res: Response) => {
+app.get('/api/v1/listening/bbc/:slug', (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
     const row = laravelQueryOne<any>(
@@ -597,39 +597,39 @@ app.get('/api/listening/bbc/:slug', (req: Request, res: Response) => {
 // the UI does not break in dev. Real auth/progress/notes persistence lives
 // in the Laravel backend.
 
-app.post('/api/listening/bbc/:id/progress', async (req: Request, res: Response) => {
+app.post('/api/v1/listening/bbc/:id/progress', async (req: Request, res: Response) => {
   res.status(202).json({ accepted: true });
 });
 
-app.post('/api/listening/bbc/:id/complete', async (req: Request, res: Response) => {
+app.post('/api/v1/listening/bbc/:id/complete', async (req: Request, res: Response) => {
   res.status(202).json({ accepted: true });
 });
 
-app.get('/api/listening/bbc/:id/notes', async (req: Request, res: Response) => {
+app.get('/api/v1/listening/bbc/:id/notes', async (req: Request, res: Response) => {
   res.json({ data: { id: 0, lesson_id: Number(req.params.id), content: '', updated_at: null } });
 });
 
-app.put('/api/listening/bbc/:id/notes', async (req: Request, res: Response) => {
+app.put('/api/v1/listening/bbc/:id/notes', async (req: Request, res: Response) => {
   res.json({ data: { id: 0, lesson_id: Number(req.params.id), content: req.body?.content ?? '', updated_at: new Date().toISOString() } });
 });
 
-app.get('/api/listening/bbc/:id/vocabulary', async (req: Request, res: Response) => {
+app.get('/api/v1/listening/bbc/:id/vocabulary', async (req: Request, res: Response) => {
   res.json({ data: [] });
 });
 
-app.post('/api/listening/bbc/:id/vocabulary', async (req: Request, res: Response) => {
+app.post('/api/v1/listening/bbc/:id/vocabulary', async (req: Request, res: Response) => {
   res.json({ data: { id: 0, lesson_id: Number(req.params.id), ...req.body, created_at: new Date().toISOString(), updated_at: new Date().toISOString() } });
 });
 
-app.put('/api/listening/bbc/:id/vocabulary/:wordId', async (req: Request, res: Response) => {
+app.put('/api/v1/listening/bbc/:id/vocabulary/:wordId', async (req: Request, res: Response) => {
   res.json({ data: { id: Number(req.params.wordId), lesson_id: Number(req.params.id), ...req.body, updated_at: new Date().toISOString() } });
 });
 
-app.delete('/api/listening/bbc/:id/vocabulary/:wordId', async (req: Request, res: Response) => {
+app.delete('/api/v1/listening/bbc/:id/vocabulary/:wordId', async (req: Request, res: Response) => {
   res.status(204).send();
 });
 
-app.get('/api/listening/bbc/dashboard', async (req: Request, res: Response) => {
+app.get('/api/v1/listening/bbc/dashboard', async (req: Request, res: Response) => {
   res.json({ data: { lessons_started: 0, lessons_completed: 0, completion_rate: 0 } });
 });
 

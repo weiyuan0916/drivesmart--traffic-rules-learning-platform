@@ -48,7 +48,8 @@ class BbcCatalogService
         }
 
         if (! empty($filters['search'])) {
-            $query->where('title', 'ILIKE', '%' . $filters['search'] . '%');
+            $searchTerm = mb_strtolower($filters['search'], 'UTF-8');
+            $query->whereRaw('LOWER(title) LIKE ?', ['%' . $searchTerm . '%']);
         }
 
         $sortBy = $filters['sort_by'] ?? 'latest';

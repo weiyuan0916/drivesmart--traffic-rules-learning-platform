@@ -1,28 +1,77 @@
-**/node_modules
-**/dist
-**/coverage
-**/.git
-**/.vscode
-**/.cursor
-**/src
-**/public
-**/index.html
-**/*.config.js
-**/*.config.ts
-**/eslint.config.js
-**/prettier.config.js
-**/vitest.config.ts
-**/playwright.config.ts
-**/tailwind.config.*
-**/postcss.config.*
-**/.env
-**/.env.*
-!**/.env.example
-**/backend
-**/server/dictionary_server.py
-**/tests
-**/scripts
-**/.DS_Store
-**/*.log
-**/railway.json
-**/.railwayignore
+# ============================================================
+# .dockerignore — Docker Build Context Optimization
+# Prevents unnecessary files from being sent to Docker build
+# ============================================================
+
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Build outputs
+dist
+build
+.next
+.nuxt
+
+# Development files
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+
+# IDE and editor
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+coverage
+test-results
+playwright-report
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+tests
+__tests__
+
+# Documentation
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE
+
+# CI/CD
+.github
+.gitlab-ci.yml
+Jenkinsfile
+Makefile
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Python (if any)
+__pycache__
+*.pyc
+*.pyo
+venv
+.venv
+
+# Crawler & data
+crawler
+bbc_listening_datasource
+*.json
+
+# Misc
+*.log
+*.tmp
+*.bak
+*.old
+.cache
+.parcel-cache

@@ -1,0 +1,71 @@
+# ============================================================
+# Docker Compose — Staging Environment
+# Production-like for pre-production testing
+# ============================================================
+# Usage: docker compose -f docker-compose.staging.yml up -d
+
+services:
+  # ============================================================
+  # Frontend — Staging
+  # ============================================================
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      target: production
+      args:
+        - VITE_API_URL=${VITE_API_URL:-https://api-staging.drivesmart.app}
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NODE_ENV=staging
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - backend
+    networks:
+      - staging-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ============================================================
+  # Backend — Staging API
+  # ============================================================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      target: production
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=staging
+      - PORT=3002
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - CLOUDINARY_URL=${CLOUDINARY_URL}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - ./data:/app/data
+    networks:
+      - staging-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3002/api/v1/listening/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+# ============================================================
+# Networks
+# ============================================================
+networks:
+  staging-network:
+    driver: bridge

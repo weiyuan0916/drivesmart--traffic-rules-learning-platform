@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, createContext, useContext } from 'react';
+import React, { useCallback, useState, useEffect, createContext, useContext, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -71,6 +71,7 @@ interface NavigationState {
   topicSlug?: string;
   topicName?: string;
   lesson?: ListeningLessonDetail;
+  lessonSlug?: string;
   dictationLesson?: BbcLesson;
 }
 
@@ -95,6 +96,10 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 const NAV_BOTTOM_ITEMS = NAV_ITEMS.slice(0, 5);
+
+// Helper to check if Exercises menu item is active (including child views)
+const isExercisesActive = (currentView: ListeningView) =>
+  currentView === 'topics' || currentView === 'topic-detail' || currentView === 'practice';
 
 const pageVariants: Variants = {
   initial: { opacity: 0, y: 12 },
@@ -211,9 +216,18 @@ function urlToNavState(pathname: string): NavigationState {
     return { currentView: 'bbc-list' };
   }
   if (pathname.startsWith('/listening/topics')) {
-    if (/^\/listening\/topics\/([^/]+)$/.test(pathname)) {
-      const slug = pathname.split('/listening/topics/')[1];
-      return { currentView: 'topic-detail', topicSlug: slug };
+    // Both topic-detail and practice use the same URL pattern: /listening/topics/:topicSlug/:lessonSlug
+    // The difference is that practice view has lesson data in nav.lesson
+    const practiceMatch = pathname.match(/^\/listening\/topics\/([^/]+)\/([^/]+)$/);
+    if (practiceMatch) {
+      const topicSlug = practiceMatch[1];
+      const lessonSlug = practiceMatch[2];
+      return { currentView: 'topic-detail', topicSlug, lessonSlug };
+    }
+    // Topic detail without lesson: /listening/topics/:topicSlug
+    const topicMatch = pathname.match(/^\/listening\/topics\/([^/]+)$/);
+    if (topicMatch) {
+      return { currentView: 'topic-detail', topicSlug: topicMatch[1] };
     }
     return { currentView: 'topics' };
   }
@@ -233,10 +247,23 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
   // Initialize state synchronously from URL — no render flash
   const [nav, setNav] = useState<NavigationState>(() => urlToNavState(location.pathname));
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const lastLessonSlugRef = useRef<string | undefined>(undefined);
 
-  // Sync URL changes back to internal state (e.g. when child pages use react-router navigate)
+  // Track URL changes
+  // When TopicDetailPage loads a lesson and calls onStartPractice, it sets nav.lesson
+  // We use lessonSlug to determine the view: if lesson is loaded, show practice
   useEffect(() => {
-    setNav(urlToNavState(location.pathname));
+    const parsed = urlToNavState(location.pathname);
+    // Only update if URL has changed or we're navigating to a different lesson
+    if (parsed.lessonSlug !== lastLessonSlugRef.current) {
+      lastLessonSlugRef.current = parsed.lessonSlug;
+      setNav((prev) => ({
+        ...prev,
+        ...parsed,
+        // If URL has lessonSlug and nav already has the same lesson loaded, keep practice view
+        currentView: parsed.lessonSlug && prev.lesson && parsed.lessonSlug === prev.lesson.slug ? 'practice' : parsed.currentView,
+      }));
+    }
   }, [location.pathname]);
 
   // ─────────────────────────────────────────────────────────────
@@ -246,68 +273,125 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
     switch (view) {
       case 'overview': return '/listening';
       case 'topics': return '/listening/topics';
-      case 'topic-detail': return `/listening/topics/${extra?.topicSlug}`;
-      case 'practice': return `/listening/listen/${extra?.lesson?.id}`;
+      case 'topic-detail': return `/listening/topics/${extra?.topicSlug || nav.topicSlug || ''}`;
+      case 'practice': {
+        const topicSlug = extra?.topicSlug || nav.topicSlug;
+        const lessonSlug = extra?.lessonSlug || nav.lessonSlug || nav.lesson?.slug;
+        if (!topicSlug || !lessonSlug) return '/listening';
+        return `/listening/topics/${topicSlug}/${lessonSlug}`;
+      }
       case 'progress': return '/listening/progress';
       case 'leaderboard': return '/listening/leaderboard';
       case 'bookmarks': return '/listening/bookmarks';
       case 'history': return '/listening/history';
       case 'bbc-list': return '/listening/bbc';
-      case 'bbc-practice': return `/listening/bbc/${extra?.topicSlug}/learn`;
-      case 'bbc-workspace': return `/listening/bbc/${extra?.topicSlug}/practice`;
-      case 'bbc-dictation': return `/listening/bbc/${extra?.topicSlug}/dictation`;
+      case 'bbc-practice': return `/listening/bbc/${extra?.topicSlug || nav.topicSlug}/learn`;
+      case 'bbc-workspace': return `/listening/bbc/${extra?.topicSlug || nav.topicSlug}/practice`;
+      case 'bbc-dictation': return `/listening/bbc/${extra?.topicSlug || nav.topicSlug}/dictation`;
       default: return '/listening';
     }
   }
 
   // ─────────────────────────────────────────────────────────────
-  // Navigation: state-only (URL is decorative, set on mount)
+  // Navigation: update both internal state AND URL for persistence
   // ─────────────────────────────────────────────────────────────
   const navigate = useCallback(
     (view: ListeningView, extra?: Partial<NavigationState>) => {
-      setNav((prev) => ({ ...prev, currentView: view, ...(extra ?? {}) }));
+      const path = viewToPath(view, extra);
+      // Update URL for reload persistence
+      window.history.pushState({}, '', path);
+      setNav((prev) => ({ ...prev, currentView: view, topicSlug: extra?.topicSlug ?? prev.topicSlug, topicName: extra?.topicName ?? prev.topicName, lesson: extra?.lesson ?? prev.lesson }));
       setSidebarOpen(false);
     },
     [],
   );
 
+  // Helper to generate slug from lesson name
+  const generateSlug = (name: string): string => {
+    return name
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
   const goToPractice = useCallback((lesson: ListeningLessonDetail) => {
-    setNav((prev) => ({ ...prev, currentView: 'practice', lesson }));
+    // Use topicSlug from nav state or from lesson's topic data
+    const topicSlug = nav.topicSlug || lesson.topic?.slug;
+    // Always generate slug from lesson object (do NOT reuse nav.lessonSlug)
+    const lessonSlug = lesson.slug || generateSlug(lesson.name);
+    if (!topicSlug || !lessonSlug) {
+      console.error('Missing topicSlug or lessonSlug:', { topicSlug, lessonSlug });
+      return;
+    }
+    const path = `/listening/topics/${topicSlug}/${lessonSlug}`;
+    window.history.pushState({}, '', path);
+    setNav((prev) => ({ ...prev, currentView: 'practice', lesson, lessonSlug, topicSlug }));
     setSidebarOpen(false);
-  }, []);
+  }, [nav.topicSlug]);
 
   const goToTopicDetail = useCallback((slug: string, name: string) => {
+    const path = `/listening/topics/${slug}`;
+    window.history.pushState({}, '', path);
     setNav((prev) => ({ ...prev, currentView: 'topic-detail', topicSlug: slug, topicName: name }));
     setSidebarOpen(false);
   }, []);
 
   const handleBack = () => {
-    if (nav.currentView === 'topic-detail') navigate('topics');
-    else if (nav.currentView === 'practice') navigate(nav.topicSlug ? 'topic-detail' : 'overview', { topicSlug: nav.topicSlug, topicName: nav.topicName });
-    else if (nav.currentView === 'bbc-practice') navigate('bbc-list');
-    else if (nav.currentView === 'bbc-workspace' || nav.currentView === 'bbc-dictation') navigate('bbc-list');
-    else if (nav.currentView === 'bbc-list') navigate('overview');
-    else if (nav.currentView === 'overview') onBack();
-    else navigate('overview');
+    if (nav.currentView === 'topic-detail') {
+      navigate('topics');
+      window.history.pushState({}, '', '/listening/topics');
+    }
+    else if (nav.currentView === 'practice') {
+      const path = nav.topicSlug ? `/listening/topics/${nav.topicSlug}` : '/listening';
+      window.history.pushState({}, '', path);
+      navigate(nav.topicSlug ? 'topic-detail' : 'overview', { topicSlug: nav.topicSlug, topicName: nav.topicName });
+    }
+    else if (nav.currentView === 'bbc-practice' || nav.currentView === 'bbc-workspace' || nav.currentView === 'bbc-dictation') {
+      window.history.pushState({}, '', '/listening/bbc');
+      navigate('bbc-list');
+    }
+    else if (nav.currentView === 'bbc-list') {
+      window.history.pushState({}, '', '/listening');
+      navigate('overview');
+    }
+    else if (nav.currentView === 'overview') {
+      onBack();
+    }
+    else {
+      window.history.pushState({}, '', '/listening');
+      navigate('overview');
+    }
   };
 
   const showShellNav = !['practice', 'bbc-practice', 'bbc-workspace', 'bbc-dictation'].includes(nav.currentView);
   const isTopLevel = nav.currentView === 'overview' || nav.currentView === 'topics' || nav.currentView === 'bbc-list' || nav.currentView === 'progress' || nav.currentView === 'leaderboard' || nav.currentView === 'history' || nav.currentView === 'bookmarks';
 
   const isBbcView = nav.currentView.startsWith('bbc-');
+  
+  // Navigation wrapper that syncs URL
+  const navWithUrl = (view: ListeningView, extra?: { slug?: string; topicSlug?: string; topicName?: string }) => {
+    navigate(view, extra);
+  };
+  
   const renderPage = () => {
     const content = (() => {
       switch (nav.currentView) {
         case 'overview':
-          return <Overview onStartPractice={goToPractice} onNavigate={navigate} />;
+          return <Overview onStartPractice={goToPractice} onNavigate={navWithUrl} />;
         case 'topics':
           return <TopicsPage onTopicSelect={goToTopicDetail} />;
         case 'topic-detail':
           return (
             <TopicDetailPage
               topicSlug={nav.topicSlug!}
-              topicName={nav.topicName!}
-              onBack={() => navigate('topics')}
+              topicName={nav.topicName}
+              lessonSlug={nav.lessonSlug}
+              onBack={() => {
+                window.history.pushState({}, '', '/listening/topics');
+                navigate('topics');
+              }}
               onStartPractice={goToPractice}
             />
           );
@@ -315,7 +399,11 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
           return (
             <PracticePage
               lesson={nav.lesson!}
-              onBack={() => navigate(nav.topicSlug ? 'topic-detail' : 'overview', { topicSlug: nav.topicSlug, topicName: nav.topicName })}
+              onBack={() => {
+                const path = nav.topicSlug ? `/listening/topics/${nav.topicSlug}` : '/listening';
+                window.history.pushState({}, '', path);
+                navigate(nav.topicSlug ? 'topic-detail' : 'overview', { topicSlug: nav.topicSlug, topicName: nav.topicName });
+              }}
             />
           );
         case 'progress':
@@ -331,7 +419,10 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
             <QueryClientProvider client={bbcQueryClient}>
               <React.Suspense fallback={<Skeleton />}>
                 <BbcLessonListPage onNavigate={(view, extra) => {
-                  navigate(view as ListeningView, { ...extra, topicSlug: extra?.slug as string });
+                  const slug = extra?.slug;
+                  const path = viewToPath(view as ListeningView, { topicSlug: slug });
+                  window.history.pushState({}, '', path);
+                  navigate(view as ListeningView, { topicSlug: slug });
                 }} />
               </React.Suspense>
             </QueryClientProvider>
@@ -349,7 +440,10 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
             <QueryClientProvider client={bbcQueryClient}>
               <React.Suspense fallback={<Skeleton />}>
                 <BbcWorkspacePage topicSlug={nav.topicSlug} onNavigate={(view, extra) => {
-                  navigate(view as ListeningView, { topicSlug: extra?.slug });
+                  const slug = extra?.slug;
+                  const path = viewToPath(view as ListeningView, { topicSlug: slug });
+                  window.history.pushState({}, '', path);
+                  navigate(view as ListeningView, { topicSlug: slug });
                 }} />
               </React.Suspense>
             </QueryClientProvider>
@@ -362,7 +456,10 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
                   topicSlug={nav.topicSlug}
                   lesson={nav.dictationLesson}
                   onNavigate={(view, extra) => {
-                    navigate(view as ListeningView, { topicSlug: extra?.slug });
+                    const slug = extra?.slug;
+                    const path = viewToPath(view as ListeningView, { topicSlug: slug });
+                    window.history.pushState({}, '', path);
+                    navigate(view as ListeningView, { topicSlug: slug });
                   }}
                 />
               </React.Suspense>
@@ -430,11 +527,17 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
             aria-label="Main navigation"
           >
             {NAV_ITEMS.map((item) => {
-              const isActive = nav.currentView === item.view;
+              const isActive = item.view === 'topics'
+                ? isExercisesActive(nav.currentView)
+                : nav.currentView === item.view;
               return (
                 <button
                   key={item.view}
-                  onClick={() => navigate(item.view)}
+                  onClick={() => {
+                    const path = viewToPath(item.view);
+                    window.history.pushState({}, '', path);
+                    navigate(item.view);
+                  }}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-150"
                   style={{
                     background: isActive ? 'var(--lm-primary)' : 'transparent',
@@ -523,13 +626,19 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
         {/* Sidebar nav */}
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1" aria-label="Main">
           {NAV_ITEMS.map((item) => {
-            const isActive = nav.currentView === item.view;
+            const isActive = item.view === 'topics'
+              ? isExercisesActive(nav.currentView)
+              : nav.currentView === item.view;
             return (
               <SidebarNavItem
                 key={item.view}
                 item={item}
                 isActive={isActive}
-                onClick={() => navigate(item.view)}
+                onClick={() => {
+                  const path = viewToPath(item.view);
+                  window.history.pushState({}, '', path);
+                  navigate(item.view);
+                }}
               />
             );
           })}
@@ -570,13 +679,19 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
       aria-label="Mobile navigation"
     >
       {NAV_BOTTOM_ITEMS.map((item) => {
-        const isActive = nav.currentView === item.view;
+        const isActive = item.view === 'topics'
+          ? isExercisesActive(nav.currentView)
+          : nav.currentView === item.view;
         return (
           <BottomNavItem
             key={item.view}
             item={item}
             isActive={isActive}
-            onClick={() => navigate(item.view)}
+            onClick={() => {
+              const path = viewToPath(item.view);
+              window.history.pushState({}, '', path);
+              navigate(item.view);
+            }}
           />
         );
       })}

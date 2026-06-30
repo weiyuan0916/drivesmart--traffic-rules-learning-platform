@@ -231,9 +231,15 @@
 
 /* Dark-mode background pan animation for BBC pages (Suha template pattern) */
 @keyframes darkModeBGMove {
-  0%   { transform: scale(1)   translate(0, 0); }
-  50%  { transform: scale(1.1) translate(-2%, -2%); }
-  100% { transform: scale(1)   translate(0, 0); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Global scrollbar hide */
@@ -431,6 +437,12 @@
    BBC PRACTICE PAGE — transparent bg inside dark scope
    Lets the animated background show through
    ============================================================ */
+.bbc-dark-scope,
+.bbc-dark-scope > div:last-child {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
 .bbc-dark-scope .min-h-screen,
 .bbc-dark-scope [class*="min-h-screen"] {
   background-color: transparent !important;

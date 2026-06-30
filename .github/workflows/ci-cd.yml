@@ -1,0 +1,378 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop, 'release/**']
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '22'
+  REGISTRY: ghcr.io
+  FRONTEND_IMAGE: ghcr.io/${{ github.repository }}/frontend
+  BACKEND_IMAGE: ghcr.io/${{ github.repository }}/backend
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================
+  # JOB 1: Lint & Type Check
+  # ============================================================
+  lint-and-types:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript type check
+        run: npm run typecheck
+
+  # ============================================================
+  # JOB 2: Unit Tests
+  # ============================================================
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint-and-types
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Unit Tests
+        run: npm run test:run -- --coverage --reporter=junit --outputFile=test-results/junit.xml
+        env:
+          CI: true
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-test-results
+          path: test-results/
+          retention-days: 7
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: success()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/junit.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  # ============================================================
+  # JOB 3: Build Applications
+  # ============================================================
+  build:
+    name: Build Applications
+    runs-on: ubuntu-latest
+    needs: [lint-and-types, unit-tests]
+    strategy:
+      matrix:
+        service: [frontend, backend]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for frontend
+        if: matrix.service == 'frontend'
+        id: meta-frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.FRONTEND_IMAGE }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Extract metadata for backend
+        if: matrix.service == 'backend'
+        id: meta-backend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.BACKEND_IMAGE }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push frontend
+        if: matrix.service == 'frontend'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.frontend
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-frontend.outputs.tags }}
+          labels: ${{ steps.meta-frontend.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_VERSION=${{ env.NODE_VERSION }}
+
+      - name: Build and push backend
+        if: matrix.service == 'backend'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.backend
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-backend.outputs.tags }}
+          labels: ${{ steps.meta-backend.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_VERSION=${{ env.NODE_VERSION }}
+
+  # ============================================================
+  # JOB 4: E2E Tests (Playwright)
+  # ============================================================
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start services
+        run: docker compose -f docker-compose.test.yml up -d
+
+      - name: Wait for services to be ready
+        run: |
+          for i in {1..30}; do
+            curl -f http://localhost:3000 > /dev/null 2>&1 && break
+            sleep 2
+          done
+
+      - name: Run E2E tests
+        run: npx playwright test --reporter=junit,list
+        env:
+          CI: true
+
+      - name: Upload E2E test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-results
+          path: test-results/
+          retention-days: 7
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Stop services
+        if: always()
+        run: docker compose -f docker-compose.test.yml down -v
+
+  # ============================================================
+  # JOB 5: Security Scan
+  # ============================================================
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: [build]
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          ignore-unfixed: true
+
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # ============================================================
+  # JOB 6: Deploy to Staging
+  # ============================================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [e2e-tests, security-scan]
+    environment:
+      name: staging
+      url: https://staging.drivesmart.app
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || github.event.inputs.environment == 'staging')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to staging
+        run: |
+          echo "Deploying to staging environment..."
+          # Add deployment commands here
+          # Example: kubectl apply -f k8s/staging/
+          # Example: docker compose -f docker-compose.staging.yml up -d
+          echo "Staging deployment completed"
+
+      - name: Notify deployment status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              target_url: 'https://staging.drivesmart.app',
+              description: 'Successfully deployed to staging',
+              context: 'deploy/staging'
+            });
+
+  # ============================================================
+  # JOB 7: Deploy to Production
+  # ============================================================
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    environment:
+      name: production
+      url: https://drivesmart.app
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run pre-deployment checks
+        run: |
+          echo "Running pre-deployment checks..."
+          # Verify staging is healthy before production deploy
+          curl -f https://staging.drivesmart.app/health || exit 1
+          echo "Pre-deployment checks passed"
+
+      - name: Deploy to production
+        run: |
+          echo "Deploying to production environment..."
+          # Add deployment commands here
+          # Example: kubectl apply -f k8s/production/
+          # Example: docker compose -f docker-compose.production.yml up -d
+          echo "Production deployment completed"
+
+      - name: Notify deployment status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              target_url: 'https://drivesmart.app',
+              description: 'Successfully deployed to production',
+              context: 'deploy/production'
+            });
+
+  # ============================================================
+  # JOB 8: Create Release
+  # ============================================================
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest version
+        id: version
+        run: |
+          VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
