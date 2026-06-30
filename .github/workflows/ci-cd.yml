@@ -124,7 +124,7 @@ jobs:
       - name: Extract metadata for frontend
         if: matrix.service == 'frontend'
         id: meta-frontend
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.FRONTEND_IMAGE }}
           tags: |
@@ -136,7 +136,7 @@ jobs:
       - name: Extract metadata for backend
         if: matrix.service == 'backend'
         id: meta-backend
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.BACKEND_IMAGE }}
           tags: |
