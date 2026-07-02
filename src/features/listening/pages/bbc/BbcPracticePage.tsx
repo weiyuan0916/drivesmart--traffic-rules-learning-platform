@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import {
   ArrowLeft, Play, Pause, RotateCcw, SkipForward, CheckCircle2, XCircle,
-  Loader2, Trophy, Sparkles, ChevronLeft, ChevronRight, Headphones, Star, Zap
+  Loader2, Trophy, Sparkles, ChevronLeft, ChevronRight, Headphones, Star, Zap, Clock
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '../../lib/utils'
@@ -88,6 +88,7 @@ interface DictationResult {
 }
 
 const PASS_THRESHOLD = 100
+const MAX_SEGMENT_TIME_MS = 30 * 60 * 1000 // 30 minutes max per segment
 
 /**
  * Compare user input against the correct text at the character level.
@@ -173,10 +174,14 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
   const [audioProgress, setAudioProgress] = useState(0)
   const [isComplete, setIsComplete] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
+  const [elapsedMs, setElapsedMs] = useState(0)
+  const [isTimerActive, setIsTimerActive] = useState(false)
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const segmentEndRef = useRef<number | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const segmentStartTimeRef = useRef<number>(0)
+  const timerRef = useRef<number | null>(null)
 
   // Use refs to avoid dependency issues in audio event handlers
   const segmentsRef = useRef(segments)
@@ -220,6 +225,42 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
     }
   }, [playbackSpeed])
 
+  // Timer effect - runs independently of audio playback, stops only when:
+  // 1. User passes with 100% accuracy
+  // 2. User exceeds 30 minutes
+  // 3. User completes all segments
+  useEffect(() => {
+    if (isTimerActive) {
+      if (segmentStartTimeRef.current === 0) {
+        segmentStartTimeRef.current = Date.now()
+      }
+      timerRef.current = window.setInterval(() => {
+        const elapsed = Date.now() - segmentStartTimeRef.current
+        if (elapsed >= MAX_SEGMENT_TIME_MS) {
+          // Stop timer at 30 minutes
+          if (timerRef.current) {
+            clearInterval(timerRef.current)
+            timerRef.current = null
+          }
+          setElapsedMs(MAX_SEGMENT_TIME_MS)
+        } else {
+          setElapsedMs(elapsed)
+        }
+      }, 100)
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+    }
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+    }
+  }, [isTimerActive])
+
   const handleTimeUpdate = useCallback(() => {
     if (!audioRef.current) return
     if (segmentEndRef.current === null) return
@@ -259,6 +300,8 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
     audioRef.current.playbackRate = playbackSpeed
     audioRef.current.play()
     setIsPlaying(true)
+    // Start timer when audio plays
+    setIsTimerActive(true)
   }, [isAudioLoaded, playbackSpeed])
 
   const handlePlayPause = useCallback(() => {
@@ -309,6 +352,9 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
       setUserText('')
       setShowResult(false)
       setLastResult(null)
+      segmentStartTimeRef.current = 0
+      setElapsedMs(0)
+      setIsTimerActive(false) // Reset timer for new segment
       playSegment(nextIdx)
       setTimeout(() => textareaRef.current?.focus(), 100)
     }
@@ -318,6 +364,7 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
     setUserText('')
     setShowResult(false)
     setLastResult(null)
+    // Timer keeps running (don't reset) - user can still retry
     playSegment(currentSegmentIdx)
     textareaRef.current?.focus()
   }, [currentSegmentIdx, playSegment])
@@ -333,6 +380,23 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
 
     setLastResult({ accuracy, correct: passed })
     setShowResult(true)
+
+    // Auto-focus textarea after checking so user can retry immediately
+    setTimeout(() => textareaRef.current?.focus(), 100)
+
+    // Stop timer only if passed 100% or exceeded 30 minutes
+    if (passed || elapsedMs >= MAX_SEGMENT_TIME_MS) {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+      setIsTimerActive(false)
+      if (audioRef.current) {
+        audioRef.current.pause()
+        setIsPlaying(false)
+      }
+    }
+    // If not passed and under 30 minutes, timer keeps running for retry
 
     setDictationResults(prev => {
       const existing = prev.findIndex(r => r.segmentIndex === currentSegmentIdx)
@@ -363,6 +427,12 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
       setIsComplete(true)
       setShowConfetti(true)
       setTimeout(() => setShowConfetti(false), 3000)
+      // Stop timer when all segments completed
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+      setIsTimerActive(false)
     }
   }, [userText, segments, currentSegmentIdx, completedSegments, handleNextAfterPass])
 
@@ -384,6 +454,8 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
     setUserText('')
     setShowResult(false)
     setLastResult(null)
+    segmentStartTimeRef.current = 0
+    setElapsedMs(0)
   }, [dictationResults])
 
   const formatTime = (seconds: number) => {
@@ -746,6 +818,17 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
           <div className="flex items-center gap-2 mb-4">
             <Sparkles size={18} style={{ color: 'var(--accent)' }} />
             <h2 className="font-semibold" style={{ color: 'var(--text-primary)' }}>Nhập những gì bạn nghe được</h2>
+            {(isTimerActive || elapsedMs > 0) && (!showResult || !lastResult?.correct) && (
+              <div className={cn(
+                "ml-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium",
+                elapsedMs >= MAX_SEGMENT_TIME_MS
+                  ? "bg-red-100 text-red-600"
+                  : "bg-[#4F46E5]/10 text-[#4F46E5]"
+              )}>
+                <Clock size={12} />
+                <span className="font-mono tabular-nums">{formatTime(Math.floor(elapsedMs / 1000))}</span>
+              </div>
+            )}
           </div>
 
           <textarea
@@ -759,20 +842,7 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
               }
             }}
             placeholder="Nghe cẩn thận và nhập vào đây..."
-            disabled={showResult}
-            className={cn(
-              "w-full min-h-[180px] p-4 rounded-2xl border-2 text-base resize-none transition-all outline-none",
-              showResult
-                ? "text-[var(--text-secondary)]"
-                : "focus:ring-4",
-              showResult
-                ? ""
-                : "bg-[var(--bg-secondary)] border-[var(--border)] focus:border-[var(--accent)] focus:ring-[var(--accent)]/10 text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
-            )}
-            style={showResult ? {
-              backgroundColor: 'var(--bg-secondary)',
-              borderColor: 'var(--border)',
-            } : undefined}
+            className="w-full min-h-[180px] p-4 rounded-2xl border-2 text-base resize-none transition-all outline-none bg-[var(--bg-secondary)] border-[var(--border)] focus:border-[var(--accent)] focus:ring-4 focus:ring-[var(--accent)]/10 text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
           />
 
           <div className="flex items-center justify-between mt-3">
@@ -789,24 +859,17 @@ export default function BbcPracticePage({ lessonSlug }: { lessonSlug?: string })
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             onClick={handleCheckDictation}
-            disabled={!userText.trim() || showResult}
             className={cn(
               "w-full mt-4 py-4 rounded-2xl font-semibold text-lg transition-all shadow-md",
               userText.trim() && !showResult
                 ? "text-white hover:shadow-lg"
                 : ""
             )}
-            style={userText.trim() && !showResult
+            style={userText.trim()
               ? {
-                  background: 'linear-gradient(to right, var(--accent), #7C3AED)',
-                  boxShadow: '0 10px 15px -3px rgba(79, 70, 229, 0.3)',
-                }
-              : {
-                  backgroundColor: 'var(--border)',
-                  color: 'var(--text-muted)',
-                  cursor: 'not-allowed',
-                }
-            }
+                background: 'linear-gradient(to right, var(--accent), #7C3AED)',
+              boxShadow: '0 10px 15px -3px rgba(79, 70, 229, 0.3)',
+            } : undefined}
           >
             Kiểm tra đáp án
           </motion.button>

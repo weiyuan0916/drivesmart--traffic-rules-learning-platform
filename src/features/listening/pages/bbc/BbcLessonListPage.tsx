@@ -151,7 +151,7 @@ function FilterBar({
               'px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors border',
               selectedSeries === s.id
                 ? 'bg-[#35375B] text-white border-[#35375B]'
-                : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400',
+                : 'bg-[#18181a] text-gray-300 border-gray-700 hover:border-gray-500',
             )}
           >
             {s.label}
@@ -161,8 +161,8 @@ function FilterBar({
 
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex items-center gap-1.5">
-          <Filter size={16} className="text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">Cấp độ:</span>
+          <Filter size={16} className="text-gray-400" />
+          <span className="text-sm text-gray-400">Cấp độ:</span>
           {([null, 'beginner', 'intermediate', 'advanced'] as const).map((level) => (
             <button
               key={level ?? 'all'}
@@ -171,7 +171,7 @@ function FilterBar({
                 'px-3 py-1 rounded-full text-sm font-medium transition-colors border',
                 selectedLevel === level
                   ? 'bg-primary text-white border-primary'
-                  : 'bg-white text-text-secondary border-border hover:border-primary',
+                  : 'bg-[#18181a] text-gray-300 border-gray-700 hover:border-gray-500',
               )}
             >
               {level ? LEVEL_LABELS[level] : 'Tất cả'}
@@ -180,11 +180,11 @@ function FilterBar({
         </div>
 
         <div className="ml-auto flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Sắp xếp:</span>
+          <span className="text-sm text-gray-400">Sắp xếp:</span>
           <select
             value={selectedSort}
             onChange={(e) => onSortChange(e.target.value as BbcSortBy)}
-            className="text-sm border border-border rounded-lg px-3 py-1.5 bg-white text-text-primary focus:outline-none focus:ring-2 focus:ring-primary"
+            className="text-sm border border-gray-700 rounded-lg px-3 py-1.5 bg-[#18181a] text-white focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {SORT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -216,7 +216,7 @@ function SearchBar({ value, onChange }: { value: string; onChange: (v: string) =
         value={localValue}
         onChange={(e) => handleChange(e.target.value)}
         placeholder="Tìm kiếm bài học..."
-        className="w-full pl-10 pr-4 py-2.5 border border-border rounded-xl bg-white text-text-primary placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+        className="w-full pl-10 pr-4 py-2.5 border border-border rounded-xl bg-[#18181a] text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
       />
     </div>
   )

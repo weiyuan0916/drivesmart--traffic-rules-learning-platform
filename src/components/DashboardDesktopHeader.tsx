@@ -1,6 +1,6 @@
 import React from 'react';
-import { Car } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
+import { LogoWithTheme } from './ui/LogoWithTheme';
 
 const DashboardDesktopHeader: React.FC = () => {
   return (
@@ -10,10 +10,7 @@ const DashboardDesktopHeader: React.FC = () => {
       
       <div className="flex-1 flex items-center justify-center">
         <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--text-primary)]">
-            <Car className="h-5 w-5 text-[var(--bg-primary)]" />
-          </div>
-          <span className="truncate font-bold tracking-tight text-[var(--text-primary)]">DriveSmart</span>
+          <LogoWithTheme className="h-9" />
         </div>
       </div>
       

@@ -4,7 +4,7 @@
 // ============================================================
 
 import { useRef, useEffect } from 'react'
-import { SendHorizontal } from 'lucide-react'
+import { SendHorizontal, Clock } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import { cn } from '../../../lib/utils'
 import { Button } from '../../../components/ui/Button'
@@ -17,6 +17,15 @@ interface DictationInputProps {
   isLoading?: boolean
   hasChecked?: boolean
   className?: string
+  elapsedMs?: number
+  showHint?: boolean
+}
+
+function formatTime(ms: number): string {
+  const totalSeconds = Math.floor(ms / 1000)
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
 export function DictationInput({
@@ -27,12 +36,14 @@ export function DictationInput({
   isLoading = false,
   hasChecked = false,
   className,
+  elapsedMs = 0,
+  showHint = true,
 }: DictationInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  // Auto-focus on mount and after checking
+  // Auto-focus on mount and after checking (always focus when not disabled)
   useEffect(() => {
-    if (!disabled && !hasChecked && textareaRef.current) {
+    if (!disabled && textareaRef.current) {
       textareaRef.current.focus()
     }
   }, [disabled, hasChecked])
@@ -45,10 +56,16 @@ export function DictationInput({
         onSubmit()
       }
     }
+    // R key to replay - handled by parent
+    if (e.key === 'r' || e.key === 'R') {
+      // Allow parent to handle replay shortcut
+      const event = new CustomEvent('dictation-replay')
+      window.dispatchEvent(event)
+    }
   }
 
   const handleSubmit = () => {
-    if (!value.trim() && !isLoading) {
+    if (!value.trim() && !isLoading && !hasChecked) {
       // Trigger shake animation by briefly toggling a class
       textareaRef.current?.classList.add('animate-shake')
       setTimeout(() => textareaRef.current?.classList.remove('animate-shake'), 500)
@@ -82,7 +99,7 @@ export function DictationInput({
         />
 
         <AnimatePresence>
-          {isEmpty && !isLoading && !hasChecked && (
+          {isEmpty && !isLoading && !hasChecked && showHint && (
             <motion.p
               id="dictation-hint"
               initial={{ opacity: 0 }}
@@ -92,6 +109,32 @@ export function DictationInput({
             >
               Ctrl+Enter để kiểm tra
             </motion.p>
+          )}
+          {!isEmpty && !isLoading && hasChecked && showHint && (
+            <motion.p
+              id="dictation-hint"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute bottom-3 right-3 text-xs text-green-500"
+            >
+              Sửa và kiểm tra lại
+            </motion.p>
+          )}
+        </AnimatePresence>
+
+        {/* Timer display */}
+        <AnimatePresence>
+          {elapsedMs > 0 && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-1 bg-[#35375B]/10 rounded-full text-xs font-medium text-[#35375B]"
+            >
+              <Clock size={12} className="shrink-0" />
+              <span className="font-mono tabular-nums">{formatTime(elapsedMs)}</span>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>

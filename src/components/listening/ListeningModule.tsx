@@ -3,12 +3,13 @@ import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
-  ArrowLeft, Headphones, BookOpen, BarChart2, Trophy,
+  ArrowLeft, BookOpen, BarChart2, Trophy,
   Bookmark, Clock, Home, Menu, X, TrendingUp, Globe,
 } from 'lucide-react';
 import type { ListeningLessonDetail, ListeningView } from '@/types/listening'
 import type { BbcLesson } from '../../features/listening/types/bbc';
 import { BbcDarkThemeShell } from '../../features/listening/components/BbcDarkThemeShell';
+import { LogoWithTheme, FaviconWithTheme } from '../../components/ui/LogoWithTheme';
 import Overview from './Overview';
 import TopicsPage from './TopicsPage';
 import TopicDetailPage from './TopicDetailPage';
@@ -504,18 +505,7 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
 
         {/* Brand */}
         <div className="flex items-center gap-2 min-w-0">
-          <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ background: 'var(--lm-primary)' }}
-          >
-            <Headphones size={14} className="text-white" />
-          </div>
-          <span
-            className="font-bold text-sm truncate hidden sm:block"
-            style={{ color: 'var(--lm-text-primary)' }}
-          >
-            VinaListen
-          </span>
+          <LogoWithTheme className="h-10 flex-shrink-0 hidden md:block" />
         </div>
 
         <div className="flex-1" />
@@ -601,26 +591,7 @@ export default function ListeningModule({ onBack }: ListeningModuleProps) {
           className="flex items-center gap-3 px-5 py-4 border-b flex-shrink-0"
           style={{ borderColor: 'var(--lm-border)' }}
         >
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: 'var(--lm-primary)' }}
-          >
-            <Headphones size={18} className="text-white" />
-          </div>
-          <div>
-            <div
-              className="font-bold text-sm"
-              style={{ color: 'var(--lm-text-primary)' }}
-            >
-              VinaListen
-            </div>
-            <div
-              className="text-xs"
-              style={{ color: 'var(--lm-text-muted)' }}
-            >
-              Practice Listening
-            </div>
-          </div>
+          <LogoWithTheme className="h-12 flex-shrink-0" />
         </div>
 
         {/* Sidebar nav */}

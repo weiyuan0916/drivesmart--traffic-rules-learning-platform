@@ -1,5 +1,6 @@
 import { useLanguage } from '../../../context/LanguageContext';
-import { Car, Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
+import { LogoWithTheme } from '../../ui/LogoWithTheme';
 
 const FOOTER_LINKS = {
   products: {
@@ -78,10 +79,7 @@ export function Footer() {
           {/* Brand column */}
           <div className="col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 bg-[var(--accent)] rounded-lg flex items-center justify-center flex-shrink-0">
-                <Car className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-bold text-lg text-[var(--text-primary)]">DriveSmart</span>
+              <LogoWithTheme className="h-9" />
             </div>
             <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-4 max-w-xs">
               {language === 'vi'

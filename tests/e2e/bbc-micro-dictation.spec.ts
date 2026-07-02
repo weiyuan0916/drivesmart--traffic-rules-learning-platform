@@ -166,7 +166,7 @@ test.describe('E2E: BBC Micro Dictation Flow', () => {
     await page.waitForLoadState('networkidle')
 
     // Navigate to BBC
-    const bbcNav = page.locator('nav').getByText('BBC')
+    const bbcNav = page.locator('nav').getByText('BBC').first()
     if (await bbcNav.isVisible()) {
       await bbcNav.click()
       await page.waitForTimeout(2000)

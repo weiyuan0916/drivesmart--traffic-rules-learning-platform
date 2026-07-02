@@ -4,11 +4,18 @@
 // Supports both embedded (ListeningModule) and standalone routing
 // ============================================================
 
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef, lazy, Suspense } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { Settings2, Play, SkipForward, ArrowLeft, Loader2, AlertCircle, Headphones } from 'lucide-react'
+import { Settings2, Play, SkipForward, ArrowLeft, Loader2, AlertCircle, Headphones, Clock } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
+
+function formatTime(ms: number): string {
+  const totalSeconds = Math.floor(ms / 1000)
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+}
 import { Button } from '../../components/ui/Button'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { MicroSEO } from './MicroSEO'
@@ -103,6 +110,9 @@ export default function BbcMicroDictationPage({ topicSlug, lesson: lessonProp, o
   const [phase, setPhase] = useState<Phase>('intro')
   const [inputValue, setInputValue] = useState('')
   const [score, setScore] = useState<BbcSegmentScore | null>(null)
+  const [elapsedMs, setElapsedMs] = useState(0)
+  const timerRef = useRef<number | null>(null)
+  const segmentStartTimeRef = useRef<number>(0)
 
   // Check for saved session on mount
   useEffect(() => {
@@ -116,6 +126,26 @@ export default function BbcMicroDictationPage({ topicSlug, lesson: lessonProp, o
       }
     }
   }, [session, effectiveSlug])
+
+  // Timer effect - updates elapsedMs every 100ms when in playing or input phase
+  useEffect(() => {
+    if ((phase === 'playing' || phase === 'input') && segmentStartTimeRef.current) {
+      timerRef.current = window.setInterval(() => {
+        setElapsedMs(Date.now() - segmentStartTimeRef.current)
+      }, 100)
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+    }
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+    }
+  }, [phase])
 
   const submitMutation = useMutation({
     mutationFn: async (payload: { segment_index: number; user_input: string; time_spent_ms: number }) => {
@@ -151,6 +181,7 @@ export default function BbcMicroDictationPage({ topicSlug, lesson: lessonProp, o
   const handleStart = useCallback(() => {
     store.initSession(session!)
     setPhase('playing')
+    segmentStartTimeRef.current = Date.now()
     store.playSegment()
   }, [session, store])
 
@@ -163,10 +194,12 @@ export default function BbcMicroDictationPage({ topicSlug, lesson: lessonProp, o
     if (!inputValue.trim() || !session) return
     setPhase('checking')
 
+    const timeSpentMs = segmentStartTimeRef.current ? Date.now() - segmentStartTimeRef.current : 0
+
     submitMutation.mutate({
       segment_index: store.currentIndex,
       user_input: inputValue,
-      time_spent_ms: 5000,
+      time_spent_ms: timeSpentMs,
     })
   }, [inputValue, session, store.currentIndex, submitMutation])
 
@@ -182,6 +215,7 @@ export default function BbcMicroDictationPage({ topicSlug, lesson: lessonProp, o
       setInputValue('')
       setScore(null)
       setPhase('playing')
+      segmentStartTimeRef.current = Date.now()
       store.playSegment()
     }
   }, [session, store, completeMutation])
@@ -194,6 +228,8 @@ export default function BbcMicroDictationPage({ topicSlug, lesson: lessonProp, o
     setInputValue('')
     setScore(null)
     setPhase('intro')
+    segmentStartTimeRef.current = 0
+    setElapsedMs(0)
   }, [session, store])
 
   const handleJumpTo = useCallback((index: number) => {
@@ -202,6 +238,8 @@ export default function BbcMicroDictationPage({ topicSlug, lesson: lessonProp, o
     setInputValue('')
     setScore(null)
     setPhase('intro')
+    segmentStartTimeRef.current = 0
+    setElapsedMs(0)
   }, [store])
 
   // Error state
@@ -344,17 +382,26 @@ export default function BbcMicroDictationPage({ topicSlug, lesson: lessonProp, o
           />
         )}
 
-        {(phase === 'playing' || phase === 'input' || phase === 'checking') && currentSegment && (
+        {(phase === 'playing' || phase === 'input' || phase === 'checking' || (phase === 'results' && score)) && currentSegment && (
           <PhasePractice
             key="practice"
             session={session}
-            phase={phase}
+            phase={phase === 'results' ? 'input' : phase}
             currentSegment={currentSegment}
             inputValue={inputValue}
             onInputChange={setInputValue}
             onAutoPause={handleAutoPause}
             onSubmit={handleSubmit}
             isSubmitting={submitMutation.isPending}
+            elapsedMs={elapsedMs}
+            score={score}
+            onNext={handleNextSegment}
+            onReplay={() => {
+              setScore(null)
+              setPhase('playing')
+              store.playSegment()
+            }}
+            isLastSegment={isLastSegment}
           />
         )}
 
@@ -458,6 +505,11 @@ function PhasePractice({
   onAutoPause,
   onSubmit,
   isSubmitting,
+  elapsedMs,
+  score,
+  onNext,
+  onReplay,
+  isLastSegment,
 }: {
   session: BbcDictationSession
   phase: Phase
@@ -467,7 +519,15 @@ function PhasePractice({
   onAutoPause: () => void
   onSubmit: () => void
   isSubmitting: boolean
+  elapsedMs: number
+  score: BbcSegmentScore | null
+  onNext?: () => void
+  onReplay?: () => void
+  isLastSegment?: boolean
 }) {
+  const hasChecked = score !== null
+  const isInputDisabled = phase === 'checking'
+
   return (
     <motion.div
       key="practice"
@@ -494,24 +554,43 @@ function PhasePractice({
         <div className="flex items-center gap-2 p-3 bg-[#35375B]/5 rounded-xl text-[#35375B]">
           <Headphones size={18} className="shrink-0" />
           <span className="text-sm font-medium">Đang nghe... Nhập những gì bạn nghe được.</span>
+          {elapsedMs > 0 && (
+            <span className="ml-auto font-mono text-xs tabular-nums">{formatTime(elapsedMs)}</span>
+          )}
         </div>
       )}
 
-      {phase === 'input' && (
-        <DictationInput
-          value={inputValue}
-          onChange={onInputChange}
-          onSubmit={onSubmit}
-          disabled={false}
-          isLoading={isSubmitting}
-        />
-      )}
+      {/* Input - always visible */}
+      <DictationInput
+        value={inputValue}
+        onChange={onInputChange}
+        onSubmit={onSubmit}
+        isLoading={isSubmitting}
+        elapsedMs={elapsedMs}
+        hasChecked={hasChecked}
+      />
 
-      {phase === 'checking' && (
-        <div className="flex items-center justify-center gap-2 p-6 text-gray-500">
+      {/* Loading spinner - shown inline */}
+      {
+        <div className="flex items-center justify-center gap-2 p-4 text-gray-500">
           <Loader2 size={20} className="animate-spin" />
           <span>Đang kiểm tra...</span>
         </div>
+      }
+
+      {/* Results - shown inline below input */}
+      {score && (
+        <>
+          <SegmentResults reference={currentSegment.text} score={score} />
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button onClick={onNext} size="lg" className="flex-1 gap-2">
+              {isLastSegment ? 'Xem kết quả' : 'Đoạn tiếp'}
+            </Button>
+            <Button variant="secondary" onClick={onReplay} size="lg" className="gap-2">
+              Nghe lại
+            </Button>
+          </div>
+        </>
       )}
     </motion.div>
   )

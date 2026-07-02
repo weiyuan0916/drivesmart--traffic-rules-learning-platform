@@ -1,5 +1,5 @@
 import { Outlet, Link } from 'react-router-dom'
-import { Logo } from '../components/Logo'
+import { LogoWithTheme } from '../../components/ui/LogoWithTheme'
 
 export function AuthLayout() {
   return (
@@ -8,8 +8,7 @@ export function AuthLayout() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link to="/topics" className="inline-flex items-center gap-2">
-            <Logo size={40} />
-            <span className="text-2xl font-bold text-primary">VinaListen</span>
+            <LogoWithTheme className="h-10" />
           </Link>
         </div>
 

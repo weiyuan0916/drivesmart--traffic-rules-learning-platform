@@ -20,6 +20,40 @@ const DIFFICULTY_LEVELS: Record<string, FilterType> = {
   advanced: 'Advanced',
 };
 
+const TOPIC_BACKGROUNDS: Record<string, { gradient: string; icon: string }> = {
+  short: { gradient: 'from-amber-500/20 to-orange-600/20', icon: '#F59E0B' },
+  conversation: { gradient: 'from-emerald-500/20 to-teal-600/20', icon: '#10B981' },
+  toeic: { gradient: 'from-blue-500/20 to-indigo-600/20', icon: '#3B82F6' },
+  ielts: { gradient: 'from-rose-500/20 to-pink-600/20', icon: '#F43F5E' },
+  ted: { gradient: 'from-red-500/20 to-rose-600/20', icon: '#EF4444' },
+  news: { gradient: 'from-slate-500/20 to-gray-600/20', icon: '#64748B' },
+  toefl: { gradient: 'from-purple-500/20 to-violet-600/20', icon: '#A855F7' },
+  story: { gradient: 'from-amber-500/20 to-orange-600/20', icon: '#F59E0B' },
+  business: { gradient: 'from-blue-500/20 to-cyan-600/20', icon: '#0EA5E9' },
+  travel: { gradient: 'from-sky-500/20 to-blue-600/20', icon: '#0EA5E9' },
+  daily: { gradient: 'from-green-500/20 to-emerald-600/20', icon: '#22C55E' },
+  culture: { gradient: 'from-yellow-500/20 to-amber-600/20', icon: '#EAB308' },
+  interview: { gradient: 'from-violet-500/20 to-purple-600/20', icon: '#8B5CF6' },
+  default: { gradient: 'from-indigo-500/20 to-purple-600/20', icon: '#6366F1' },
+};
+
+function getTopicBackground(topicName: string) {
+  const name = topicName.toLowerCase();
+  if (name.includes('short') || name.includes('story')) return TOPIC_BACKGROUNDS.short;
+  if (name.includes('conversation') || name.includes('dialog')) return TOPIC_BACKGROUNDS.conversation;
+  if (name.includes('toeic')) return TOPIC_BACKGROUNDS.toeic;
+  if (name.includes('ielts')) return TOPIC_BACKGROUNDS.ielts;
+  if (name.includes('ted')) return TOPIC_BACKGROUNDS.ted;
+  if (name.includes('news')) return TOPIC_BACKGROUNDS.news;
+  if (name.includes('toefl')) return TOPIC_BACKGROUNDS.toefl;
+  if (name.includes('business')) return TOPIC_BACKGROUNDS.business;
+  if (name.includes('travel')) return TOPIC_BACKGROUNDS.travel;
+  if (name.includes('daily') || name.includes('life')) return TOPIC_BACKGROUNDS.daily;
+  if (name.includes('culture') || name.includes('people')) return TOPIC_BACKGROUNDS.culture;
+  if (name.includes('interview')) return TOPIC_BACKGROUNDS.interview;
+  return TOPIC_BACKGROUNDS.default;
+}
+
 function topicLevelsToCategory(levelsStr: string): FilterType | null {
   if (!levelsStr) return null;
 
@@ -160,6 +194,8 @@ export default function TopicsPage({ onTopicSelect }: TopicsPageProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((topic, i) => {
             const colors = getDifficultyColor(topic.levels);
+            const bgStyle = getTopicBackground(topic.name);
+            const displayName = topic.name.replace('Video', '').trim();
             return (
               <motion.button
                 key={topic.id}
@@ -167,52 +203,69 @@ export default function TopicsPage({ onTopicSelect }: TopicsPageProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04 }}
                 onClick={() => onTopicSelect(topic.slug, topic.name)}
-                className="text-left p-5 rounded-xl transition-all hover:shadow-md"
+                className="relative text-left p-5 rounded-xl transition-all hover:shadow-md overflow-hidden"
                 style={{
                   background: 'var(--lm-surface)',
                   border: '1px solid var(--lm-border)',
                 }}
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
-                    style={{ background: '#EEEDFB' }}
-                  >
-                    <BookOpen size={20} style={{ color: '#35375B' }} />
-                  </div>
-                  <ChevronRight size={18} style={{ color: 'var(--lm-text-muted)' }} />
-                </div>
-                <h3
-                  className="font-bold text-base mb-2"
-                  style={{ color: 'var(--lm-text-primary)' }}
-                >
-                  {topic.name.replace('Video', '').trim()}
-                </h3>
-                <p
-                  className="text-xs mb-3 line-clamp-2"
-                  style={{ color: 'var(--lm-text-secondary)' }}
-                >
-                  {topic.description || `${topic.lessonCount} lessons`}
-                </p>
-                <div className="flex items-center gap-2 flex-wrap">
+                {/* Gradient background overlay */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${bgStyle.gradient} opacity-60 dark:opacity-40`}
+                />
+
+                {/* Large watermark text */}
+                <div className="absolute bottom-0 right-0 pointer-events-none select-none">
                   <span
-                    className="text-xs font-semibold px-2 py-1 rounded-full"
-                    style={{ background: colors.bg, color: colors.text }}
+                    className="text-[80px] lg:text-[100px] font-black opacity-[0.06] dark:opacity-[0.04] line-clamp-1"
+                    style={{ color: bgStyle.icon }}
                   >
-                    {(() => {
-                      if (!topic.levels) return 'Mixed';
-                      const normalized = topic.levels.toLowerCase();
-                      if (normalized.includes('beginner') && normalized.includes('advanced')) return 'Mixed';
-                      if (normalized.includes('beginner') && normalized.includes('intermediate')) return 'Mixed';
-                      if (normalized.includes('advanced')) return 'Advanced';
-                      if (normalized.includes('intermediate')) return 'Intermediate';
-                      if (normalized.includes('beginner')) return 'Beginner';
-                      return topic.levels;
-                    })()}
+                    {displayName.split(' ')[0]}
                   </span>
-                  <span className="text-xs" style={{ color: 'var(--lm-text-muted)' }}>
-                    {topic.lessonCount} lessons
-                  </span>
+                </div>
+
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between mb-3">
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      style={{ background: bgStyle.icon + '20' }}
+                    >
+                      <BookOpen size={20} style={{ color: bgStyle.icon }} />
+                    </div>
+                    <ChevronRight size={18} style={{ color: 'var(--lm-text-muted)' }} />
+                  </div>
+                  <h3
+                    className="font-bold text-base mb-2"
+                    style={{ color: 'var(--lm-text-primary)' }}
+                  >
+                    {displayName}
+                  </h3>
+                  <p
+                    className="text-xs mb-3 line-clamp-2"
+                    style={{ color: 'var(--lm-text-secondary)' }}
+                  >
+                    {topic.description || `${topic.lessonCount} lessons`}
+                  </p>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span
+                      className="text-xs font-semibold px-2 py-1 rounded-full"
+                      style={{ background: colors.bg, color: colors.text }}
+                    >
+                      {(() => {
+                        if (!topic.levels) return 'Mixed';
+                        const normalized = topic.levels.toLowerCase();
+                        if (normalized.includes('beginner') && normalized.includes('advanced')) return 'Mixed';
+                        if (normalized.includes('beginner') && normalized.includes('intermediate')) return 'Mixed';
+                        if (normalized.includes('advanced')) return 'Advanced';
+                        if (normalized.includes('intermediate')) return 'Intermediate';
+                        if (normalized.includes('beginner')) return 'Beginner';
+                        return topic.levels;
+                      })()}
+                    </span>
+                    <span className="text-xs" style={{ color: 'var(--lm-text-muted)' }}>
+                      {topic.lessonCount} lessons
+                    </span>
+                  </div>
                 </div>
               </motion.button>
             );

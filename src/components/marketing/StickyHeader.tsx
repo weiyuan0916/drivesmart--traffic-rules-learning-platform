@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Car, Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { useLanguage, type Language } from '../../context/LanguageContext';
 import { useScrollDirection } from '../../hooks/useScrollAnimation';
+import { LogoWithTheme, FaviconWithTheme } from '../ui/LogoWithTheme';
 
 const NAV_ITEMS = [
   { id: 'hero', labelVi: 'Trang chủ', labelEn: 'Home' },
@@ -77,12 +78,10 @@ export function StickyHeader({ activeSection = 'hero', onNavigate }: StickyHeade
               className="flex items-center gap-2 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 rounded-lg"
               aria-label="DriveSmart — Trang chủ"
             >
-              <div className="w-8 h-8 bg-[var(--accent)] rounded-lg flex items-center justify-center flex-shrink-0">
-                <Car className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-bold text-base text-[var(--text-primary)] hidden sm:block">
-                DriveSmart
-              </span>
+              {/* Mobile: Favicon only */}
+              <FaviconWithTheme className="w-8 h-8 lg:hidden" />
+              {/* Desktop: Full logo */}
+              <LogoWithTheme className="hidden lg:block h-8" />
             </a>
 
             {/* Desktop Navigation */}
